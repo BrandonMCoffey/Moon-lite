@@ -53,8 +53,7 @@ public class TerrainGenerator : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            Vector3 mousePosition = _camera.ScreenToWorldPoint(Input.mousePosition);
-            DestroyArea(mousePosition);
+            DestroyArea(_camera.ScreenToWorldPoint(Input.mousePosition));
             _destroyTimer = 0.05f;
         }
     }
@@ -70,8 +69,9 @@ public class TerrainGenerator : MonoBehaviour
     {
         int x = (int) (position.x * _pixelsPerUnit);
         int y = (int) (position.y * _pixelsPerUnit);
-        
-        _terrainData.DestroyTerrain(x,y, (int) (_destructionRadius * _pixelsPerUnit));
+        int r = (int)(_destructionRadius * _pixelsPerUnit);
+        _terrainData.DestroyTerrain(x, y, r);
+        _quadTree.UpdateQuadTree(_terrainData, x, y, r);
         _quadTree = new QuadTree(_terrainData);
         ConstructMeshes();
     }

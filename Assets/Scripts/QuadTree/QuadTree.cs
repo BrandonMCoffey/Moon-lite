@@ -29,6 +29,11 @@ public partial class QuadTree : IEnumerable<Quad>
         }
     }
 
+    public void UpdateQuadTree(TerrainData terrainData, int centerX, int centerY, int range)
+    {
+
+    }
+
     public IEnumerator<Quad> GetEnumerator()
     {
         return new QuadEnumerator(_root);
