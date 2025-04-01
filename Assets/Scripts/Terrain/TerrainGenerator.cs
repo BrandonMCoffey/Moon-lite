@@ -35,7 +35,7 @@ public class TerrainGenerator : MonoBehaviour
         }
         if (_quadTree != null)
         {
-            //_quadTree.DrawGizmos(_pixelsPerUnit);
+            _quadTree.DrawGizmos(_pixelsPerUnit);
         }
         if (_mousePosition != Vector3.zero)
         {

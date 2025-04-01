@@ -39,7 +39,7 @@ public class TerrainData
             off += (Random.value - 0.4f) * 0.2f;
             for (int y = 0; y < _height; y++)
             {
-                _points[x, y] = !(s * 10 < y - _height + 15);// texture2D.GetPixel(x, y).a >= Single.Epsilon;
+                _points[x, y] = !(s * 10 < y - _height + 15);
             }
         }
         for (int i = 0; i < 10; i++)
