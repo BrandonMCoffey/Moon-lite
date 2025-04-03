@@ -14,6 +14,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private CanvasGroup _credits;
 
     private CanvasGroup _current;
+    private bool _transitioning;
 
     private void Start()
     {
@@ -42,7 +43,7 @@ public class MainMenuController : MonoBehaviour
     public void SetFirstSelected(GameObject obj)
     {
         _firstSelected = obj;
-        MouseControllerManager.UpdateSelected(obj);
+        if (!_transitioning) MouseControllerManager.UpdateSelected(obj);
     }
 
     public void StartGame()
@@ -60,8 +61,11 @@ public class MainMenuController : MonoBehaviour
 
     private IEnumerator SwitchMenu(CanvasGroup next)
     {
-        float mult = 1f / _blendMenuTime;
+        _transitioning = true;
+        MouseControllerManager.UpdateSelected(null);
         _current.interactable = false;
+
+        float mult = 1f / _blendMenuTime;
         for (float t = 0; t < 1f; t += Time.deltaTime * mult)
         {
             _current.alpha = 1 - t;
@@ -75,7 +79,9 @@ public class MainMenuController : MonoBehaviour
             yield return null;
         }
         next.alpha = 1;
+
         next.interactable = true;
         MouseControllerManager.UpdateSelected(_firstSelected);
+        _transitioning = false;
     }
 }
