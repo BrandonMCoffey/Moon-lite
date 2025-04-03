@@ -2954,6 +2954,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1939426700}
+        m_TargetAssemblyTypeName: ShipMenuManager, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _onPlayerExit:
     m_PersistentCalls:
       m_Calls:
@@ -2964,6 +2976,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1939426700}
+        m_TargetAssemblyTypeName: ShipMenuManager, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6989,6 +7013,12 @@ PrefabInstance:
 --- !u!4 &1939426699 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8237603085089611767, guid: efe34871650ff2e4288675e3823f1302,
+    type: 3}
+  m_PrefabInstance: {fileID: 1939426698}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1939426700 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8237603085089611761, guid: efe34871650ff2e4288675e3823f1302,
     type: 3}
   m_PrefabInstance: {fileID: 1939426698}
   m_PrefabAsset: {fileID: 0}
