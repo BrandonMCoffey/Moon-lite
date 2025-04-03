@@ -54,7 +54,7 @@ public class TerrainGenerator : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             DestroyArea(_camera.ScreenToWorldPoint(Input.mousePosition));
-            _destroyTimer = 0.05f;
+            _destroyTimer = 0.08f;
         }
     }
 

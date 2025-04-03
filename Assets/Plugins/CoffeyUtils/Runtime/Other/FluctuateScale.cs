@@ -19,7 +19,7 @@ public class FluctuateScale : MonoBehaviour
 
     private void Update()
     {
-        _time += Time.deltaTime * _scaleSpeed;
+        _time += Time.unscaledDeltaTime * _scaleSpeed;
         _delta = Mathf.Sin(_time) * 0.5f + 0.5f;
         float s = Mathf.Lerp(_scaleMin, _scaleMax, _delta);
         _scaleObject.localScale = Vector3.one * s;

@@ -31,8 +31,9 @@ namespace CoffeyUtils
 				return instance;
 			}
 		}
-	    
-		private bool _inGame;
+
+        [SerializeField] private bool _inGame;
+		[SerializeField] private bool _showMouseInGame;
 	    
 		public static bool InGame;
 		private static bool CanUpdate => !InGame;
@@ -41,6 +42,8 @@ namespace CoffeyUtils
 		[SerializeField] private bool _assumeMouseFirst = true;
 		[SerializeField] private float _ignoreMouseTime = 0.1f;
 		[SerializeField, ReadOnly] private GameObject _currentlySelected;
+
+		public static int ActionsThisFrame = 0;
 		
 #if ENABLE_INPUT_SYSTEM
 		// New Input System
@@ -121,7 +124,7 @@ namespace CoffeyUtils
 	
 		private void Awake()
 		{
-			InGame = false;
+			InGame = _inGame;
 			instance = this;
 			FindReferences();
 		}
@@ -146,6 +149,10 @@ namespace CoffeyUtils
 		
 		private void Update()
 		{
+			if (ActionsThisFrame > 0)
+			{
+				ActionsThisFrame--;
+            }
 			if (_inGame != InGame)
 			{
 				_inGame = InGame;
@@ -181,7 +188,7 @@ namespace CoffeyUtils
 		{
 			if (_ignoreMouseMovement) yield break;
 			_ignoreMouseMovement = true;
-			for (float t = 0; t < _ignoreMouseTime; t += Time.deltaTime)
+			for (float t = 0; t < _ignoreMouseTime; t += Time.unscaledDeltaTime)
 			{
 				yield return null;
 			}
@@ -204,12 +211,13 @@ namespace CoffeyUtils
 		private void SetUsingMouse(bool usingMouse, bool setSelected = true)
 		{
 			_usingMouse = usingMouse;
-			Cursor.visible = usingMouse;
+			Cursor.visible = usingMouse || (InGame && _showMouseInGame);
 			if (setSelected) SetSelected(usingMouse ? null : _currentlySelected);
 		}
 	
 		public static void UpdateSelected(GameObject obj)
 		{
+			if (Instance == null) return;
 			if (obj) Instance._currentlySelected = obj;
 			if (!_usingMouse) Instance.SetSelected(obj);
 		}

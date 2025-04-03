@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0) return;
         float moveHorizontal = Input.GetAxis("Horizontal");
         bool jump = Input.GetKeyDown(KeyCode.Space);
 
