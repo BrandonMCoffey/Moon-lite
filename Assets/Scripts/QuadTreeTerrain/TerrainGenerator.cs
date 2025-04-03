@@ -124,3 +124,20 @@ public class TerrainGenerator : MonoBehaviour
         };
     }
 }
+
+#if UNITY_EDITOR
+[UnityEditor.CustomEditor(typeof(TerrainGenerator))]
+public class TerrainGeneratorEditor : UnityEditor.Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+        TerrainGenerator terrain = target as TerrainGenerator;
+        if (GUILayout.Button("Generate terrain"))
+        {
+            terrain.GenerateTerrain();
+            UnityEditor.EditorUtility.SetDirty(terrain);
+        }
+    }
+}
+#endif

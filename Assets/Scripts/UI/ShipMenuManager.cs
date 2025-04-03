@@ -17,6 +17,7 @@ public class ShipMenuManager : MonoBehaviour
 
     private void Start()
     {
+        _hud.enabled = false;
         _pauseMenu.CloseMenu();
         _shopMenu.CloseMenu();
         _researchMenu.CloseMenu();
