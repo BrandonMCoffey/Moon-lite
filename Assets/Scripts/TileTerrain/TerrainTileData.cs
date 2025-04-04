@@ -53,6 +53,7 @@ public struct TerrainTileDataStruct
     [ShowIf("Mineral")] public int StartDepth;
     [Tooltip("X is left-right, Y is bottom-top")]
     public Vector2 UVData;
+    public ItemData ItemData;
 
     public TerrainTileDataStruct(bool mineral, float frequency, int startDepth, Vector2 uvData)
     {
@@ -60,5 +61,6 @@ public struct TerrainTileDataStruct
         Frequency = frequency;
         StartDepth = startDepth;
         UVData = uvData;
+        ItemData = null;
     }
 }

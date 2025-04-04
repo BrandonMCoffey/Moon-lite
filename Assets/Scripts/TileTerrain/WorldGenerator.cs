@@ -1,7 +1,6 @@
-using CoffeyUtils;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
+using Sirenix.OdinInspector;
 
 public class WorldGenerator : MonoBehaviour
 {
@@ -33,6 +32,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private GameObject _chunkPrefab;
     [SerializeField] private TerrainTileData _tileData;
     [SerializeField] private Material _terrainMaterial;
+    [SerializeField] private DroppedItemManager _itemManager;
 
     public TerrainTileData TileData => _tileData;
     public int ChunkSize => _chunkSize;
@@ -267,25 +267,26 @@ public class WorldGenerator : MonoBehaviour
 
     public void DestroyTileAt(Vector3 worldPos, float radius)
     {
-        int xCenter = Mathf.FloorToInt((worldPos.x - OffsetX) * _tilesPerUnit);
-        int yCenter = Mathf.FloorToInt((worldPos.y - OffsetY) * _tilesPerUnit);
+        int xTile = Mathf.FloorToInt((worldPos.x - OffsetX) * _tilesPerUnit);
+        int yTile = Mathf.FloorToInt((worldPos.y - OffsetY) * _tilesPerUnit);
         int range = Mathf.CeilToInt(radius * _tilesPerUnit);
 
-        int xOrigin = Mathf.Max(0, xCenter - range);
-        int xEnd = Mathf.Min(_width - 1, xCenter + range);
-        int yOrigin = Mathf.Max(0, yCenter - range);
-        int yEnd = Mathf.Min(_height - 1, yCenter + range);
+        int xOrigin = Mathf.Max(0, xTile - range);
+        int xEnd = Mathf.Min(_width - 1, xTile + range);
+        int yOrigin = Mathf.Max(0, yTile - range);
+        int yEnd = Mathf.Min(_height - 1, yTile + range);
 
         for (int x = xOrigin; x < xEnd; x++)
         {
             for (int y = yOrigin; y < yEnd; y++)
             {
-                int xDelta = x - xCenter;
-                int yDelta = y - yCenter;
+                int xDelta = x - xTile;
+                int yDelta = y - yTile;
                 float sqrDistance = (xDelta * xDelta) + (yDelta * yDelta);
 
                 if (sqrDistance < range * range)
                 {
+                    //_itemManager.NewDroppedItem(worldPos, _tileData.GetTileData(_grid[x, y]).ItemData);
                     _grid[x, y] = TileType.Air;
                     Vector2Int modifiedChunkCoord = new Vector2Int(x / _chunkSize, y / _chunkSize);
                     SetChunkModified(modifiedChunkCoord);
@@ -306,6 +307,7 @@ public class WorldGenerator : MonoBehaviour
             return;
         }
 
+        //_itemManager.NewDroppedItem(worldPos, _tileData.GetTileData(_grid[x, y]).ItemData);
         _grid[x, y] = TileType.Air;
 
         Vector2Int modifiedChunkCoord = new Vector2Int(x / _chunkSize, y / _chunkSize);
