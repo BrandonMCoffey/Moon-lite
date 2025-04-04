@@ -5,13 +5,14 @@ using UnityEngine;
 public class WorldGenerator : MonoBehaviour
 {
     [Header("World Settings")]
+    [SerializeField] private bool _centerX;
+    [SerializeField] private bool _downY;
     [SerializeField] private int _width = 320;
     [SerializeField] private int _height = 960;
     [SerializeField] private int _chunkSize = 32;
     [SerializeField] private int _tilesPerUnit = 2;
     [SerializeField, ReadOnly] private float _tileSizeMult = 0.5f;
-    [SerializeField] private bool _centerX;
-    [SerializeField] private bool _downY;
+    [SerializeField, ReadOnly] private int _chunkCount;
 
     [Header("Generation Settings")]
     [SerializeField] private int _worldSeed = -1;
@@ -24,16 +25,22 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField, Range(0f, 1f)] public float _copperFrequency = 0.1f;
     [SerializeField, Range(0f, 1f)] public float _ironFrequency = 0.05f;
 
-    [Header("Chunking")]
+    [Header("Destruction")]
+    [SerializeField] private int _damageableTileStoreCount = 100;
+
+    [Header("References")]
     [SerializeField] private GameObject _chunkPrefab;
+    [SerializeField] private TerrainTileData _tileData;
     [SerializeField] private Material _terrainMaterial;
 
+    public TerrainTileData TileData => _tileData;
     public int ChunkSize => _chunkSize;
     private float OffsetX => transform.position.x + (_centerX ? -_width * _tileSizeMult * 0.5f : 0f);
     private float OffsetY => transform.position.y + (_downY ? -_height * _tileSizeMult : 0f);
 
     private TileType[,] _grid;
     private Dictionary<Vector2Int, Chunk> _chunks;
+    private Queue<TileDamageData> _tileDamageData;
 
     private float _noiseOffsetX;
     private float _noiseOffsetY;
@@ -41,6 +48,7 @@ public class WorldGenerator : MonoBehaviour
     private void OnValidate()
     {
         _tileSizeMult = 1f / _tilesPerUnit;
+        _chunkCount = Mathf.CeilToInt(_width / _chunkSize) * Mathf.CeilToInt(_height / _chunkSize);
     }
 
     private void Start()
@@ -65,6 +73,7 @@ public class WorldGenerator : MonoBehaviour
     {
         _grid = new TileType[_width, _height];
         _chunks = new Dictionary<Vector2Int, Chunk>();
+        _tileDamageData = new Queue<TileDamageData>(_damageableTileStoreCount);
 
         if (_worldSeed < 0) _worldSeed = Random.Range(1, 100000);
         Random.InitState(_worldSeed);
@@ -151,12 +160,9 @@ public class WorldGenerator : MonoBehaviour
 
     private void GenerateMinerals()
     {
-        // TODO: Move minerals to SOs and make a foreach loop using SO properties
-
-        float copperNoiseOffsetX = _noiseOffsetX + 200f;
-        float copperNoiseOffsetY = _noiseOffsetY + 200f;
-        float ironNoiseOffsetX = _noiseOffsetX + 300f;
-        float ironNoiseOffsetY = _noiseOffsetY + 300f;
+        var mineralData = _tileData.GetMineralGenerationData();
+        float offX = _noiseOffsetX + 200f;
+        float offY = _noiseOffsetY + 200f;
 
         for (int x = 0; x < _width; x++)
         {
@@ -164,22 +170,20 @@ public class WorldGenerator : MonoBehaviour
             {
                 if (_grid[x, y] == TileType.Stone)
                 {
-                    float copperNoise = Mathf.PerlinNoise(
-                        (x + copperNoiseOffsetX) * _mineralNoiseScale * _tileSizeMult,
-                        (y + copperNoiseOffsetY) * _mineralNoiseScale * _tileSizeMult);
-                    if (copperNoise < _copperFrequency)
+                    for (int i = 0; i < mineralData.Count; i++)
                     {
-                        _grid[x, y] = TileType.Copper;
-                        continue;
-                    }
-
-                    float ironNoise = Mathf.PerlinNoise(
-                        (x + ironNoiseOffsetX) * _mineralNoiseScale * _tileSizeMult,
-                        (y + ironNoiseOffsetY) * _mineralNoiseScale * _tileSizeMult);
-                    if (ironNoise < _ironFrequency)
-                    {
-                        _grid[x, y] = TileType.Iron;
-                        continue;
+                        if (y > _height - mineralData[i].Item2)
+                        {
+                            continue;
+                        }
+                        float noise = Mathf.PerlinNoise(
+                            (x + offX + i * 100f) * _mineralNoiseScale * _tileSizeMult,
+                            (y + offY + i * 100f) * _mineralNoiseScale * _tileSizeMult);
+                        if (noise < mineralData[i].Item3)
+                        {
+                            _grid[x, y] = mineralData[i].Item1;
+                            break;
+                        }
                     }
                 }
             }

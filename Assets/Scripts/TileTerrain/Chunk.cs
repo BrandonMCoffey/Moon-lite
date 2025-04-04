@@ -162,18 +162,7 @@ public class Chunk : MonoBehaviour
     {
         // 4x4 atlas (16 tiles total)
         float textureUnit = 0.25f;
-        Vector2 uvCoord = Vector2.zero;
-
-        uvCoord = type switch
-        {
-            // X is Left -> Right, Y is Bottom -> Top, 0 to 3
-            TileType.Dirt => new Vector2(0, 3),
-            TileType.Grass => new Vector2(1, 3),
-            TileType.Stone => new Vector2(0, 2),
-            TileType.Copper => new Vector2(1, 2),
-            TileType.Iron => new Vector2(2, 2),
-            _ => new Vector2(3, 3),
-        };
+        Vector2 uvCoord = World.TileData.GetTileData(type).UVData;
 
         float uMin = uvCoord.x * textureUnit;
         float vMin = uvCoord.y * textureUnit;

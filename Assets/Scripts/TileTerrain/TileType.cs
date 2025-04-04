@@ -1,11 +1,14 @@
-// TileType.cs
-public enum TileType : byte // Use byte for memory efficiency
+public enum TileType : byte
 {
     Air = 0,
+
     Dirt = 1,
-    Stone = 2,
-    Grass = 3, // Surface dirt often has grass
-    Copper = 4,
-    Iron = 5
-    // Add more mineral types as needed
+    Grass = 2,
+    Stone = 3,
+    StoneEdge = 4,
+
+    Copper = 5,
+    Iron = 6,
+    BlueGem = 7,
+    GreenGem = 8,
 }
