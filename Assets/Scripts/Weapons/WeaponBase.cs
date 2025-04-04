@@ -51,6 +51,7 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected int _bulletDamage = 1;
     [SerializeField] protected float _bulletKnockback = 1f;
     [SerializeField] protected float _bulletLifetime = 3f;
+    [SerializeField] protected float _bulletGravityScale = 0f;
 
     protected Animator _anim;
     protected SpriteRenderer _sr;
@@ -73,7 +74,7 @@ public abstract class WeaponBase : MonoBehaviour
         
         _weaponSprite = _sr.sprite;
 
-        //if (!_rb) Debug.LogWarning($"Rigidbody component is missing on {gameObject.name}");
+        if (!_rb) Debug.LogWarning($"Rigidbody component is missing on {gameObject.name}");
         if (!_col) Debug.LogWarning($"Collider component is missing on {gameObject.name}");
         if (!_anim) Debug.LogWarning($"Animator component is missing in children of {gameObject.name}");
         if (!_sr) Debug.LogWarning($"SpriteRenderer component is missing in children of {gameObject.name}");
@@ -126,9 +127,16 @@ public abstract class WeaponBase : MonoBehaviour
             _col.enabled = true; // Enable the collider
         }
 
-        // Reset the weapon's rotation for a natural drop
-        float randomAngle = UnityEngine.Random.Range(0f, 360f);
-        transform.rotation = Quaternion.Euler(0, 0, randomAngle);
+        // Apply a force in the direction the sprite was rotated and add random rotational force
+        if (_rb != null)
+        {
+            // Calculate the forward direction based on the weapon's current rotation
+            Vector3 forwardDirection = transform.right;
+
+            // Apply a force in the forward direction
+            float dropForce = 5f; // Adjust the magnitude of the force as needed
+            _rb.AddForce(forwardDirection * dropForce, ForceMode.Impulse);
+        }
 
         // Ensure the sprite child (GunSprite) rotates naturally with the weapon
         if (_gunSprite != null)
@@ -178,7 +186,7 @@ public virtual void Aim(Vector3 targetPosition)
             BulletBase bullet = bulletInstance.GetComponent<BulletBase>();
             if (bullet != null)
             {
-                bullet.BulletSetup(aimDirection, angle, _bulletSpeed, _bulletDamage, _bulletKnockback, _bulletSize, _bulletLifetime);
+                bullet.BulletSetup(aimDirection, angle, _bulletSpeed, _bulletDamage, _bulletKnockback, _bulletSize, _bulletLifetime, _bulletGravityScale);
             }
 
             _lastFireTime = Time.time;
