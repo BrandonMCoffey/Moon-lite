@@ -12,6 +12,8 @@ public class Chunk : MonoBehaviour
     private WorldGenerator _world;
     private Vector2Int _chunkCoord;
 
+    public WorldGenerator World => _world;
+
     public void Initialize(WorldGenerator worldGenerator, Vector2Int coordinate, Material material)
     {
         _world = worldGenerator;

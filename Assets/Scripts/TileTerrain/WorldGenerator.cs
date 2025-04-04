@@ -253,6 +253,9 @@ public class WorldGenerator : MonoBehaviour
 
         _grid[x, y] = TileType.Air;
 
+        // TODO: Consider updating on a fixed scale, so if many tiles are destroyed in a few frames it only regenerates once
+        // Can store a list of modified chunk coords and update all changes ones on the fixed interval
+
         Vector2Int modifiedChunkCoord = new Vector2Int(x / _chunkSize, y / _chunkSize);
 
         UpdateChunkAt(modifiedChunkCoord);
