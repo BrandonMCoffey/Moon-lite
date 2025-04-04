@@ -8,7 +8,8 @@ public class BulletBase : MonoBehaviour
     [SerializeField] private float _knockback = 3;
     [SerializeField] private float _size = 1;
     [SerializeField] private float _lifetime = 3;
-    
+    [SerializeField] private float _gravityScale = 0f; // Artificial gravity scale
+
     //[SerializeField] private GameObject _psBloodDirectional;
     //[SerializeField] private GameObject _psBloodCircle;
     //[SerializeField] private GameObject _psOtherDirectional;
@@ -33,8 +34,14 @@ public class BulletBase : MonoBehaviour
 
     private void Update()
     {
-        if(_isVisible) return;
-        if (Vector3.Distance(_startPosition, transform.position) >= 0.5f)
+        // Apply artificial gravity to the y-axis
+        if (_gravityScale != 0f)
+        {
+            float gravity = _gravityScale * -9.81f * Time.deltaTime;
+            _rb.velocity += new Vector3(0, gravity, 0); // Add gravity to the velocity
+        }
+
+        if (!_isVisible && Vector3.Distance(_startPosition, transform.position) >= 0.5f)
         {
             _sr.enabled = true; // Show the bullet after it has moved x units
             //_tr.enabled = true; // Show the trail after it has moved x units
@@ -58,13 +65,14 @@ public class BulletBase : MonoBehaviour
         // }
     }
 
-    public void BulletSetup(Vector3 shootDir, float angle, float shotSpeed, int damage, float knockback, float size, float lifetime)
+    public void BulletSetup(Vector3 shootDir, float angle, float shotSpeed, int damage, float knockback, float size, float lifetime, float gravityScale)
     {
         _shotSpeed = shotSpeed;
         _damage = damage;
         _knockback = knockback;
         _size = size;
         _lifetime = lifetime;
+        _gravityScale = gravityScale;
 
         _rb = GetComponent<Rigidbody>();
         transform.localScale = new Vector3(_size, _size, _size);

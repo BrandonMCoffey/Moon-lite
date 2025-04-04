@@ -120,6 +120,7 @@ MonoBehaviour:
   _knockback: 3
   _size: 0.1
   _lifetime: 3
+  _gravityScale: 1
 --- !u!65 &3474766959417363558
 BoxCollider:
   m_ObjectHideFlags: 0
