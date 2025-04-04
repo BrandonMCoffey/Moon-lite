@@ -102,7 +102,15 @@ public class WorldGenerator : MonoBehaviour
             {
                 if (y < surfaceHeight - 5)
                 {
-                    _grid[x, y] = TileType.Stone;
+                    int rand = Random.Range(0, 2) + Random.Range(0, 2);
+                    if (x < 5 - rand || x > _width - 5 + rand)
+                    {
+                        _grid[x, y] = TileType.StoneEdge;
+                    }
+                    else
+                    {
+                        _grid[x, y] = TileType.Stone;
+                    }
                 }
                 else if (y < surfaceHeight)
                 {
@@ -131,12 +139,10 @@ public class WorldGenerator : MonoBehaviour
         for (int y = minCaveHeight; y < maxCaveHeight; y++)
         {
             // Suface bias (reduce caves near surface)
-            float thresholdOffset = Mathf.Clamp01((y + 10 - maxCaveHeight) * 0.1f) * (1 - _caveThreshold);
+            float surfaceThresholdOffset = Mathf.Clamp01((y + 10 - maxCaveHeight) * 0.1f) * (1 - _caveThreshold);
 
             for (int x = 0; x < _width; x++)
             {
-                // TODO: Edge bias (reduce caves near edge)
-
                 if (_grid[x, y] != TileType.Air)
                 {
                     float caveNoiseValue = Mathf.PerlinNoise(
@@ -148,8 +154,14 @@ public class WorldGenerator : MonoBehaviour
                         (y + caveNoiseOffsetY * 0.25f) * _caveNoiseScale * _tileSizeMult * 4f
                     );
                     caveNoiseValue = Mathf.Lerp(caveNoiseValue, caveNoiseValue2, _caveNoiseDetail);
-                    
-                    if (caveNoiseValue > _caveThreshold + thresholdOffset)
+
+                    // Edge bias (reduce caves near edge)
+                    float edgeThresholdOffset = 0;
+                    if (x < 12) edgeThresholdOffset += (10 - (x - 2)) * 0.1f;
+                    if (x > _width - 12) edgeThresholdOffset += (10 - (_width - x - 2)) * 0.1f;
+                    edgeThresholdOffset = Mathf.Clamp01(edgeThresholdOffset * (1 - _caveThreshold));
+
+                    if (caveNoiseValue > _caveThreshold + surfaceThresholdOffset + edgeThresholdOffset)
                     {
                         _grid[x, y] = TileType.Air;
                     }
