@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
@@ -8,10 +9,9 @@ public class PlayerWeaponManager : MonoBehaviour
     [Header("Weapon Settings")]
     [SerializeField] private Transform _weaponHolder;
     [SerializeField] private float _pickupRadius = 1f;
-    [SerializeField] private WeaponBase _primaryWeapon; // Assign this in the Unity Inspector
-    public WeaponBase StarterWeapon => _primaryWeapon;
-
-    private WeaponBase _secondaryWeapon; // Secondary weapon (picked up weapon)
+    [SerializeField] private int _maxWeapons = 2; // Maximum number of weapons the player can hold
+    [SerializeField] private List<WeaponBase> _weapons = new List<WeaponBase>(); // List of held weapons
+    public WeaponBase StarterWeapon => _weapons.Count > 0 ? _weapons[0] : null;
 
     [Header("UI References")]
     private TextMeshPro _pickupText;
@@ -29,14 +29,14 @@ public class PlayerWeaponManager : MonoBehaviour
     private Coroutine _reloadCoroutine;
     private bool _canDropWeapon = true;
 
-    private float _globalAmmoPercentage = 100f;
+    private float _gunAmmoPercentage = 100f;
 
-    public float GlobalAmmoPercentage => _globalAmmoPercentage;
+    public float GunAmmoPercentage => _gunAmmoPercentage;
 
     public int MaxMagAmmo => _currentWeapon != null ? _currentWeapon.MaxMagSize : 0;
     public int CurrentAmmo => _currentWeapon != null ? _currentWeapon.CurrentAmmo : 0;
 
-    private int _currentWeaponIndex = 0; // 0 for starter weapon, 1 for secondary weapon
+    private int _currentWeaponIndex = 0; // Index of the currently equipped weapon
 
     private bool _isInputEnabled = true;
 
@@ -49,37 +49,42 @@ public class PlayerWeaponManager : MonoBehaviour
 
     void Start()
     {
-        if (_primaryWeapon != null)
+        if (_weapons.Count > 0)
         {
-            _primaryWeapon.gameObject.SetActive(true); // Ensure the primary weapon is active
-            _currentWeapon = _primaryWeapon; // Set the current weapon to the primary weapon
-            _currentWeaponIndex = 0; // Set the current weapon index to 0 (primary weapon)
-            _primaryWeapon.Pickup(_weaponHolder); // Parent the primary weapon to the weapon holder
+            foreach (var weapon in _weapons)
+            {
+                weapon.gameObject.SetActive(false); // Ensure all weapons are initially inactive
+                weapon.Pickup(_weaponHolder); // Parent the weapon to the weapon holder
+            }
+
+            _currentWeapon = _weapons[0]; // Set the current weapon to the first weapon in the list
+            _currentWeaponIndex = 0;
+            _currentWeapon.gameObject.SetActive(true); // Activate the current weapon
             UpdateCurrentWeapon(); // Update the current weapon
         }
         else
         {
-            Debug.LogWarning("Primary weapon not assigned in PlayerWeaponManager. Please assign a primary weapon in the inspector.");
+            Debug.LogWarning("No weapons assigned in PlayerWeaponManager. Please assign at least one weapon in the inspector.");
         }
     }
 
     private void OnEnable()
-{
-    // PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
-    // if (playerHealth != null)
-    // {
-    //     playerHealth.PlayerDeathEvent.AddListener(DisableInput);
-    // }
-}
+    {
+        // PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+        // if (playerHealth != null)
+        // {
+        //     playerHealth.PlayerDeathEvent.AddListener(DisableInput);
+        // }
+    }
 
-private void OnDisable()
-{
-    // PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
-    // if (playerHealth != null)
-    // {
-    //     playerHealth.PlayerDeathEvent.RemoveListener(DisableInput);
-    // }
-}
+    private void OnDisable()
+    {
+        // PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+        // if (playerHealth != null)
+        // {
+        //     playerHealth.PlayerDeathEvent.RemoveListener(DisableInput);
+        // }
+    }
 
     private void Update()
     {
@@ -174,49 +179,42 @@ private void OnDisable()
         {
             StopReloadCoroutines();
 
-            // If a secondary weapon already exists, drop it
-            if (_secondaryWeapon != null)
+            if (_weapons.Count >= _maxWeapons)
             {
-                _secondaryWeapon.Drop();
+                // Drop the currently equipped weapon if the maximum number of weapons is reached
+                DropCurrentWeapon();
             }
 
-            // Assign the new weapon to the secondary slot
             weaponToPickup.Pickup(_weaponHolder);
-            int newAmmo = Mathf.FloorToInt(_globalAmmoPercentage / 100f * weaponToPickup.MaxAmmo);
+            int newAmmo = Mathf.FloorToInt(_gunAmmoPercentage / 100f * weaponToPickup.MaxAmmo);
             weaponToPickup.SetCurrentAmmo(newAmmo);
 
-            _secondaryWeapon = weaponToPickup;
-
-            // If the starter weapon is currently equipped, keep it equipped
-            if (_currentWeapon == _primaryWeapon)
-            {
-                _currentWeaponIndex = 1; // Keep the starter weapon equipped
-            }
-            else
-            {
-                _currentWeaponIndex = 1; // Switch to the new secondary weapon
-            }
-
+            _weapons.Add(weaponToPickup); // Add the new weapon to the list
+            _currentWeaponIndex = _weapons.Count - 1; // Switch to the newly picked-up weapon
             UpdateCurrentWeapon();
         }
     }
 
     private void DropCurrentWeapon()
     {
-        if(_currentWeaponIndex == 0)
+        if (_currentWeapon != null)
         {
-            // Drop the primary weapon
-            _primaryWeapon.Drop();
-            _primaryWeapon = null; // Clear the reference to the dropped weapon
+            _currentWeapon.Drop();
+            _weapons.RemoveAt(_currentWeaponIndex); // Remove the dropped weapon from the list
+
+            // Adjust the current weapon index
+            if (_weapons.Count > 0)
+            {
+                _currentWeaponIndex %= _weapons.Count;
+            }
+            else
+            {
+                _currentWeaponIndex = 0;
+            }
+
+            UpdateCurrentWeapon();
+            UpdateAmmoUI();
         }
-        else
-        {
-            // Drop the secondary weapon
-            _secondaryWeapon.Drop();
-            _secondaryWeapon = null; // Clear the reference to the dropped weapon
-        }
-        UpdateCurrentWeapon();
-        UpdateAmmoUI();
     }
 
     private void StopReloadCoroutines()
@@ -279,29 +277,29 @@ private void OnDisable()
         return Input.GetMouseButtonDown(0);
     }
 
-private void HandleReloading()
-{
-    if (_currentWeapon == null || _currentWeapon.IsReloading || _reloadCoroutine != null) return;
-
-    // Allow reload if R is pressed or if left click is pressed with no ammo in the mag
-    if (Input.GetKeyDown(KeyCode.R) || (Input.GetMouseButtonDown(0) && _currentWeapon.CurrentMagAmmo <= 0))
+    private void HandleReloading()
     {
-        if (_currentWeapon.CurrentMagAmmo < _currentWeapon.MaxMagSize)
-        {
-            int ammoNeeded = _currentWeapon.MaxMagSize - _currentWeapon.CurrentMagAmmo;
-            int ammoAvailable = Mathf.CeilToInt(_globalAmmoPercentage / 100f) * _currentWeapon.MaxAmmo; // Adjust for 0-100 range
-            int ammoToReload = _currentWeapon == _primaryWeapon
-                ? ammoNeeded // Starter weapon has infinite ammo
-                : Mathf.Min(ammoNeeded, ammoAvailable);
+        if (_currentWeapon == null || _currentWeapon.IsReloading || _reloadCoroutine != null) return;
 
-            if (ammoToReload > 0)
+        // Allow reload if R is pressed or if left click is pressed with no ammo in the mag
+        if (Input.GetKeyDown(KeyCode.R) || (Input.GetMouseButtonDown(0) && _currentWeapon.CurrentMagAmmo <= 0))
+        {
+            if (_currentWeapon.CurrentMagAmmo < _currentWeapon.MaxMagSize)
             {
-                _reloadCoroutine = StartCoroutine(ReloadWithBar(_currentWeapon.ReloadTime, ammoToReload));
-                _currentWeapon.Reload(); // Ensure the weapon's reload logic is called
+                int ammoNeeded = _currentWeapon.MaxMagSize - _currentWeapon.CurrentMagAmmo;
+                int ammoAvailable = Mathf.CeilToInt(_gunAmmoPercentage / 100f) * _currentWeapon.MaxAmmo; // Adjust for 0-100 range
+                int ammoToReload = _currentWeapon == _weapons[0]
+                    ? ammoNeeded // Starter weapon has infinite ammo
+                    : Mathf.Min(ammoNeeded, ammoAvailable);
+
+                if (ammoToReload > 0)
+                {
+                    _reloadCoroutine = StartCoroutine(ReloadWithBar(_currentWeapon.ReloadTime, ammoToReload));
+                    _currentWeapon.Reload(); // Ensure the weapon's reload logic is called
+                }
             }
         }
     }
-}
 
     private IEnumerator ReloadWithBar(float reloadTime, int ammoToReload)
     {
@@ -349,46 +347,46 @@ private void HandleReloading()
         }
     }
 
-private void CompleteReload(int ammoToReload)
-{
-    HideReloadBar();
-
-    if (_currentWeapon != null)
+    private void CompleteReload(int ammoToReload)
     {
+        HideReloadBar();
 
-        // Reload secondary weapon and update global ammo
-        float ammoUsedPercentage = (float)ammoToReload / _currentWeapon.MaxAmmo * 100f; // Adjust for 0-100 range
-        _globalAmmoPercentage -= ammoUsedPercentage;
-        _globalAmmoPercentage = Mathf.Clamp(_globalAmmoPercentage, 0f, 100f);
+        if (_currentWeapon != null)
+        {
 
-        UpdateAmmoUI();
+            // Reload secondary weapon and update global ammo
+            float ammoUsedPercentage = (float)ammoToReload / _currentWeapon.MaxAmmo * 100f; // Adjust for 0-100 range
+            _gunAmmoPercentage -= ammoUsedPercentage;
+            _gunAmmoPercentage = Mathf.Clamp(_gunAmmoPercentage, 0f, 100f);
+
+            UpdateAmmoUI();
+        }
     }
-}
 
-private void UpdateAmmoUI()
-{
-    if (_currentWeapon != null)
+    private void UpdateAmmoUI()
     {
-        AmmoChangeEvent.Invoke(_currentWeapon.CurrentAmmo);
-        //_playerUI?.UpdateAmmoBar(_currentWeapon.CurrentMagAmmo);
+        if (_currentWeapon != null)
+        {
+            AmmoChangeEvent.Invoke(_currentWeapon.CurrentAmmo);
+            //_playerUI?.UpdateAmmoBar(_currentWeapon.CurrentMagAmmo);
+        }
+        else
+        {
+            AmmoChangeEvent.Invoke(0);
+        }
     }
-    else
-    {
-        AmmoChangeEvent.Invoke(0);
-    }
-}
 
-public void AddAmmo(int percentAmount)
-{
-    _globalAmmoPercentage = Mathf.Clamp(_globalAmmoPercentage + percentAmount, 0f, 100f); // Adjust for 0-100 range
-
-    if (_currentWeapon != null)
+    public void AddAmmo(int percentAmount)
     {
-        int newAmmo = Mathf.FloorToInt((_globalAmmoPercentage / 100f) * _currentWeapon.MaxAmmo); // Adjust for 0-100 range
-        _currentWeapon.SetCurrentAmmo(newAmmo);
-        UpdateAmmoUI();
+        _gunAmmoPercentage = Mathf.Clamp(_gunAmmoPercentage + percentAmount, 0f, 100f); // Adjust for 0-100 range
+
+        if (_currentWeapon != null)
+        {
+            int newAmmo = Mathf.FloorToInt((_gunAmmoPercentage / 100f) * _currentWeapon.MaxAmmo); // Adjust for 0-100 range
+            _currentWeapon.SetCurrentAmmo(newAmmo);
+            UpdateAmmoUI();
+        }
     }
-}
 
     public void DisableWeaponDropTemporarily()
     {
@@ -408,7 +406,6 @@ public void AddAmmo(int percentAmount)
         Gizmos.DrawWireSphere(transform.position, _pickupRadius);
     }
 
-    // Add a new method to handle weapon switching with the mouse wheel
     private void HandleWeaponSwitching()
     {
         if (Input.GetAxis("Mouse ScrollWheel") > 0f) // Scroll up
@@ -419,70 +416,60 @@ public void AddAmmo(int percentAmount)
         {
             SwitchToPreviousWeapon();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        else
         {
-            _currentWeapon = _primaryWeapon;
-            _currentWeaponIndex = 0;
-            UpdateCurrentWeapon();
-            UpdateAmmoUI();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && _secondaryWeapon != null)
-        {
-            _currentWeapon = _secondaryWeapon;
-            _currentWeaponIndex = 1;
-            UpdateCurrentWeapon();
-            UpdateAmmoUI();
+            for (int i = 0; i < _weapons.Count; i++)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+                {
+                    _currentWeaponIndex = i;
+                    UpdateCurrentWeapon();
+                    UpdateAmmoUI();
+                    break;
+                }
+            }
         }
     }
 
     private void SwitchToNextWeapon()
     {
-        if (_secondaryWeapon == null) return; // No secondary weapon to switch to
+        if (_weapons.Count == 0) return;
 
-        _currentWeaponIndex = (_currentWeaponIndex + 1) % 2; // Toggle between 0 and 1
+        _currentWeaponIndex = (_currentWeaponIndex + 1) % _weapons.Count;
         UpdateCurrentWeapon();
     }
 
     private void SwitchToPreviousWeapon()
     {
-        if (_secondaryWeapon == null) return; // No secondary weapon to switch to
+        if (_weapons.Count == 0) return;
 
-        _currentWeaponIndex = (_currentWeaponIndex - 1 + 2) % 2; // Toggle between 0 and 1
+        _currentWeaponIndex = (_currentWeaponIndex - 1 + _weapons.Count) % _weapons.Count;
         UpdateCurrentWeapon();
     }
 
     private void UpdateCurrentWeapon()
     {
         StopReloadCoroutines();
-        
-        if (_currentWeaponIndex == 0)
+
+        if (_weapons.Count > 0)
         {
-            _currentWeapon = _primaryWeapon;
+            _currentWeapon = _weapons[_currentWeaponIndex];
         }
-        else if (_currentWeaponIndex == 1)
+        else
         {
-            _currentWeapon = _secondaryWeapon;
+            _currentWeapon = null;
         }
 
-        // Update weapon visibility
         UpdateWeaponVisibility();
-
-        // Trigger events for UI updates
         WeaponChangeEvent.Invoke(_currentWeapon);
         UpdateAmmoUI();
-        StopReloadCoroutines();
     }
 
     private void UpdateWeaponVisibility()
     {
-        if (_primaryWeapon != null)
+        for (int i = 0; i < _weapons.Count; i++)
         {
-            _primaryWeapon.gameObject.SetActive(_currentWeaponIndex == 0);
-        }
-
-        if (_secondaryWeapon != null)
-        {
-            _secondaryWeapon.gameObject.SetActive(_currentWeaponIndex == 1);
+            _weapons[i].gameObject.SetActive(i == _currentWeaponIndex);
         }
     }
 }
