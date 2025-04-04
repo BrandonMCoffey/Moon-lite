@@ -14,7 +14,6 @@ public class WorldGenerator : MonoBehaviour
     [Header("Generation Settings")]
     [SerializeField] private int _surfaceLevelSize = 20;
     [SerializeField] private float _surfaceNoiseScale = 0.04f;
-    [SerializeField] private float _surfaceNoiseAmplitude = 2f;
     [SerializeField] private float _caveNoiseScale = 0.08f;
     [SerializeField, Range(0f, 1f)] private float _caveThreshold = 0.55f;
     [SerializeField, Range(0f, 1f)] public float _caveNoiseDetail = 0.1f;
