@@ -1,7 +1,11 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class TerrainClickToDestroy : MonoBehaviour
 {
+    [SerializeField] private bool _single;
+    [SerializeField] private float _radius = 10;
+
     private void Update()
     {
         if (Input.GetMouseButton(0))
@@ -13,7 +17,14 @@ public class TerrainClickToDestroy : MonoBehaviour
                 if (chunk != null)
                 {
                     Vector3 pointToDestroy = hit.point - (hit.normal * 0.1f);
-                    chunk.World.DestroyTileAt(pointToDestroy);
+                    if (_single)
+                    {
+                        chunk.World.DestroyTileAt(pointToDestroy);
+                    }
+                    else
+                    {
+                        chunk.World.DestroyTileAt(pointToDestroy, _radius);
+                    }
                 }
             }
         }

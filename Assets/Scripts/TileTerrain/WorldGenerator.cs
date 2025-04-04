@@ -1,6 +1,7 @@
 using CoffeyUtils;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class WorldGenerator : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class WorldGenerator : MonoBehaviour
 
     private TileType[,] _grid;
     private Dictionary<Vector2Int, Chunk> _chunks;
+    private List<Vector2Int> _modifiedChunks = new List<Vector2Int>();
     private Queue<TileDamageData> _tileDamageData;
 
     private float _noiseOffsetX;
@@ -54,6 +56,18 @@ public class WorldGenerator : MonoBehaviour
     private void Start()
     {
         InitializeWorld();
+    }
+
+    private void LateUpdate()
+    {
+        if (_modifiedChunks.Count > 0)
+        {
+            foreach (var coords in _modifiedChunks)
+            {
+                UpdateChunkAt(coords);
+            }
+            _modifiedChunks.Clear();
+        }
     }
 
     [Button]
@@ -251,16 +265,41 @@ public class WorldGenerator : MonoBehaviour
         return _grid[x, y];
     }
 
+    public void DestroyTileAt(Vector3 worldPos, float radius)
+    {
+        int xCenter = Mathf.FloorToInt((worldPos.x - OffsetX) * _tilesPerUnit);
+        int yCenter = Mathf.FloorToInt((worldPos.y - OffsetY) * _tilesPerUnit);
+        int range = Mathf.CeilToInt(radius * _tilesPerUnit);
+
+        int xOrigin = Mathf.Max(0, xCenter - range);
+        int xEnd = Mathf.Min(_width - 1, xCenter + range);
+        int yOrigin = Mathf.Max(0, yCenter - range);
+        int yEnd = Mathf.Min(_height - 1, yCenter + range);
+
+        for (int x = xOrigin; x < xEnd; x++)
+        {
+            for (int y = yOrigin; y < yEnd; y++)
+            {
+                int xDelta = x - xCenter;
+                int yDelta = y - yCenter;
+                float sqrDistance = (xDelta * xDelta) + (yDelta * yDelta);
+
+                if (sqrDistance < range * range)
+                {
+                    _grid[x, y] = TileType.Air;
+                    Vector2Int modifiedChunkCoord = new Vector2Int(x / _chunkSize, y / _chunkSize);
+                    SetChunkModified(modifiedChunkCoord);
+                }
+            }
+        }
+    }
+
     public void DestroyTileAt(Vector3 worldPos)
     {
         int x = Mathf.FloorToInt((worldPos.x - OffsetX) * _tilesPerUnit);
         int y = Mathf.FloorToInt((worldPos.y - OffsetY) * _tilesPerUnit);
 
-        if (x < 0 || x >= _width || y < 0 || y >= _height)
-        {
-            Debug.LogWarning($"Attempted to destroy tile outside world bounds at ({x},{y})");
-            return;
-        }
+        if (x < 0 || x >= _width || y < 0 || y >= _height) return;
 
         if (_grid[x, y] == TileType.Air)
         {
@@ -269,29 +308,32 @@ public class WorldGenerator : MonoBehaviour
 
         _grid[x, y] = TileType.Air;
 
-        // TODO: Consider updating on a fixed scale, so if many tiles are destroyed in a few frames it only regenerates once
-        // Can store a list of modified chunk coords and update all changes ones on the fixed interval
-
         Vector2Int modifiedChunkCoord = new Vector2Int(x / _chunkSize, y / _chunkSize);
-
-        UpdateChunkAt(modifiedChunkCoord);
+        SetChunkModified(modifiedChunkCoord);
 
         if (x % _chunkSize == 0 && x > 0)
         {
-            UpdateChunkAt(new Vector2Int(modifiedChunkCoord.x - 1, modifiedChunkCoord.y));
+            SetChunkModified(new Vector2Int(modifiedChunkCoord.x - 1, modifiedChunkCoord.y));
         }
         else if (x % _chunkSize == _chunkSize - 1 && x < _width - 1)
         {
-            UpdateChunkAt(new Vector2Int(modifiedChunkCoord.x + 1, modifiedChunkCoord.y));
+            SetChunkModified(new Vector2Int(modifiedChunkCoord.x + 1, modifiedChunkCoord.y));
         }
-
         if (y % _chunkSize == 0 && y > 0)
         {
-            UpdateChunkAt(new Vector2Int(modifiedChunkCoord.x, modifiedChunkCoord.y - 1));
+            SetChunkModified(new Vector2Int(modifiedChunkCoord.x, modifiedChunkCoord.y - 1));
         }
         else if (y % _chunkSize == _chunkSize - 1 && y < _height - 1)
         {
-            UpdateChunkAt(new Vector2Int(modifiedChunkCoord.x, modifiedChunkCoord.y + 1));
+            SetChunkModified(new Vector2Int(modifiedChunkCoord.x, modifiedChunkCoord.y + 1));
+        }
+    }
+
+    private void SetChunkModified(Vector2Int coord)
+    {
+        if (!_modifiedChunks.Contains(coord))
+        {
+            _modifiedChunks.Add(coord);
         }
     }
 
