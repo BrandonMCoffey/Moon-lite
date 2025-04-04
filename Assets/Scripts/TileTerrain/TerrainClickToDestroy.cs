@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class PlayerTerrainDemo : MonoBehaviour
+public class TerrainClickToDestroy : MonoBehaviour
 {
     [SerializeField] private WorldGenerator worldGenerator;
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hit, 100))
