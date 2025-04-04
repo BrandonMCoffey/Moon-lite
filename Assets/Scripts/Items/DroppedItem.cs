@@ -10,6 +10,6 @@ public class DroppedItem : MonoBehaviour
 
     public void InitItem(Vector3 position, ItemData data)
     {
-
+        transform.position = position;
     }
 }

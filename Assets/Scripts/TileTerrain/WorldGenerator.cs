@@ -13,6 +13,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private int _tilesPerUnit = 2;
     [SerializeField, ReadOnly] private float _tileSizeMult = 0.5f;
     [SerializeField, ReadOnly] private int _chunkCount;
+    [SerializeField] private LayerMask _groundLayer;
 
     [Header("Generation Settings")]
     [SerializeField] private int _worldSeed = -1;
@@ -95,7 +96,7 @@ public class WorldGenerator : MonoBehaviour
         _noiseOffsetX = Random.Range(0f, 1000f);
         _noiseOffsetY = Random.Range(0f, 1000f);
 
-        GenerateTerrain();
+        GenerateSurface();
         GenerateCaves();
         GenerateMinerals();
         CreateChunks();
@@ -103,7 +104,7 @@ public class WorldGenerator : MonoBehaviour
         Debug.Log("World Generation Complete");
     }
 
-    private void GenerateTerrain()
+    private void GenerateSurface()
     {
         for (int x = 0; x < _width; x++)
         {
@@ -229,7 +230,8 @@ public class WorldGenerator : MonoBehaviour
                 Vector3 chunkPosition = new Vector3(x * _chunkSize * _tileSizeMult + OffsetX, y * _chunkSize * _tileSizeMult + OffsetY, 0);
 
                 GameObject chunkGO = Instantiate(_chunkPrefab, chunkPosition, Quaternion.identity, transform);
-                chunkGO.transform.localScale = Vector3.one * _tileSizeMult;
+                chunkGO.transform.localScale = new Vector3(_tileSizeMult, _tileSizeMult, 1);
+                chunkGO.layer = 8;
                 chunkGO.name = $"Chunk_{x}_{y}";
 
                 Chunk chunkScript = chunkGO.GetComponent<Chunk>();

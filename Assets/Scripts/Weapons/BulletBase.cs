@@ -51,6 +51,13 @@ public class BulletBase : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
+        var chunk = collision.GetComponent<Chunk>();
+        if (chunk != null)
+        {
+            Vector3 pointToDestroy = transform.position + (transform.forward * 0.1f);
+            chunk.World.DestroyTileAt(pointToDestroy, 2);
+            Destroy();
+        }
         // if (collision.CompareTag("BulletBounds") && !_once)
         // {
         //     Destroy();

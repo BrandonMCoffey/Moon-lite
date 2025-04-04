@@ -148,23 +148,22 @@ public abstract class WeaponBase : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-public virtual void Aim(Vector3 targetPosition)
-{
-    
-    Vector3 aimDirection = (targetPosition - transform.position).normalized;
-    float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-
-    // Rotate the weapon holder to aim at the target
-    transform.rotation = Quaternion.Euler(0, 0, angle);
-
-    // Flip the sprite vertically if aiming backward
-    if (_gunSprite != null)
+    public virtual void Aim(Vector3 targetPosition)
     {
-        Vector3 localScale = _gunSprite.localScale;
-        localScale.y = Mathf.Abs(localScale.y) * ((angle > 90 || angle < -90) ? -1f : 1f);
-        _gunSprite.localScale = localScale;
+        Vector3 aimDirection = (targetPosition - transform.position).normalized;
+        float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+        // Rotate the weapon holder to aim at the target
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        // Flip the sprite vertically if aiming backward
+        if (_gunSprite != null)
+        {
+            Vector3 localScale = _gunSprite.localScale;
+            localScale.y = Mathf.Abs(localScale.y) * ((angle > 90 || angle < -90) ? -1f : 1f);
+            _gunSprite.localScale = localScale;
+        }
     }
-}
 
     public virtual void Shoot(Vector3 aimDirection)
     {

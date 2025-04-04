@@ -8,7 +8,6 @@ public class DroppedItemManager : MonoBehaviour
     [SerializeField] private int _itemPoolSize;
 
     private List<DroppedItem> _itemPool;
-    private List<DroppedItem> _activeItems;
 
     private void Awake()
     {
@@ -21,14 +20,21 @@ public class DroppedItemManager : MonoBehaviour
 
     public void NewDroppedItem(Vector3 location, ItemData itemData)
     {
-        // TODO: Get Item from Pool and set data
         var item = GetItemFromPool();
         item.InitItem(location, itemData);
     }
 
     private DroppedItem GetItemFromPool()
     {
-        //if (_itemPool)
-        return _itemPool[0];
+        if (_itemPool.Count > 0)
+        {
+            var item = _itemPool[0];
+            _itemPool.RemoveAt(0);
+            return item;
+        }
+        else
+        {
+            return Instantiate(_itemPrefab, transform);
+        }
     }
 }
