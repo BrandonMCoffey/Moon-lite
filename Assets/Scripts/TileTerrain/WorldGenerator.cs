@@ -25,6 +25,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private float _mineralNoiseScale = 0.1f;
     [SerializeField, Range(0f, 1f)] public float _copperFrequency = 0.1f;
     [SerializeField, Range(0f, 1f)] public float _ironFrequency = 0.05f;
+    [SerializeField] private StructureData _shopStructure;
 
     [Header("Destruction")]
     [SerializeField] private int _damageableTileStoreCount = 100;
@@ -41,8 +42,8 @@ public class WorldGenerator : MonoBehaviour
     private float OffsetY => transform.position.y + (_downY ? -_height * _tileSizeMult : 0f);
     private int WorldToTileX(float worldX) => Mathf.FloorToInt((worldX - OffsetX) * _tilesPerUnit);
     private int WorldToTileY(float worldY) => Mathf.FloorToInt((worldY - OffsetY) * _tilesPerUnit);
-    private Vector3 TileToWorld(int x, int y) => new Vector3(x * _tileSizeMult + OffsetX + _tileSizeMult * 0.5f,
-                                                             y * _tileSizeMult + OffsetY + _tileSizeMult * 0.5f, transform.position.z - 0.5f);
+    private Vector3 TileToWorld(int x, int y, bool center = true) => new Vector3(x * _tileSizeMult + OffsetX + (center ? _tileSizeMult * 0.5f : 0),
+                                                   y * _tileSizeMult + OffsetY + (center ? _tileSizeMult * 0.5f : 0), transform.position.z - 0.5f);
 
     private TileType[,] _grid;
     private Dictionary<Vector2Int, Chunk> _chunks;
@@ -103,6 +104,7 @@ public class WorldGenerator : MonoBehaviour
         GenerateSurface();
         GenerateCaves();
         GenerateMinerals();
+        GenerateStructures();
         CreateChunks();
         OptimizeChunks();
         Debug.Log("World Generation Complete");
@@ -217,6 +219,31 @@ public class WorldGenerator : MonoBehaviour
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private void GenerateStructures()
+    {
+        for (int i = 2; i <= 7; i++)
+        {
+            int depth = i * _height / 8;
+            GenerateStructureShop(Random.Range(_width / 8, _width - _width / 8), _height - depth + Random.Range(-25, 25));
+        }
+    }
+
+    private void GenerateStructureShop(int xCenter, int yCenter)
+    {
+        var shop = Instantiate(_shopStructure, TileToWorld(xCenter, yCenter, false), Quaternion.identity, transform);
+        var s = _shopStructure.Sizes * _tilesPerUnit;
+        var xMin = Mathf.Clamp(xCenter - Mathf.FloorToInt(s.x), 0, _width);
+        var xMax = Mathf.Clamp(xCenter + Mathf.FloorToInt(s.y), 0, _width);
+        var yMax = Mathf.Clamp(yCenter + Mathf.FloorToInt(s.z), 0, _height);
+        for (int x = xMin; x < xMax; x++)
+        {
+            for (int y = yCenter; y < yMax; y++)
+            {
+                _grid[x, y] = TileType.Air;
             }
         }
     }

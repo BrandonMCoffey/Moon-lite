@@ -1596,6 +1596,8 @@ MonoBehaviour:
   _mineralNoiseScale: 0.2
   _copperFrequency: 0.1
   _ironFrequency: 0.05
+  _shopStructure: {fileID: 7892747212832004632, guid: 54a0e0c7eda369b468af64f361ab540c,
+    type: 3}
   _damageableTileStoreCount: 100
   _chunkPrefab: {fileID: 243734584287799151, guid: 095ac6aaabb2a6641a8b6d0552191ad0,
     type: 3}
