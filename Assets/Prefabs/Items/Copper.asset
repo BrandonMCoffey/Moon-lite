@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa9103aff1c20a648934a54cf97d81e9, type: 3}
   m_Name: Copper
   m_EditorClassIdentifier: 
+  _sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  _spriteColor: {r: 0.8773585, g: 0.46638814, b: 0.27727836, a: 1}

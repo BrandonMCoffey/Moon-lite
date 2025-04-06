@@ -39,6 +39,10 @@ public class WorldGenerator : MonoBehaviour
     public int ChunkSize => _chunkSize;
     private float OffsetX => transform.position.x + (_centerX ? -_width * _tileSizeMult * 0.5f : 0f);
     private float OffsetY => transform.position.y + (_downY ? -_height * _tileSizeMult : 0f);
+    private int WorldToTileX(float worldX) => Mathf.FloorToInt((worldX - OffsetX) * _tilesPerUnit);
+    private int WorldToTileY(float worldY) => Mathf.FloorToInt((worldY - OffsetY) * _tilesPerUnit);
+    private Vector3 TileToWorld(int x, int y) => new Vector3(x * _tileSizeMult + OffsetX + _tileSizeMult * 0.5f,
+                                                             y * _tileSizeMult + OffsetY + _tileSizeMult * 0.5f, transform.position.z - 0.5f);
 
     private TileType[,] _grid;
     private Dictionary<Vector2Int, Chunk> _chunks;
@@ -227,7 +231,7 @@ public class WorldGenerator : MonoBehaviour
             for (int x = 0; x < numChunksX; x++)
             {
                 Vector2Int chunkCoord = new Vector2Int(x, y);
-                Vector3 chunkPosition = new Vector3(x * _chunkSize * _tileSizeMult + OffsetX, y * _chunkSize * _tileSizeMult + OffsetY, 0);
+                Vector3 chunkPosition = new Vector3(x * _chunkSize * _tileSizeMult + OffsetX, y * _chunkSize * _tileSizeMult + OffsetY, transform.position.z);
 
                 GameObject chunkGO = Instantiate(_chunkPrefab, chunkPosition, Quaternion.identity, transform);
                 chunkGO.transform.localScale = new Vector3(_tileSizeMult, _tileSizeMult, 1);
@@ -267,49 +271,43 @@ public class WorldGenerator : MonoBehaviour
         return _grid[x, y];
     }
 
-    public void DestroyTileAt(Vector3 worldPos, float radius)
+    public void DestroyTileAt(Vector3 worldPos, float radius) => DestroyTileAt(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), radius);
+    public void DestroyTileAt(int xCenter, int yCenter, float radius)
     {
-        int xTile = Mathf.FloorToInt((worldPos.x - OffsetX) * _tilesPerUnit);
-        int yTile = Mathf.FloorToInt((worldPos.y - OffsetY) * _tilesPerUnit);
         int range = Mathf.CeilToInt(radius * _tilesPerUnit);
 
-        int xOrigin = Mathf.Max(0, xTile - range);
-        int xEnd = Mathf.Min(_width - 1, xTile + range);
-        int yOrigin = Mathf.Max(0, yTile - range);
-        int yEnd = Mathf.Min(_height - 1, yTile + range);
+        int xMin = Mathf.Max(0, xCenter - range);
+        int xMax = Mathf.Min(_width - 1, xCenter + range);
+        int yMin = Mathf.Max(0, yCenter - range);
+        int yMax = Mathf.Min(_height - 1, yCenter + range);
 
-        for (int x = xOrigin; x < xEnd; x++)
+        for (int x = xMin; x < xMax; x++)
         {
-            for (int y = yOrigin; y < yEnd; y++)
+            for (int y = yMin; y < yMax; y++)
             {
-                int xDelta = x - xTile;
-                int yDelta = y - yTile;
-                float sqrDistance = (xDelta * xDelta) + (yDelta * yDelta);
+                int xDelta = x - xCenter;
+                int yDelta = y - yCenter;
+                int sqrDistance = (xDelta * xDelta) + (yDelta * yDelta);
 
                 if (sqrDistance < range * range)
                 {
-                    //_itemManager.NewDroppedItem(worldPos, _tileData.GetTileData(_grid[x, y]).ItemData);
-                    _grid[x, y] = TileType.Air;
-                    Vector2Int modifiedChunkCoord = new Vector2Int(x / _chunkSize, y / _chunkSize);
-                    SetChunkModified(modifiedChunkCoord);
+                    DestroyTileAt(x, y);
                 }
             }
         }
     }
 
-    public void DestroyTileAt(Vector3 worldPos)
+    public void DestroyTileAt(Vector3 worldPos) => DestroyTileAt(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y));
+    public void DestroyTileAt(int x, int y)
     {
-        int x = Mathf.FloorToInt((worldPos.x - OffsetX) * _tilesPerUnit);
-        int y = Mathf.FloorToInt((worldPos.y - OffsetY) * _tilesPerUnit);
-
-        if (x < 0 || x >= _width || y < 0 || y >= _height) return;
-
-        if (_grid[x, y] == TileType.Air)
+        if (GetTile(x, y) == TileType.Air)
         {
             return;
         }
 
-        //_itemManager.NewDroppedItem(worldPos, _tileData.GetTileData(_grid[x, y]).ItemData);
+        var pos = TileToWorld(x, y) + (Vector3)(Random.insideUnitCircle * _tileSizeMult * 0.25f);
+        _itemManager.SpawnDroppedItem(pos, _tileData.GetTileData(_grid[x, y]).ItemData);
+
         _grid[x, y] = TileType.Air;
 
         Vector2Int modifiedChunkCoord = new Vector2Int(x / _chunkSize, y / _chunkSize);
@@ -364,8 +362,8 @@ public class WorldGenerator : MonoBehaviour
         {
             for (int x = 0; x < numChunksX; x++)
             {
-                Vector3 center = new Vector3(_tileSizeMult * ((x * _chunkSize) + _chunkSize / 2f) + OffsetX,
-                                             _tileSizeMult * ((y * _chunkSize) + _chunkSize / 2f) + OffsetY, -0.5f);
+                Vector3 center = new Vector3(_tileSizeMult * ((x * _chunkSize) + _chunkSize * 0.5f) + OffsetX,
+                                             _tileSizeMult * ((y * _chunkSize) + _chunkSize * 0.5f) + OffsetY, transform.position.z - 0.5f);
                 Vector3 size = new Vector3(_chunkSize * _tileSizeMult, _chunkSize * _tileSizeMult, 1f);
                 Gizmos.DrawWireCube(center, size);
             }

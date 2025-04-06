@@ -15,7 +15,13 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: c52405b6a86b58d4fbb1a5044f7a2457, type: 2}
+    - {fileID: 11400000, guid: 00d45476f6806ff4cb20893147291c76, type: 2}
+    - {fileID: 11400000, guid: e792f005279faf248b4af73dc4f311bc, type: 2}
+    - {fileID: 11400000, guid: d1e1a804f99169e4a94912c300e25b02, type: 2}
+    - {fileID: 11400000, guid: a0f05df6ff2e7e14c9fd431ce46992dd, type: 2}
+    - {fileID: 11400000, guid: 814a39b872ef25d44888e87cfcaa3410, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -72,8 +78,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -111,8 +117,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -150,8 +156,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -189,8 +195,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -228,8 +234,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 2
     - Name: 
       Entry: 8
       Data: 
@@ -267,8 +273,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
@@ -306,8 +312,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 4
     - Name: 
       Entry: 8
       Data: 
@@ -345,8 +351,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 5
     - Name: 
       Entry: 8
       Data: 
