@@ -28,7 +28,7 @@ public class TerrainTileData : SerializedScriptableObject
             int row = index % 4;
             int column = index / 4;
             bool mineral = column >= 1;
-            _data.Add(type, new TerrainTileDataStruct(mineral, 0.1f, mineral ? (row + (column - 1) * 4) * 100 : 0, new Vector2(row, 3 - column)));
+            _data.Add(type, new TerrainTileDataStruct(row, new Vector2(row, column), mineral, 0.1f, mineral ? (row + (column - 1) * 4) * 100 : 0));
         }
     }
 
@@ -48,19 +48,21 @@ public class TerrainTileData : SerializedScriptableObject
 
 public struct TerrainTileDataStruct
 {
-    public bool Mineral;
-    [ShowIf("Mineral"), Range(0f, 1f)] public float Frequency;
-    [ShowIf("Mineral")] public int StartDepth;
+    public int TileHealth;
     [Tooltip("X is left-right, Y is bottom-top")]
     public Vector2 UVData;
     public ItemData ItemData;
+    public bool Mineral;
+    [ShowIf("Mineral"), Range(0f, 1f)] public float Frequency;
+    [ShowIf("Mineral")] public int StartDepth;
 
-    public TerrainTileDataStruct(bool mineral, float frequency, int startDepth, Vector2 uvData)
+    public TerrainTileDataStruct(int health, Vector2 uvData, bool mineral, float frequency, int startDepth)
     {
+        TileHealth = health;
+        UVData = uvData;
+        ItemData = null;
         Mineral = mineral;
         Frequency = frequency;
         StartDepth = startDepth;
-        UVData = uvData;
-        ItemData = null;
     }
 }

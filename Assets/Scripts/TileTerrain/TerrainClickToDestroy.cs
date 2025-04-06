@@ -8,7 +8,7 @@ public class TerrainClickToDestroy : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hit, 100))
@@ -19,11 +19,11 @@ public class TerrainClickToDestroy : MonoBehaviour
                     Vector3 pointToDestroy = hit.point - (hit.normal * 0.1f);
                     if (_single)
                     {
-                        chunk.World.DestroyTileAt(pointToDestroy);
+                        chunk.World.DamageTileAt(pointToDestroy);
                     }
                     else
                     {
-                        chunk.World.DestroyTileAt(pointToDestroy, _radius);
+                        chunk.World.DamageTileInCircle(pointToDestroy, _radius);
                     }
                 }
             }

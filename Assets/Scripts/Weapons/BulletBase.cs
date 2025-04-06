@@ -55,7 +55,7 @@ public class BulletBase : MonoBehaviour
         if (chunk != null)
         {
             Vector3 pointToDestroy = transform.position + (transform.forward * 0.1f);
-            chunk.World.DestroyTileAt(pointToDestroy, 2);
+            chunk.World.DamageTileInCircle(pointToDestroy, 2);
             Destroy();
         }
         // if (collision.CompareTag("BulletBounds") && !_once)

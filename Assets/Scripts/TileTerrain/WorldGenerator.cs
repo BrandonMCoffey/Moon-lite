@@ -13,7 +13,6 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private int _tilesPerUnit = 2;
     [SerializeField, ReadOnly] private float _tileSizeMult = 0.5f;
     [SerializeField, ReadOnly] private int _chunkCount;
-    [SerializeField] private LayerMask _groundLayer;
 
     [Header("Generation Settings")]
     [SerializeField] private int _worldSeed = -1;
@@ -26,9 +25,6 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField, Range(0f, 1f)] public float _copperFrequency = 0.1f;
     [SerializeField, Range(0f, 1f)] public float _ironFrequency = 0.05f;
     [SerializeField] private StructureData _shopStructure;
-
-    [Header("Destruction")]
-    [SerializeField] private int _damageableTileStoreCount = 100;
 
     [Header("References")]
     [SerializeField] private GameObject _chunkPrefab;
@@ -48,10 +44,12 @@ public class WorldGenerator : MonoBehaviour
     private TileType[,] _grid;
     private Dictionary<Vector2Int, Chunk> _chunks;
     private List<Vector2Int> _modifiedChunks = new List<Vector2Int>();
-    private Queue<TileDamageData> _tileDamageData;
+    private Dictionary<Vector2Int, int> _tileDamageData;
 
     private float _noiseOffsetX;
     private float _noiseOffsetY;
+    private Vector3 _damageRegion;
+    private float _damageRegionSize;
 
     private void OnValidate()
     {
@@ -93,7 +91,7 @@ public class WorldGenerator : MonoBehaviour
     {
         _grid = new TileType[_width, _height];
         _chunks = new Dictionary<Vector2Int, Chunk>();
-        _tileDamageData = new Queue<TileDamageData>(_damageableTileStoreCount);
+        _tileDamageData = new Dictionary<Vector2Int, int>(100);
 
         if (_worldSeed < 0) _worldSeed = Random.Range(1, 100000);
         Random.InitState(_worldSeed);
@@ -236,9 +234,9 @@ public class WorldGenerator : MonoBehaviour
     {
         var shop = Instantiate(_shopStructure, TileToWorld(xCenter, yCenter, false), Quaternion.identity, transform);
         var s = _shopStructure.Sizes * _tilesPerUnit;
-        var xMin = Mathf.Clamp(xCenter - Mathf.FloorToInt(s.x), 0, _width);
-        var xMax = Mathf.Clamp(xCenter + Mathf.FloorToInt(s.y), 0, _width);
-        var yMax = Mathf.Clamp(yCenter + Mathf.FloorToInt(s.z), 0, _height);
+        var xMin = Mathf.Clamp(xCenter - Mathf.FloorToInt(s.x), 0, _width-1);
+        var xMax = Mathf.Clamp(xCenter + Mathf.FloorToInt(s.y), 0, _width-1);
+        var yMax = Mathf.Clamp(yCenter + Mathf.FloorToInt(s.z), 0, _height-1);
         for (int x = xMin; x < xMax; x++)
         {
             for (int y = yCenter; y < yMax; y++)
@@ -298,15 +296,16 @@ public class WorldGenerator : MonoBehaviour
         return _grid[x, y];
     }
 
-    public void DestroyTileAt(Vector3 worldPos, float radius) => DestroyTileAt(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), radius);
-    public void DestroyTileAt(int xCenter, int yCenter, float radius)
+    public void DamageTileInCircle(Vector3 worldPos, float radius) => DamageTileInCircle(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), Mathf.RoundToInt(radius * _tilesPerUnit));
+    public void DamageTileInCircle(int xCenter, int yCenter, int range)
     {
-        int range = Mathf.CeilToInt(radius * _tilesPerUnit);
+        int xMin = Mathf.Clamp(xCenter - range+1, 0, _width-1);
+        int xMax = Mathf.Clamp(xCenter + range, 0, _width-1);
+        int yMin = Mathf.Clamp(yCenter - range+1, 0, _height-1);
+        int yMax = Mathf.Clamp(yCenter + range, 0, _height-1);
 
-        int xMin = Mathf.Max(0, xCenter - range);
-        int xMax = Mathf.Min(_width - 1, xCenter + range);
-        int yMin = Mathf.Max(0, yCenter - range);
-        int yMax = Mathf.Min(_height - 1, yCenter + range);
+        _damageRegion = TileToWorld(xCenter, yCenter);
+        _damageRegionSize = range * _tileSizeMult;
 
         for (int x = xMin; x < xMax; x++)
         {
@@ -316,26 +315,52 @@ public class WorldGenerator : MonoBehaviour
                 int yDelta = y - yCenter;
                 int sqrDistance = (xDelta * xDelta) + (yDelta * yDelta);
 
-                if (sqrDistance < range * range)
+                DamageTileAt(x, y);
+                if (sqrDistance < range * (range - 1))
                 {
-                    DestroyTileAt(x, y);
+                    DamageTileAt(x, y);
                 }
             }
         }
     }
 
-    public void DestroyTileAt(Vector3 worldPos) => DestroyTileAt(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y));
-    public void DestroyTileAt(int x, int y)
+    public void DamageTileAt(Vector3 worldPos) => DamageTileAt(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y));
+    public void DamageTileAt(int x, int y, int damage = 1)
     {
         if (GetTile(x, y) == TileType.Air)
         {
             return;
         }
+        var data = _tileData.GetTileData(_grid[x, y]);
+
+        var coord = new Vector2Int(x, y);
+        int currentDamage = 0;
+        bool hasDamage = _tileDamageData.TryGetValue(coord, out currentDamage);
+        if (data.TileHealth <= currentDamage + damage)
+        {
+            DestroyTileAt(x, y, data.ItemData);
+            if (hasDamage) _tileDamageData.Remove(coord);
+        }
+        else
+        {
+            if (hasDamage) _tileDamageData[coord] = currentDamage + damage;
+            else _tileDamageData.Add(coord, currentDamage + damage);
+        }
+    }
+
+    public int GetDamage(int x, int y)
+    {
+        int damage = 0;
+        _tileDamageData.TryGetValue(new Vector2Int(x, y), out damage);
+        return damage;
+    }
+
+    private void DestroyTileAt(int x, int y, ItemData item)
+    {
+        _grid[x, y] = TileType.Air;
 
         var pos = TileToWorld(x, y) + (Vector3)(Random.insideUnitCircle * _tileSizeMult * 0.25f);
-        _itemManager.SpawnDroppedItem(pos, _tileData.GetTileData(_grid[x, y]).ItemData);
-
-        _grid[x, y] = TileType.Air;
+        _itemManager.SpawnDroppedItem(pos, item);
 
         Vector2Int modifiedChunkCoord = new Vector2Int(x / _chunkSize, y / _chunkSize);
         SetChunkModified(modifiedChunkCoord);
@@ -395,6 +420,11 @@ public class WorldGenerator : MonoBehaviour
                 Gizmos.DrawWireCube(center, size);
             }
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(_damageRegion, new Vector3(_damageRegionSize*2, _damageRegionSize*2, 1));
     }
 #endif
 }

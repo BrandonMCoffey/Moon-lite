@@ -1584,9 +1584,6 @@ MonoBehaviour:
   _tilesPerUnit: 2
   _tileSizeMult: 0.5
   _chunkCount: 300
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 256
   _worldSeed: -1
   _surfaceLevelSize: 20
   _surfaceNoiseScale: 0.04
@@ -1598,7 +1595,6 @@ MonoBehaviour:
   _ironFrequency: 0.05
   _shopStructure: {fileID: 7892747212832004632, guid: 54a0e0c7eda369b468af64f361ab540c,
     type: 3}
-  _damageableTileStoreCount: 100
   _chunkPrefab: {fileID: 243734584287799151, guid: 095ac6aaabb2a6641a8b6d0552191ad0,
     type: 3}
   _tileData: {fileID: 11400000, guid: c0c6bc909e283a24aa86aeb20e9bb152, type: 2}
@@ -1649,7 +1645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _single: 0
-  _radius: 4
+  _radius: 2
 --- !u!4 &1758551105
 Transform:
   m_ObjectHideFlags: 0

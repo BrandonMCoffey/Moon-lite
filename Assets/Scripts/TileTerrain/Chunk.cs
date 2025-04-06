@@ -51,6 +51,8 @@ public class Chunk : MonoBehaviour
 
                 if (currentTile != TileType.Air)
                 {
+                    int damage = _world.GetDamage(worldX, worldY);
+
                     // Check Top Face
                     if (_world.GetTile(worldX, worldY + 1) == TileType.Air)
                     {
@@ -59,7 +61,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x + 1, y + 1, 0), // Top-Right
                                 new Vector3(x, y + 1, -1),    // Back Top-Left (for thickness)
                                 new Vector3(x + 1, y + 1, -1),// Back Top-Right (for thickness)
-                                currentTile, false);
+                                currentTile, false, damage);
                     }
 
                     // Check Bottom Face
@@ -70,7 +72,7 @@ public class Chunk : MonoBehaviour
                                new Vector3(x + 1, y, -1), // Back Bottom-Right
                                new Vector3(x, y, 0),      // Front Bottom-Left
                                new Vector3(x + 1, y, 0),  // Front Bottom-Right
-                               currentTile, false);
+                               currentTile, false, damage);
                     }
 
                     // Check Right Face
@@ -81,7 +83,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x + 1, y + 1, 0),  // Front Top-Right
                                 new Vector3(x + 1, y, -1),     // Back Bottom-Right
                                 new Vector3(x + 1, y + 1, -1), // Back Top-Right
-                                currentTile, true);
+                                currentTile, true, damage);
                     }
 
                     // Check Left Face
@@ -92,7 +94,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x, y, -1),     // Back Bottom-Left
                                 new Vector3(x, y + 1, 0),  // Front Top-Left
                                 new Vector3(x, y, 0),      // Front Bottom-Left
-                                currentTile, false);
+                                currentTile, false, damage);
                     }
 
                     // Front Face
@@ -101,7 +103,7 @@ public class Chunk : MonoBehaviour
                                new Vector3(x + 1, y, -1),     // Bottom-Right
                                new Vector3(x, y + 1, -1),     // Top-Left
                                new Vector3(x + 1, y + 1, -1), // Top-Right
-                               currentTile, true);
+                               currentTile, true, damage);
                 }
             }
         }
@@ -134,7 +136,7 @@ public class Chunk : MonoBehaviour
 
     private void AddFace(ref List<Vector3> vertices, ref List<int> triangles, ref List<Vector2> uvs, ref int vertexIndex,
                          Vector3 bl, Vector3 br, Vector3 tl, Vector3 tr, // Use consistent corner names relative to face direction
-                         TileType tileType, bool front)
+                         TileType tileType, bool front, int damage)
     {
         // Add Vertices
         vertices.Add(bl); // 0
@@ -154,15 +156,17 @@ public class Chunk : MonoBehaviour
         vertexIndex += 4;
 
         // Add UVs
-        Vector2[] tileUVs = GetUVsForTile(tileType, front);
+        Vector2[] tileUVs = GetUVsForTile(tileType, front, damage);
         uvs.AddRange(tileUVs);
     }
 
-    private Vector2[] GetUVsForTile(TileType type, bool front)
+    private Vector2[] GetUVsForTile(TileType type, bool front, int damage)
     {
-        // 4x4 atlas (16 tiles total)
-        float textureUnit = 0.25f;
+        // 8x8 atlas (64 tiles total)
+        float textureUnit = 0.125f;
         Vector2 uvCoord = World.TileData.GetTileData(type).UVData;
+        if (damage > 0) uvCoord.x += 4;
+        uvCoord.y = 7 - uvCoord.y;
 
         float uMin = uvCoord.x * textureUnit;
         float vMin = uvCoord.y * textureUnit;
