@@ -9,7 +9,7 @@ public class StructureData : MonoBehaviour
     [SerializeField] private bool _entryLeft = true;
     [SerializeField] private bool _entryRight = true;
 
-    public Vector3 Sizes => new Vector3(_entryLeft ? _entryWidth : 0, _entryRight ? _width + _entryWidth : _width, _height);
+    public Vector4 Sizes => new Vector4(_entryLeft ? _entryWidth : 0, _width, _entryRight ? _entryWidth : 0, _height);
 
     private void OnDrawGizmos()
     {

@@ -43,8 +43,9 @@ public class WorldGenerator : MonoBehaviour
 
     private TileType[,] _grid;
     private Dictionary<Vector2Int, Chunk> _chunks;
-    private List<Vector2Int> _modifiedChunks = new List<Vector2Int>();
+    private List<Vector2Int> _modifiedChunks;
     private Dictionary<Vector2Int, int> _tileDamageData;
+    private List<StructureData> _structures;
 
     private float _noiseOffsetX;
     private float _noiseOffsetY;
@@ -75,14 +76,20 @@ public class WorldGenerator : MonoBehaviour
     }
 
     [Button]
-    private void ResetWorld()
+    private void NewWorld()
     {
+        _worldSeed = -1;
         if (_chunks != null)
         {
             foreach (var chunk in _chunks.Values)
             {
                 Destroy(chunk.gameObject);
             }
+            for (int i = _structures.Count - 1; i >= 0; i--)
+            {
+                Destroy(_structures[i].gameObject);
+            }
+            _structures.Clear();
         }
         InitializeWorld();
     }
@@ -91,7 +98,9 @@ public class WorldGenerator : MonoBehaviour
     {
         _grid = new TileType[_width, _height];
         _chunks = new Dictionary<Vector2Int, Chunk>();
+        _modifiedChunks = new List<Vector2Int>();
         _tileDamageData = new Dictionary<Vector2Int, int>(100);
+        _structures = new List<StructureData>();
 
         if (_worldSeed < 0) _worldSeed = Random.Range(1, 100000);
         Random.InitState(_worldSeed);
@@ -233,15 +242,28 @@ public class WorldGenerator : MonoBehaviour
     private void GenerateStructureShop(int xCenter, int yCenter)
     {
         var shop = Instantiate(_shopStructure, TileToWorld(xCenter, yCenter, false), Quaternion.identity, transform);
+        _structures.Add(shop);
         var s = _shopStructure.Sizes * _tilesPerUnit;
         var xMin = Mathf.Clamp(xCenter - Mathf.FloorToInt(s.x), 0, _width-1);
-        var xMax = Mathf.Clamp(xCenter + Mathf.FloorToInt(s.y), 0, _width-1);
-        var yMax = Mathf.Clamp(yCenter + Mathf.FloorToInt(s.z), 0, _height-1);
+        var xMax = Mathf.Clamp(xCenter + Mathf.FloorToInt(s.y + s.z), 0, _width-1);
+        var yMax = Mathf.Clamp(yCenter + Mathf.FloorToInt(s.w), 0, _height-1);
         for (int x = xMin; x < xMax; x++)
         {
             for (int y = yCenter; y < yMax; y++)
             {
+                if ((x == xMin || x == xMax - 1) && (y == yCenter || y == yMax - 1))
+                {
+                    continue;
+                }
                 _grid[x, y] = TileType.Air;
+            }
+        }
+        for (int yOff = 0; yOff < 3; yOff++)
+        {
+            int y = yCenter - yOff - 1;
+            for (int x = xCenter + yOff * 2; x < xCenter + s.y - yOff * 2; x++)
+            {
+                if (_grid[x, y] == TileType.Air) _grid[x, y] = TileType.Stone;
             }
         }
     }
@@ -359,7 +381,7 @@ public class WorldGenerator : MonoBehaviour
     {
         _grid[x, y] = TileType.Air;
 
-        var pos = TileToWorld(x, y) + (Vector3)(Random.insideUnitCircle * _tileSizeMult * 0.25f);
+        var pos = TileToWorld(x, y) + (Vector3)(Random.insideUnitCircle * _tileSizeMult * 0.5f);
         _itemManager.SpawnDroppedItem(pos, item);
 
         Vector2Int modifiedChunkCoord = new Vector2Int(x / _chunkSize, y / _chunkSize);
