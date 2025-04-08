@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 192009957}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WeaponHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -422,7 +422,7 @@ GameObject:
   m_Component:
   - component: {fileID: 564393511}
   - component: {fileID: 564393512}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ReloadBarBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -506,7 +506,7 @@ GameObject:
   m_Component:
   - component: {fileID: 750795556}
   - component: {fileID: 750795557}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ReloadBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemPrefab: {fileID: 1581836335077417545, guid: 673b3f64dfef2324296f438bcc99926e,
     type: 3}
-  _itemPoolSize: 10
+  _itemPoolSize: 100
 --- !u!1001 &900150982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1032,7 +1032,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1322072117}
   - component: {fileID: 1322072118}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1353,7 +1353,8 @@ GameObject:
   - component: {fileID: 1618426255}
   - component: {fileID: 1618426254}
   - component: {fileID: 1618426253}
-  m_Layer: 0
+  - component: {fileID: 1618426259}
+  m_Layer: 10
   m_Name: PF_Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1464,6 +1465,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1618426259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618426252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951b1fb86201eb643be2f1375a814544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _magnetItemRange: 2.5
+  _magnetItemSpeed: 5
+  _pickupItemRange: 1
 --- !u!1 &1682921436
 GameObject:
   m_ObjectHideFlags: 0
@@ -1757,7 +1773,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1885463257}
   - component: {fileID: 1885463258}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1842,7 +1858,7 @@ GameObject:
   - component: {fileID: 1965214831}
   - component: {fileID: 1965214833}
   - component: {fileID: 1965214832}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PickupText
   m_TagString: Untagged
   m_Icon: {fileID: 0}

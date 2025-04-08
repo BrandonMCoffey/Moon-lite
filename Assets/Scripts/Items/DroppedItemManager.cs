@@ -17,7 +17,9 @@ public class DroppedItemManager : MonoBehaviour
         _itemPool = new List<DroppedItem>(_itemPoolSize);
         for (int i = 0; i < _itemPoolSize; i++)
         {
-            _itemPool.Add(Instantiate(_itemPrefab, transform));
+            var item = Instantiate(_itemPrefab, transform);
+            item.gameObject.SetActive(false);
+            _itemPool.Add(item);
         }
     }
 
@@ -33,6 +35,7 @@ public class DroppedItemManager : MonoBehaviour
         {
             var item = _itemPool[0];
             _itemPool.RemoveAt(0);
+            item.gameObject.SetActive(true);
             return item;
         }
         else
@@ -45,6 +48,7 @@ public class DroppedItemManager : MonoBehaviour
     private void AddItemToPoolLocal(DroppedItem item)
     {
         if (item == null || _itemPool.Contains(item)) return;
+        item.gameObject.SetActive(false);
         _itemPool.Add(item);
     }
 }
