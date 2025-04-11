@@ -1438,7 +1438,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618426252}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: d96ae455b44bfb144900299ae3c87e08, type: 2}
   m_IsTrigger: 0
   m_Enabled: 0
   m_Radius: 0.25
@@ -1468,7 +1468,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618426252}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac5bba84d601aad46a802671eb582b41, type: 3}
   m_Name: 
@@ -1520,7 +1520,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618426252}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c0d3124897453646923a2cc4821025e, type: 3}
   m_Name: 
