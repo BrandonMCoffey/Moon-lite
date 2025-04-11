@@ -976,6 +976,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8ccdbb0a402bf140b548f4739fb73a0, type: 3}
+--- !u!1 &1116275757
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1116275758}
+  m_Layer: 10
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1116275758
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116275757}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.479, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1618426258}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1132531721
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,6 +1385,7 @@ GameObject:
   - component: {fileID: 1618426254}
   - component: {fileID: 1618426253}
   - component: {fileID: 1618426259}
+  - component: {fileID: 1618426260}
   m_Layer: 10
   m_Name: PF_Player
   m_TagString: Untagged
@@ -1436,7 +1468,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618426252}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac5bba84d601aad46a802671eb582b41, type: 3}
   m_Name: 
@@ -1462,6 +1494,7 @@ Transform:
   - {fileID: 192009957}
   - {fileID: 750795556}
   - {fileID: 564393511}
+  - {fileID: 1116275758}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1480,6 +1513,54 @@ MonoBehaviour:
   _magnetItemRange: 2.5
   _magnetItemSpeed: 5
   _pickupItemRange: 1
+--- !u!114 &1618426260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618426252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c0d3124897453646923a2cc4821025e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 8
+  airControlFactor: 0.5
+  acceleration: 10
+  deceleration: 15
+  jumpForce: 15
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
+  coyoteTimeDuration: 0.15
+  jumpBufferDuration: 0.1
+  maxFallSpeed: 40
+  dashSpeed: 30
+  dashDuration: 0.15
+  dashCooldown: 0.5
+  dashEndYMultiplier: 0.3
+  resetDashOnGround: 1
+  grappleRange: 20
+  grappleSpeed: 25
+  grappleStopDistance: 1.5
+  grappleLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  usePhysicsJointForGrapple: 0
+  grappleJointSpring: 100
+  grappleJointDamper: 10
+  jetpackForce: 25
+  maxFuel: 1
+  currentFuel: 0
+  fuelConsumeRate: 0.5
+  fuelRegenRate: 0.3
+  fuelRegenDelay: 0.5
+  groundCheckPoint: {fileID: 1116275758}
+  groundCheckRadius: 0.25
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  knockbackResistance: 0.5
 --- !u!1 &1682921436
 GameObject:
   m_ObjectHideFlags: 0
