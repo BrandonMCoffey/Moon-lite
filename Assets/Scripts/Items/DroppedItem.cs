@@ -55,6 +55,7 @@ public class DroppedItem : MonoBehaviour
         else if (dist <= _player.MagnetItemRange)
         {
             transform.position = Vector3.MoveTowards(transform.position, pos, _player.MagnetItemSpeed * Time.deltaTime);
+            if (transform.position.y > pos.y) ApplyGravity();
         }
         else if (_timer > _lifespan || dist >= _despawnRange)
         {

@@ -44,8 +44,6 @@ public class CustomMovementData : ScriptableObject
     [ReadOnly]
     [Tooltip("The actual force applied (upwards) to the player when they jump")]
     public float jumpForce;
-
-    [Header("Both Jumps")]
     [Range(0f, 1)]
     [Tooltip("Reduces gravity while close to the apex (desired max height) of the jump")]
     public float jumpHangGravityMult = 0.5f;
@@ -53,21 +51,6 @@ public class CustomMovementData : ScriptableObject
     public float jumpHangTimeThreshold = 1f;
     public float jumpHangAccelerationMult = 1.1f;
     public float jumpHangMaxSpeedMult = 1.3f;
-
-    [Header("Wall Jump")]
-    [Tooltip("The actual force (this time set by us) applied to the player when wall jumping")]
-    public Vector2 wallJumpForce = new Vector2(15, 25);
-    [Range(0f, 1f)]
-    [Tooltip("Reduces the effect of player's movement while wall jumping")]
-    public float wallJumpRunLerp = 0.5f;
-    [Range(0f, 1.5f)]
-    [Tooltip("Time after wall jumping the player's movement is slowed for")]
-    public float wallJumpTime = 0.15f;
-
-    [Header("Slide")]
-    public float slideGravityMult = 0.5f;
-    public float climbSpeed = 5f;
-    public float climbAccel = 5f;
 
     [Header("Assists")]
     [Range(0.01f, 0.5f)]
@@ -95,6 +78,12 @@ public class CustomMovementData : ScriptableObject
     public float dashInputBufferTime = 0.1f;
     public float dashJumpBonusBufferTime = 0.1f;
 
+    [Header("Jetpack")]
+    public float jetpackForce = 25f;
+    public float jetpackConsumeRate = 0.5f;
+    public float jetpackRegenDelay = 0.5f;
+    public float jetpackRegenRate = 0.3f;
+
     private void OnValidate()
     {
         //Calculate gravity strength using the formula (gravity = 2 * jumpHeight / timeToJumpApex^2) 
@@ -110,9 +99,7 @@ public class CustomMovementData : ScriptableObject
         //Calculate jumpForce using the formula (initialJumpVelocity = gravity * timeToJumpApex)
         jumpForce = Mathf.Abs(gravityStrength) * jumpTimeToApex;
 
-        #region Variable Ranges
         runAcceleration = Mathf.Clamp(runAcceleration, 0.01f, runMaxSpeed);
         runDecceleration = Mathf.Clamp(runDecceleration, 0.01f, runMaxSpeed);
-        #endregion
     }
 }

@@ -7,6 +7,7 @@ public class PlayerMovementCustom : MonoBehaviour
     [SerializeField] private CustomMovementData _data;
     [SerializeField] private Transform _art;
     [SerializeField] private bool _debug;
+    [SerializeField] private float _jetpackMaxFuel = 1;
 
     [Header("Collisions")]
     [SerializeField] private LayerMask _groundLayer = 1;
@@ -26,9 +27,11 @@ public class PlayerMovementCustom : MonoBehaviour
     [SerializeField] private ParticleSystem _walkParticles;
     [SerializeField] private SfxReference _dashSfx;
     [SerializeField] private ParticleSystem _dashParticles;
+    [SerializeField] private ParticleSystem _jetpackParticles;
 
     [Header("Debug - Movement")]
     [SerializeField, ReadOnly] private Vector3 _velocity;
+    [SerializeField, ReadOnly] private bool _facingRight;
     [SerializeField, ReadOnly] private float _moveHorz;
     [SerializeField, ReadOnly] private float _moveVert;
     [SerializeField, ReadOnly] private float _gravityScale;
@@ -36,6 +39,7 @@ public class PlayerMovementCustom : MonoBehaviour
     [Header("Debug - Collisions")]
     [SerializeField, ReadOnly] private bool _groundCollided;
     [SerializeField, ReadOnly] private float _groundDistance;
+    [SerializeField, ReadOnly] private float _coyoteGrounded;
     [SerializeField, ReadOnly] private bool _ceilingCollided;
     [SerializeField, ReadOnly] private float _ceilingDistance;
     [SerializeField, ReadOnly] private bool _leftWallCollided;
@@ -43,17 +47,10 @@ public class PlayerMovementCustom : MonoBehaviour
     [SerializeField, ReadOnly] private bool _rightWallCollided;
     [SerializeField, ReadOnly] private float _rightWallDistance;
 
-    [SerializeField, ReadOnly] private float _coyoteGrounded;
-    [SerializeField, ReadOnly] private float _coyoteLeftWall;
-    [SerializeField, ReadOnly] private float _coyoteRightWall;
-
     [Header("Debug - Jump")]
     [SerializeField, ReadOnly] private bool _jumpInput;
     [SerializeField, ReadOnly] private float _jumpTimer;
     [SerializeField, ReadOnly] private bool _isJumping;
-    [SerializeField, ReadOnly] private bool _isWallJumping;
-    [SerializeField, ReadOnly] private float _wallJumpTimer;
-    [SerializeField, ReadOnly] private bool _lastWallJumpRightDir;
     [SerializeField, ReadOnly] private bool _isJumpFalling;
 
     [Header("Debug - Dash")]
@@ -65,8 +62,11 @@ public class PlayerMovementCustom : MonoBehaviour
     [SerializeField, ReadOnly] private bool _isDashing;
     [SerializeField, ReadOnly] private float _postDashTimer;
 
-    [Header("Debug - Other")]
-    [SerializeField, ReadOnly] private bool _facingRight;
+    [Header("Debug - Jetpack")]
+    [SerializeField, ReadOnly] private bool _jetpackInput;
+    [SerializeField, ReadOnly] private bool _jetpackActive;
+    [SerializeField, ReadOnly] private float _jetpackFuel;
+    [SerializeField, ReadOnly] private float _jetpackRefuelTimer;
 
     private Coroutine _dashRoutine;
 
@@ -82,6 +82,7 @@ public class PlayerMovementCustom : MonoBehaviour
         CheckPlayerInput();
         CheckJump();
         CheckDash();
+        CheckJetpack();
         CheckGravity();
         Run(Time.deltaTime);
         CheckFacingDir();
@@ -160,7 +161,7 @@ public class PlayerMovementCustom : MonoBehaviour
         if (grounded != _groundCollided || force)
         {
             _groundCollided = grounded;
-            if (grounded)
+            if (_groundCollided)
             {
                 _landSfx.Play();
                 _landParticles.Play();
@@ -191,19 +192,8 @@ public class PlayerMovementCustom : MonoBehaviour
         else if (_coyoteGrounded > 0) _coyoteGrounded -= deltaTime;
         else _coyoteGrounded = 0;
 
-        if (_leftWallCollided) _coyoteLeftWall = _data.coyoteTime;
-        else if (_coyoteLeftWall > 0) _coyoteLeftWall -= deltaTime;
-        else _coyoteLeftWall = 0;
-
-        if (_rightWallCollided) _coyoteRightWall = _data.coyoteTime;
-        else if (_coyoteRightWall > 0) _coyoteRightWall -= deltaTime;
-        else _coyoteRightWall = 0;
-
         if (_jumpTimer > 0) _jumpTimer -= deltaTime;
         else _jumpTimer = 0;
-
-        if (_wallJumpTimer > 0) _wallJumpTimer -= deltaTime;
-        else _wallJumpTimer = 0;
 
         if (_dashTimer > 0) _dashTimer -= deltaTime;
         else _dashTimer = 0;
@@ -213,6 +203,19 @@ public class PlayerMovementCustom : MonoBehaviour
 
         if (_postDashTimer > 0) _postDashTimer -= deltaTime;
         else _postDashTimer = 0;
+
+        if (_jetpackActive)
+        {
+            _jetpackRefuelTimer = _data.jetpackRegenDelay;
+            _jetpackFuel -= _data.jetpackConsumeRate * deltaTime;
+        }
+        else if (_jetpackRefuelTimer > 0) _jetpackRefuelTimer -= deltaTime;
+
+        if (!_jetpackActive && _jetpackFuel < _jetpackMaxFuel && _jetpackRefuelTimer <= 0f)
+        {
+            _jetpackFuel += _data.jetpackRegenRate * deltaTime;
+            _jetpackFuel = Mathf.Min(_jetpackFuel, _jetpackMaxFuel);
+        }
     }
 
     private void CheckPlayerInput()
@@ -232,6 +235,7 @@ public class PlayerMovementCustom : MonoBehaviour
             _dashInput = dashInput;
             if (dashInput) _dashTimer = _data.dashInputBufferTime;
         }
+        _jetpackInput = Input.GetButton("Jetpack");
     }
 
     private void CheckJump()
@@ -239,15 +243,10 @@ public class PlayerMovementCustom : MonoBehaviour
         if (_isJumping && _velocity.y < 0)
         {
             _isJumping = false;
-            if (!_isWallJumping) _isJumpFalling = true;
+            _isJumpFalling = true;
         }
 
-        if (_isWallJumping && _wallJumpTimer == 0)
-        {
-            _isWallJumping = false;
-        }
-
-        if (_coyoteGrounded > 0 && !_isJumping && !_isWallJumping)
+        if (_coyoteGrounded > 0 && !_isJumping)
         {
             _isJumpFalling = false;
         }
@@ -262,14 +261,6 @@ public class PlayerMovementCustom : MonoBehaviour
         {
             Jump();
             return;
-        }
-
-        bool leftWall = _coyoteLeftWall > 0;
-        bool rightWall = _coyoteRightWall > 0;
-        if (!_isWallJumping && (leftWall || rightWall))
-        {
-            if (leftWall && rightWall) WallJump(!_lastWallJumpRightDir);
-            else WallJump(rightWall);
         }
     }
 
@@ -289,24 +280,7 @@ public class PlayerMovementCustom : MonoBehaviour
             Log("Dash Boost");
         }
 
-        StopDashing();
-    }
-
-    private void WallJump(bool rightWall)
-    {
-        Log("Wall Jump");
-
-        ResetAllJumpValues();
-        _isWallJumping = true;
-        _wallJumpTimer = _data.wallJumpTime;
-        _lastWallJumpRightDir = rightWall;
-
-        Vector3 force = new Vector3(_data.wallJumpForce.x, _data.wallJumpForce.y, 0f);
-        force.x *= rightWall ? -1 : 1;
-        if (Mathf.Sign(_velocity.x) != Mathf.Sign(force.x)) force.x -= _velocity.x;
-
-        //if (_velocity.y < 0) force.y -= _velocity.y;
-        _velocity = force;
+        JumpFeedback();
 
         StopDashing();
     }
@@ -331,15 +305,13 @@ public class PlayerMovementCustom : MonoBehaviour
     private void ResetAllJumpValues()
     {
         _isJumping = false;
-        _isWallJumping = false;
         _isJumpFalling = false;
         _jumpTimer = 0;
         _groundCollided = false;
+        _walkParticles.Stop();
         _coyoteGrounded = 0;
         _leftWallCollided = false;
-        _coyoteLeftWall = 0;
         _rightWallCollided = false;
-        _coyoteRightWall = 0;
     }
 
     private void CheckDash()
@@ -409,9 +381,24 @@ public class PlayerMovementCustom : MonoBehaviour
         _dashRoutine = null;
     }
 
+    private void CheckJetpack()
+    {
+        var active = _jetpackInput && !_isJumping && !_isDashAttacking && _jetpackFuel > 0;
+        if (_jetpackActive != active)
+        {
+            _jetpackActive = active;
+            if (_jetpackActive) _jetpackParticles.Play();
+            else _jetpackParticles.Stop();
+        }
+    }
+
     private void CheckGravity()
     {
-        if (_isDashAttacking)
+        if (_jetpackActive)
+        {
+            SetGravityScale(-_data.jetpackForce);
+        }
+        else if (_isDashAttacking)
         {
             SetGravityScale(0);
         }
@@ -420,11 +407,11 @@ public class PlayerMovementCustom : MonoBehaviour
             SetGravityScale(_data.gravityScale * _data.fastFallGravityMult);
             _velocity = new Vector3(_velocity.x, Mathf.Max(_velocity.y, -_data.maxFastFallSpeed), 0f);
         }
-        else if (_jumpInput && (_isJumping || _isWallJumping))
+        else if (_jumpInput && _isJumping)
         {
             SetGravityScale(_data.gravityScale * _data.jumpHangGravityMult);
         }
-        else if ((_isJumping || _isWallJumping || _isJumpFalling) && Mathf.Abs(_velocity.y) < _data.jumpHangTimeThreshold)
+        else if ((_isJumping || _isJumpFalling) && Mathf.Abs(_velocity.y) < _data.jumpHangTimeThreshold)
         {
             SetGravityScale(_data.gravityScale * _data.jumpHangGravityMult * 4);
         }
@@ -444,8 +431,7 @@ public class PlayerMovementCustom : MonoBehaviour
         if (_isDashAttacking) return;
 
         float lerpAmount = 1;
-        if (_isWallJumping) lerpAmount = _data.wallJumpRunLerp;
-        else if (_isDashing) lerpAmount = _data.dashEndRunLerp;
+        if (_isDashing) lerpAmount = _data.dashEndRunLerp;
 
         float targetSpeed = _moveHorz * _data.runMaxSpeed;
         targetSpeed = Mathf.Lerp(_velocity.x, targetSpeed, lerpAmount);
@@ -454,7 +440,7 @@ public class PlayerMovementCustom : MonoBehaviour
         if (_groundCollided) accelRate = Mathf.Abs(targetSpeed) > 0.01f ? _data.runAccelAmount : _data.runDeccelAmount;
         else accelRate = Mathf.Abs(targetSpeed) > 0.01f ? _data.runAccelAmount * _data.accelInAir : _data.runDeccelAmount * _data.deccelInAir;
 
-        if ((_isJumping || _isWallJumping || _isJumpFalling) && Mathf.Abs((_velocity.y)) < _data.jumpHangTimeThreshold)
+        if ((_isJumping || _isJumpFalling) && Mathf.Abs((_velocity.y)) < _data.jumpHangTimeThreshold)
         {
             accelRate *= _data.jumpHangAccelerationMult;
             targetSpeed *= _data.jumpHangMaxSpeedMult;
