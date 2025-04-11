@@ -80,7 +80,7 @@ public class MusicPlayer : MonoBehaviour
         
     private IEnumerator FadeIn()
     {
-        if (_track.VolumeFadeAtStart && _source.time < _track.VolumeFadeStartTime)
+        if (_track.VolumeFadeAtStart && _source.time < _track.VolumeFadeStartTime + _track.StartTimeIfLooping)
         {
             float deltaMultiplier1 = 1f / _track.VolumeFadeStartTime;
             for (float t = 0; t < _track.VolumeFadeStartTime; t += Time.deltaTime)
