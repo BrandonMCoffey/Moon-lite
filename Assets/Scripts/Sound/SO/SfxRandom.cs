@@ -84,6 +84,7 @@ public class SfxRandom : SfxBase
     [Button]
     private void PreviewSfx2D()
     {
+        SoundManager.StopAllSfx();
         Play();
     }
 

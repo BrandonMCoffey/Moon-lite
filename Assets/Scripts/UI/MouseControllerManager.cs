@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -35,9 +37,8 @@ public class MouseControllerManager : MonoBehaviour
 	[SerializeField] private bool _showMouseInGame;
 	    
 	public static bool InGame;
-	private static bool CanUpdate => !InGame;
-	    
 	private static bool _usingMouse;
+
 	[SerializeField] private bool _assumeMouseFirst = true;
 	[SerializeField] private float _ignoreMouseTime = 0.1f;
 	[SerializeField, ReadOnly] private GameObject _currentlySelected;
@@ -89,15 +90,30 @@ public class MouseControllerManager : MonoBehaviour
 	private Vector3 _prevMousePos;
 	private void CheckMouseMovement()
 	{
-		if (!CanUpdate) return; // No need to check for mouse updates
+		if (InGame) return; // No need to check for mouse updates
+
 		var mousePos = Input.mousePosition;
 		if (_usingMouse)
 		{
 			// Check for Keyboard or Controller Movement
-			if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 || Input.GetButtonDown("Submit"))
+			if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
 			{
 				OnKeyboardControllerMovement();
 			}
+			if (Input.GetButtonDown("Submit"))
+            {
+                OnKeyboardControllerMovement();
+				var button = _currentlySelected.GetComponent<Button>();
+				if (button != null)
+				{
+					button.onClick?.Invoke();
+				}
+				var buttonFeedback = _currentlySelected.GetComponent<AnimatedButtonHoverSelect>();
+				if (buttonFeedback != null)
+				{
+					buttonFeedback.OnSubmit(null);
+				}
+            }
 		}
 		else
 		{
@@ -175,7 +191,7 @@ public class MouseControllerManager : MonoBehaviour
 	
 	private void OnKeyboardControllerMovement()
 	{
-		if (!CanUpdate) return;
+		if (InGame) return;
 		_wasController = true;
 		if (!_usingMouse) return;
 		WarpMouse(false);
@@ -196,7 +212,7 @@ public class MouseControllerManager : MonoBehaviour
 	
 	private void OnMouseMovement()
 	{
-		if (!CanUpdate || _ignoreMouseMovement) return;
+		if (InGame || _ignoreMouseMovement) return;
 		if (_wasController)
 		{
 			WarpMouse(true);

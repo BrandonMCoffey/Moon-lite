@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _clips:
   - UseClip: 1
-    Clip: {fileID: 8300000, guid: e5bacd5a323cfa74b96197d4137f1b7e, type: 3}
+    Clip: {fileID: 8300000, guid: ebc291b543c66f144ba437626c58c7e0, type: 3}
     Base: {fileID: 0}
   _mixerGroup: {fileID: -4766103977799901569, guid: 6dbd7035bf61c3e4398bde27c45617ec,
     type: 2}
   _volume:
-    MinValue: 0.6
-    MaxValue: 0.8
+    MinValue: 0.5081516
+    MaxValue: 0.585687
   _pitch:
-    MinValue: 0.9
-    MaxValue: 1.1
+    MinValue: 0.9210486
+    MaxValue: 1.0579028
   _stereoPan:
     MinValue: 0
     MaxValue: 0

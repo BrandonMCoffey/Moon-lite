@@ -18,6 +18,7 @@ public class ShipMenu : MonoBehaviour
         MouseControllerManager.InGame = false;
         MouseControllerManager.UpdateSelected(_firstSelected);
         MouseControllerManager.ActionsThisFrame++;
+        SoundManager.MusicModifier.SetMuffled(true);
         Time.timeScale = 0;
     }
 
@@ -27,6 +28,7 @@ public class ShipMenu : MonoBehaviour
         MouseControllerManager.InGame = true;
         MouseControllerManager.UpdateSelected(null);
         MouseControllerManager.ActionsThisFrame++;
+        SoundManager.MusicModifier.SetMuffled(false);
         Time.timeScale = 1;
     }
 }

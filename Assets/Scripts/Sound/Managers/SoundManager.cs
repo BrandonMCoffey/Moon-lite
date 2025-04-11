@@ -11,10 +11,12 @@ public class SoundManager : MonoBehaviour
         
     [SerializeField] private bool _scenePersistent;
     [SerializeField] private MusicPool _musicPool;
+    [SerializeField] private MusicModifier _musicModifier;
     [SerializeField] private SfxPool _sfxPool;
     [SerializeField] private SfxDefaults _sfxDefaults;
 
     public static MusicPool Music => Instance._musicPool;
+    public static MusicModifier MusicModifier => Instance._musicModifier;
     public static SfxPool Sfx => Instance._sfxPool;
     public static SfxDefaults SfxDefaults => Instance._sfxDefaults;
 
@@ -69,6 +71,11 @@ public class SoundManager : MonoBehaviour
             }
         }
         _musicPool.BuildInitialPool();
+        if (_musicModifier == null)
+        {
+            _musicModifier = _musicPool.gameObject.AddComponent<MusicModifier>();
+        }
+
         if (_sfxPool == null)
         {
             _sfxPool = GetComponentInChildren<SfxPool>();
@@ -78,11 +85,11 @@ public class SoundManager : MonoBehaviour
                 _sfxPool.transform.SetParent(transform);
             }
         }
+        _sfxPool.BuildInitialPool();
         if (_sfxDefaults == null)
         {
             _sfxDefaults = _sfxPool.gameObject.AddComponent<SfxDefaults>();
         }
-        _sfxPool.BuildInitialPool();
     }
 
     public static SfxPlayer PlaySfx(AudioClip clip) => Sfx.Play(clip);
