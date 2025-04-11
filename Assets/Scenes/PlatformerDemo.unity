@@ -5881,15 +5881,13 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 257
-  _groundCheckOffset: 0.8
-  _groundCheckWidth: 0.25
-  _groundCheckDistance: 0.1
-  _ceilingCheckOffset: 0.8
-  _ceilingCheckWidth: 0.25
-  _ceilingCheckDistance: 0.1
-  _wallCheckOffset: 0.5
+  _playerHeight: 1.6
+  _playerWidth: 1
+  _groundOffset: 0.8
+  _groundCheckWidth: 0.3
+  _ceilingCheckWidth: 0.3
   _wallCheckWidth: 0.5
-  _wallCheckDistance: 0.1
+  _wallChecVerticalOffset: 0.2
   _jumpSfx:
     UseClip: 0
     Clip: {fileID: 0}
@@ -5912,14 +5910,14 @@ MonoBehaviour:
   _gravityScale: 0
   _groundCollided: 0
   _groundDistance: 0
-  _coyoteGrounded: 0
   _ceilingCollided: 0
   _ceilingDistance: 0
   _leftWallCollided: 0
   _leftWallDistance: 0
-  _coyoteLeftWall: 0
   _rightWallCollided: 0
   _rightWallDistance: 0
+  _coyoteGrounded: 0
+  _coyoteLeftWall: 0
   _coyoteRightWall: 0
   _jumpInput: 0
   _jumpTimer: 0
@@ -5935,9 +5933,6 @@ MonoBehaviour:
   _isDashAttacking: 0
   _isDashing: 0
   _postDashTimer: 0
-  _climbInput: 0
-  _climbing: 0
-  _sliding: 0
   _facingRight: 0
 --- !u!114 &1399144447
 MonoBehaviour:

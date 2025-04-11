@@ -10,15 +10,13 @@ public class PlayerMovementCustom : MonoBehaviour
 
     [Header("Collisions")]
     [SerializeField] private LayerMask _groundLayer = 1;
-    [SerializeField] private float _groundCheckOffset = 0.8f;
-    [SerializeField] private float _groundCheckWidth = 0.25f;
-    [SerializeField] private float _groundCheckDistance = 0.1f;
-    [SerializeField] private float _ceilingCheckOffset = 0.8f;
-    [SerializeField] private float _ceilingCheckWidth = 0.25f;
-    [SerializeField] private float _ceilingCheckDistance = 0.1f;
-    [SerializeField] private float _wallCheckOffset = 0.5f;
-    [SerializeField] private float _wallCheckWidth = 0.3f;
-    [SerializeField] private float _wallCheckDistance = 0.1f;
+    [SerializeField] private float _playerHeight = 1.6f;
+    [SerializeField] private float _playerWidth = 1.0f;
+    [SerializeField] private float _groundOffset = 0.8f;
+    [SerializeField] private float _groundCheckWidth = 0.3f;
+    [SerializeField] private float _ceilingCheckWidth = 0.3f;
+    [SerializeField] private float _wallCheckWidth = 0.5f;
+    [SerializeField] private float _wallChecVerticalOffset = 0.25f;
 
     [Header("Feedback")]
     [SerializeField] private SfxReference _jumpSfx;
@@ -38,14 +36,15 @@ public class PlayerMovementCustom : MonoBehaviour
     [Header("Debug - Collisions")]
     [SerializeField, ReadOnly] private bool _groundCollided;
     [SerializeField, ReadOnly] private float _groundDistance;
-    [SerializeField, ReadOnly] private float _coyoteGrounded;
     [SerializeField, ReadOnly] private bool _ceilingCollided;
     [SerializeField, ReadOnly] private float _ceilingDistance;
     [SerializeField, ReadOnly] private bool _leftWallCollided;
     [SerializeField, ReadOnly] private float _leftWallDistance;
-    [SerializeField, ReadOnly] private float _coyoteLeftWall;
     [SerializeField, ReadOnly] private bool _rightWallCollided;
     [SerializeField, ReadOnly] private float _rightWallDistance;
+
+    [SerializeField, ReadOnly] private float _coyoteGrounded;
+    [SerializeField, ReadOnly] private float _coyoteLeftWall;
     [SerializeField, ReadOnly] private float _coyoteRightWall;
 
     [Header("Debug - Jump")]
@@ -67,9 +66,6 @@ public class PlayerMovementCustom : MonoBehaviour
     [SerializeField, ReadOnly] private float _postDashTimer;
 
     [Header("Debug - Other")]
-    [SerializeField, ReadOnly] private bool _climbInput;
-    [SerializeField, ReadOnly] private bool _climbing;
-    [SerializeField, ReadOnly] private bool _sliding;
     [SerializeField, ReadOnly] private bool _facingRight;
 
     private Coroutine _dashRoutine;
@@ -81,16 +77,14 @@ public class PlayerMovementCustom : MonoBehaviour
 
     private void Update()
     {
-        CheckFacingDir();
         CheckCollisions();
         UpdateTimers(Time.deltaTime);
         CheckPlayerInput();
         CheckJump();
         CheckDash();
         CheckGravity();
-
-        // Can also go into FixedUpdate
         Run(Time.deltaTime);
+        CheckFacingDir();
 
         // Gravity
         _velocity += Vector3.up * (Physics.gravity.y * _gravityScale * Time.deltaTime);
@@ -99,6 +93,7 @@ public class PlayerMovementCustom : MonoBehaviour
         offset.y = Mathf.Clamp(offset.y, -_groundDistance, _ceilingDistance);
         offset.x = Mathf.Clamp(offset.x, -_leftWallDistance, _rightWallDistance);
         transform.position += offset;
+        if ((_leftWallCollided && _velocity.x < 0) || (_rightWallCollided && _velocity.x > 0)) _velocity.x = 0;
     }
 
     private void SetGravityScale(float gravityScale)
@@ -126,9 +121,9 @@ public class PlayerMovementCustom : MonoBehaviour
         _groundDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
         {
-            if (Physics.Raycast(pos + Vector3.right * _groundCheckWidth * i, Vector3.down, out hitInfo, _groundCheckOffset + 2, _groundLayer))
+            if (Physics.Raycast(pos + Vector3.right * _groundCheckWidth * i, Vector3.down, out hitInfo, _groundOffset + 2, _groundLayer))
             {
-                var dist = hitInfo.distance - _groundCheckOffset;
+                var dist = hitInfo.distance - _groundOffset;
                 if (dist < _groundDistance) _groundDistance = dist;
             }
         }
@@ -136,9 +131,9 @@ public class PlayerMovementCustom : MonoBehaviour
         _ceilingDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
         {
-            if (Physics.Raycast(pos + Vector3.up * _ceilingCheckWidth * i, Vector3.up, out hitInfo, _ceilingCheckOffset + 2, _groundLayer))
+            if (Physics.Raycast(pos + Vector3.up * _ceilingCheckWidth * i, Vector3.up, out hitInfo, (_playerHeight - _groundOffset) + 2, _groundLayer))
             {
-                var dist = hitInfo.distance - _ceilingCheckOffset;
+                var dist = hitInfo.distance - (_playerHeight - _groundOffset);
                 if (dist < _ceilingDistance) _ceilingDistance = dist;
             }
         }
@@ -147,14 +142,15 @@ public class PlayerMovementCustom : MonoBehaviour
         _rightWallDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
         {
-            if (Physics.Raycast(pos + Vector3.up * _wallCheckWidth * i, Vector3.left, out hitInfo, _wallCheckOffset + 2, _groundLayer))
+            var wallPos = pos + Vector3.up * (_wallChecVerticalOffset + _wallCheckWidth * i);
+            if (Physics.Raycast(wallPos, Vector3.left, out hitInfo, _playerWidth * 0.5f + 2, _groundLayer))
             {
-                var dist = hitInfo.distance - _wallCheckOffset;
+                var dist = hitInfo.distance - _playerWidth * 0.5f;
                 if (dist < _leftWallDistance) _leftWallDistance = dist;
             }
-            if (Physics.Raycast(pos + Vector3.up *_wallCheckWidth * i, Vector3.right, out hitInfo, _wallCheckOffset + 2, _groundLayer))
+            if (Physics.Raycast(wallPos, Vector3.right, out hitInfo, _playerWidth * 0.5f + 2, _groundLayer))
             {
-                var dist = hitInfo.distance - _wallCheckOffset;
+                var dist = hitInfo.distance - _playerWidth * 0.5f;
                 if (dist < _rightWallDistance) _rightWallDistance = dist;
             }
         }
@@ -262,7 +258,7 @@ public class PlayerMovementCustom : MonoBehaviour
 
     private void AttemptJump()
     {
-        if (!_isJumping && _coyoteGrounded > 0)
+        if (!_isJumping && (_groundCollided || _coyoteGrounded > 0))
         {
             Jump();
             return;
@@ -309,8 +305,8 @@ public class PlayerMovementCustom : MonoBehaviour
         force.x *= rightWall ? -1 : 1;
         if (Mathf.Sign(_velocity.x) != Mathf.Sign(force.x)) force.x -= _velocity.x;
 
-        if (_velocity.y < 0) force.y -= _velocity.y;
-        _velocity += force;
+        //if (_velocity.y < 0) force.y -= _velocity.y;
+        _velocity = force;
 
         StopDashing();
     }
@@ -415,10 +411,9 @@ public class PlayerMovementCustom : MonoBehaviour
 
     private void CheckGravity()
     {
-        if (_climbing || _isDashAttacking) SetGravityScale(0);
-        else if (_sliding)
+        if (_isDashAttacking)
         {
-            SetGravityScale(_data.gravityScale * _data.slideGravityMult);
+            SetGravityScale(0);
         }
         else if (_velocity.y > 0 && _moveVert < 0)
         {
@@ -446,7 +441,7 @@ public class PlayerMovementCustom : MonoBehaviour
 
     private void Run(float deltaTime)
     {
-        if (_isDashAttacking || _climbing) return;
+        if (_isDashAttacking) return;
 
         float lerpAmount = 1;
         if (_isWallJumping) lerpAmount = _data.wallJumpRunLerp;
@@ -481,16 +476,19 @@ public class PlayerMovementCustom : MonoBehaviour
     private void OnDrawGizmos()
     {
         var pos = transform.position;
-        Gizmos.color = Color.blue;
+        Gizmos.color = Color.red;
         for (int i = -1; i <= 1; i++)
         {
-            Gizmos.DrawRay(pos + Vector3.down * _groundCheckOffset + Vector3.right * _groundCheckWidth * i, Vector3.down * _groundCheckDistance);
-            Gizmos.DrawRay(pos + Vector3.up * _ceilingCheckOffset + Vector3.right * _ceilingCheckWidth * i, Vector3.up * _ceilingCheckDistance);
-            Gizmos.DrawRay(pos + Vector3.left * _wallCheckOffset + Vector3.up * _wallCheckWidth * i, Vector3.left * _wallCheckDistance);
-            Gizmos.DrawRay(pos + Vector3.right * _wallCheckOffset + Vector3.up * _wallCheckWidth * i, Vector3.right * _wallCheckDistance);
+            Gizmos.DrawRay(pos + Vector3.down * _groundOffset + Vector3.right * _groundCheckWidth * i, Vector3.down * 0.1f);
+            Gizmos.DrawRay(pos + Vector3.up * (_playerHeight - _groundOffset) + Vector3.right * _ceilingCheckWidth * i, Vector3.up * 0.1f);
+            Gizmos.DrawRay(pos + Vector3.left * _playerWidth * 0.5f + Vector3.up * (_wallChecVerticalOffset + _wallCheckWidth * i), Vector3.left * 0.1f);
+            Gizmos.DrawRay(pos + Vector3.right * _playerWidth * 0.5f + Vector3.up * (_wallChecVerticalOffset + _wallCheckWidth * i), Vector3.right * 0.1f);
         }
+        pos += Vector3.up * (_playerHeight * 0.5f - _groundOffset);
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(pos, new Vector3(_wallCheckOffset * 2f, _groundCheckOffset * 2f, 0f));
+        Gizmos.DrawWireCube(pos, new Vector3(_playerWidth, _playerHeight, 0f));
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(pos, _velocity);
     }
 #endif
 
