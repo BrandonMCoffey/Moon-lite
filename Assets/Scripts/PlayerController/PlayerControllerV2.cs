@@ -2,41 +2,45 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-// Structure to hold raycast origin points
-public struct RaycastOrigins
+// Structure to hold raycast origin points in 3D
+public struct RaycastOrigins3D
 {
-    public Vector2 TopLeft, TopRight;
-    public Vector2 BottomLeft, BottomRight;
+    public Vector3 TopLeft; 
+    public Vector3 TopRight;
+    public Vector3 BottomLeft;
+    public Vector3 BottomRight;
 }
 
 public class PlayerControllerV2 : MonoBehaviour
 {
     [SerializeField] PCStats _stats;
     [SerializeField] LayerMask _collisionMask;
-    [SerializeField] Vector2 _colliderSize = new Vector2(0.5f, 1.5f); // Treat this as half-extents if using center below
-    [SerializeField] float _skinWidth = 0.01f; // Reduced slightly, often helps with precision
+    [Header("3D Collider Settings")]
+    [SerializeField] Vector3 _colliderSize = new Vector3(1f, 2f, 1f);
+    [SerializeField] Vector3 _colliderCenterOffset = Vector3.zero;
+    [SerializeField] float _skinWidth = 0.015f; 
     [SerializeField] int _horizontalRayCount = 4;
     [SerializeField] int _verticalRayCount = 4;
 
     [Header("Debug")]
-    [SerializeField, ReadOnly] Vector2 _velocity;
+    [SerializeField, ReadOnly] Vector3 _velocity;
     [SerializeField, ReadOnly] Vector2 _input;
     [SerializeField, ReadOnly] bool _grounded;
-    [SerializeField, ReadOnly] bool _wasGroundedLastFrame; 
+    [SerializeField, ReadOnly] bool _wasGroundedLastFrame;
     [SerializeField, ReadOnly] bool _jumpHeld;
     [SerializeField, ReadOnly] bool _jumpPressed;
     [SerializeField, ReadOnly] bool _jumpReleased;
-    [SerializeField, ReadOnly] Vector2 _position; 
+    [SerializeField, ReadOnly] Vector3 _position; 
+    float _initialZPosition; 
 
-    // Pre-calculate ray spacing
     float _horizontalRaySpacing;
     float _verticalRaySpacing;
-    BoxCollider2D _collider; // Optional: Use a BoxCollider2D for bounds reference
-    RaycastOrigins _raycastOrigins;
+    BoxCollider _collider; 
+    RaycastOrigins3D _raycastOrigins; 
 
-    public Vector2 Velocity => _velocity; 
+    public Vector3 Velocity => _velocity; 
     public Vector2 Input => _input;
-    public bool IsGrounded => _grounded; 
+    public bool IsGrounded => _grounded;
 
     public event Action<bool, float> GroundedChanged;
     public event Action Jumped;
@@ -47,10 +51,18 @@ public class PlayerControllerV2 : MonoBehaviour
     void Awake()
     {
         _position = transform.position;
-        _collider = GetComponent<BoxCollider2D>();
+        _initialZPosition = _position.z;
+
+        _collider = GetComponent<BoxCollider>();
         if (_collider == null)
         {
-            Debug.LogWarning("PlayerControllerV2 expects a BoxCollider2D component for bounds reference (though not strictly required for raycasting).");
+            Debug.LogWarning("PlayerControllerV2 expects a BoxCollider component. Attempting to use serialized size/offset.");
+            // If using serialized size without a collider component, ensure _colliderSize and _colliderCenterOffset are accurate.
+        }
+        else
+        {
+            // _colliderSize = _collider.size;
+            // _colliderCenterOffset = _collider.center;
         }
         CalculateRaySpacing();
     }
@@ -59,6 +71,7 @@ public class PlayerControllerV2 : MonoBehaviour
     {
         _wasGroundedLastFrame = _grounded;
         _position = transform.position;
+        _position.z = _initialZPosition;
 
         // 1. Calculate Ray Origins based on current position
         UpdateRaycastOrigins();
@@ -75,16 +88,17 @@ public class PlayerControllerV2 : MonoBehaviour
         HandleJump();
         HandleJumpCut();
 
-        // 6. Apply Gravity
+        // 6. Apply Gravity (Only affects Y axis)
         ApplyGravity();
 
-        // 7. Calculate Horizontal Velocity
-        CalculateHorizontalVelocity(); // Renamed for clarity
+        // 7. Calculate Horizontal Velocity (Only affects X axis)
+        CalculateHorizontalVelocity();
 
-        // 8. Move and Resolve Collisions
+        // 8. Move and Resolve Collisions (using Vector3 velocity)
         MoveAndSlide(_velocity * Time.deltaTime);
 
-        // 9. Update Transform Position
+        // 9. Update Transform Position (Constraining Z)
+        _position.z = _initialZPosition; 
         transform.position = _position;
 
         // 10. Trigger Grounded Changed Event if state changed
@@ -98,20 +112,17 @@ public class PlayerControllerV2 : MonoBehaviour
     void GatherInput()
     {
         float x = UnityEngine.Input.GetAxisRaw("Horizontal");
-        float y = UnityEngine.Input.GetAxisRaw("Vertical");
+        // float y = UnityEngine.Input.GetAxisRaw("Vertical");
 
-        // Apply deadzone
         if (Mathf.Abs(x) < _stats.HorizontalDeadZoneThreshold) x = 0;
-        if (Mathf.Abs(y) < _stats.VerticalDeadZoneThreshold) y = 0; // Only if using y input
 
-      
         if (_stats.SnapInput && x != 0)
         {
             x = Mathf.Sign(x);
         }
-        if (_stats.SnapInput && y != 0) y = Mathf.Sign(y); // Only if using y input
 
-        _input = new Vector2(x, y);
+        _input = new Vector2(x, 0); 
+        // _input = new Vector2(x, y); 
 
         _jumpPressed = UnityEngine.Input.GetButtonDown("Jump");
         _jumpHeld = UnityEngine.Input.GetButton("Jump");
@@ -124,7 +135,7 @@ public class PlayerControllerV2 : MonoBehaviour
         {
             _coyoteTimer = _stats.CoyoteTime;
         }
-        else if (_coyoteTimer > 0) 
+        else if (_coyoteTimer > 0)
         {
             _coyoteTimer -= Time.deltaTime;
         }
@@ -142,7 +153,6 @@ public class PlayerControllerV2 : MonoBehaviour
         _coyoteTimer = Mathf.Max(0, _coyoteTimer);
         _jumpBufferTimer = Mathf.Max(0, _jumpBufferTimer);
     }
-
 
     void HandleJump()
     {
@@ -165,36 +175,33 @@ public class PlayerControllerV2 : MonoBehaviour
         _wasGroundedLastFrame = false;
     }
 
-
     void HandleJumpCut()
     {
-        if (_jumpReleased && _velocity.y > 0)
-        {
-            // You can either multiply or set to a smaller value
-            // Setting might give more consistent short hop heights
-            _velocity.y *= 0.5f; // Or _velocity.y = _velocity.y * (1 - _stats.JumpCutMultiplier);
-            // Alternative: Apply stronger gravity instantly
-            // This is handled by the gravity multiplier below now.
-        }
+         if (_jumpReleased && _velocity.y > 0)
+         {
+            _velocity.y *= 0.5f;
+         }
 
-        if (_velocity.y < 0 || (_velocity.y > 0 && !_jumpHeld))
-        {
-            _velocity.y -= _stats.Gravity * _stats.JumpEndEarlyGravityModifier * Time.deltaTime;
-        }
+         // Apply stronger gravity if falling OR if jump button released early
+         // Note: Using _stats.Gravity directly here, ensure PCStats has appropriate 3D gravity value
+         if (_velocity.y < 0 || (_velocity.y > 0 && !_jumpHeld))
+         {
+            // This modifier should ideally be controlled by PCStats
+            float gravityMultiplier = _stats.JumpEndEarlyGravityModifier > 0 ? _stats.JumpEndEarlyGravityModifier : 1f;
+            _velocity.y -= _stats.Gravity * gravityMultiplier * Time.deltaTime;
+         }
     }
-
 
     void ApplyGravity()
     {
-        // Apply standard gravity if not grounded or moving upwards
         if (!_grounded)
         {
-            if (!(_velocity.y > 0 && !_jumpHeld)) 
-            {
-            _velocity.y -= _stats.Gravity * Time.deltaTime;
-            }
+             if (!(_velocity.y > 0 && !_jumpHeld))
+             {
+                _velocity.y -= _stats.Gravity * Time.deltaTime;
+             }
         }
-        else if (_velocity.y <= 0) 
+        else if (_velocity.y <= 0)
         {
             _velocity.y = -_stats.StickToGroundForce;
         }
@@ -216,39 +223,36 @@ public class PlayerControllerV2 : MonoBehaviour
         {
             _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deceleration * Time.deltaTime);
         }
+        // Clamp X velocity
         _velocity.x = Mathf.Clamp(_velocity.x, -_stats.MaxSpeed, _stats.MaxSpeed);
+         // Ensure Z velocity is always zero
+        _velocity.z = 0;
     }
 
 
     Bounds GetColliderBounds()
     {
-        // Assuming _position is the center of the player
-        return new Bounds(_position, _colliderSize);
-
-
-        // If _position is bottom-center, adjust calculation:
-        // return new Bounds(_position + Vector2.up * _colliderSize.y * 0.5f, _colliderSize);
+        Vector3 center = _position + _colliderCenterOffset;
+        return new Bounds(center, _colliderSize);
     }
 
     void UpdateRaycastOrigins()
     {
         Bounds bounds = GetColliderBounds();
-        // Apply skin width inset
         bounds.Expand(_skinWidth * -2);
 
-        _raycastOrigins.BottomLeft = new Vector2(bounds.min.x, bounds.min.y);
-        _raycastOrigins.BottomRight = new Vector2(bounds.max.x, bounds.min.y);
-        _raycastOrigins.TopLeft = new Vector2(bounds.min.x, bounds.max.y);
-        _raycastOrigins.TopRight = new Vector2(bounds.max.x, bounds.max.y);
+        _raycastOrigins.BottomLeft = new Vector3(bounds.min.x, bounds.min.y, bounds.center.z);
+        _raycastOrigins.BottomRight = new Vector3(bounds.max.x, bounds.min.y, bounds.center.z);
+        _raycastOrigins.TopLeft = new Vector3(bounds.min.x, bounds.max.y, bounds.center.z);
+        _raycastOrigins.TopRight = new Vector3(bounds.max.x, bounds.max.y, bounds.center.z);
+        // Using bounds.center.z assumes rays cast from the middle depth.
     }
 
     void CalculateRaySpacing()
     {
         Bounds bounds = GetColliderBounds();
-        // Apply skin width inset
         bounds.Expand(_skinWidth * -2);
 
-        // Ensure at least 2 rays
         _horizontalRayCount = Mathf.Max(2, _horizontalRayCount);
         _verticalRayCount = Mathf.Max(2, _verticalRayCount);
 
@@ -258,28 +262,34 @@ public class PlayerControllerV2 : MonoBehaviour
 
     void CheckCollisions()
     {
-        _grounded = false; 
-        float rayLength = _skinWidth + 0.1f; 
+        _grounded = false;
+        float rayLength = _skinWidth + 0.5f; 
 
         for (int i = 0; i < _verticalRayCount; i++)
         {
-            Vector2 rayOrigin = _raycastOrigins.BottomLeft + Vector2.right * (_verticalRaySpacing * i);
-            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength, _collisionMask);
+            Vector3 rayOrigin = _raycastOrigins.BottomLeft + Vector3.right * (_verticalRaySpacing * i);
 
-            Debug.DrawRay(rayOrigin, Vector2.down * rayLength, Color.red); 
+            bool hitDetected = Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, rayLength, _collisionMask);
 
-            if (hit)
+            Debug.DrawRay(rayOrigin, Vector3.down * rayLength, Color.red);
+
+            if (hitDetected)
             {
                 _grounded = true;
                 
                 _position.y = hit.point.y + _skinWidth;
-                break; 
+                if (_velocity.y < 0)
+                {
+                    _velocity.y = -_stats.StickToGroundForce; 
+                }
+
+                break;
             }
         }
     }
 
 
-    void MoveAndSlide(Vector2 moveAmount)
+    void MoveAndSlide(Vector3 moveAmount) 
     {
         UpdateRaycastOrigins(); 
 
@@ -290,24 +300,18 @@ public class PlayerControllerV2 : MonoBehaviour
 
             for (int i = 0; i < _horizontalRayCount; i++)
             {
-                Vector2 rayOrigin = (directionX == -1) ? _raycastOrigins.BottomLeft : _raycastOrigins.BottomRight;
-                rayOrigin += Vector2.up * (_horizontalRaySpacing * i);
+                Vector3 rayOrigin = (directionX == -1) ? _raycastOrigins.BottomLeft : _raycastOrigins.BottomRight;
+                rayOrigin += Vector3.up * (_horizontalRaySpacing * i);
+                RaycastHit hit;
 
-                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, _collisionMask);
-                Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.blue); // Visualize rays
-
-                if (hit)
+                if (Physics.Raycast(rayOrigin, Vector3.right * directionX, out hit, rayLength, _collisionMask))
                 {
-                    // --- Check for slope handling here if needed ---
-                    // float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
-
+                    // Adjust X move amount
                     moveAmount.x = (hit.distance - _skinWidth) * directionX;
-                    rayLength = hit.distance; 
-                    _velocity.x = 0;
-
-                    // break; 
-                    // Removed break to handle multiple hits potentially (though less common with adjusted rayLength)
+                    rayLength = hit.distance; // Prevent hitting further objects
+                    _velocity.x = 0; // Stop horizontal velocity
                 }
+                 Debug.DrawRay(rayOrigin, Vector3.right * directionX * rayLength, Color.blue);
             }
         }
         _position.x += moveAmount.x; 
@@ -320,48 +324,48 @@ public class PlayerControllerV2 : MonoBehaviour
 
             for (int i = 0; i < _verticalRayCount; i++)
             {
-                Vector2 rayOrigin = (directionY == -1) ? _raycastOrigins.BottomLeft : _raycastOrigins.TopLeft;
-                rayOrigin += Vector2.right * (_verticalRaySpacing * i + moveAmount.x); // Adjust origin by horizontal move
+                Vector3 rayOrigin = (directionY == -1) ? _raycastOrigins.BottomLeft : _raycastOrigins.TopLeft;
+                rayOrigin += Vector3.right * (_verticalRaySpacing * i + moveAmount.x);
+                RaycastHit hit;
 
-                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, _collisionMask);
-                Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.green); // Visualize rays
-
-                if (hit)
+                if (Physics.Raycast(rayOrigin, Vector3.up * directionY, out hit, rayLength, _collisionMask))
                 {
                     moveAmount.y = (hit.distance - _skinWidth) * directionY;
                     rayLength = hit.distance; // Prevent hitting further objects
-                    // Stop vertical velocity only if hitting something opposite to gravity or desired direction
-                    // Ground collision stopping is handled by ApplyGravity setting velocity to StickForce
-                    if (directionY > 0 || _velocity.y < 0) // Stop if moving up into ceiling OR moving down into ground
+
+                    if (directionY > 0 || (directionY < 0 && _velocity.y < 0))
                     {
                         _velocity.y = 0;
                     }
                     if (directionY < 0)
                     {
-                        _grounded = true; 
+                        _grounded = true;
                     }
                 }
+                 Debug.DrawRay(rayOrigin, Vector3.up * directionY * rayLength, Color.green);
             }
         }
-         _position.y += moveAmount.y;
+        _position.y += moveAmount.y; 
+
     }
 
     void OnDrawGizmos()
     {
-        if (!Application.isPlaying)
-        {
-            _position = transform.position; 
-            CalculateRaySpacing();
-        }
+        Vector3 currentPosition = Application.isPlaying ? _position : transform.position;
+        currentPosition.z = Application.isPlaying ? _initialZPosition : transform.position.z; 
 
-        // Draw Collider Bounds
+
         Gizmos.color = Color.yellow;
-        Bounds bounds = GetColliderBounds();
-        Gizmos.DrawWireCube(bounds.center, bounds.size);
+        Vector3 boundsCenter = currentPosition + _colliderCenterOffset;
+        Gizmos.DrawWireCube(boundsCenter, _colliderSize);
 
-        // Draw Ray Origins
+
+        // Need to calculate spacing based on non-playing state if needed for editor drawing
+        // but UpdateRaycastOrigins relies on playing state _position. It's complex to fully replicate outside play mode.
+        if (!Application.isPlaying) return;
+
         Gizmos.color = Color.cyan;
-        UpdateRaycastOrigins();
+        UpdateRaycastOrigins(); 
         Gizmos.DrawSphere(_raycastOrigins.BottomLeft, 0.05f);
         Gizmos.DrawSphere(_raycastOrigins.BottomRight, 0.05f);
         Gizmos.DrawSphere(_raycastOrigins.TopLeft, 0.05f);
