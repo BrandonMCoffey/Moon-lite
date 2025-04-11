@@ -1,6 +1,4 @@
-using CoffeyUtils;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +10,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private CanvasGroup _mainMenu;
     [SerializeField] private CanvasGroup _options;
     [SerializeField] private CanvasGroup _credits;
+    [SerializeField] private CanvasGroup _fadeout;
 
     private CanvasGroup _current;
     private bool _transitioning;
@@ -19,15 +18,18 @@ public class MainMenuController : MonoBehaviour
     private void Start()
     {
         _current = _splashScreen;
-        _splashScreen.interactable = true;
-        _splashScreen.alpha = 1;
-        _mainMenu.interactable = false;
-        _mainMenu.alpha = 0;
-        _options.interactable = false;
-        _options.alpha = 0;
-        _credits.interactable = false;
-        _credits.alpha = 0;
+        SetGroupActive(_splashScreen, true);
+        SetGroupActive(_mainMenu, false);
+        SetGroupActive(_options, false);
+        SetGroupActive(_credits, false);
         MouseControllerManager.UpdateSelected(_firstSelected);
+    }
+
+    private void SetGroupActive(CanvasGroup group, bool active)
+    {
+        group.alpha = active ? 1 : 0;
+        group.interactable = active;
+        group.blocksRaycasts = active;
     }
 
     public void SwitchToSplashScreen() => SwitchToMenu(_splashScreen);
@@ -48,6 +50,25 @@ public class MainMenuController : MonoBehaviour
 
     public void StartGame()
     {
+        StartCoroutine(StartGameRoutine());
+    }
+
+    private IEnumerator StartGameRoutine()
+    {
+        _mainMenu.interactable = false;
+        _mainMenu.blocksRaycasts = false;
+        MouseControllerManager.UpdateSelected(null);
+        SoundManager.StopAllMusic();
+        for (float t = 0; t < 1; t += Time.deltaTime)
+        {
+            _fadeout.alpha = t;
+            yield return null;
+        }
+        LoadGame();
+    }
+
+    private void LoadGame()
+    {
         SceneManager.LoadScene(1);
     }
 
@@ -64,6 +85,7 @@ public class MainMenuController : MonoBehaviour
         _transitioning = true;
         MouseControllerManager.UpdateSelected(null);
         _current.interactable = false;
+        _current.blocksRaycasts = false;
 
         float mult = 1f / _blendMenuTime;
         for (float t = 0; t < 1f; t += Time.deltaTime * mult)
@@ -81,6 +103,7 @@ public class MainMenuController : MonoBehaviour
         next.alpha = 1;
 
         next.interactable = true;
+        next.blocksRaycasts = true;
         MouseControllerManager.UpdateSelected(_firstSelected);
         _transitioning = false;
     }
