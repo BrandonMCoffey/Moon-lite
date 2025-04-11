@@ -87,19 +87,15 @@ public class PlayerMovementCustom : MonoBehaviour
         CheckPlayerInput();
         CheckJump();
         CheckDash();
-        CheckClimbing();
-        CheckSliding();
         CheckGravity();
-    }
 
-    private void FixedUpdate()
-    {
-        Run(Time.fixedDeltaTime);
-        Climb();
+        // Can also go into FixedUpdate
+        Run(Time.deltaTime);
+
         // Gravity
-        _velocity += Vector3.up * (Physics.gravity.y * _gravityScale * Time.fixedDeltaTime);
+        _velocity += Vector3.up * (Physics.gravity.y * _gravityScale * Time.deltaTime);
         if (_groundCollided && _velocity.y < 0) _velocity.y = 0;
-        Vector3 offset = _velocity * Time.fixedDeltaTime;
+        Vector3 offset = _velocity * Time.deltaTime;
         offset.y = Mathf.Clamp(offset.y, -_groundDistance, _ceilingDistance);
         offset.x = Mathf.Clamp(offset.x, -_leftWallDistance, _rightWallDistance);
         transform.position += offset;
@@ -227,8 +223,6 @@ public class PlayerMovementCustom : MonoBehaviour
     {
         _moveHorz = Input.GetAxisRaw("Horizontal");
         _moveVert = Input.GetAxisRaw("Vertical");
-
-        _climbInput = Input.GetButton("Climb");
 
         var jumpInput = Input.GetButton("Jump");
         if (jumpInput != _jumpInput)
@@ -419,30 +413,6 @@ public class PlayerMovementCustom : MonoBehaviour
         _dashRoutine = null;
     }
 
-    private void CheckClimbing()
-    {
-        if (_isJumping || _isWallJumping || _isDashing)
-        {
-            _climbing = false;
-            return;
-        }
-        bool hugLeft = _coyoteLeftWall > 0 && _moveHorz <= 0;
-        bool hugRight = _coyoteRightWall > 0 && _moveHorz >= 0;
-        _climbing = _climbInput && (hugLeft || hugRight);
-    }
-
-    private void CheckSliding()
-    {
-        if (_isJumping || _isWallJumping || _isDashing || _climbing)
-        {
-            _sliding = false;
-            return;
-        }
-        bool hugLeft = _coyoteLeftWall > 0 && (_sliding || _velocity.x < 0);// && InputManager.MoveDir.x < 0;
-        bool hugRight = _coyoteRightWall > 0 && (_sliding || _velocity.x > 0);// && InputManager.MoveDir.x > 0;
-        _sliding = hugLeft || hugRight;
-    }
-
     private void CheckGravity()
     {
         if (_climbing || _isDashAttacking) SetGravityScale(0);
@@ -505,24 +475,6 @@ public class PlayerMovementCustom : MonoBehaviour
         float movement = speedDif * accelRate;
 
         _velocity += Vector3.right * movement * deltaTime;
-    }
-
-    private void Climb()
-    {
-        if (!_climbing) return;
-
-        float targetSpeed = _moveVert * _data.climbSpeed;
-
-        float speedDif = targetSpeed - _velocity.y;
-        float movement = speedDif * _data.climbAccel;
-
-        float maxValue = Mathf.Abs(speedDif) * 1f / Time.fixedDeltaTime;
-        movement = Mathf.Clamp(movement, -maxValue, maxValue);
-
-        _velocity += Vector3.up * movement;
-
-        var dir = _coyoteRightWall > 0 ? Vector3.right : Vector3.left;
-        _velocity += dir;
     }
 
 #if UNITY_EDITOR
