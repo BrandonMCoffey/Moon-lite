@@ -249,13 +249,13 @@ public class PlayerControllerGemini : MonoBehaviour
         // Apply acceleration, clamping the change to avoid overshooting
         Vector3 force = Vector3.ClampMagnitude(velocityChange, accelRate * Time.fixedDeltaTime);
 
-        rb.AddForce(force, ForceMode.VelocityChange); // Use VelocityChange for snappier control
+        //rb.AddForce(force, ForceMode.VelocityChange); // Use VelocityChange for snappier control
 
         // --- Direct Velocity Setting (Alternative - Simpler but less smooth) ---
-        // float targetSpeedX = horizontalInput * currentSpeed;
-        // float targetSpeedZ = verticalInput * currentSpeed;
+        float targetSpeedX = horizontalInput * currentSpeed;
+        float targetSpeedZ = verticalInput * currentSpeed;
         // Apply movement velocity, keeping existing Y velocity
-        // rb.velocity = new Vector3(targetSpeedX, rb.velocity.y, targetSpeedZ);
+        rb.velocity = new Vector3(targetSpeedX, rb.velocity.y, targetSpeedZ);
     }
 
     #endregion
@@ -329,7 +329,7 @@ public class PlayerControllerGemini : MonoBehaviour
         else if (!isGrounded && !isJetpacking && !isGrappling && !isDashing) // Apply standard gravity if just in the air
         {
             // We can rely on standard Rigidbody gravity or add a custom gravity scale here if needed
-            // rb.AddForce(Physics.gravity * rb.mass); // Standard gravity already applied by Unity Physics
+            rb.AddForce(Physics.gravity * rb.mass); // Standard gravity already applied by Unity Physics
         }
     }
 
