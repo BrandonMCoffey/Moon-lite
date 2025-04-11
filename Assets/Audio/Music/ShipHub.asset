@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beff67ee1f7168044991f62a29294814, type: 3}
+  m_Name: ShipHub
+  m_EditorClassIdentifier: 
+  _track: {fileID: 8300000, guid: 34341b606c5440d4e97d122084b060fa, type: 3}
+  _trackLength: 108.04245
+  _volume: 0.15
+  _mixerGroup: {fileID: 8802638327617507614, guid: 6dbd7035bf61c3e4398bde27c45617ec,
+    type: 2}
+  _queueTrackNextWhenPlayed: {fileID: 11400000}
+  _startTimeIfLooping: 4
+  _fromEndWhenToPlayNextSong: 4
+  _fromStartWhenToPlayNextSong: 104.04245
+  _volumeFadeAtStart: 1
+  _volumeFadeStartTime: 2
+  _volumeFadeStartCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _volumeFadeAtEnd: 1
+  _volumeFadeEndTime: 2
+  _volumeFadeEndCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
