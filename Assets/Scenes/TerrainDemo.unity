@@ -10178,6 +10178,7 @@ MonoBehaviour:
   _itemPrefab: {fileID: 1581836335077417545, guid: 673b3f64dfef2324296f438bcc99926e,
     type: 3}
   _itemPoolSize: 100
+  _actualSize: 0
 --- !u!1001 &900150982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15636,7 +15637,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132531721}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15735,7 +15736,7 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
+  m_FocalLength: 20.78461
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -15745,7 +15746,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 10
   m_Depth: -1
   m_CullingMask:
@@ -20869,8 +20870,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d21b89b942f3e34ca2143e524121ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _world: {fileID: 1686670611}
   _single: 0
   _radius: 3
+  _destroyTime: 0.05
 --- !u!4 &1758551105
 Transform:
   m_ObjectHideFlags: 0

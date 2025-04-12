@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class DroppedItemManager : MonoBehaviour
 {
     [SerializeField] private DroppedItem _itemPrefab;
     [SerializeField] private int _itemPoolSize;
+    [SerializeField, ReadOnly] private int _actualSize;
 
     private static DroppedItemManager _instance;
 
@@ -21,6 +23,7 @@ public class DroppedItemManager : MonoBehaviour
             item.gameObject.SetActive(false);
             _itemPool.Add(item);
         }
+        _actualSize = _itemPoolSize;
     }
 
     public void SpawnDroppedItem(Vector3 location, ItemData itemData)
@@ -40,6 +43,7 @@ public class DroppedItemManager : MonoBehaviour
         }
         else
         {
+            _actualSize++;
             return Instantiate(_itemPrefab, transform);
         }
     }

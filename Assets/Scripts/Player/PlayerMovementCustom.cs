@@ -89,6 +89,13 @@ public class PlayerMovementCustom : MonoBehaviour
 
         // Gravity
         _velocity += Vector3.up * (Physics.gravity.y * _gravityScale * Time.deltaTime);
+
+        if (_ceilingCollided && _velocity.y > 0)
+        {
+            _velocity.y = 0;
+            _isJumping = false;
+        }
+        _velocity.y = Mathf.Clamp(_velocity.y, -20, 20);
         if (_groundCollided && _velocity.y < 0) _velocity.y = 0;
         Vector3 offset = _velocity * Time.deltaTime;
         offset.y = Mathf.Clamp(offset.y, -_groundDistance, _ceilingDistance);
@@ -119,37 +126,40 @@ public class PlayerMovementCustom : MonoBehaviour
     {
         var pos = transform.position;
         RaycastHit hitInfo;
+
         _groundDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
         {
-            if (Physics.Raycast(pos + Vector3.right * _groundCheckWidth * i, Vector3.down, out hitInfo, _groundOffset + 2, _groundLayer))
+            if (Physics.Raycast(pos + Vector3.right * _groundCheckWidth * i, Vector3.down, out hitInfo, _groundOffset + 2, _groundLayer, QueryTriggerInteraction.Ignore))
             {
                 var dist = hitInfo.distance - _groundOffset;
                 if (dist < _groundDistance) _groundDistance = dist;
             }
         }
         bool grounded = _groundDistance < 0.05f;
+
         _ceilingDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
         {
-            if (Physics.Raycast(pos + Vector3.up * _ceilingCheckWidth * i, Vector3.up, out hitInfo, (_playerHeight - _groundOffset) + 2, _groundLayer))
+            if (Physics.Raycast(pos + Vector3.up * _ceilingCheckWidth * i, Vector3.up, out hitInfo, (_playerHeight - _groundOffset) + 2, _groundLayer, QueryTriggerInteraction.Ignore))
             {
                 var dist = hitInfo.distance - (_playerHeight - _groundOffset);
                 if (dist < _ceilingDistance) _ceilingDistance = dist;
             }
         }
         bool ceiling = _ceilingDistance < 0.05f;
+
         _leftWallDistance = Mathf.Infinity;
         _rightWallDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
         {
             var wallPos = pos + Vector3.up * (_wallChecVerticalOffset + _wallCheckWidth * i);
-            if (Physics.Raycast(wallPos, Vector3.left, out hitInfo, _playerWidth * 0.5f + 2, _groundLayer))
+            if (Physics.Raycast(wallPos, Vector3.left, out hitInfo, _playerWidth * 0.5f + 2, _groundLayer, QueryTriggerInteraction.Ignore))
             {
                 var dist = hitInfo.distance - _playerWidth * 0.5f;
                 if (dist < _leftWallDistance) _leftWallDistance = dist;
             }
-            if (Physics.Raycast(wallPos, Vector3.right, out hitInfo, _playerWidth * 0.5f + 2, _groundLayer))
+            if (Physics.Raycast(wallPos, Vector3.right, out hitInfo, _playerWidth * 0.5f + 2, _groundLayer, QueryTriggerInteraction.Ignore))
             {
                 var dist = hitInfo.distance - _playerWidth * 0.5f;
                 if (dist < _rightWallDistance) _rightWallDistance = dist;
@@ -235,7 +245,7 @@ public class PlayerMovementCustom : MonoBehaviour
             _dashInput = dashInput;
             if (dashInput) _dashTimer = _data.dashInputBufferTime;
         }
-        _jetpackInput = Input.GetButton("Jetpack");
+        _jetpackInput = Input.GetButton("Jump");
     }
 
     private void CheckJump()
