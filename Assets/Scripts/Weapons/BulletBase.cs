@@ -32,6 +32,24 @@ public class BulletBase : MonoBehaviour
         _startPosition = transform.position;
     }
 
+    // Checks if the bullet spawns inside a wall/collision
+    // NEEDS TO CHECK IF A TILE WAS ACTUALLY DAMAGED TO DESTROY THE BULLET
+    // void Start()
+    // {
+    //     Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+    //     foreach (var hitCollider in hitColliders)
+    //     {
+    //         var chunk = hitCollider.GetComponent<Chunk>();
+    //         if (chunk != null)
+    //         {
+    //             chunk.World.DamageTileAt(transform.position);
+    //             //chunk.World.DamageTileInCircle(transform.position, 2);
+    //             Destroy();
+    //             break; // Exit the loop after handling the first collision
+    //         }
+    //     }
+    // }
+
     private void Update()
     {
         // Apply artificial gravity to the y-axis
@@ -49,27 +67,16 @@ public class BulletBase : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        var chunk = collision.GetComponent<Chunk>();
+        var chunk = collision.gameObject.GetComponent<Chunk>();
         if (chunk != null)
         {
-            Vector3 pointToDestroy = transform.position + (transform.forward * 0.1f);
-            chunk.World.DamageTileInCircle(pointToDestroy, 2);
+            Vector3 pointToDestroy = collision.GetContact(0).point;
+            chunk.World.DamageTileAt(pointToDestroy);
+            //chunk.World.DamageTileInCircle(pointToDestroy,2);
             Destroy();
         }
-        // if (collision.CompareTag("BulletBounds") && !_once)
-        // {
-        //     Destroy();
-        // }
-        // else if (collision.GetComponent<EnemyHealth>() != null)
-        // {
-        //     HandleEnemyCollision(collision);
-        // }
-        // else
-        // {
-        //     Debug.Log($"Hit {collision.name} with bullet {gameObject.name}");
-        // }
     }
 
     public void BulletSetup(Vector3 shootDir, float angle, float shotSpeed, int damage, float knockback, float size, float lifetime, float gravityScale)

@@ -260,7 +260,13 @@ public class PlayerWeaponManager : MonoBehaviour
         {
             StopReloadCoroutines();
 
-            Vector3 aimDirection = (mousePosition - _currentWeapon.transform.position).normalized;
+            // Replace the old aiming code with a raycast (For perspective camera)
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Plane xy = new Plane(Vector3.forward, new Vector3(0, 0, transform.position.z));
+            xy.Raycast(ray, out float distance);
+            var pos = ray.GetPoint(distance);
+            Vector3 aimDirection = (pos - transform.position).normalized;
+
             _currentWeapon.Shoot(aimDirection);
             UpdateAmmoUI();
         }
@@ -343,7 +349,8 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         if (_reloadBar != null)
         {
-            _reloadBar.transform.localScale = new Vector3(progress, _reloadBar.transform.localScale.y, _reloadBar.transform.localScale.z);
+            //  *2 is for the x value of bar's initial scale in the editor
+            _reloadBar.transform.localScale = new Vector3(progress * 2, _reloadBar.transform.localScale.y, _reloadBar.transform.localScale.z);
         }
     }
 
