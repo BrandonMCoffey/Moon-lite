@@ -3,25 +3,25 @@ using UnityEngine;
 
 public class BulletBase : MonoBehaviour
 {
-    [SerializeField] private float _shotSpeed = 5;
-    [SerializeField] private int _damage = 1;
-    [SerializeField] private float _knockback = 3;
-    [SerializeField] private float _size = 1;
-    [SerializeField] private float _lifetime = 3;
-    [SerializeField] private float _gravityScale = 0f; // Artificial gravity scale
+    [SerializeField] protected float _shotSpeed = 5;
+    [SerializeField] protected int _damage = 1;
+    [SerializeField] protected float _knockback = 3;
+    [SerializeField] protected float _size = 1;
+    [SerializeField] protected float _lifetime = 3;
+    [SerializeField] protected float _gravityScale = 0f; // Artificial gravity scale
 
     //[SerializeField] private GameObject _psBloodDirectional;
     //[SerializeField] private GameObject _psBloodCircle;
     //[SerializeField] private GameObject _psOtherDirectional;
 
-    private Rigidbody _rb;
-    private bool _once = false;
-    private SpriteRenderer _sr;
-    //private TrailRenderer _tr;
-    private Vector3 _startPosition;
-    private bool _isVisible = false;
+    protected Rigidbody _rb;
+    protected SpriteRenderer _sr;
+    //protected TrailRenderer _tr;
+    protected Vector3 _startPosition;
+    protected bool _once = false;
+    protected bool _isVisible = false;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _sr = GetComponent<SpriteRenderer>();
@@ -44,13 +44,13 @@ public class BulletBase : MonoBehaviour
     //         {
     //             chunk.World.DamageTileAt(transform.position);
     //             //chunk.World.DamageTileInCircle(transform.position, 2);
-    //             Destroy();
+    //             DestroySelf();
     //             break; // Exit the loop after handling the first collision
     //         }
     //     }
     // }
 
-    private void Update()
+    protected virtual void Update()
     {
         // Apply artificial gravity to the y-axis
         if (_gravityScale != 0f)
@@ -67,19 +67,25 @@ public class BulletBase : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         var chunk = collision.gameObject.GetComponent<Chunk>();
         if (chunk != null)
         {
             Vector3 pointToDestroy = collision.GetContact(0).point;
-            chunk.World.DamageTileAt(pointToDestroy);
-            //chunk.World.DamageTileInCircle(pointToDestroy,2);
-            Destroy();
+            OnHitChunk(chunk, pointToDestroy);
+            DestroySelf();
         }
     }
 
-    public void BulletSetup(Vector3 shootDir, float angle, float shotSpeed, int damage, float knockback, float size, float lifetime, float gravityScale)
+    // Override this to customize chunk hit behavior
+    protected virtual void OnHitChunk(Chunk chunk, Vector3 hitPoint)
+    {
+        chunk.World.DamageTileAt(hitPoint);
+        //chunk.World.DamageTileInCircle(hitPoint,2);
+    }
+
+    public virtual void BulletSetup(Vector3 shootDir, float angle, float shotSpeed, int damage, float knockback, float size, float lifetime, float gravityScale)
     {
         _shotSpeed = shotSpeed;
         _damage = damage;
@@ -113,16 +119,16 @@ public class BulletBase : MonoBehaviour
     //         Instantiate(_psOtherDirectional, hitPoint, Quaternion.Euler(0, 0, angle));
     //     }
 
-    //     Destroy();
+    //     DestroySelf();
     // }
 
-    private IEnumerator DelayedDestroy(float delay)
+    protected virtual IEnumerator DelayedDestroy(float delay)
     {
         yield return new WaitForSeconds(delay);
-        Destroy();
+        DestroySelf();
     }
 
-    private void Destroy()
+    protected virtual void DestroySelf()
     {
         if (!_once)
         {
