@@ -337,7 +337,7 @@ public class WorldGenerator : MonoBehaviour
                 int yDelta = y - yCenter;
                 int sqrDistance = (xDelta * xDelta) + (yDelta * yDelta);
 
-                DamageTileAt(x, y);
+                //DamageTileAt(x, y);
                 if (sqrDistance < range * (range - 1))
                 {
                     DamageTileAt(x, y);
