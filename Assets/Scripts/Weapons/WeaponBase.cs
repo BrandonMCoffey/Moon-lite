@@ -22,13 +22,9 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected int _maxMagSize = 10; // Ammo capacity of the magazine.
     [SerializeField] protected float _reloadTime = 2f; // Time it takes to reload.
     public float ReloadTime => _reloadTime;
-
-    protected int _currentAmmo; // Total ammo left.
     protected int _currentMagAmmo; // Ammo left in the magazine.
 
-    public int MaxAmmo => _maxAmmo;
     public int MaxMagSize => _maxMagSize;
-    public int CurrentAmmo { get => _currentAmmo; set => _currentAmmo = value; }
     public int CurrentMagAmmo { get => _currentMagAmmo; set => _currentMagAmmo = value; }
 
     protected bool _isReloading = false;
@@ -53,17 +49,20 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected float _bulletLifetime = 3f;
     [SerializeField] protected float _bulletGravityScale = 0f;
 
+    [Header("Ammo Consumption")]
+    [SerializeField] protected int _ammoPerShot = 1; // Amount of ammo consumed per shot
+    public int AmmoPerShot => _ammoPerShot;
+
     protected Animator _anim;
     protected SpriteRenderer _sr;
     protected Rigidbody _rb;
     protected Collider _col;
     protected Transform _gunSprite;
-
+    protected PlayerWeaponManager _pwm;
     private Coroutine _reloadCoroutine; // Track the reload coroutine
 
     private void Awake()
     {
-        _currentAmmo = _maxAmmo;
         _currentMagAmmo = _maxMagSize;
 
         _rb = GetComponent<Rigidbody>();
@@ -71,6 +70,7 @@ public abstract class WeaponBase : MonoBehaviour
         _anim = GetComponentInChildren<Animator>();
         _sr = GetComponentInChildren<SpriteRenderer>();
         _gunSprite = transform.Find("GunSprite");
+        _pwm = FindObjectOfType<PlayerWeaponManager>();
         
         _weaponSprite = _sr.sprite;
 
@@ -78,6 +78,11 @@ public abstract class WeaponBase : MonoBehaviour
         if (!_col) Debug.LogWarning($"Collider component is missing on {gameObject.name}");
         if (!_anim) Debug.LogWarning($"Animator component is missing in children of {gameObject.name}");
         if (!_sr) Debug.LogWarning($"SpriteRenderer component is missing in children of {gameObject.name}");
+    }
+
+    void Update()
+    {
+        Debug.Log($"Current Mag Ammo: {_currentMagAmmo}, Ammo Needed: {_maxMagSize - _currentMagAmmo}, Current Ammo Inventory: {_pwm.CurrentAmmoInventory}");
     }
 
     public bool CanShoot()
@@ -171,63 +176,61 @@ public abstract class WeaponBase : MonoBehaviour
         }
     }
 
+    // Overload: original Shoot signature for backwards compatibility
     public virtual void Shoot(Vector3 aimDirection)
     {
-        if (Time.time < _lastFireTime + FireDelay) return;
+        Shoot(aimDirection, null);
+    }
 
-        if (CanShoot())
+    // Now takes an optional override bullet prefab from the manager
+    public virtual void Shoot(Vector3 aimDirection, GameObject overrideBulletPrefab = null)
+    {
+        if (Time.time < _lastFireTime + FireDelay || !CanShoot()) return;
+
+        StopReload();
+        _currentMagAmmo--;
+
+        Vector3 spawnPosition = shootTransform.position;
+        GameObject prefabToUse = overrideBulletPrefab ?? _bulletPrefab;
+
+        Transform bulletInstance = Instantiate(prefabToUse, spawnPosition, Quaternion.identity).transform;
+        float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+        if (bulletInstance.TryGetComponent(out BulletBase bullet))
         {
-            // Stop reload if currently reloading
-            if (_isReloading)
-            {
-                StopReload();
-            }
-
-            _currentMagAmmo--;
-            Vector3 spawnPosition = shootTransform.position;
-            Transform bulletInstance = Instantiate(_bulletPrefab, spawnPosition, Quaternion.identity).transform;
-            float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-
-            BulletBase bullet = bulletInstance.GetComponent<BulletBase>();
-            if (bullet != null)
-            {
-                bullet.BulletSetup(aimDirection, angle, _bulletSpeed, _bulletDamage, _bulletKnockback, _bulletSize, _bulletLifetime, _bulletGravityScale);
-            }
-
-            _lastFireTime = Time.time;
-            OnFired();
+            bullet.BulletSetup(aimDirection, angle, _bulletSpeed, _bulletDamage, _bulletKnockback, _bulletSize, _bulletLifetime, _bulletGravityScale);
         }
+
+        _pwm.SubtractAmmo(_ammoPerShot);
+        _lastFireTime = Time.time;
+        OnFired();
     }
 
     public virtual void Reload()
     {
-        // Allow reloading if the magazine is not full and there is reserve ammo.
-        if (_isReloading || _currentMagAmmo == _maxMagSize || _currentAmmo <= 0) return;
+        // Prevent reload if the magazine is full and there is no reserve ammo or if the remaining ammo exactly matches the current magazine capacity.
+        if (_isReloading || _currentMagAmmo == _maxMagSize || _pwm.CurrentAmmoInventory == _currentMagAmmo) return;
 
         // Start the reload coroutine and store its reference
         _reloadCoroutine = StartCoroutine(ReloadCoroutine());
+
+        _pwm.StartReloadCoroutine();
     }
 
     public IEnumerator ReloadCoroutine()
     {
-        _isReloading = true; // Set reloading state to true.
+        _isReloading = true;
 
-        // Simulate reload time.
         yield return new WaitForSeconds(_reloadTime);
 
         int ammoNeeded = _maxMagSize - _currentMagAmmo;
-        int ammoToReload = Mathf.Min(ammoNeeded, _currentAmmo);
+        int ammoToReload = Mathf.Min(ammoNeeded, _pwm.CurrentAmmoInventory);
 
         _currentMagAmmo += ammoToReload;
-        _currentAmmo -= ammoToReload;
+        _pwm.SubtractAmmo(ammoToReload);
 
-        _isReloading = false; // Reset reloading state after reload is complete.
-        _reloadCoroutine = null; // Clear the coroutine reference
-    }
-
-    public void SetCurrentAmmo(int ammo)
-    {
-        _currentAmmo = Mathf.Clamp(ammo, 0, _maxAmmo);
+        _isReloading = false;
+        _reloadCoroutine = null;
     }
 
     protected void OnFired()

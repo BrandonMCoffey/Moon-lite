@@ -74,8 +74,9 @@ public class BulletBase : MonoBehaviour
         {
             Vector3 pointToDestroy = collision.GetContact(0).point;
             OnHitChunk(chunk, pointToDestroy);
-            DestroySelf();
         }
+
+        DestroySelf();
     }
 
     // Override this to customize chunk hit behavior
@@ -98,7 +99,7 @@ public class BulletBase : MonoBehaviour
         transform.localScale = new Vector3(_size, _size, _size);
         transform.eulerAngles = new Vector3(0, 0, angle);
 
-        _rb.AddForce(shootDir * _shotSpeed, ForceMode.Impulse);
+        _rb.velocity = shootDir * _shotSpeed;
 
         StartCoroutine(DelayedDestroy(_lifetime));
     }

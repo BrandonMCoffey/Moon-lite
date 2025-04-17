@@ -10302,12 +10302,22 @@ MonoBehaviour:
   _weapons:
   - {fileID: 993652387}
   - {fileID: 1747118392}
-  AmmoChangeEvent:
+  MagAmmoChangeEvent:
     m_PersistentCalls:
       m_Calls: []
   WeaponChangeEvent:
     m_PersistentCalls:
       m_Calls: []
+  AmmoTypeChangeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _currentAmmoType: 0
+  _ammoPrefabs:
+  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
+  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
+  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
+  _currentAmmoInventory: 140000000f00000028000000
+  _maxAmmoInventory: f4010000f4010000f4010000
 --- !u!1 &864101991
 GameObject:
   m_ObjectHideFlags: 0

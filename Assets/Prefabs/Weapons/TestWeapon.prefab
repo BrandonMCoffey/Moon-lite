@@ -64,6 +64,7 @@ MonoBehaviour:
   _bulletKnockback: 1
   _bulletLifetime: 3
   _bulletGravityScale: 1
+  _ammoPerShot: 1
 --- !u!65 &2467125778329937797
 BoxCollider:
   m_ObjectHideFlags: 0
