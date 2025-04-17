@@ -80,11 +80,6 @@ public abstract class WeaponBase : MonoBehaviour
         if (!_sr) Debug.LogWarning($"SpriteRenderer component is missing in children of {gameObject.name}");
     }
 
-    void Update()
-    {
-        Debug.Log($"Current Mag Ammo: {_currentMagAmmo}, Ammo Needed: {_maxMagSize - _currentMagAmmo}, Current Ammo Inventory: {_pwm.CurrentAmmoInventory}");
-    }
-
     public bool CanShoot()
     {
         return _currentMagAmmo > 0 && !_isReloading;

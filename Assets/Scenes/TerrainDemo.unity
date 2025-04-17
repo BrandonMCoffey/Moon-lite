@@ -10302,6 +10302,13 @@ MonoBehaviour:
   _weapons:
   - {fileID: 993652387}
   - {fileID: 1747118392}
+  _currentAmmoType: 0
+  _ammoPrefabs:
+  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
+  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
+  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
+  _currentAmmoReserve: f40100000f00000028000000
+  _maxAmmoInventory: f4010000f4010000f4010000
   MagAmmoChangeEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -10311,13 +10318,6 @@ MonoBehaviour:
   AmmoTypeChangeEvent:
     m_PersistentCalls:
       m_Calls: []
-  _currentAmmoType: 0
-  _ammoPrefabs:
-  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
-  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
-  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
-  _currentAmmoInventory: 140000000f00000028000000
-  _maxAmmoInventory: f4010000f4010000f4010000
 --- !u!1 &864101991
 GameObject:
   m_ObjectHideFlags: 0
@@ -10782,6 +10782,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3981067497472620112, guid: c8ccdbb0a402bf140b548f4739fb73a0,
+        type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 34639159
       objectReference: {fileID: 0}
     - target: {fileID: 3981067497677435051, guid: c8ccdbb0a402bf140b548f4739fb73a0,
         type: 3}
