@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using SaiUtils.Extensions;
 
 public class WorldGenerator : MonoBehaviour
 {
+    public static WorldGenerator Instance => _instance;
+    private static WorldGenerator _instance;
+
     public static event System.Action<int, int> OnTileDestroyed = delegate { };
 
     [Header("World Settings")]
@@ -44,9 +45,9 @@ public class WorldGenerator : MonoBehaviour
     public int ChunkSize => _chunkSize;
     private float OffsetX => transform.position.x + (_centerX ? -_width * _tileSizeMult * 0.5f : 0f);
     private float OffsetY => transform.position.y + (_downY ? -_height * _tileSizeMult : 0f);
-    private int WorldToTileX(float worldX) => Mathf.FloorToInt((worldX - OffsetX) * _tilesPerUnit);
-    private int WorldToTileY(float worldY) => Mathf.FloorToInt((worldY - OffsetY) * _tilesPerUnit);
-    private Vector3 TileToWorld(int x, int y, bool center = true) => new Vector3(x * _tileSizeMult + OffsetX + (center ? _tileSizeMult * 0.5f : 0),
+    public int WorldToTileX(float worldX) => Mathf.FloorToInt((worldX - OffsetX) * _tilesPerUnit);
+    public int WorldToTileY(float worldY) => Mathf.FloorToInt((worldY - OffsetY) * _tilesPerUnit);
+    public Vector3 TileToWorld(int x, int y, bool center = true) => new Vector3(x * _tileSizeMult + OffsetX + (center ? _tileSizeMult * 0.5f : 0),
                                                    y * _tileSizeMult + OffsetY + (center ? _tileSizeMult * 0.5f : 0), transform.position.z - 0.5f);
 
     private TileType[,] _grid;
@@ -65,6 +66,11 @@ public class WorldGenerator : MonoBehaviour
     {
         _tileSizeMult = 1f / _tilesPerUnit;
         _chunkCount = Mathf.CeilToInt(_width / _chunkSize) * Mathf.CeilToInt(_height / _chunkSize);
+    }
+
+    private void Awake()
+    {
+        _instance = this;
     }
 
     private void Start()

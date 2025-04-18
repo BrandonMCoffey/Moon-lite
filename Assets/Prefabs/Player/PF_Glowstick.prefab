@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1738573448612976916}
   - component: {fileID: 1738573448612976919}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PF_Glowstick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 7340414021371830842}
   - component: {fileID: 3106291972478847682}
   - component: {fileID: 4785682392877168962}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 4810407933316063651}
   - component: {fileID: 3334542184117978898}
   - component: {fileID: 8816935193128791575}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

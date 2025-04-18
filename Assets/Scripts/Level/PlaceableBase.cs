@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class PlaceableBase : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public virtual void Place()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

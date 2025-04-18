@@ -18,8 +18,8 @@ TagManager:
   - Player
   - Guns
   - 
-  - 
-  - 
+  - Placeable
+  - Throwable
   - Item
   - 
   - 
