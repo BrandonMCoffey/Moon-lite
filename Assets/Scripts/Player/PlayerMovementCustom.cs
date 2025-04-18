@@ -112,13 +112,18 @@ public class PlayerMovementCustom : MonoBehaviour
 
     private void CheckFacingDir()
     {
-        if (_velocity.x == 0) return;
-        bool facingLeft = _velocity.x < 0;
+        var mousePosition = Input.mousePosition;
+        mousePosition.z = Camera.main.nearClipPlane;
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+        Vector3 directionToMouse = worldMousePosition - transform.position;
+        bool facingLeft = directionToMouse.x < 0;
+
         if (_facingLeft != facingLeft)
         {
             _facingLeft = facingLeft;
             Vector3 scale = _art.localScale;
-            scale.x *= -1;
+            scale.x = Mathf.Abs(scale.x) * (_facingLeft ? -1 : 1);
             _art.localScale = scale;
         }
     }

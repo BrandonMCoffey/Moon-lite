@@ -18,7 +18,6 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected Transform shootTransform;
 
     [Header("Reload and Ammo Properties")]
-    [SerializeField] protected int _maxAmmo = 100; // Total ammo the weapon can hold.
     [SerializeField] protected int _maxMagSize = 10; // Ammo capacity of the magazine.
     [SerializeField] protected float _reloadTime = 2f; // Time it takes to reload.
     public float ReloadTime => _reloadTime;
@@ -53,6 +52,9 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected int _ammoPerShot = 1; // Amount of ammo consumed per shot
     public int AmmoPerShot => _ammoPerShot;
 
+    [Header("Weapon Spray")]
+    [SerializeField] protected float _sprayAngle = 0f; // Maximum spray angle in degrees
+
     protected Animator _anim;
     protected SpriteRenderer _sr;
     protected Rigidbody _rb;
@@ -76,7 +78,7 @@ public abstract class WeaponBase : MonoBehaviour
 
         if (!_rb) Debug.LogWarning($"Rigidbody component is missing on {gameObject.name}");
         if (!_col) Debug.LogWarning($"Collider component is missing on {gameObject.name}");
-        if (!_anim) Debug.LogWarning($"Animator component is missing in children of {gameObject.name}");
+        //if (!_anim) Debug.LogWarning($"Animator component is missing in children of {gameObject.name}");
         if (!_sr) Debug.LogWarning($"SpriteRenderer component is missing in children of {gameObject.name}");
     }
 
@@ -185,6 +187,10 @@ public abstract class WeaponBase : MonoBehaviour
         StopReload();
         _currentMagAmmo--;
 
+        // Apply spray effect
+        float randomAngle = UnityEngine.Random.Range(-_sprayAngle / 2f, _sprayAngle / 2f);
+        aimDirection = Quaternion.Euler(0, 0, randomAngle) * aimDirection;
+
         Vector3 spawnPosition = shootTransform.position;
         GameObject prefabToUse = overrideBulletPrefab ?? _bulletPrefab;
 
@@ -194,6 +200,7 @@ public abstract class WeaponBase : MonoBehaviour
         if (bulletInstance.TryGetComponent(out BulletBase bullet))
         {
             bullet.BulletSetup(aimDirection, angle, _bulletSpeed, _bulletDamage, _bulletKnockback, _bulletSize, _bulletLifetime, _bulletGravityScale);
+            bullet.PreRaycastCheck();
         }
 
         _pwm.SubtractAmmo(_ammoPerShot);

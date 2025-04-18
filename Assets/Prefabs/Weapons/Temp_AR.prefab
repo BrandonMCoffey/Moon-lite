@@ -50,7 +50,6 @@ MonoBehaviour:
   weaponName: TestWeapon
   _weaponSprite: {fileID: 21300000, guid: 7dce6815000a0a4418a36d273b6e7130, type: 3}
   shootTransform: {fileID: 2122804178461797388}
-  _maxAmmo: 100
   _maxMagSize: 10
   _reloadTime: 2
   _isAutomatic: 1
@@ -77,7 +76,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.9, y: 0.95, z: 0.1}
-  m_Center: {x: 1.2, y: 0, z: 0}
+  m_Center: {x: 1, y: -0.2, z: 0}
 --- !u!54 &-4745953365413457565
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -120,7 +119,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2122804177998014981}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2, y: 0, z: 0}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -217,7 +216,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2122804178461797389}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.164, y: 0.289, z: 0}
+  m_LocalPosition: {x: 1.003, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -13,20 +13,20 @@ public class BulletBase : MonoBehaviour
     //[SerializeField] private GameObject _psBloodDirectional;
     //[SerializeField] private GameObject _psBloodCircle;
     //[SerializeField] private GameObject _psOtherDirectional;
-
-    protected Rigidbody _rb;
     protected SpriteRenderer _sr;
     //protected TrailRenderer _tr;
     protected Vector3 _startPosition;
     protected bool _once = false;
-    protected bool _isVisible = false;
+    protected bool _isVisible = true;
+
+    protected Vector3 _velocity;
 
     protected virtual void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
+        //_rb = GetComponent<Rigidbody>();
         _sr = GetComponent<SpriteRenderer>();
         //_tr = GetComponent<TrailRenderer>();
-        _sr.enabled = false; // Initially hide the bullet
+        _sr.enabled = true; // Initially hide the bullet
         //_tr.enabled = false; // Initially hide the trail
 
         _startPosition = transform.position;
@@ -52,42 +52,33 @@ public class BulletBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        // Apply artificial gravity to the y-axis
-        if (_gravityScale != 0f)
-        {
-            float gravity = _gravityScale * -9.81f * Time.deltaTime;
-            _rb.velocity += new Vector3(0, gravity, 0); // Add gravity to the velocity
-        }
+        ApplyGravity();
+        RaycastCheck();
 
-        if (!_isVisible && Vector3.Distance(_startPosition, transform.position) >= 0.5f)
-        {
-            _sr.enabled = true; // Show the bullet after it has moved x units
-            //_tr.enabled = true; // Show the trail after it has moved x units
-            _isVisible = true;
-        }
-
-        if (Physics.Raycast(transform.position, _rb.velocity.normalized, out var hit, 0.2f))
-        {
-
-        }
+        // if (!_isVisible && Vector3.Distance(_startPosition, transform.position) >= 0.5f)
+        // {
+        //     _sr.enabled = true; // Show the bullet after it has moved x units
+        //     //_tr.enabled = true; // Show the trail after it has moved x units
+        //     _isVisible = true;
+        // }
     }
 
-    protected virtual void OnCollisionEnter(Collision collision)
-    {
-        var chunk = collision.gameObject.GetComponent<Chunk>();
-        if (chunk != null)
-        {
-            Vector3 pointToDestroy = collision.GetContact(0).point + _rb.velocity.normalized * 0.3f;
-            OnHitChunk(chunk, pointToDestroy);
-        }
+    // protected virtual void OnCollisionEnter(Collision collision)
+    // {
+    //     var chunk = collision.gameObject.GetComponent<Chunk>();
+    //     if (chunk != null)
+    //     {
+    //         Vector3 pointToDestroy = collision.GetContact(0).point + _rb.velocity.normalized * 0.1f;
+    //         OnHitChunk(chunk, pointToDestroy);
+    //     }
 
-        DestroySelf();
-    }
+    //     DestroySelf();
+    // }
 
     // Override this to customize chunk hit behavior
-    protected virtual void OnHitChunk(Chunk chunk, Vector3 hitPoint)
+    public virtual void OnHitChunk(Chunk chunk, Vector3 hitPoint)
     {
-        chunk.World.DamageTileAt(hitPoint);
+        chunk.World.DamageTileAt(hitPoint, _damage);
         //chunk.World.DamageTileInCircle(hitPoint,2);
     }
 
@@ -100,11 +91,10 @@ public class BulletBase : MonoBehaviour
         _lifetime = lifetime;
         _gravityScale = gravityScale;
 
-        _rb = GetComponent<Rigidbody>();
         transform.localScale = new Vector3(_size, _size, _size);
         transform.eulerAngles = new Vector3(0, 0, angle);
 
-        _rb.velocity = shootDir * _shotSpeed;
+        _velocity = shootDir * _shotSpeed;
 
         StartCoroutine(DelayedDestroy(_lifetime));
     }
@@ -141,6 +131,49 @@ public class BulletBase : MonoBehaviour
             _once = true;
             StopAllCoroutines();
             Destroy(gameObject);
+        }
+    }
+
+    protected void ApplyGravity()
+    {
+        // Apply artificial gravity to the y-axis
+        if (_gravityScale != 0f)
+        {
+            float gravity = _gravityScale * -9.81f * Time.deltaTime;
+            _velocity += new Vector3(0, gravity, 0); // Add gravity to the velocity
+            transform.position += _velocity * Time.deltaTime;
+        }
+    }
+
+    protected void RaycastCheck()
+    {
+        if(Physics.Raycast(transform.position, _velocity.normalized, out RaycastHit hit, 0.5f))
+        {
+            var chunk = hit.collider.GetComponent<Chunk>();
+            if (chunk != null)
+            {
+                Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.1f;
+                OnHitChunk(chunk, pointToDestroy);
+            }
+
+            DestroySelf();
+        }
+    }
+    public void PreRaycastCheck()
+    {
+        Debug.DrawRay(transform.position - _velocity.normalized * 2, _velocity.normalized * 2.5f, Color.red, 1.5f);
+
+        if(Physics.Raycast(transform.position, -_velocity.normalized, out RaycastHit hit, 2.5f, 8 , QueryTriggerInteraction.Ignore))
+        {
+            Debug.Log("Hit: " + hit.collider.name);
+            var chunk = hit.collider.GetComponent<Chunk>();
+            if (chunk != null)
+            {
+                Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.1f;
+                OnHitChunk(chunk, pointToDestroy);
+            }
+
+            DestroySelf();
         }
     }
 }
