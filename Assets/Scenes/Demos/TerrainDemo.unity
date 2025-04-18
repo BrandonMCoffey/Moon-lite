@@ -32,7 +32,7 @@ RenderSettings:
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
-  m_DefaultReflectionMode: 0
+  m_DefaultReflectionMode: 1
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
@@ -873,7 +873,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a085c1acdc440744aa6928a63b31a0c2, type: 2}
+  - {fileID: 2100000, guid: c775710fb3d11ff4aab15316ea054e7d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -955,7 +955,7 @@ MonoBehaviour:
   _tilesPerUnit: 1
   _tileSizeMult: 1
   _chunkCount: 300
-  _worldSeed: -1
+  _worldSeed: 12
   _surfaceLevelSize: 20
   _surfaceNoiseScale: 0.04
   _grassDecoChance: 0.4
