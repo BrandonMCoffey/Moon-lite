@@ -724,6 +724,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyRigidbody: {fileID: 267538043}
   playerDetector: {fileID: 267538045}
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  _facingDirection: 0
 --- !u!1 &345437391
 GameObject:
   m_ObjectHideFlags: 0
