@@ -39,13 +39,16 @@ public class Chunk : MonoBehaviour
         int startX = _chunkCoord.x * _world.ChunkSize;
         int startY = _chunkCoord.y * _world.ChunkSize;
 
+        float borderOffset = 0f;
+
         // TODO: Quad Tree Optimizations (Combine matching neighbors)
-        for (int y = 0; y < _world.ChunkSize; y++)
+        // TODO: Merge matching vertices
+        for (int chunkY = 0; chunkY < _world.ChunkSize; chunkY++)
         {
-            for (int x = 0; x < _world.ChunkSize; x++)
+            for (int chunkX = 0; chunkX < _world.ChunkSize; chunkX++)
             {
-                int worldX = startX + x;
-                int worldY = startY + y;
+                int worldX = startX + chunkX;
+                int worldY = startY + chunkY;
 
                 TileType currentTile = _world.GetTile(worldX, worldY);
 
@@ -53,14 +56,18 @@ public class Chunk : MonoBehaviour
                 {
                     int damage = _world.GetDamage(worldX, worldY);
 
+                    float x = chunkX + borderOffset;
+                    float y = chunkY + borderOffset;
+                    float unit = 1 - borderOffset;
+
                     // Check Top Face
                     if (_world.GetTile(worldX, worldY + 1) == TileType.Air)
                     {
                         AddFace(ref vertices, ref triangles, ref uvs, ref vertexIndex,
-                                new Vector3(x, y + 1, 0),     // Top-Left
-                                new Vector3(x + 1, y + 1, 0), // Top-Right
-                                new Vector3(x, y + 1, -1),    // Back Top-Left (for thickness)
-                                new Vector3(x + 1, y + 1, -1),// Back Top-Right (for thickness)
+                                new Vector3(x, y + unit, 0),     // Top-Left
+                                new Vector3(x + unit, y + unit, 0), // Top-Right
+                                new Vector3(x, y + unit, -1),    // Back Top-Left (for thickness)
+                                new Vector3(x + unit, y + unit, -1),// Back Top-Right (for thickness)
                                 currentTile, false, damage);
                     }
 
@@ -68,10 +75,10 @@ public class Chunk : MonoBehaviour
                     if (_world.GetTile(worldX, worldY - 1) == TileType.Air)
                     {
                         AddFace(ref vertices, ref triangles, ref uvs, ref vertexIndex,
-                               new Vector3(x, y, -1),     // Back Bottom-Left
-                               new Vector3(x + 1, y, -1), // Back Bottom-Right
+                               new Vector3(x, y, -unit),     // Back Bottom-Left
+                               new Vector3(x + unit, y, -1), // Back Bottom-Right
                                new Vector3(x, y, 0),      // Front Bottom-Left
-                               new Vector3(x + 1, y, 0),  // Front Bottom-Right
+                               new Vector3(x + unit, y, 0),  // Front Bottom-Right
                                currentTile, false, damage);
                     }
 
@@ -79,10 +86,10 @@ public class Chunk : MonoBehaviour
                     if (_world.GetTile(worldX + 1, worldY) == TileType.Air)
                     {
                         AddFace(ref vertices, ref triangles, ref uvs, ref vertexIndex,
-                                new Vector3(x + 1, y, 0),      // Front Bottom-Right
-                                new Vector3(x + 1, y + 1, 0),  // Front Top-Right
-                                new Vector3(x + 1, y, -1),     // Back Bottom-Right
-                                new Vector3(x + 1, y + 1, -1), // Back Top-Right
+                                new Vector3(x + unit, y, 0),      // Front Bottom-Right
+                                new Vector3(x + unit, y + 1, 0),  // Front Top-Right
+                                new Vector3(x + unit, y, -1),     // Back Bottom-Right
+                                new Vector3(x + unit, y + unit, -1), // Back Top-Right
                                 currentTile, true, damage);
                     }
 
@@ -90,9 +97,9 @@ public class Chunk : MonoBehaviour
                     if (_world.GetTile(worldX - 1, worldY) == TileType.Air)
                     {
                         AddFace(ref vertices, ref triangles, ref uvs, ref vertexIndex,
-                                new Vector3(x, y + 1, -1), // Back Top-Left
+                                new Vector3(x, y + unit, -1), // Back Top-Left
                                 new Vector3(x, y, -1),     // Back Bottom-Left
-                                new Vector3(x, y + 1, 0),  // Front Top-Left
+                                new Vector3(x, y + unit, 0),  // Front Top-Left
                                 new Vector3(x, y, 0),      // Front Bottom-Left
                                 currentTile, false, damage);
                     }
@@ -100,9 +107,9 @@ public class Chunk : MonoBehaviour
                     // Front Face
                     AddFace(ref vertices, ref triangles, ref uvs, ref vertexIndex,
                                new Vector3(x, y, -1),         // Bottom-Left
-                               new Vector3(x + 1, y, -1),     // Bottom-Right
-                               new Vector3(x, y + 1, -1),     // Top-Left
-                               new Vector3(x + 1, y + 1, -1), // Top-Right
+                               new Vector3(x + unit, y, -1),     // Bottom-Right
+                               new Vector3(x, y + unit, -1),     // Top-Left
+                               new Vector3(x + unit, y + unit, -1), // Top-Right
                                currentTile, true, damage);
                 }
             }
@@ -168,13 +175,15 @@ public class Chunk : MonoBehaviour
         if (damage > 0) uvCoord.x += 4;
         uvCoord.y = 7 - uvCoord.y;
 
-        float uMin = uvCoord.x * textureUnit;
-        float vMin = uvCoord.y * textureUnit;
-        float uMax = uMin + textureUnit;
-        float vMax = vMin + textureUnit;
+        float border = textureUnit * 0.01f;
+
+        float uMin = uvCoord.x * textureUnit + border;
+        float vMin = uvCoord.y * textureUnit + border;
+        float uMax = uMin + textureUnit - border * 2;
+        float vMax = vMin + textureUnit - border * 2;
 
         // Return UV array matching the AddFace vertex order (BL, BR, TL, TR)
-        // Adjust if your AddFace order or texture orientation is different
+        // Adjust to change texture orientation
         if (front)
         {
             return new Vector2[] {
