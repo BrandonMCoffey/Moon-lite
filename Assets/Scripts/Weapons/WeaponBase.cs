@@ -47,9 +47,12 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected float _bulletKnockback = 1f;
     [SerializeField] protected float _bulletLifetime = 3f;
     [SerializeField] protected float _bulletGravityScale = 0f;
+    [SerializeField] protected bool _hasAOE = false;
+    [SerializeField] protected float _aoeRadius = 1f;
 
     [Header("Ammo Consumption")]
     [SerializeField] protected int _ammoPerShot = 1; // Amount of ammo consumed per shot
+    private int _tempAmmoPerShot = 0; // Amount of ammo consumed per shot
     public int AmmoPerShot => _ammoPerShot;
 
     [Header("Weapon Spray")]
@@ -80,6 +83,25 @@ public abstract class WeaponBase : MonoBehaviour
         if (!_col) Debug.LogWarning($"Collider component is missing on {gameObject.name}");
         //if (!_anim) Debug.LogWarning($"Animator component is missing in children of {gameObject.name}");
         if (!_sr) Debug.LogWarning($"SpriteRenderer component is missing in children of {gameObject.name}");
+
+        _tempAmmoPerShot = _ammoPerShot;
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            if(_ammoPerShot !=0)
+            {
+                Debug.Log("Infinite ammo cheat activated for " + weaponName + "!");
+                _ammoPerShot = 0;
+            }
+            else
+            {
+                Debug.Log("Infinite ammo cheat deactivated for " + weaponName + "!");
+                _ammoPerShot = _tempAmmoPerShot;
+            }
+        }
     }
 
     public bool CanShoot()
@@ -185,7 +207,11 @@ public abstract class WeaponBase : MonoBehaviour
         if (Time.time < _lastFireTime + FireDelay || !CanShoot()) return;
 
         StopReload();
-        _currentMagAmmo--;
+
+        if(_ammoPerShot != 0)
+        {
+            _currentMagAmmo--;
+        }
 
         // Apply spray effect
         float randomAngle = UnityEngine.Random.Range(-_sprayAngle / 2f, _sprayAngle / 2f);
@@ -199,7 +225,7 @@ public abstract class WeaponBase : MonoBehaviour
 
         if (bulletInstance.TryGetComponent(out BulletBase bullet))
         {
-            bullet.BulletSetup(aimDirection, angle, _bulletSpeed, _bulletDamage, _bulletKnockback, _bulletSize, _bulletLifetime, _bulletGravityScale);
+            bullet.BulletSetup(aimDirection, angle, _bulletSpeed, _bulletDamage, _bulletKnockback, _bulletSize, _bulletLifetime, _bulletGravityScale, _hasAOE, _aoeRadius);
             bullet.PreRaycastCheck();
         }
 

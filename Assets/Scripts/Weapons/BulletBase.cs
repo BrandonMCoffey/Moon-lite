@@ -10,6 +10,8 @@ public class BulletBase : MonoBehaviour
     [SerializeField] protected float _lifetime = 3;
     [SerializeField] protected float _gravityScale = 0f; // Artificial gravity scale
     [SerializeField] private LayerMask _bulletCollisionMask = 1;
+    [SerializeField] private bool _hasAOE = false;
+    [SerializeField] private float _aoeRadius = 1f;
 
     //[SerializeField] private GameObject _psBloodDirectional;
     //[SerializeField] private GameObject _psBloodCircle;
@@ -79,11 +81,26 @@ public class BulletBase : MonoBehaviour
     // Override this to customize chunk hit behavior
     public virtual void OnHitChunk(Chunk chunk, Vector3 hitPoint)
     {
-        chunk.World.DamageTileAt(hitPoint, _damage);
-        //chunk.World.DamageTileInCircle(hitPoint,2);
+        if(_hasAOE)
+        {
+            chunk.World.DamageTileInCircle(hitPoint,_aoeRadius, _damage);
+        }
+        else
+        {
+            chunk.World.DamageTileAt(hitPoint, _damage);
+        }
     }
 
-    public virtual void BulletSetup(Vector3 shootDir, float angle, float shotSpeed, int damage, float knockback, float size, float lifetime, float gravityScale)
+    public virtual void BulletSetup(Vector3 shootDir, 
+                                    float angle, 
+                                    float shotSpeed, 
+                                    int damage, 
+                                    float knockback, 
+                                    float size, 
+                                    float lifetime, 
+                                    float gravityScale, 
+                                    bool hasAOE, 
+                                    float aoeRadius)
     {
         _shotSpeed = shotSpeed;
         _damage = damage;
@@ -91,6 +108,8 @@ public class BulletBase : MonoBehaviour
         _size = size;
         _lifetime = lifetime;
         _gravityScale = gravityScale;
+        _hasAOE = hasAOE;
+        _aoeRadius = aoeRadius;
 
         transform.localScale = new Vector3(_size, _size, _size);
         transform.eulerAngles = new Vector3(0, 0, angle);
