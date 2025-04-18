@@ -9,6 +9,7 @@ public class DroppedItem : MonoBehaviour
     [SerializeField] private float _mergeUpdateTime = 0.5f;
     [SerializeField] private float _mergeRadius = 0.25f;
     [SerializeField] private LayerMask _groundLayer = 1;
+    [SerializeField] private float _radius = 0.1f;
 
     [SerializeField] private SpriteRenderer _renderer;
 
@@ -101,17 +102,22 @@ public class DroppedItem : MonoBehaviour
 
     private void ApplyGravity()
     {
-        _grounded = Physics.Raycast(transform.position, Vector3.down, 0.15f, _groundLayer);
+        float offset = _velocity * Time.deltaTime;
+        _grounded = Physics.Raycast(transform.position, Vector3.down, out var hit, offset + _radius, _groundLayer);
 
         if (_grounded)
         {
             _velocity = 0f;
+            if (hit.distance > _radius)
+            {
+                transform.position += new Vector3(0f, hit.distance - _radius, 0f);
+            }
         }
         else
         {
             _velocity += -9.81f * Time.deltaTime;
             _velocity = Mathf.Max(_velocity, -20f);
-            transform.position += new Vector3(0, _velocity * Time.deltaTime, 0);
+            transform.position += new Vector3(0, offset, 0);
         }
     }
 }

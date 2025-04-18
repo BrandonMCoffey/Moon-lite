@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using static UnityEditor.Experimental.GraphView.GraphView;
+using SaiUtils.Extensions;
 
 public class WorldGenerator : MonoBehaviour
 {
@@ -52,6 +54,7 @@ public class WorldGenerator : MonoBehaviour
     private List<Vector2Int> _modifiedChunks;
     private Dictionary<Vector2Int, int> _tileDamageData;
     private List<StructureData> _structures;
+    private Transform _player;
 
     private float _noiseOffsetX;
     private float _noiseOffsetY;
@@ -66,6 +69,7 @@ public class WorldGenerator : MonoBehaviour
 
     private void Start()
     {
+        _player = Player.Instance.transform;
         InitializeWorld();
     }
 
@@ -350,16 +354,18 @@ public class WorldGenerator : MonoBehaviour
         return _grid[x, y];
     }
 
-    public void DamageTileInCircle(Vector3 worldPos, float radius, int damage = 1) => DamageTileInCircle(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), Mathf.RoundToInt(radius * _tilesPerUnit), damage);
-    public void DamageTileInCircle(int xCenter, int yCenter, int range, int damage = 1)
-    {
-        int xMin = Mathf.Clamp(xCenter - range+1, 0, _width-1);
-        int xMax = Mathf.Clamp(xCenter + range, 0, _width-1);
-        int yMin = Mathf.Clamp(yCenter - range+1, 0, _height-1);
-        int yMax = Mathf.Clamp(yCenter + range, 0, _height-1);
+    public void FillTileInCircle(Vector3 worldPos, float radius, TileType type) => FillTileInCircle(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), Mathf.RoundToInt(radius * _tilesPerUnit), type);
+    public void FillTileInCircle(int xCenter, int yCenter, int radius, TileType type) => AffectTileInCircle(xCenter, yCenter, radius, 0, type);
 
-        _damageRegion = TileToWorld(xCenter, yCenter);
-        _damageRegionSize = range * _tileSizeMult;
+    public void DamageTileInCircle(Vector3 worldPos, float radius, int damage = 1) => DamageTileInCircle(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), Mathf.RoundToInt(radius * _tilesPerUnit), damage);
+    public void DamageTileInCircle(int xCenter, int yCenter, int range, int damage = 1) => AffectTileInCircle(xCenter, yCenter, range, damage, TileType.Air);
+
+    public void AffectTileInCircle(int xCenter, int yCenter, int range, int damage, TileType type)
+    {
+        int xMin = Mathf.Clamp(xCenter - range + 1, 0, _width - 1);
+        int xMax = Mathf.Clamp(xCenter + range, 0, _width - 1);
+        int yMin = Mathf.Clamp(yCenter - range + 1, 0, _height - 1);
+        int yMax = Mathf.Clamp(yCenter + range, 0, _height - 1);
 
         for (int x = xMin; x < xMax; x++)
         {
@@ -369,43 +375,56 @@ public class WorldGenerator : MonoBehaviour
                 int yDelta = y - yCenter;
                 int sqrDistance = (xDelta * xDelta) + (yDelta * yDelta);
 
-                //DamageTileAt(x, y);
                 if (sqrDistance < range * (range - 1))
                 {
-                    DamageTileAt(x, y, damage);
+                    if (damage > 0) DamageTileAt(x, y, damage);
+                    else if (type != TileType.Air) FillTileAt(x, y, type);
                 }
             }
         }
     }
 
+    public void FillTileAt(Vector3 worldPos, TileType type) => FillTileAt(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), type);
+    public void FillTileAt(int x, int y, TileType type)
+    {
+        if (_grid[x, y] != TileType.Air) return;
+        // If too close to player
+        if (Vector3.Distance(TileToWorld(x, y), _player.transform.position) < 1f) return;
+
+        _grid[x, y] = type;
+        ModifyChunk(x, y);
+    }
+
     public void DamageTileAt(Vector3 worldPos, int damage = 1)
     {
-        // Check if close
-        float checkValue = ((worldPos.x - OffsetX) * _tilesPerUnit % 1 - 0.5f);
-        if (checkValue < 0) checkValue = -checkValue;
-        bool checkX = checkValue > 0.45f;
-        
-        checkValue = ((worldPos.y - OffsetX) * _tilesPerUnit % 1 - 0.5f);
-        if (checkValue < 0) checkValue = -checkValue;
-        bool checkY = checkValue > 0.45f;
-
-
         var x = WorldToTileX(worldPos.x);
         var y = WorldToTileY(worldPos.y);
         _damageRegion = TileToWorld(x, y);
         _damageRegionSize = _tileSizeMult * 0.5f;
         bool success = DamageTileAt(x, y, damage);
-        if (!success && checkX)
+
+        // If tile not damaged, Check if worldPos was close to edge. If so, destroy adjacent tile
+        if (!success)
         {
-            success = DamageTileAt(x + 1, y, damage);
-        }
-        if (!success && checkY)
-        {
-            success = DamageTileAt(x, y + 1, damage);
-        }
-        if (!success && checkX && checkY)
-        {
-            success = DamageTileAt(x + 1, y + 1, damage);
+            float checkValue = ((worldPos.x - OffsetX) * _tilesPerUnit % 1 - 0.5f);
+            int offX = checkValue < 0 ? -1 : 1;
+            if (checkValue < 0) checkValue = -checkValue;
+
+            if (checkValue > 0.45f) success = DamageTileAt(x + offX, y, damage);
+
+            if (!success)
+            {
+                checkValue = ((worldPos.y - OffsetX) * _tilesPerUnit % 1 - 0.5f);
+                int offY = checkValue < 0 ? -1 : 1;
+                if (checkValue < 0) checkValue = -checkValue;
+
+                if (checkValue > 0.45f) success = DamageTileAt(x, y + offY, damage);
+
+                if (!success && checkValue > 0.45f && checkValue > 0.45f)
+                {
+                    success = DamageTileAt(x + offX, y + offY, damage);
+                }
+            }
         }
     }
     public bool DamageTileAt(int x, int y, int damage = 1)

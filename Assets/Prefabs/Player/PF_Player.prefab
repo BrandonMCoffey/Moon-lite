@@ -215,6 +215,18 @@ MonoBehaviour:
   _magnetItemRange: 2.5
   _magnetItemSpeed: 5
   _pickupItemRange: 1
+  _throwGlowstick: 103
+  _throwDirtBomb: 98
+  _buildTempPlatform: 99
+  _buildAutoMine: 122
+  _glowstickPrefab: {fileID: 1738573448612976919, guid: 3c7d3f5a83616664385d207a193adac0,
+    type: 3}
+  _dirtBombPrefab: {fileID: 5241967137932940001, guid: 71fce464dfa75004c9c2668cb22073da,
+    type: 3}
+  _tempPlatformPrefab: {fileID: 5861117666760824210, guid: 69cec0e63dc3daf4b99147f2ec278f0b,
+    type: 3}
+  _autoMinerPrefab: {fileID: 7641721159863263889, guid: 717129deb8d54b74f841752df14fe62a,
+    type: 3}
 --- !u!114 &3081370178779755053
 MonoBehaviour:
   m_ObjectHideFlags: 0
