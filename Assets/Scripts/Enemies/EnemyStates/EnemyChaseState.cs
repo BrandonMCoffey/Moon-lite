@@ -63,6 +63,7 @@ public class EnemyChaseState : EnemyBaseState
     public override void FixedUpdate()
     {
         if (canChasePlayer) ChasePlayer();
+
     }
 
     public override void OnExit()
@@ -84,10 +85,20 @@ public class EnemyChaseState : EnemyBaseState
 
         // Raycast side to side to check for walls
         Vector3 wallDirection = enemyBrain.transform.right;
-        var foundWall = Physics.Raycast(enemyRigidbody.position, wallDirection, out _, 1.05f, groundLayerMask);
-        if (!foundWall) foundWall = Physics.Raycast(enemyRigidbody.position + enemyRigidbody.transform.up * 0.3f, wallDirection, out _, 1.05f, groundLayerMask);
-        if (!foundWall) foundWall = Physics.Raycast(enemyRigidbody.position - enemyRigidbody.transform.up * 0.3f, wallDirection, out _, 1.05f, groundLayerMask);
+
+        var foundWall = Physics.Raycast(enemyRigidbody.position, wallDirection, out _, 1.05f, groundLayerMask); // raycast from the middle of the enemy
         Debug.DrawRay(enemyRigidbody.position, wallDirection * 1.05f, Color.red);
+        if (!foundWall) 
+        {
+            foundWall = Physics.Raycast(enemyRigidbody.position + enemyRigidbody.transform.up * 0.3f, wallDirection, out _, 1.05f, groundLayerMask); // raycast from the top of the enemy
+            Debug.DrawRay(enemyRigidbody.position + enemyRigidbody.transform.up * 0.3f, wallDirection * 1.05f, Color.red);
+        }
+        if (!foundWall) 
+        {
+            foundWall = Physics.Raycast(enemyRigidbody.position - enemyRigidbody.transform.up * 0.3f, wallDirection, out _, 1.05f, groundLayerMask); // raycast from the bottom of the enemy
+            Debug.DrawRay(enemyRigidbody.position - enemyRigidbody.transform.up * 0.3f, wallDirection * 1.05f, Color.red);
+        }
+        
         
         // Raycast in a diagonal direction near the ground to check for pits
         var forwardOffset = wallDirection * pitCheckDistance;
@@ -95,15 +106,16 @@ public class EnemyChaseState : EnemyBaseState
         var foundPit = !Physics.Raycast(pitCheckOrigin, Vector3.down, out _, 1.05f, groundLayerMask); 
         Debug.DrawRay(pitCheckOrigin, Vector3.down * 1.05f, Color.blue);
 
-        if ((foundWall || foundPit) && !checkForObstacleTimer.IsRunning)
+        if ((foundWall) && !checkForObstacleTimer.IsRunning)
         {
         
             Debug.Log("Obstacle detected, jumping!");
+            enemyRigidbody.velocity = Vector3.zero;
             // jump upwards (up) and towards the player (right)
             //Vector3 jumpDirection = new Vector3(directionToPlayer.x, 1f, 0).normalized;
             //enemyRigidbody.AddForce(jumpDirection * 15f, ForceMode.Impulse);
 
-            enemyRigidbody.AddForce(new Vector3(directionToPlayer.x * 5f, 10f, 0f), ForceMode.Impulse);
+            enemyRigidbody.AddForce(new Vector3(directionToPlayer.x, 30f, 0f), ForceMode.Impulse);
 
             checkForObstacleTimer.Reset(1f);
             checkForObstacleTimer.Start();
