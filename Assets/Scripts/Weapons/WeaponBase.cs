@@ -229,7 +229,6 @@ public abstract class WeaponBase : MonoBehaviour
         int ammoToReload = Mathf.Min(ammoNeeded, _pwm.CurrentAmmoInventory);
 
         _currentMagAmmo += ammoToReload;
-        _pwm.SubtractAmmo(ammoToReload);
 
         _isReloading = false;
         _reloadCoroutine = null;
