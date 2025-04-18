@@ -21,7 +21,6 @@ public class EnemyWanderState : EnemyBaseState
 
     public override void OnEnter()
     {
-        Debug.Log("Entering Wander State");
         enemyRigidbody.velocity = Vector3.zero; 
 
         wanderTimer = new CountdownTimer(Random.Range(3, 5));
@@ -37,7 +36,6 @@ public class EnemyWanderState : EnemyBaseState
 
     public override void OnExit()
     {
-        Debug.Log("Exiting Wander State");
         wanderTimer.Stop();
     }
 
@@ -74,12 +72,10 @@ public class EnemyWanderState : EnemyBaseState
             // 50-50 chance to jump over the wall if one is detected
             if (foundWall && Random.value > 0f)
             {
-                Debug.Log("Wall detected, attempting jump");
                 enemyRigidbody.AddForce(new Vector3(facingDirection * 5f, 7f, 0f), ForceMode.Impulse);
             }
             else
             {
-                Debug.Log("Found wall or pit, wandering in the opposite direction");
                 Vector3 newDirection = -wallDirection * 5f;
                 PickNewWanderPosition(newDirection);
                 ResetWanderTimer();
