@@ -661,6 +661,9 @@ MonoBehaviour:
   detectionRadius: 10
   innerDetectionRadius: 1
   detectionCooldown: 1
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &267538046
 MonoBehaviour:
   m_ObjectHideFlags: 0

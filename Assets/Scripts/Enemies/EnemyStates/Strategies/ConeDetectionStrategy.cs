@@ -7,13 +7,15 @@ public class ConeDetectionStrategy : IDetectionStrategy
     readonly float detectionRadius;
     readonly float innerDetectionRadius;
     readonly int numOfRays;
+    readonly LayerMask playerLayer;
 
-    public ConeDetectionStrategy(float detectionAngle, float detectionRadius, float innerDetectionRadius, int numOfRays = 10)
+    public ConeDetectionStrategy(LayerMask playerLayer, float detectionAngle, float detectionRadius, float innerDetectionRadius, int numOfRays = 10)
     {
         this.detectionAngle = detectionAngle;
         this.detectionRadius = detectionRadius;
         this.innerDetectionRadius = innerDetectionRadius;
         this.numOfRays = numOfRays;
+        this.playerLayer = playerLayer;
     }
 
     public bool IsPlayerDetected(Transform player, Transform detector, CountdownTimer timer)
@@ -38,12 +40,13 @@ public class ConeDetectionStrategy : IDetectionStrategy
                 Vector3 rayDirection = Quaternion.AngleAxis(angleOffset, Vector3.forward) * baseDirection;
 
                 // 3D Raycast
-                if (Physics.Raycast(detector.position, rayDirection, out RaycastHit hit, detectionRadius))
+                if (Physics.Raycast(detector.position, rayDirection, out RaycastHit hit, detectionRadius, playerLayer))
                 {
-                    Debug.DrawRay(detector.position, rayDirection * detectionRadius, Color.red);
 
-                    if (hit.collider.transform == player)
+                    var playerRef = hit.collider.GetComponent<Player>();
+                    if (playerRef != null)
                     {
+                        Debug.DrawRay(detector.position, rayDirection * detectionRadius, Color.red);
                         Debug.Log($"Player detected by raycast: {hit.collider.name}");
                         timer.Start();
                         return true;
