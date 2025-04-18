@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7707075139789495896}
   - component: {fileID: -4745953365413457565}
   - component: {fileID: 8394295690393248279}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Temp_SMG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,8 +61,10 @@ MonoBehaviour:
   _bulletSpeed: 45
   _bulletDamage: 1
   _bulletKnockback: 1
-  _bulletLifetime: 3
+  _bulletLifetime: 5
   _bulletGravityScale: 1
+  _hasAOE: 0
+  _aoeRadius: 1
   _ammoPerShot: 1
   _sprayAngle: 15
 --- !u!54 &-4745953365413457565
@@ -105,7 +107,7 @@ GameObject:
   - component: {fileID: 2122804177998014980}
   - component: {fileID: 2122804177998014979}
   - component: {fileID: 9097082709352840835}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GunSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +204,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2122804178461797388}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ShootEndPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
