@@ -9,6 +9,7 @@ public class BulletBase : MonoBehaviour
     [SerializeField] protected float _size = 1;
     [SerializeField] protected float _lifetime = 3;
     [SerializeField] protected float _gravityScale = 0f; // Artificial gravity scale
+    [SerializeField] private LayerMask _bulletCollisionMask = 1;
 
     //[SerializeField] private GameObject _psBloodDirectional;
     //[SerializeField] private GameObject _psBloodCircle;
@@ -163,7 +164,7 @@ public class BulletBase : MonoBehaviour
     {
         Debug.DrawRay(transform.position - _velocity.normalized * 2, _velocity.normalized * 2.5f, Color.red, 1.5f);
 
-        if(Physics.Raycast(transform.position, -_velocity.normalized, out RaycastHit hit, 2.5f, 8 , QueryTriggerInteraction.Ignore))
+        if(Physics.Raycast(transform.position - _velocity.normalized * 2, _velocity.normalized, out RaycastHit hit, 2.5f, _bulletCollisionMask, QueryTriggerInteraction.Ignore))
         {
             Debug.Log("Hit: " + hit.collider.name);
             var chunk = hit.collider.GetComponent<Chunk>();
