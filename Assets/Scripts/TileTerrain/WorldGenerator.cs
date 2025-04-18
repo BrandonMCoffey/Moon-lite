@@ -21,6 +21,8 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private float _caveNoiseScale = 0.08f;
     [SerializeField, Range(0f, 1f)] private float _caveThreshold = 0.55f;
     [SerializeField, Range(0f, 1f)] public float _caveNoiseDetail = 0.1f;
+    [SerializeField, Range(0f, 1f)] private float _caveCeilingDecoChance = 0.1f;
+    [SerializeField, Range(0f, 1f)] private float _caveFloorDecoChance = 0.1f;
     [SerializeField] private float _mineralNoiseScale = 0.1f;
     [SerializeField, Range(0f, 1f)] public float _copperFrequency = 0.1f;
     [SerializeField, Range(0f, 1f)] public float _ironFrequency = 0.05f;
@@ -28,6 +30,7 @@ public class WorldGenerator : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject _chunkPrefab;
+    [SerializeField] private CaveDecoration _caveDecorationPrefab;
     [SerializeField] private TerrainTileData _tileData;
     [SerializeField] private Material _terrainMaterial;
     [SerializeField] private DroppedItemManager _itemManager;
@@ -171,7 +174,7 @@ public class WorldGenerator : MonoBehaviour
 
             for (int x = 0; x < _width; x++)
             {
-                if (_grid[x, y] != TileType.Air)
+                if (_grid[x, y] == TileType.Stone)
                 {
                     float caveNoiseValue = Mathf.PerlinNoise(
                         (x + caveNoiseOffsetX) * _caveNoiseScale * _tileSizeMult,
@@ -192,10 +195,32 @@ public class WorldGenerator : MonoBehaviour
                     if (caveNoiseValue > _caveThreshold + surfaceThresholdOffset + edgeThresholdOffset)
                     {
                         _grid[x, y] = TileType.Air;
+                        // If current tile is air, and above tile is stone
+                        if (_grid[x, y + 1] == TileType.Stone)
+                        {
+                            if (Random.value < _caveCeilingDecoChance)
+                            {
+                                GenerateDecoration(x, y, false);
+                            }
+                        }
+                    }
+                    // If current tile is stone, and above tile is air
+                    else if (_grid[x, y] == TileType.Stone && _grid[x, y + 1] == TileType.Air)
+                    {
+                        if (Random.value < _caveFloorDecoChance)
+                        {
+                            GenerateDecoration(x, y + 1, true);
+                        }
                     }
                 }
             }
         }
+    }
+
+    private void GenerateDecoration(int x, int y, bool floor)
+    {
+        var deco = Instantiate(_caveDecorationPrefab, TileToWorld(x, y), transform.rotation, transform);
+        deco.Randomize(floor);
     }
 
     private void GenerateMinerals()

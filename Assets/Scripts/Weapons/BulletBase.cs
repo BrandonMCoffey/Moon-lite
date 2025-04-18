@@ -65,6 +65,11 @@ public class BulletBase : MonoBehaviour
             //_tr.enabled = true; // Show the trail after it has moved x units
             _isVisible = true;
         }
+
+        if (Physics.Raycast(transform.position, _rb.velocity.normalized, out var hit, 0.2f))
+        {
+
+        }
     }
 
     protected virtual void OnCollisionEnter(Collision collision)
@@ -72,7 +77,7 @@ public class BulletBase : MonoBehaviour
         var chunk = collision.gameObject.GetComponent<Chunk>();
         if (chunk != null)
         {
-            Vector3 pointToDestroy = collision.GetContact(0).point;
+            Vector3 pointToDestroy = collision.GetContact(0).point + _rb.velocity.normalized * 0.3f;
             OnHitChunk(chunk, pointToDestroy);
         }
 
