@@ -148,7 +148,7 @@ public class BulletBase : MonoBehaviour
 
     protected void RaycastCheck()
     {
-        if(Physics.Raycast(transform.position, _velocity.normalized, out RaycastHit hit, 0.5f))
+        if(Physics.Raycast(transform.position, _velocity.normalized, out RaycastHit hit, 0.5f, _bulletCollisionMask, QueryTriggerInteraction.Ignore))
         {
             var chunk = hit.collider.GetComponent<Chunk>();
             if (chunk != null)
