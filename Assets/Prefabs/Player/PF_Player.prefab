@@ -150,9 +150,9 @@ MonoBehaviour:
   _playerWidth: 1
   _groundOffset: 0.7
   _groundCheckWidth: 0.4
-  _ceilingCheckWidth: 0.3
-  _wallCheckWidth: 0.6
-  _wallChecVerticalOffset: 0.1
+  _ceilingCheckWidth: 0.25
+  _wallCheckWidth: 0.5
+  _wallChecVerticalOffset: 0.15
   _checkRaycastDistance: 5
   _jumpSfx:
     UseClip: 0
