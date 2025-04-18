@@ -111,7 +111,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3081370178779755049}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 20, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -149,9 +149,10 @@ MonoBehaviour:
   _playerWidth: 1
   _groundOffset: 0.7
   _groundCheckWidth: 0.4
-  _ceilingCheckWidth: 0.4
+  _ceilingCheckWidth: 0.3
   _wallCheckWidth: 0.6
   _wallChecVerticalOffset: 0.1
+  _checkRaycastDistance: 5
   _jumpSfx:
     UseClip: 0
     Clip: {fileID: 0}

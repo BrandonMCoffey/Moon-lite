@@ -18,6 +18,7 @@ public class PlayerMovementCustom : MonoBehaviour
     [SerializeField] private float _ceilingCheckWidth = 0.3f;
     [SerializeField] private float _wallCheckWidth = 0.5f;
     [SerializeField] private float _wallChecVerticalOffset = 0.25f;
+    [SerializeField] private float _checkRaycastDistance = 5f;
 
     [Header("Feedback")]
     [SerializeField] private SfxReference _jumpSfx;
@@ -130,7 +131,7 @@ public class PlayerMovementCustom : MonoBehaviour
         _groundDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
         {
-            if (Physics.Raycast(pos + Vector3.right * _groundCheckWidth * i, Vector3.down, out hitInfo, _groundOffset + 2, _groundLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(pos + Vector3.right * _groundCheckWidth * i, Vector3.down, out hitInfo, _groundOffset + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
             {
                 var dist = hitInfo.distance - _groundOffset;
                 if (dist < _groundDistance) _groundDistance = dist;
@@ -141,7 +142,7 @@ public class PlayerMovementCustom : MonoBehaviour
         _ceilingDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
         {
-            if (Physics.Raycast(pos + Vector3.up * _ceilingCheckWidth * i, Vector3.up, out hitInfo, (_playerHeight - _groundOffset) + 2, _groundLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(pos + Vector3.right * _ceilingCheckWidth * i, Vector3.up, out hitInfo, (_playerHeight - _groundOffset) + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
             {
                 var dist = hitInfo.distance - (_playerHeight - _groundOffset);
                 if (dist < _ceilingDistance) _ceilingDistance = dist;
@@ -154,12 +155,12 @@ public class PlayerMovementCustom : MonoBehaviour
         for (int i = -1; i <= 1; i++)
         {
             var wallPos = pos + Vector3.up * (_wallChecVerticalOffset + _wallCheckWidth * i);
-            if (Physics.Raycast(wallPos, Vector3.left, out hitInfo, _playerWidth * 0.5f + 2, _groundLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(wallPos, Vector3.left, out hitInfo, _playerWidth * 0.5f + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
             {
                 var dist = hitInfo.distance - _playerWidth * 0.5f;
                 if (dist < _leftWallDistance) _leftWallDistance = dist;
             }
-            if (Physics.Raycast(wallPos, Vector3.right, out hitInfo, _playerWidth * 0.5f + 2, _groundLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(wallPos, Vector3.right, out hitInfo, _playerWidth * 0.5f + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
             {
                 var dist = hitInfo.distance - _playerWidth * 0.5f;
                 if (dist < _rightWallDistance) _rightWallDistance = dist;
