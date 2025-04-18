@@ -153,7 +153,7 @@ public class BulletBase : MonoBehaviour
             var chunk = hit.collider.GetComponent<Chunk>();
             if (chunk != null)
             {
-                Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.1f;
+                Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.01f;
                 OnHitChunk(chunk, pointToDestroy);
             }
 
@@ -170,7 +170,7 @@ public class BulletBase : MonoBehaviour
             var chunk = hit.collider.GetComponent<Chunk>();
             if (chunk != null)
             {
-                Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.1f;
+                Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.01f;
                 OnHitChunk(chunk, pointToDestroy);
             }
 
