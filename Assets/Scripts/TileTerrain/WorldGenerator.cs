@@ -402,7 +402,7 @@ public class WorldGenerator : MonoBehaviour
         ModifyChunk(x, y);
     }
 
-    public void DamageTileAt(Vector3 worldPos, int damage = 1)
+    public bool DamageTileAt(Vector3 worldPos, int damage = 1)
     {
         var x = WorldToTileX(worldPos.x);
         var y = WorldToTileY(worldPos.y);
@@ -433,6 +433,7 @@ public class WorldGenerator : MonoBehaviour
                 }
             }
         }
+        return success;
     }
     public bool DamageTileAt(int x, int y, int damage = 1)
     {
