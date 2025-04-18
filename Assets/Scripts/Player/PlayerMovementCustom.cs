@@ -31,7 +31,7 @@ public class PlayerMovementCustom : MonoBehaviour
 
     [Header("Debug - Movement")]
     [SerializeField, ReadOnly] private Vector3 _velocity;
-    [SerializeField, ReadOnly] private bool _facingRight;
+    [SerializeField, ReadOnly] private bool _facingLeft;
     [SerializeField, ReadOnly] private float _moveHorz;
     [SerializeField, ReadOnly] private float _moveVert;
     [SerializeField, ReadOnly] private float _gravityScale;
@@ -112,10 +112,10 @@ public class PlayerMovementCustom : MonoBehaviour
     private void CheckFacingDir()
     {
         if (_velocity.x == 0) return;
-        bool facingRight = _velocity.x > 0;
-        if (_facingRight != facingRight)
+        bool facingLeft = _velocity.x < 0;
+        if (_facingLeft != facingLeft)
         {
-            _facingRight = facingRight;
+            _facingLeft = facingLeft;
             Vector3 scale = _art.localScale;
             scale.x *= -1;
             _art.localScale = scale;
@@ -341,7 +341,7 @@ public class PlayerMovementCustom : MonoBehaviour
         _dashDelayTimer = _data.dashRefillTime;
 
         var dir = new Vector2(_moveHorz, _moveVert);
-        if (dir == Vector2.zero) dir = _facingRight ? Vector2.right : Vector2.left;
+        if (dir == Vector2.zero) dir = _facingLeft ? Vector2.right : Vector2.left;
         dir = dir.normalized;
 
         ResetAllJumpValues();
