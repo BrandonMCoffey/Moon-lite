@@ -145,7 +145,7 @@ MonoBehaviour:
   _jetpackMaxFuel: 1
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 257
+    m_Bits: 385
   _playerHeight: 1.4
   _playerWidth: 1
   _groundOffset: 0.7
