@@ -318,8 +318,8 @@ public class WorldGenerator : MonoBehaviour
         return _grid[x, y];
     }
 
-    public void DamageTileInCircle(Vector3 worldPos, float radius) => DamageTileInCircle(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), Mathf.RoundToInt(radius * _tilesPerUnit));
-    public void DamageTileInCircle(int xCenter, int yCenter, int range)
+    public void DamageTileInCircle(Vector3 worldPos, float radius, int damage = 1) => DamageTileInCircle(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), Mathf.RoundToInt(radius * _tilesPerUnit), damage);
+    public void DamageTileInCircle(int xCenter, int yCenter, int range, int damage = 1)
     {
         int xMin = Mathf.Clamp(xCenter - range+1, 0, _width-1);
         int xMax = Mathf.Clamp(xCenter + range, 0, _width-1);
@@ -340,13 +340,20 @@ public class WorldGenerator : MonoBehaviour
                 //DamageTileAt(x, y);
                 if (sqrDistance < range * (range - 1))
                 {
-                    DamageTileAt(x, y);
+                    DamageTileAt(x, y, damage);
                 }
             }
         }
     }
 
-    public void DamageTileAt(Vector3 worldPos) => DamageTileAt(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y));
+    public void DamageTileAt(Vector3 worldPos, int damage = 1)
+    {
+        var x = WorldToTileX(worldPos.x);
+        var y = WorldToTileY(worldPos.y);
+        _damageRegion = TileToWorld(x, y);
+        _damageRegionSize = _tileSizeMult * 0.5f;
+        DamageTileAt(x, y, damage);
+    }
     public void DamageTileAt(int x, int y, int damage = 1)
     {
         if (GetTile(x, y) == TileType.Air)
@@ -367,6 +374,7 @@ public class WorldGenerator : MonoBehaviour
         {
             if (hasDamage) _tileDamageData[coord] = currentDamage + damage;
             else _tileDamageData.Add(coord, currentDamage + damage);
+            ModifyChunk(x, y);
         }
     }
 
@@ -384,6 +392,11 @@ public class WorldGenerator : MonoBehaviour
         var pos = TileToWorld(x, y) + (Vector3)(Random.insideUnitCircle * _tileSizeMult * 0.5f);
         _itemManager.SpawnDroppedItem(pos, item);
 
+        ModifyChunk(x, y);
+    }
+
+    private void ModifyChunk(int x, int y)
+    {
         Vector2Int modifiedChunkCoord = new Vector2Int(x / _chunkSize, y / _chunkSize);
         SetChunkModified(modifiedChunkCoord);
 
