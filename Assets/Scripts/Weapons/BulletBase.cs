@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BulletBase : MonoBehaviour
 {
+    [SerializeField] protected MineralData _data;
     [SerializeField] protected float _shotSpeed = 5;
     [SerializeField] protected int _damage = 1;
     [SerializeField] protected float _knockback = 3;

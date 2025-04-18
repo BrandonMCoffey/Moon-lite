@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Sirenix.OdinInspector;
 
 public abstract class WeaponBase : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected float _bulletLifetime = 3f;
     [SerializeField] protected float _bulletGravityScale = 0f;
     [SerializeField] protected bool _hasAOE = false;
-    [SerializeField] protected float _aoeRadius = 1f;
+    [SerializeField, ShowIf(nameof(_hasAOE))] protected float _aoeRadius = 1f;
 
     [Header("Ammo Consumption")]
     [SerializeField] protected int _ammoPerShot = 1; // Amount of ammo consumed per shot
