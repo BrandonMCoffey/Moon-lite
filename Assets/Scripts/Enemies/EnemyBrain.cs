@@ -29,9 +29,8 @@ public class EnemyBrain : MonoBehaviour
         EnemyFleeState = new EnemyFleeState(this, stateMachine, enemyRigidbody);
 
         // Wander State to Chase State and vice versa
-        //stateMachine.AddTransition(EnemyWanderState, EnemyChaseState, new FuncPredicate(() => playerDetector.CanDetectPlayer()));
-        stateMachine.AddTransition(EnemyWanderState, EnemyChaseState, new FuncPredicate(() => false));
-        //stateMachine.AddTransition(EnemyChaseState, EnemyWanderState, new FuncPredicate(() => !playerDetector.CanDetectPlayer()));
+        stateMachine.AddTransition(EnemyWanderState, EnemyChaseState, new FuncPredicate(() => playerDetector.CanDetectPlayer()));
+        stateMachine.AddTransition(EnemyChaseState, EnemyWanderState, new FuncPredicate(() => !playerDetector.CanDetectPlayer()));
 
         stateMachine.SetState(EnemyWanderState);
     }

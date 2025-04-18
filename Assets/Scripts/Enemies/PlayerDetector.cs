@@ -24,18 +24,9 @@ public class PlayerDetector : MonoBehaviour
 
     private void OnDrawGizmosSelected() 
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, innerDetectionRadius);
-        Gizmos.color = Color.blue;
-
-        Vector3 right = transform.right;
-
-        Vector3 direction = Quaternion.Euler(0, 0,  -detectionAngle / 2) * right;
-        Gizmos.DrawRay(transform.position, direction * detectionRadius);
-
-        direction = Quaternion.Euler(0, 0, detectionAngle / 2) * right;
-        Gizmos.DrawRay(transform.position, direction * detectionRadius);
+        if (detectionStrategy != null)
+        {
+            detectionStrategy.DrawGizmos(transform);
+        }
     }
 }
