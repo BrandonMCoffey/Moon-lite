@@ -397,8 +397,13 @@ public class PlayerMovementCustom : MonoBehaviour
         if (_jetpackActive != active)
         {
             _jetpackActive = active;
-            if (_jetpackActive) _jetpackParticles.Play();
-            else _jetpackParticles.Stop();
+
+            if (_jetpackParticles) 
+            {
+
+                if (_jetpackActive) _jetpackParticles.Play();
+                else _jetpackParticles.Stop();
+            }
         }
     }
 
