@@ -76,6 +76,6 @@ public class Player : MonoBehaviour
     {
         var pos = _world.TileToWorld(_world.WorldToTileX(transform.position.x), _world.WorldToTileY(transform.position.y));
         var placeable = Instantiate(prefab, pos, Quaternion.identity);
-        placeable.Place();
+        placeable.Place(_world);
     }
 }

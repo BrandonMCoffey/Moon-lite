@@ -43,6 +43,7 @@ public class WorldGenerator : MonoBehaviour
 
     public TerrainTileData TileData => _tileData;
     public int ChunkSize => _chunkSize;
+    public float TileSizeMult => _tileSizeMult;
     private float OffsetX => transform.position.x + (_centerX ? -_width * _tileSizeMult * 0.5f : 0f);
     private float OffsetY => transform.position.y + (_downY ? -_height * _tileSizeMult : 0f);
     public int WorldToTileX(float worldX) => Mathf.FloorToInt((worldX - OffsetX) * _tilesPerUnit);
