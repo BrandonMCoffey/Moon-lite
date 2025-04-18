@@ -181,11 +181,11 @@ public class BulletBase : MonoBehaviour
     }
     public void PreRaycastCheck()
     {
-        Debug.DrawRay(transform.position - _velocity.normalized * 2, _velocity.normalized * 2.5f, Color.red, 1.5f);
+        //Debug.DrawRay(transform.position - _velocity.normalized * 2, _velocity.normalized * 2.5f, Color.red, 1.5f);
 
         if(Physics.Raycast(transform.position - _velocity.normalized * 2, _velocity.normalized, out RaycastHit hit, 2.5f, _bulletCollisionMask, QueryTriggerInteraction.Ignore))
         {
-            Debug.Log("Hit: " + hit.collider.name);
+            //Debug.Log("Hit: " + hit.collider.name);
             var chunk = hit.collider.GetComponent<Chunk>();
             if (chunk != null)
             {
