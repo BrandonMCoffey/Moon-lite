@@ -40,8 +40,6 @@ public abstract class WeaponBase : MonoBehaviour
     protected float _lastFireTime;
 
     [Header("Bullet Properties")]
-    [SerializeField] protected GameObject _bulletPrefab;
-    [SerializeField] protected GameObject _bulletParticlePrefab;
     [SerializeField] protected float _bulletSize = 1f;
     [SerializeField] protected float _bulletSpeed = 20f;
     [SerializeField] protected int _bulletDamage = 1;
@@ -68,6 +66,8 @@ public abstract class WeaponBase : MonoBehaviour
     protected Collider _col;
     protected PlayerWeaponManager _pwm;
     private Coroutine _reloadCoroutine; // Track the reload coroutine
+
+    private Coroutine _recoilCoroutine; // Track the recoil coroutine
 
     private void Awake()
     {
@@ -188,13 +188,10 @@ public abstract class WeaponBase : MonoBehaviour
         // Rotate the weapon holder to aim at the target
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
-        // Flip the sprite vertically if aiming backward
-        if (_gunSprite != null)
-        {
-            Vector3 localScale = _gunSprite.localScale;
-            localScale.y = Mathf.Abs(localScale.y) * ((angle > 90 || angle < -90) ? -1f : 1f);
-            _gunSprite.localScale = localScale;
-        }
+        // Flip the transform vertically if aiming backward
+        Vector3 localScale = transform.localScale;
+        localScale.y = Mathf.Abs(localScale.y) * ((angle > 90 || angle < -90) ? -1f : 1f);
+        transform.localScale = localScale;
     }
 
     // Overload: original Shoot signature for backwards compatibility
@@ -204,13 +201,13 @@ public abstract class WeaponBase : MonoBehaviour
     }
 
     // Now takes an optional override bullet prefab from the manager
-    public virtual void Shoot(Vector3 aimDirection, GameObject overrideBulletPrefab = null)
+    public virtual void Shoot(Vector3 aimDirection, GameObject bulletPrefab = null)
     {
         if (Time.time < _lastFireTime + FireDelay || !CanShoot()) return;
 
         StopReload();
 
-        if(_ammoPerShot != 0)
+        if (_ammoPerShot != 0)
         {
             _currentMagAmmo--;
         }
@@ -220,9 +217,8 @@ public abstract class WeaponBase : MonoBehaviour
         aimDirection = Quaternion.Euler(0, 0, randomAngle) * aimDirection;
 
         Vector3 spawnPosition = _shootTransform.position;
-        GameObject prefabToUse = overrideBulletPrefab ?? _bulletPrefab;
 
-        Transform bulletInstance = Instantiate(prefabToUse, spawnPosition, Quaternion.identity).transform;
+        Transform bulletInstance = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity).transform;
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
         if (bulletInstance.TryGetComponent(out BulletBase bullet))
@@ -231,9 +227,54 @@ public abstract class WeaponBase : MonoBehaviour
             bullet.PreRaycastCheck();
         }
 
+        if (_recoilCoroutine != null)
+        {
+            StopCoroutine(_recoilCoroutine);
+            ResetRecoil(); // Reset to original values if stopped early
+        }
+        _recoilCoroutine = StartCoroutine(RecoilCoroutine());
+
         _pwm.SubtractAmmo(_ammoPerShot);
         _lastFireTime = Time.time;
         OnFired();
+    }
+
+    private IEnumerator RecoilCoroutine()
+    {
+        Transform recoilHolder = _gunSprite.parent;
+
+        Vector3 initialPosition = recoilHolder.localPosition;
+        Quaternion initialRotation = recoilHolder.localRotation;
+
+        Vector3 targetPosition = initialPosition - new Vector3(_recoilForce.x, 0f, 0f);
+        Quaternion targetRotation = initialRotation * Quaternion.Euler(0f, 0f, _recoilForce.y * Mathf.Sign(_gunSprite.localScale.y));
+
+        float elapsedTime = 0f;
+        float duration = 1/_fireRate;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+
+            recoilHolder.localPosition = Vector3.Lerp(initialPosition, targetPosition, t);
+            recoilHolder.localRotation = Quaternion.Lerp(initialRotation, targetRotation, t);
+
+            yield return null;
+        }
+
+        recoilHolder.localPosition = initialPosition;
+        recoilHolder.localRotation = initialRotation;
+    }
+
+    private void ResetRecoil()
+    {
+        Transform recoilHolder = _gunSprite.parent;
+        if (recoilHolder != null)
+        {
+            recoilHolder.localPosition = Vector3.zero;
+            recoilHolder.localRotation = Quaternion.identity;
+        }
     }
 
     public virtual void Reload()
