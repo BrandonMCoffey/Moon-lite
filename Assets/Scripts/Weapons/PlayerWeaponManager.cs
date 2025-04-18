@@ -18,7 +18,7 @@ public class PlayerWeaponManager : MonoBehaviour
     [SerializeField] private Transform _weaponHolder;
     [SerializeField] private float _pickupRadius = 1f;
     [SerializeField] private int _maxWeapons = 2; // Maximum number of weapons the player can hold
-    [SerializeField] private List<WeaponBase> _weapons = new List<WeaponBase>(); // List of held weapons
+    private List<WeaponBase> _weapons = new List<WeaponBase>(); // List of held weapons
     public WeaponBase StarterWeapon => _weapons.Count > 0 ? _weapons[0] : null;
 
     [Header("UI References")]
@@ -75,6 +75,17 @@ public class PlayerWeaponManager : MonoBehaviour
             _maxAmmoInventory = new int[types];
             for (int i = 0; i < types; i++)
                 _maxAmmoInventory[i] = 100;
+        }
+
+        if(GetComponentInChildren<WeaponBase>() != null)
+        {
+            foreach (var weapon in GetComponentsInChildren<WeaponBase>())
+            {
+                if (weapon != null && weapon.gameObject != gameObject) // Avoid adding the manager itself
+                {
+                    _weapons.Add(weapon);
+                }
+            }
         }
     }
 
