@@ -7,15 +7,16 @@ public abstract class WeaponBase : MonoBehaviour
     public event Action Fired = delegate { };
 
     [Header("Weapon Properties")]
-    [SerializeField] protected string weaponName = "Default Weapon";
-    public string WeaponName => weaponName;
+    [SerializeField] protected string _weaponName = "Default Weapon";
+    public string WeaponName => _weaponName;
 
     [SerializeField] protected Sprite _weaponSprite; // Sprite for the weapon
     public Sprite WeaponSprite => _weaponSprite;
 
     public bool IsEquipped { get; private set; } = false;
     public Transform Owner { get; private set; }
-    [SerializeField] protected Transform shootTransform;
+    [SerializeField] protected Transform _shootTransform;
+    [SerializeField] protected Transform _gunSprite;
 
     [Header("Reload and Ammo Properties")]
     [SerializeField] protected int _maxMagSize = 10; // Ammo capacity of the magazine.
@@ -57,12 +58,14 @@ public abstract class WeaponBase : MonoBehaviour
 
     [Header("Weapon Spray")]
     [SerializeField] protected float _sprayAngle = 0f; // Maximum spray angle in degrees
+    
+    [Header("Recoil")]
+    [SerializeField] protected Vector2 _recoilForce = Vector2.zero;
 
     protected Animator _anim;
     protected SpriteRenderer _sr;
     protected Rigidbody _rb;
     protected Collider _col;
-    protected Transform _gunSprite;
     protected PlayerWeaponManager _pwm;
     private Coroutine _reloadCoroutine; // Track the reload coroutine
 
@@ -74,7 +77,6 @@ public abstract class WeaponBase : MonoBehaviour
         _col = GetComponent<Collider>();
         _anim = GetComponentInChildren<Animator>();
         _sr = GetComponentInChildren<SpriteRenderer>();
-        _gunSprite = transform.Find("GunSprite");
         _pwm = FindObjectOfType<PlayerWeaponManager>();
         
         _weaponSprite = _sr.sprite;
@@ -93,12 +95,12 @@ public abstract class WeaponBase : MonoBehaviour
         {
             if(_ammoPerShot !=0)
             {
-                Debug.Log("Infinite ammo cheat activated for " + weaponName + "!");
+                Debug.Log("Infinite ammo cheat activated for " + _weaponName + "!");
                 _ammoPerShot = 0;
             }
             else
             {
-                Debug.Log("Infinite ammo cheat deactivated for " + weaponName + "!");
+                Debug.Log("Infinite ammo cheat deactivated for " + _weaponName + "!");
                 _ammoPerShot = _tempAmmoPerShot;
             }
         }
@@ -217,7 +219,7 @@ public abstract class WeaponBase : MonoBehaviour
         float randomAngle = UnityEngine.Random.Range(-_sprayAngle / 2f, _sprayAngle / 2f);
         aimDirection = Quaternion.Euler(0, 0, randomAngle) * aimDirection;
 
-        Vector3 spawnPosition = shootTransform.position;
+        Vector3 spawnPosition = _shootTransform.position;
         GameObject prefabToUse = overrideBulletPrefab ?? _bulletPrefab;
 
         Transform bulletInstance = Instantiate(prefabToUse, spawnPosition, Quaternion.identity).transform;
