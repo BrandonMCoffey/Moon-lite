@@ -18,6 +18,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private int _worldSeed = -1;
     [SerializeField] private int _surfaceLevelSize = 20;
     [SerializeField] private float _surfaceNoiseScale = 0.04f;
+    [SerializeField, Range(0f, 1f)] private float _grassDecoChance = 0.2f;
     [SerializeField] private float _caveNoiseScale = 0.08f;
     [SerializeField, Range(0f, 1f)] private float _caveThreshold = 0.55f;
     [SerializeField, Range(0f, 1f)] public float _caveNoiseDetail = 0.1f;
@@ -30,7 +31,7 @@ public class WorldGenerator : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject _chunkPrefab;
-    [SerializeField] private CaveDecoration _caveDecorationPrefab;
+    [SerializeField] private LevelDecoration _decorationPrefab;
     [SerializeField] private TerrainTileData _tileData;
     [SerializeField] private Material _terrainMaterial;
     [SerializeField] private DroppedItemManager _itemManager;
@@ -150,6 +151,10 @@ public class WorldGenerator : MonoBehaviour
                 else if (y == surfaceHeight)
                 {
                     _grid[x, y] = TileType.Grass;
+                    if (Random.value < _grassDecoChance)
+                    {
+                        Instantiate(_decorationPrefab, TileToWorld(x, y + 1), transform.rotation, transform).RandomizeGrass();
+                    }
                 }
                 else
                 {
@@ -200,7 +205,7 @@ public class WorldGenerator : MonoBehaviour
                         {
                             if (Random.value < _caveCeilingDecoChance)
                             {
-                                GenerateDecoration(x, y, false);
+                                Instantiate(_decorationPrefab, TileToWorld(x, y), transform.rotation, transform).RandomizeCave(false);
                             }
                         }
                     }
@@ -209,18 +214,12 @@ public class WorldGenerator : MonoBehaviour
                     {
                         if (Random.value < _caveFloorDecoChance)
                         {
-                            GenerateDecoration(x, y + 1, true);
+                            Instantiate(_decorationPrefab, TileToWorld(x, y), transform.rotation, transform).RandomizeCave(true);
                         }
                     }
                 }
             }
         }
-    }
-
-    private void GenerateDecoration(int x, int y, bool floor)
-    {
-        var deco = Instantiate(_caveDecorationPrefab, TileToWorld(x, y), transform.rotation, transform);
-        deco.Randomize(floor);
     }
 
     private void GenerateMinerals()
@@ -373,17 +372,39 @@ public class WorldGenerator : MonoBehaviour
 
     public void DamageTileAt(Vector3 worldPos, int damage = 1)
     {
+        // Check if close
+        float checkValue = ((worldPos.x - OffsetX) * _tilesPerUnit % 1 - 0.5f);
+        if (checkValue < 0) checkValue = -checkValue;
+        bool checkX = checkValue > 0.45f;
+        
+        checkValue = ((worldPos.y - OffsetX) * _tilesPerUnit % 1 - 0.5f);
+        if (checkValue < 0) checkValue = -checkValue;
+        bool checkY = checkValue > 0.45f;
+
+
         var x = WorldToTileX(worldPos.x);
         var y = WorldToTileY(worldPos.y);
         _damageRegion = TileToWorld(x, y);
         _damageRegionSize = _tileSizeMult * 0.5f;
-        DamageTileAt(x, y, damage);
+        bool success = DamageTileAt(x, y, damage);
+        if (!success && checkX)
+        {
+            success = DamageTileAt(x + 1, y, damage);
+        }
+        if (!success && checkY)
+        {
+            success = DamageTileAt(x, y + 1, damage);
+        }
+        if (!success && checkX && checkY)
+        {
+            success = DamageTileAt(x + 1, y + 1, damage);
+        }
     }
-    public void DamageTileAt(int x, int y, int damage = 1)
+    public bool DamageTileAt(int x, int y, int damage = 1)
     {
         if (GetTile(x, y) == TileType.Air)
         {
-            return;
+            return false;
         }
         var data = _tileData.GetTileData(_grid[x, y]);
 
@@ -401,6 +422,7 @@ public class WorldGenerator : MonoBehaviour
             else _tileDamageData.Add(coord, currentDamage + damage);
             ModifyChunk(x, y);
         }
+        return true;
     }
 
     public int GetDamage(int x, int y)

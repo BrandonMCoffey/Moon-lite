@@ -958,6 +958,7 @@ MonoBehaviour:
   _worldSeed: -1
   _surfaceLevelSize: 20
   _surfaceNoiseScale: 0.04
+  _grassDecoChance: 0.2
   _caveNoiseScale: 0.08
   _caveThreshold: 0.55
   _caveNoiseDetail: 0.15
@@ -970,7 +971,7 @@ MonoBehaviour:
     type: 3}
   _chunkPrefab: {fileID: 243734584287799151, guid: 095ac6aaabb2a6641a8b6d0552191ad0,
     type: 3}
-  _caveDecorationPrefab: {fileID: 2172473414405261098, guid: 043e4195a0ea1cd46b425e0b0d2fd60b,
+  _decorationPrefab: {fileID: 2172473414405261098, guid: 043e4195a0ea1cd46b425e0b0d2fd60b,
     type: 3}
   _tileData: {fileID: 11400000, guid: c0c6bc909e283a24aa86aeb20e9bb152, type: 2}
   _terrainMaterial: {fileID: 2100000, guid: 1ddfb5e080b07f5408cf5167262c875c, type: 2}
