@@ -4,6 +4,8 @@ using Sirenix.OdinInspector;
 
 public class WorldGenerator : MonoBehaviour
 {
+    public static event System.Action<int, int> OnTileDestroyed = delegate { };
+
     [Header("World Settings")]
     [SerializeField] private bool _centerX;
     [SerializeField] private bool _downY;
@@ -153,7 +155,9 @@ public class WorldGenerator : MonoBehaviour
                     _grid[x, y] = TileType.Grass;
                     if (Random.value < _grassDecoChance)
                     {
-                        Instantiate(_decorationPrefab, TileToWorld(x, y + 1), transform.rotation, transform).RandomizeGrass();
+                        var grass = Instantiate(_decorationPrefab, TileToWorld(x, y + 1), transform.rotation, transform);
+                        grass.RandomizeGrass();
+                        grass.ConnectToTile(x, y);
                     }
                 }
                 else
@@ -205,7 +209,9 @@ public class WorldGenerator : MonoBehaviour
                         {
                             if (Random.value < _caveCeilingDecoChance)
                             {
-                                Instantiate(_decorationPrefab, TileToWorld(x, y), transform.rotation, transform).RandomizeCave(false);
+                                var deco = Instantiate(_decorationPrefab, TileToWorld(x, y), transform.rotation, transform);
+                                deco.RandomizeCave(false);
+                                deco.ConnectToTile(x, y + 1);
                             }
                         }
                     }
@@ -214,7 +220,9 @@ public class WorldGenerator : MonoBehaviour
                     {
                         if (Random.value < _caveFloorDecoChance)
                         {
-                            Instantiate(_decorationPrefab, TileToWorld(x, y), transform.rotation, transform).RandomizeCave(true);
+                            var deco = Instantiate(_decorationPrefab, TileToWorld(x, y), transform.rotation, transform);
+                            deco.RandomizeCave(true);
+                            deco.ConnectToTile(x, y);
                         }
                     }
                 }
@@ -440,6 +448,7 @@ public class WorldGenerator : MonoBehaviour
         _itemManager.SpawnDroppedItem(pos, item);
 
         ModifyChunk(x, y);
+        OnTileDestroyed?.Invoke(x, y);
     }
 
     private void ModifyChunk(int x, int y)

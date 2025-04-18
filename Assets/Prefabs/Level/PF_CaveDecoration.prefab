@@ -56,6 +56,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bce398106a872e749ad19b77aa244e61, type: 2}
   _caveCeilingSprites:
   - {fileID: 2100000, guid: b288dd0141ee1204aba1bbebb7199c35, type: 2}
+  _connectedTileX: 0
+  _connectedTileY: 0
 --- !u!33 &2053274389833329643
 MeshFilter:
   m_ObjectHideFlags: 0

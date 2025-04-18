@@ -10,10 +10,27 @@ public class LevelDecoration : MonoBehaviour
     [SerializeField] private List<Material> _grassMaterials = new List<Material>();
     [SerializeField] private List<Material> _caveFloorSprites = new List<Material>();
     [SerializeField] private List<Material> _caveCeilingSprites = new List<Material>();
+    [SerializeField] private int _connectedTileX;
+    [SerializeField] private int _connectedTileY;
 
     private void OnValidate()
     {
         if (_renderer == null) _renderer = GetComponent<MeshRenderer>();
+    }
+
+    public void ConnectToTile(int x, int y)
+    {
+        _connectedTileX = x;
+        _connectedTileY = y;
+        WorldGenerator.OnTileDestroyed += ConnectedTileDestroyed;
+    }
+
+    private void ConnectedTileDestroyed(int x, int y)
+    {
+        if (x == _connectedTileX && y == _connectedTileY)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void RandomizeGrass()
