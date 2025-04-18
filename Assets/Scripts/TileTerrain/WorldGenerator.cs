@@ -164,7 +164,7 @@ public class WorldGenerator : MonoBehaviour
         int maxCaveHeight = _height - _surfaceLevelSize - 10;
         int minCaveHeight = 10;
 
-        for (int y = minCaveHeight; y < maxCaveHeight; y++)
+        for (int y = maxCaveHeight - 1; y >= minCaveHeight; y--)
         {
             // Suface bias (reduce caves near surface)
             float surfaceThresholdOffset = Mathf.Clamp01((y + 10 - maxCaveHeight) * 0.1f) * (1 - _caveThreshold);
