@@ -958,7 +958,7 @@ MonoBehaviour:
   _worldSeed: -1
   _surfaceLevelSize: 20
   _surfaceNoiseScale: 0.04
-  _grassDecoChance: 0.2
+  _grassDecoChance: 0.4
   _caveNoiseScale: 0.08
   _caveThreshold: 0.55
   _caveNoiseDetail: 0.15
