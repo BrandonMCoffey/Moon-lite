@@ -661,9 +661,12 @@ MonoBehaviour:
   detectionRadius: 10
   innerDetectionRadius: 1
   detectionCooldown: 1
-  playerLayer:
+  playerLayerMask:
     serializedVersion: 2
     m_Bits: 1024
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &267538046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -681,6 +684,13 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  wanderSpeed: 2
+  wanderRadius: 5
+  pitCheckDistance: 5
+  wanderTimeRange: {x: 1, y: 3}
+  playerRememberTime: 5
+  chaseSpeed: 5
+  attackDistance: 2
   _facingDirection: 0
 --- !u!1 &345437391
 GameObject:

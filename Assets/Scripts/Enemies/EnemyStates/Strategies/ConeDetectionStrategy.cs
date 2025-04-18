@@ -8,14 +8,16 @@ public class ConeDetectionStrategy : IDetectionStrategy
     readonly float innerDetectionRadius;
     readonly int numOfRays;
     readonly LayerMask playerLayer;
+    readonly LayerMask groundLayer;
 
-    public ConeDetectionStrategy(LayerMask playerLayer, float detectionAngle, float detectionRadius, float innerDetectionRadius, int numOfRays = 10)
+    public ConeDetectionStrategy(LayerMask playerLayer, LayerMask groundLayer, float detectionAngle, float detectionRadius, float innerDetectionRadius, int numOfRays = 10)
     {
         this.detectionAngle = detectionAngle;
         this.detectionRadius = detectionRadius;
         this.innerDetectionRadius = innerDetectionRadius;
         this.numOfRays = numOfRays;
         this.playerLayer = playerLayer;
+        this.groundLayer = groundLayer;
     }
 
     public bool IsPlayerDetected(Transform player, Transform detector, CountdownTimer timer)
@@ -39,18 +41,24 @@ public class ConeDetectionStrategy : IDetectionStrategy
                 float angleOffset = -halfAngle + (angleStep * i);
                 Vector3 rayDirection = Quaternion.AngleAxis(angleOffset, Vector3.forward) * baseDirection;
 
-                // 3D Raycast
                 if (Physics.Raycast(detector.position, rayDirection, out RaycastHit hit, detectionRadius, playerLayer))
                 {
-
-                    var playerRef = hit.collider.GetComponent<Player>();
-                    if (playerRef != null)
+                    if (Physics.Raycast(detector.position, rayDirection, out _, detectionRadius, groundLayer))
+                    {
+                        // there is a ground object in the way, ignore this ray
+                        Debug.DrawRay(detector.position, rayDirection * detectionRadius, Color.yellow);
+                    }
+                    else 
                     {
                         Debug.DrawRay(detector.position, rayDirection * detectionRadius, Color.red);
-                        Debug.Log($"Player detected by raycast: {hit.collider.name}");
-                        timer.Start();
-                        return true;
-                    }
+                        var playerRef = hit.collider.GetComponent<Player>();
+                        if (playerRef != null)
+                        {
+                            Debug.Log($"Player detected by raycast: {hit.collider.name}");
+                            timer.Start();
+                            return true;
+                        }
+                    }  
                 }
             }
         }

@@ -7,7 +7,10 @@ public class PlayerDetector : MonoBehaviour
     [SerializeField] float detectionRadius = 10f;
     [SerializeField] float innerDetectionRadius = 5f;
     [SerializeField] float detectionCooldown = 1f;
-    [SerializeField] LayerMask playerLayer; 
+    [SerializeField] LayerMask playerLayerMask;
+    public LayerMask PlayerLayer => playerLayerMask;
+    [SerializeField] LayerMask obstacleLayerMask;
+    public LayerMask ObstacleLayer => obstacleLayerMask;
 
     public Transform PlayerTransform { get; private set; }
     CountdownTimer detectionTimer;
@@ -17,7 +20,7 @@ public class PlayerDetector : MonoBehaviour
     {
         detectionTimer = new CountdownTimer(detectionCooldown);
         PlayerTransform = Player.Instance.transform; 
-        detectionStrategy = new ConeDetectionStrategy(playerLayer, detectionAngle, detectionRadius, innerDetectionRadius);    
+        detectionStrategy = new ConeDetectionStrategy(playerLayerMask, obstacleLayerMask, detectionAngle, detectionRadius, innerDetectionRadius);    
     }
 
     public bool CanDetectPlayer() => detectionTimer.IsRunning || detectionStrategy.IsPlayerDetected(PlayerTransform, transform, detectionTimer);
@@ -25,7 +28,7 @@ public class PlayerDetector : MonoBehaviour
 
     private void OnDrawGizmosSelected() 
     {
-        if (detectionStrategy != null)
+        if (detectionStrategy != null) 
         {
             detectionStrategy.DrawGizmos(transform);
         }
