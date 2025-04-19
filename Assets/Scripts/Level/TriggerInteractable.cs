@@ -27,9 +27,10 @@ public class TriggerInteractable : MonoBehaviour
         }
     }
 
+    // TODO: Fix this to work with new player raycast system
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<PlayerMovement>())
+        if (other.GetComponent<Player>())
         {
             _insideTrigger = true;
             _onPlayerEnter?.Invoke();
@@ -38,7 +39,7 @@ public class TriggerInteractable : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<PlayerMovement>())
+        if (other.GetComponent<Player>())
         {
             _insideTrigger = false;
             _onPlayerExit?.Invoke();

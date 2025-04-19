@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewPCStats", menuName = "Player/Controller Stats")] // Added CreateAssetMenu for convenience
+//[CreateAssetMenu(fileName = "NewPCStats", menuName = "Player/Controller Stats")] // Added CreateAssetMenu for convenience
 public class PCStats : ScriptableObject
 {
     [Header("Layers")]

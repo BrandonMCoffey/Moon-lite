@@ -8,7 +8,11 @@ public enum TileType : byte
     StoneEdge = 4,
 
     Copper = 5,
-    Iron = 6,
-    BlueGem = 7,
-    GreenGem = 8,
+    Lead = 6,
+    Aethergem = 7,
+    Corestone = 8,
+    Cryselium = 9,
+    Lumisand = 10,
+    Pyrokite = 11,
+    Voltthorn = 12,
 }

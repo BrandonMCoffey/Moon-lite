@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewPCStatsV3", menuName = "Player/Controller Stats V3")] 
+//[CreateAssetMenu(fileName = "NewPCStatsV3", menuName = "Player/Controller Stats V3")] 
 public class PCStatsV3 : ScriptableObject
 {
     [Header("LAYERS")] 

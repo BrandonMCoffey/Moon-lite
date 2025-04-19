@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-[CreateAssetMenu(menuName = "Terrain/Tile Data")]
+[CreateAssetMenu(menuName = "Moonlite/Terrain Tile Data")]
 public class TerrainTileData : SerializedScriptableObject
 {
     [DictionaryDrawerSettings(KeyLabel = "Tile Type", ValueLabel = "Tile Data")]

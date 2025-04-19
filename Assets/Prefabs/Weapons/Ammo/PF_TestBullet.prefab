@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7088399840058384696}
   - component: {fileID: 1748833617410321593}
   m_Layer: 25
-  m_Name: TestBullet
+  m_Name: PF_TestBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ff39bdcdf37894c81a4423efe829e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _data: {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
   _shotSpeed: 5
   _damage: 1
   _knockback: 3
@@ -106,3 +107,5 @@ MonoBehaviour:
   _bulletCollisionMask:
     serializedVersion: 2
     m_Bits: 1048832
+  _hasAOE: 0
+  _aoeRadius: 1

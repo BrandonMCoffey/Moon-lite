@@ -1,7 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-[CreateAssetMenu(menuName = "MovementData")]
+[CreateAssetMenu(menuName = "Moonlite/MovementData")]
 public class CustomMovementData : ScriptableObject
 {
     [Header("Gravity")]

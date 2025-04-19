@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -4745953365413457565}
   - component: {fileID: 8394295690393248279}
   m_Layer: 11
-  m_Name: Temp_SMG
+  m_Name: PF_SMG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

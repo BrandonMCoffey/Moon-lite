@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1102676445912022249
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5052903891265574542}
+  m_Layer: 11
+  m_Name: RecoilHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5052903891265574542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102676445912022249}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2122804177998014980}
+  m_Father: {fileID: 2122804177599547942}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2122804177599547945
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,11 +41,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2122804177599547942}
-  - component: {fileID: 7869416293798881207}
+  - component: {fileID: 6565290217461238152}
   - component: {fileID: 2467125778329937797}
   - component: {fileID: -4745953365413457565}
   m_Layer: 11
-  m_Name: Temp_AR
+  m_Name: PF_Shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,12 +63,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6447594107864255500}
+  - {fileID: 5052903891265574542}
   - {fileID: 2122804178461797388}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7869416293798881207
+--- !u!114 &6565290217461238152
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,28 +77,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 2122804177599547945}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a98184c2f3927f46b8bf6ed121ef735, type: 3}
+  m_Script: {fileID: 11500000, guid: 13917158cc9ca2c4ba599793c7f7deb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponName: Rifle
-  _weaponSprite: {fileID: 21300000, guid: 4e2d441a764559f449dd169dfe1b3f90, type: 3}
+  _weaponName: Shotgun
+  _weaponSprite: {fileID: 21300000, guid: c77aacf561ced124eb22f9591a5996d4, type: 3}
   _shootTransform: {fileID: 2122804178461797388}
   _gunSprite: {fileID: 2122804177998014980}
-  _maxMagSize: 8
-  _reloadTime: 2
+  _maxMagSize: 4
+  _reloadTime: 0.2
   _isAutomatic: 0
-  _fireRate: 12
-  _bulletSize: 0.25
-  _bulletSpeed: 50
+  _fireRate: 4
+  _bulletSize: 0.3
+  _bulletSpeed: 10
   _bulletDamage: 2
-  _bulletKnockback: 2
+  _bulletKnockback: 1
   _bulletLifetime: 5
-  _bulletGravityScale: 1
-  _hasAOE: 0
-  _aoeRadius: 1
+  _bulletGravityScale: 1.5
+  _hasAOE: 1
+  _aoeRadius: 2
   _ammoPerShot: 1
-  _sprayAngle: 5
-  _recoilForce: {x: 0.5, y: 10}
+  _sprayAngle: 0
+  _recoilForce: {x: 0.3, y: 10}
 --- !u!65 &2467125778329937797
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -78,8 +110,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.9, y: 0.95, z: 0.1}
-  m_Center: {x: 0.5, y: -0.25, z: 0}
+  m_Size: {x: 2, y: 0.75, z: 0.1}
+  m_Center: {x: 0.6, y: -0.2, z: 0}
 --- !u!54 &-4745953365413457565
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -126,7 +158,7 @@ Transform:
   m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6447594107864255500}
+  m_Father: {fileID: 5052903891265574542}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2122804177998014979
@@ -170,7 +202,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4e2d441a764559f449dd169dfe1b3f90, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c77aacf561ced124eb22f9591a5996d4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -193,7 +225,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.1, y: -0.2, z: 0}
 --- !u!1 &2122804178461797389
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,42 +250,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2122804178461797389}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.252, y: -0.055, z: 0}
+  m_LocalPosition: {x: 1.43375, y: -0.059250005, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2122804177599547942}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7903614540306199544
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6447594107864255500}
-  m_Layer: 0
-  m_Name: RecoilHolder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6447594107864255500
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7903614540306199544}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2122804177998014980}
-  m_Father: {fileID: 2122804177599547942}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
