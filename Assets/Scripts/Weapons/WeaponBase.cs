@@ -7,59 +7,32 @@ public abstract class WeaponBase : MonoBehaviour
 {
     public event Action Fired = delegate { };
 
+    [SerializeField] private WeaponData _data;
     [Header("Weapon Properties")]
     [SerializeField] protected string _weaponName = "Default Weapon";
     public string WeaponName => _weaponName;
-
-    [SerializeField] protected Sprite _weaponSprite; // Sprite for the weapon
-    public Sprite WeaponSprite => _weaponSprite;
 
     public bool IsEquipped { get; private set; } = false;
     public Transform Owner { get; private set; }
     [SerializeField] protected Transform _shootTransform;
     [SerializeField] protected Transform _gunSprite;
 
-    [Header("Reload and Ammo Properties")]
-    [SerializeField] protected int _maxMagSize = 10; // Ammo capacity of the magazine.
-    [SerializeField] protected float _reloadTime = 2f; // Time it takes to reload.
-    public float ReloadTime => _reloadTime;
     protected int _currentMagAmmo; // Ammo left in the magazine.
-
-    public int MaxMagSize => _maxMagSize;
     public int CurrentMagAmmo { get => _currentMagAmmo; set => _currentMagAmmo = value; }
+    public int AmmoNeededForReload => _data.MaxMagSize - _currentMagAmmo;
+    public bool IsAutomatic => _data.IsAutomatic;
 
     protected bool _isReloading = false;
     public bool IsReloading { get => _isReloading; set => _isReloading = value; }
+    public float ReloadTime => _data.ReloadTime;
 
-    [Header("Fire Type")]
-    [SerializeField] protected bool _isAutomatic = false;
-    public bool IsAutomatic => _isAutomatic;
-
-    [Tooltip("Bullets per second")]
-    [SerializeField] protected float _fireRate = 4f; // Default to 4 bullets per second.
-    protected float FireDelay => 1f / _fireRate; // Calculate delay dynamically.
     protected float _lastFireTime;
 
-    [Header("Bullet Properties")]
-    [SerializeField] protected float _bulletSize = 1f;
-    [SerializeField] protected float _bulletSpeed = 20f;
-    [SerializeField] protected int _bulletDamage = 1;
-    [SerializeField] protected float _bulletKnockback = 1f;
-    [SerializeField] protected float _bulletLifetime = 3f;
-    [SerializeField] protected float _bulletGravityScale = 0f;
-    [SerializeField] protected bool _hasAOE = false;
-    [SerializeField, ShowIf(nameof(_hasAOE))] protected float _aoeRadius = 1f;
-
     [Header("Ammo Consumption")]
-    [SerializeField] protected int _ammoPerShot = 1; // Amount of ammo consumed per shot
     private int _tempAmmoPerShot = 0; // Amount of ammo consumed per shot
-    public int AmmoPerShot => _ammoPerShot;
 
-    [Header("Weapon Spray")]
-    [SerializeField] protected float _sprayAngle = 0f; // Maximum spray angle in degrees
-    
-    [Header("Recoil")]
-    [SerializeField] protected Vector2 _recoilForce = Vector2.zero;
+    protected bool _infiniteAmmo;
+
 
     protected Animator _anim;
     protected SpriteRenderer _sr;
@@ -72,44 +45,36 @@ public abstract class WeaponBase : MonoBehaviour
 
     private void Awake()
     {
-        _currentMagAmmo = _maxMagSize;
+        _currentMagAmmo = _data.MaxMagSize;
 
         _rb = GetComponent<Rigidbody>();
         _col = GetComponent<Collider>();
         _anim = GetComponentInChildren<Animator>();
         _sr = GetComponentInChildren<SpriteRenderer>();
         _pwm = FindObjectOfType<PlayerWeaponManager>();
-        
-        _weaponSprite = _sr.sprite;
+
+        //_sr.sprite = _data.Sprite;
 
         if (!_rb) Debug.LogWarning($"Rigidbody component is missing on {gameObject.name}");
         if (!_col) Debug.LogWarning($"Collider component is missing on {gameObject.name}");
         //if (!_anim) Debug.LogWarning($"Animator component is missing in children of {gameObject.name}");
         if (!_sr) Debug.LogWarning($"SpriteRenderer component is missing in children of {gameObject.name}");
 
-        _tempAmmoPerShot = _ammoPerShot;
+        _tempAmmoPerShot = _data.AmmoPerShot;
     }
 
-    void Update()
+    private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.V))
         {
-            if(_ammoPerShot !=0)
-            {
-                Debug.Log("Infinite ammo cheat activated for " + _weaponName + "!");
-                _ammoPerShot = 0;
-            }
-            else
-            {
-                Debug.Log("Infinite ammo cheat deactivated for " + _weaponName + "!");
-                _ammoPerShot = _tempAmmoPerShot;
-            }
+            _infiniteAmmo = !_infiniteAmmo;
+            Debug.Log($"Infinite ammo cheat {(_infiniteAmmo ? "activated" : "deactivated")} for {_weaponName}!");
         }
     }
 
     public bool CanShoot()
     {
-        return _currentMagAmmo > 0 && !_isReloading;
+        return !_isReloading && (_infiniteAmmo || _currentMagAmmo > 0);
     }
 
     public virtual void Pickup(Transform newOwner)
@@ -204,17 +169,18 @@ public abstract class WeaponBase : MonoBehaviour
     // Now takes an optional override bullet prefab from the manager
     public virtual void Shoot(Vector3 aimDirection, GameObject bulletPrefab = null)
     {
-        if (Time.time < _lastFireTime + FireDelay || !CanShoot()) return;
+        if (Time.time < _lastFireTime + _data.FireDelay || !CanShoot()) return;
 
         StopReload();
 
-        if (_ammoPerShot != 0)
+        if (!_infiniteAmmo && _data.AmmoPerShot > 0)
         {
-            _currentMagAmmo--;
+            _currentMagAmmo -= _data.AmmoPerShot;
+            _pwm.SubtractAmmo(_data.AmmoPerShot);
         }
 
         // Apply spray effect
-        float randomAngle = UnityEngine.Random.Range(-_sprayAngle / 2f, _sprayAngle / 2f);
+        float randomAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
         aimDirection = Quaternion.Euler(0, 0, randomAngle) * aimDirection;
 
         Vector3 spawnPosition = _shootTransform.position;
@@ -224,7 +190,7 @@ public abstract class WeaponBase : MonoBehaviour
 
         if (bulletInstance.TryGetComponent(out BulletBase bullet))
         {
-            bullet.BulletSetup(aimDirection, angle, _bulletSpeed, _bulletDamage, _bulletKnockback, _bulletSize, _bulletLifetime, _bulletGravityScale, _hasAOE, _aoeRadius);
+            bullet.BulletSetup(aimDirection, angle, _data);
             bullet.PreRaycastCheck();
         }
 
@@ -235,7 +201,6 @@ public abstract class WeaponBase : MonoBehaviour
         }
         _recoilCoroutine = StartCoroutine(RecoilCoroutine());
 
-        _pwm.SubtractAmmo(_ammoPerShot);
         _lastFireTime = Time.time;
         OnFired();
     }
@@ -247,11 +212,11 @@ public abstract class WeaponBase : MonoBehaviour
         Vector3 initialPosition = recoilHolder.localPosition;
         Quaternion initialRotation = recoilHolder.localRotation;
 
-        Vector3 targetPosition = initialPosition - new Vector3(_recoilForce.x, 0f, 0f);
-        Quaternion targetRotation = initialRotation * Quaternion.Euler(0f, 0f, _recoilForce.y * Mathf.Sign(_gunSprite.localScale.y));
+        Vector3 targetPosition = initialPosition - new Vector3(_data.RecoilForce.x, 0f, 0f);
+        Quaternion targetRotation = initialRotation * Quaternion.Euler(0f, 0f, _data.RecoilForce.y * Mathf.Sign(_gunSprite.localScale.y));
 
         float elapsedTime = 0f;
-        float duration = 1/_fireRate;
+        float duration = _data.FireDelay;
 
         while (elapsedTime < duration)
         {
@@ -281,7 +246,7 @@ public abstract class WeaponBase : MonoBehaviour
     public virtual void Reload()
     {
         // Prevent reload if the magazine is full and there is no reserve ammo or if the remaining ammo exactly matches the current magazine capacity.
-        if (_isReloading || _currentMagAmmo == _maxMagSize || _pwm.CurrentAmmoInventory == _currentMagAmmo) return;
+        if (_isReloading || _currentMagAmmo == _data.MaxMagSize || _pwm.CurrentAmmoInventory == _currentMagAmmo) return;
 
         // Start the reload coroutine and store its reference
         _reloadCoroutine = StartCoroutine(ReloadCoroutine());
@@ -293,9 +258,9 @@ public abstract class WeaponBase : MonoBehaviour
     {
         _isReloading = true;
 
-        yield return new WaitForSeconds(_reloadTime);
+        yield return new WaitForSeconds(_data.ReloadTime);
 
-        int ammoNeeded = _maxMagSize - _currentMagAmmo;
+        int ammoNeeded = _data.MaxMagSize - _currentMagAmmo;
         int ammoToReload = Mathf.Min(ammoNeeded, _pwm.CurrentAmmoInventory);
 
         _currentMagAmmo += ammoToReload;

@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5e62cb1d87a5940a0f19f9dd96412f, type: 3}
   m_Name: Data_AR
   m_EditorClassIdentifier: 
+  _weaponName: Data_AR
+  _weaponDescription: 
+  _weaponSprite: {fileID: 21300000, guid: 4e2d441a764559f449dd169dfe1b3f90, type: 3}
+  _weaponPrefab: {fileID: 7869416293798881207, guid: a3a7b73e20fbfa24ea06669057003ea6,
+    type: 3}
   _maxMagSize: 8
   _reloadTime: 2
   _isAutomatic: 0

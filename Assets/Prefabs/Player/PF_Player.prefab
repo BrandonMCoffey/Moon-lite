@@ -245,9 +245,9 @@ MonoBehaviour:
   _maxWeapons: 2
   _currentAmmoType: 0
   _ammoPrefabs:
+  - {fileID: 2602138688798492613, guid: a614721caff3b534cb82e12fa4b7d4c4, type: 3}
   - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
-  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
-  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
+  - {fileID: 2602138688798492613, guid: 77bac6e80b534e141bf382b75a0e6c7c, type: 3}
   _currentAmmoReserve: f40100000f00000028000000
   _maxAmmoInventory: f4010000f4010000f4010000
   MagAmmoChangeEvent:

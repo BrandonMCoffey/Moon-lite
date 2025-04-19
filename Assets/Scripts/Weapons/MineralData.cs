@@ -7,7 +7,8 @@ using UnityEngine;
 public class MineralData : ItemData
 {
     [Header("Bullet Data")]
-    [SerializeField] private float _bulletSpeedModifier = 1f;
+    [Tooltip("Modifies the speed of the bullet from the gun by multiplying")]
+    [SerializeField, Range(0.01f, 5f)] private float _bulletSpeedModifier = 1f;
     [SerializeField] private float _damage = 1f;
     [SerializeField] private float _knockback = 3f;
     [SerializeField] private float _size = 0.1f;

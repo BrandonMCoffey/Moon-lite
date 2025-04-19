@@ -1,18 +1,21 @@
 using System.Collections;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class BulletBase : MonoBehaviour
 {
     [SerializeField] protected MineralData _data;
-    [SerializeField] protected float _shotSpeed = 5;
-    [SerializeField] protected int _damage = 1;
-    [SerializeField] protected float _knockback = 3;
-    [SerializeField] protected float _size = 1;
-    [SerializeField] protected float _lifetime = 3;
-    [SerializeField] protected float _gravityScale = 0f; // Artificial gravity scale
     [SerializeField] private LayerMask _bulletCollisionMask = 1;
-    [SerializeField] private bool _hasAOE = false;
-    [SerializeField] private float _aoeRadius = 1f;
+
+    [Header("Bullet Data (From weapon and bullet data)")]
+    [SerializeField, ReadOnly] protected float _shotSpeed = 5;
+    [SerializeField, ReadOnly] protected float _damage = 1;
+    [SerializeField, ReadOnly] protected float _knockback = 3;
+    [SerializeField, ReadOnly] protected float _size = 1;
+    [SerializeField, ReadOnly] protected float _lifetime = 3;
+    [SerializeField, ReadOnly] protected float _gravityScale = 0f; // Artificial gravity scale
+    [SerializeField, ReadOnly] private bool _hasAOE = false;
+    [SerializeField, ReadOnly] private float _aoeRadius = 1f;
 
     //[SerializeField] private GameObject _psBloodDirectional;
     //[SerializeField] private GameObject _psBloodCircle;
@@ -92,25 +95,16 @@ public class BulletBase : MonoBehaviour
         }
     }
 
-    public virtual void BulletSetup(Vector3 shootDir, 
-                                    float angle, 
-                                    float shotSpeed, 
-                                    int damage, 
-                                    float knockback, 
-                                    float size, 
-                                    float lifetime, 
-                                    float gravityScale, 
-                                    bool hasAOE, 
-                                    float aoeRadius)
+    public virtual void BulletSetup(Vector3 shootDir, float angle, WeaponData weaponData)
     {
-        _shotSpeed = shotSpeed;
-        _damage = damage;
-        _knockback = knockback;
-        _size = size;
-        _lifetime = lifetime;
-        _gravityScale = gravityScale;
-        _hasAOE = hasAOE;
-        _aoeRadius = aoeRadius;
+        _shotSpeed = _data.ShotSpeed * weaponData.BulletSpeed;
+        _damage = _data.Damage * weaponData.BulletDamage;
+        _knockback = _data.Knockback * weaponData.BulletKnockback;
+        _size = _data.Size * weaponData.BulletSize;
+        _lifetime = _data.Lifetime * weaponData.BulletLifetime;
+        _gravityScale = _data.GravityScale * weaponData.BulletGravityScale;
+        _hasAOE = _data.HasAOE;
+        _aoeRadius = _data.AoeRadius * weaponData.BulletAoeRadius;
 
         transform.localScale = new Vector3(_size, _size, _size);
         transform.eulerAngles = new Vector3(0, 0, angle);

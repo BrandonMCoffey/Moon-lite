@@ -54,7 +54,8 @@ public class Chunk : MonoBehaviour
 
                 if (currentTile != TileType.Air)
                 {
-                    int damage = _world.GetDamage(worldX, worldY);
+                    // Choose int based on data min/max and percent of damage done
+                    int damage = Mathf.CeilToInt(_world.GetDamage(worldX, worldY));
 
                     float x = chunkX + borderOffset;
                     float y = chunkY + borderOffset;

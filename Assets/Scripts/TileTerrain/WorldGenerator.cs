@@ -54,7 +54,7 @@ public class WorldGenerator : MonoBehaviour
     private TileType[,] _grid;
     private Dictionary<Vector2Int, Chunk> _chunks;
     private List<Vector2Int> _modifiedChunks;
-    private Dictionary<Vector2Int, int> _tileDamageData;
+    private Dictionary<Vector2Int, float> _tileDamageData;
     private List<StructureData> _structures;
     private Transform _player;
 
@@ -116,7 +116,7 @@ public class WorldGenerator : MonoBehaviour
         _grid = new TileType[_width, _height];
         _chunks = new Dictionary<Vector2Int, Chunk>();
         _modifiedChunks = new List<Vector2Int>();
-        _tileDamageData = new Dictionary<Vector2Int, int>(100);
+        _tileDamageData = new Dictionary<Vector2Int, float>(100);
         _structures = new List<StructureData>();
 
         if (_worldSeed < 0) _worldSeed = Random.Range(1, 100000);
@@ -364,10 +364,10 @@ public class WorldGenerator : MonoBehaviour
     public void FillTileInCircle(Vector3 worldPos, float radius, TileType type) => FillTileInCircle(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), Mathf.RoundToInt(radius * _tilesPerUnit), type);
     public void FillTileInCircle(int xCenter, int yCenter, int radius, TileType type) => AffectTileInCircle(xCenter, yCenter, radius, 0, type);
 
-    public void DamageTileInCircle(Vector3 worldPos, float radius, int damage = 1) => DamageTileInCircle(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), Mathf.RoundToInt(radius * _tilesPerUnit), damage);
-    public void DamageTileInCircle(int xCenter, int yCenter, int range, int damage = 1) => AffectTileInCircle(xCenter, yCenter, range, damage, TileType.Air);
+    public void DamageTileInCircle(Vector3 worldPos, float radius, float damage = 1) => DamageTileInCircle(WorldToTileX(worldPos.x), WorldToTileY(worldPos.y), Mathf.RoundToInt(radius * _tilesPerUnit), damage);
+    public void DamageTileInCircle(int xCenter, int yCenter, int range, float damage = 1) => AffectTileInCircle(xCenter, yCenter, range, damage, TileType.Air);
 
-    public void AffectTileInCircle(int xCenter, int yCenter, int range, int damage, TileType type)
+    public void AffectTileInCircle(int xCenter, int yCenter, int range, float damage, TileType type)
     {
         int xMin = Mathf.Clamp(xCenter - range + 1, 0, _width - 1);
         int xMax = Mathf.Clamp(xCenter + range, 0, _width - 1);
@@ -402,7 +402,7 @@ public class WorldGenerator : MonoBehaviour
         ModifyChunk(x, y);
     }
 
-    public bool DamageTileAt(Vector3 worldPos, int damage = 1)
+    public bool DamageTileAt(Vector3 worldPos, float damage = 1)
     {
         var x = WorldToTileX(worldPos.x);
         var y = WorldToTileY(worldPos.y);
@@ -435,7 +435,7 @@ public class WorldGenerator : MonoBehaviour
         }
         return success;
     }
-    public bool DamageTileAt(int x, int y, int damage = 1)
+    public bool DamageTileAt(int x, int y, float damage = 1)
     {
         if (GetTile(x, y) == TileType.Air)
         {
@@ -444,7 +444,7 @@ public class WorldGenerator : MonoBehaviour
         var data = _tileData.GetTileData(_grid[x, y]);
 
         var coord = new Vector2Int(x, y);
-        int currentDamage = 0;
+        float currentDamage = 0;
         bool hasDamage = _tileDamageData.TryGetValue(coord, out currentDamage);
         if (data.TileHealth <= currentDamage + damage)
         {
@@ -460,9 +460,9 @@ public class WorldGenerator : MonoBehaviour
         return true;
     }
 
-    public int GetDamage(int x, int y)
+    public float GetDamage(int x, int y)
     {
-        int damage = 0;
+        float damage = 0;
         _tileDamageData.TryGetValue(new Vector2Int(x, y), out damage);
         return damage;
     }

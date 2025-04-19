@@ -51,7 +51,6 @@ public class PlayerWeaponManager : MonoBehaviour
     [SerializeField] private int[] _maxAmmoInventory;
 
     public int CurrentMagAmmo => _currentWeapon != null ? _currentWeapon.CurrentMagAmmo : 0;
-    public int MaxMagAmmo => _currentWeapon != null ? _currentWeapon.MaxMagSize : 0;
     public int CurrentAmmoInventory => _currentAmmoReserve[(int)_currentAmmoType];
 
     [Header("Events")]
@@ -325,7 +324,7 @@ public class PlayerWeaponManager : MonoBehaviour
         // Allow reload if R is pressed or if left click is pressed with no ammo in the mag
         if (Input.GetKeyDown(KeyCode.R) || (Input.GetMouseButtonDown(0) && _currentWeapon.CurrentMagAmmo <= 0))
         {
-            int ammoNeeded = _currentWeapon.MaxMagSize - _currentWeapon.CurrentMagAmmo;
+            int ammoNeeded = _currentWeapon.AmmoNeededForReload;
             int ammoAvailable = _currentAmmoReserve[(int)_currentAmmoType];
             int ammoToReload = Mathf.Min(ammoNeeded, ammoAvailable);
 
@@ -338,7 +337,7 @@ public class PlayerWeaponManager : MonoBehaviour
         
     public void StartReloadCoroutine()
     {
-        int ammoNeeded = _currentWeapon.MaxMagSize - _currentWeapon.CurrentMagAmmo;
+        int ammoNeeded = _currentWeapon.AmmoNeededForReload;
         int ammoAvailable = _currentAmmoReserve[(int)_currentAmmoType];
         int ammoToReload = Mathf.Min(ammoNeeded, ammoAvailable);
 

@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5e62cb1d87a5940a0f19f9dd96412f, type: 3}
   m_Name: Data_SMG
   m_EditorClassIdentifier: 
+  _weaponName: Data_SMG
+  _weaponDescription: 
+  _weaponSprite: {fileID: 21300000, guid: 8dc79b004e3f1f84cac6f3b82644e015, type: 3}
+  _weaponPrefab: {fileID: 7707075139789495896, guid: c958379195c000c408934530b050b3d9,
+    type: 3}
   _maxMagSize: 10
   _reloadTime: 1
   _isAutomatic: 1
@@ -20,9 +25,9 @@ MonoBehaviour:
   _bulletSpeed: 45
   _sprayAngle: 15
   _recoilForce: {x: 0.2, y: 5}
-  _bulletSize: 1
-  _bulletDamage: 0.5
-  _bulletKnockback: 1
+  _bulletSize: 0.6
+  _bulletDamage: 0.6
+  _bulletKnockback: 0.5
   _bulletLifetime: 1
   _bulletGravityScale: 1
   _aoeRadius: 1
