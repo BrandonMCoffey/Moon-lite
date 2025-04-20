@@ -1,18 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponVisual : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] protected WeaponData _weaponData;
+
+    [Header("References")]
+    [SerializeField] protected Image _iconImage;
+    [SerializeField] private GameObject _selectedVisual;
+
+    private void OnEnable()
     {
-        
+        PlayerWeaponManager.OnEquipWeapon += EquipWeapon;
+        // TODO: Get equipped weapon (Singleton?)
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        PlayerWeaponManager.OnEquipWeapon -= EquipWeapon;
+    }
+
+    private void OnValidate()
+    {
+        if (_iconImage != null) _iconImage.sprite = _weaponData.Sprite;
+    }
+
+    private void EquipWeapon(WeaponData equipped)
+    {
+        _selectedVisual.SetActive(_weaponData == equipped);
     }
 }
