@@ -71,6 +71,9 @@ public class PlayerWeaponManager : MonoBehaviour
             _equippedWeaponIndex = 0;
             _equippedWeapon.gameObject.SetActive(true); // Activate the current weapon
             UpdateCurrentWeapon(); // Update the current weapon
+
+            // Make sure references have equipped ammo
+            OnEquipAmmo?.Invoke(EquippedAmmo);
         }
         else
         {
