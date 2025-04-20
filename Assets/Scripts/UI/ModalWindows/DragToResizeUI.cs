@@ -30,7 +30,8 @@ public class DragToResizeUI : MonoBehaviour, IPointerDownHandler
     {
         if (!_resizing) return;
 
-        _sizeOffset = ((Vector2)Input.mousePosition - _startMousePos);
+        _sizeOffset.x = Mathf.Clamp(Input.mousePosition.x, 0, Screen.width) - _startMousePos.x;
+        _sizeOffset.y = Mathf.Clamp(Input.mousePosition.y, 0, Screen.height) - _startMousePos.y;
 
         // New width and height
         _sizeOffset.x = Mathf.Clamp(_startSize.x + (_rightSide ? _sizeOffset.x : -_sizeOffset.x) * 2f, _widthMinMax.x, _widthMinMax.y);
