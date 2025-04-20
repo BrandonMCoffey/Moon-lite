@@ -279,7 +279,7 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         if (_equippedWeapon == null || !EquippedWeapon.CanShoot()) return false;
 
-        return _equippedWeapon.IsAutomatic ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
+        return _equippedWeapon.IsAutomatic ? PlayerInput.MouseLeftHeld : PlayerInput.MouseLeftPressed;
     }
 
     private void HandleReloading()
@@ -287,7 +287,7 @@ public class PlayerWeaponManager : MonoBehaviour
         if (_equippedWeapon == null || _reloadCoroutine != null) return;
 
         // Allow reload if R is pressed or if left click is pressed with no ammo in the mag
-        if (Input.GetKeyDown(KeyCode.R) || (Input.GetMouseButtonDown(0) && _equippedWeapon.CurrentMagAmmo <= 0))
+        if (PlayerInput.ReloadAmmo || (PlayerInput.MouseLeftPressed && _equippedWeapon.CurrentMagAmmo <= 0))
         {
             int ammoNeeded = _equippedWeapon.AmmoNeededForReload;
             int ammoAvailable = CurrentAmmoInventory;
@@ -370,11 +370,11 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void HandleWeaponSwitching()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f) // Scroll up
+        if (PlayerInput.MouseScroll > 0f) // Scroll up
         {
             SwitchToNextWeapon();
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0f) // Scroll down
+        else if (PlayerInput.MouseScroll < 0f) // Scroll down
         {
             SwitchToPreviousWeapon();
         }

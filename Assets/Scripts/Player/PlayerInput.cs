@@ -21,6 +21,7 @@ public class PlayerInput : MonoBehaviour
     public static bool MouseRightPressed => Input.GetMouseButtonDown(1);
     public static bool MouseRightHeld => Input.GetMouseButton(1);
     public static bool MouseRightReleased => Input.GetMouseButtonUp(1);
+    public static float MouseScroll => Input.GetAxis("Mouse ScrollWheel");
 
     // Movement Inputs
     public static float PlayerMoveHorz => Input.GetAxisRaw("Horizontal");
@@ -37,6 +38,7 @@ public class PlayerInput : MonoBehaviour
     // Weapon System
     public static bool SwitchToPreviousAmmo => Input.GetKeyDown(KeyCode.F);
     public static bool SwitchToNextAmmo => Input.GetKeyDown(KeyCode.G);
+    public static bool ReloadAmmo => Input.GetKeyDown(KeyCode.R);
 
     // Game Special Actions
     public static bool Throwable01 => Input.GetKeyDown(KeyCode.R);
