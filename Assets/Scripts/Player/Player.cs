@@ -8,10 +8,12 @@ public class Player : MonoBehaviour
     public static Player Instance => _instance;
     private static Player _instance;
 
+    [SerializeField] private InventoryData _inventory;
     [SerializeField] private float _magnetItemRange = 2.5f;
     [SerializeField] private float _magnetItemSpeed = 5f;
     [SerializeField] private float _pickupItemRange = 1f;
 
+    [Header("Throwables and Placeables")]
     [SerializeField] private KeyCode _throwGlowstick = KeyCode.G;
     [SerializeField] private KeyCode _throwDirtBomb = KeyCode.B;
     [SerializeField] private KeyCode _buildTempPlatform = KeyCode.C;
@@ -20,8 +22,6 @@ public class Player : MonoBehaviour
     [SerializeField] private ThrowableBase _dirtBombPrefab;
     [SerializeField] private PlaceableBase _tempPlatformPrefab;
     [SerializeField] private PlaceableBase _autoMinerPrefab;
-
-    [SerializeField] private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
 
     public float MagnetItemRange => _magnetItemRange;
     public float MagnetItemSpeed => _magnetItemSpeed;
@@ -47,17 +47,8 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(_buildAutoMine)) Place(_autoMinerPrefab);
     }
 
-    public void PickupItem(ItemData item, int count = 1)
-    {
-        if (_inventory.ContainsKey(item))
-        {
-            _inventory[item] += count;
-        }
-        else
-        {
-            _inventory.Add(item, count);
-        }
-    }
+    public void AddItemToInventory(ItemData item, int count = 1) => _inventory.AddItemToInventory(item, count);
+    public int GetInventoryCount(ItemData item) => _inventory.GetInventoryCount(item);
 
     private void Throw(ThrowableBase prefab)
     {

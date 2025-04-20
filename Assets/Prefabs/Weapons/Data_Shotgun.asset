@@ -30,4 +30,5 @@ MonoBehaviour:
   _bulletKnockback: 1
   _bulletLifetime: 1
   _bulletGravityScale: 1.5
+  _forceAoe: 1
   _aoeRadius: 2

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7088399840058384696}
   - component: {fileID: 1748833617410321593}
   m_Layer: 25
-  m_Name: PF_BulletCopper
+  m_Name: PF_BulletBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

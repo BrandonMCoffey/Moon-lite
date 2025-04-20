@@ -213,6 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 951b1fb86201eb643be2f1375a814544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inventory: {fileID: 11400000, guid: b6a67fd92f617614a9e8dfbcad5ba9ae, type: 2}
   _magnetItemRange: 2.5
   _magnetItemSpeed: 5
   _pickupItemRange: 1
@@ -243,22 +244,12 @@ MonoBehaviour:
   _weaponHolder: {fileID: 3081370180031143894}
   _pickupRadius: 1
   _maxWeapons: 2
-  _currentAmmoType: 0
-  _ammoPrefabs:
-  - {fileID: 2602138688798492613, guid: a614721caff3b534cb82e12fa4b7d4c4, type: 3}
-  - {fileID: 2602138688798492613, guid: d90bf2dca61a12245bb509365078b9cf, type: 3}
-  - {fileID: 2602138688798492613, guid: 77bac6e80b534e141bf382b75a0e6c7c, type: 3}
-  _currentAmmoReserve: f40100000f00000028000000
-  _maxAmmoInventory: f4010000f4010000f4010000
-  MagAmmoChangeEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  WeaponChangeEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  AmmoTypeChangeEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  _playerInventory: {fileID: 11400000, guid: b6a67fd92f617614a9e8dfbcad5ba9ae, type: 2}
+  _equippedAmmoIndex: 0
+  _ammoDataEquipped:
+  - {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
+  - {fileID: 11400000, guid: 4e0fb6c9495b01744ba0486a14346392, type: 2}
+  - {fileID: 11400000, guid: d8f2c2c7f06634f4ea5c33eff0ef43a5, type: 2}
 --- !u!65 &8204654888438617097
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -19,10 +19,10 @@ public class WeaponData : ScriptableObject
 
 
     [Header("Reload and Ammo Properties")]
-    [SerializeField] protected int _maxMagSize = 10; // Ammo capacity of the magazine.
-    [SerializeField] protected float _reloadTime = 2f; // Time it takes to reload.
-    [SerializeField] protected bool _isAutomatic = false;
-    [SerializeField] protected int _ammoPerShot = 1; // Amount of ammo consumed per shot
+    [SerializeField] private int _maxMagSize = 10; // Ammo capacity of the magazine.
+    [SerializeField] private float _reloadTime = 2f; // Time it takes to reload.
+    [SerializeField] private bool _isAutomatic = false;
+    [SerializeField] private int _ammoPerShot = 1; // Amount of ammo consumed per shot
 
     public int MaxMagSize => _maxMagSize;
     public float ReloadTime => _reloadTime;
@@ -31,10 +31,10 @@ public class WeaponData : ScriptableObject
 
 
     [Header("Fire Settings")]
-    [SerializeField] protected float _fireRate = 4f; // Default to 4 bullets per second.
-    [SerializeField] protected float _bulletSpeed = 20f;
-    [SerializeField] protected float _sprayAngle = 0f; // Maximum spray angle in degrees
-    [SerializeField] protected Vector2 _recoilForce = Vector2.zero;
+    [SerializeField] private float _fireRate = 4f; // Default to 4 bullets per second.
+    [SerializeField] private float _bulletSpeed = 20f;
+    [SerializeField] private float _sprayAngle = 0f; // Maximum spray angle in degrees
+    [SerializeField] private Vector2 _recoilForce = Vector2.zero;
 
     public float FireRate => _fireRate;
     public float FireDelay => 1f / _fireRate;
@@ -44,22 +44,24 @@ public class WeaponData : ScriptableObject
 
 
     [Header("Bullet Modifiers (Multiply)")] // Multiplied on to bullet settings
-    [SerializeField] protected float _bulletSize = 1f;
-    [SerializeField] protected float _bulletDamage = 1f;
-    [SerializeField] protected float _bulletKnockback = 1f;
-    [SerializeField] protected float _bulletLifetime = 1f;
-    [SerializeField] protected float _bulletGravityScale = 1f;
-    [SerializeField] protected float _aoeRadius = 1f;
+    [SerializeField] private float _bulletSize = 1f;
+    [SerializeField] private float _bulletDamage = 1f;
+    [SerializeField] private float _bulletKnockback = 1f;
+    [SerializeField] private float _bulletLifetime = 1f;
+    [SerializeField] private float _bulletGravityScale = 1f;
+    [SerializeField] private bool _forceAoe = false;
+    [SerializeField] private float _aoeRadius = 1f;
 
     public float BulletSize => _bulletSize;
     public float BulletDamage => _bulletDamage;
     public float BulletKnockback => _bulletKnockback;
     public float BulletLifetime => _bulletLifetime;
     public float BulletGravityScale => _bulletGravityScale;
+    public bool ForceAoe => _forceAoe;
     public float BulletAoeRadius => _aoeRadius;
 
 
-    protected virtual void OnValidate()
+    private void OnValidate()
     {
         if (string.IsNullOrEmpty(_weaponName)) _weaponName = name;
     }

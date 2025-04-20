@@ -15,7 +15,9 @@ MonoBehaviour:
   _itemName: Lead
   _itemDescription: Standard
   _itemIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  _itemIconTint: {r: 1, g: 1, b: 1, a: 1}
+  _itemIconTint: {r: 0.61334103, g: 0.61922467, b: 0.7264151, a: 1}
+  _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
+    type: 3}
   _bulletSpeedModifier: 1
   _damage: 1
   _knockback: 3

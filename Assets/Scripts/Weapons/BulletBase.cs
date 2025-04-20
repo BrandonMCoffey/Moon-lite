@@ -7,7 +7,7 @@ public class BulletBase : MonoBehaviour
     [SerializeField] protected MineralData _data;
     [SerializeField] private LayerMask _bulletCollisionMask = 1;
 
-    [Header("Bullet Data (From weapon and bullet data)")]
+    [Header("Bullet Data (Dynamic from weapon and bullet data)")]
     [SerializeField, ReadOnly] protected float _shotSpeed = 5;
     [SerializeField, ReadOnly] protected float _damage = 1;
     [SerializeField, ReadOnly] protected float _knockback = 3;
@@ -95,16 +95,20 @@ public class BulletBase : MonoBehaviour
         }
     }
 
-    public virtual void BulletSetup(Vector3 shootDir, float angle, WeaponData weaponData)
+    public virtual void BulletSetup(Vector3 shootDir, float angle, WeaponData weaponData, MineralData overrideData = null)
     {
+        if (overrideData != null) _data = overrideData;
         _shotSpeed = _data.ShotSpeed * weaponData.BulletSpeed;
         _damage = _data.Damage * weaponData.BulletDamage;
         _knockback = _data.Knockback * weaponData.BulletKnockback;
         _size = _data.Size * weaponData.BulletSize;
         _lifetime = _data.Lifetime * weaponData.BulletLifetime;
         _gravityScale = _data.GravityScale * weaponData.BulletGravityScale;
-        _hasAOE = _data.HasAOE;
+        _hasAOE = _data.HasAOE || weaponData.ForceAoe;
         _aoeRadius = _data.AoeRadius * weaponData.BulletAoeRadius;
+
+        // Too small to use AOE (Might happen because bullet is too weak)
+        if (_aoeRadius < 0.5f) _hasAOE = false;
 
         transform.localScale = new Vector3(_size, _size, _size);
         transform.eulerAngles = new Vector3(0, 0, angle);

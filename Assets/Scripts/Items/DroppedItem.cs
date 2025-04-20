@@ -49,7 +49,7 @@ public class DroppedItem : MonoBehaviour
         float dist = Vector3.Distance(transform.position, pos);
         if (dist <= _player.PickupItemRange)
         {
-            _player.PickupItem(_item, _itemCount);
+            _player.AddItemToInventory(_item, _itemCount);
             DroppedItemManager.AddItemToPool(this);
             return;
         }

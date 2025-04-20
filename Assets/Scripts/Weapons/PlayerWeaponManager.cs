@@ -4,14 +4,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
 
-// AmmoType enum here so the manager, weapons, and bullets all reference the same list
-public enum AmmoType
-{
-    Basic,
-    Explosive,
-    Piercing
-}
-
 public class PlayerWeaponManager : MonoBehaviour
 {
     [Header("Weapon Settings")]
@@ -27,54 +19,31 @@ public class PlayerWeaponManager : MonoBehaviour
     private SpriteRenderer _reloadBar;
     private SpriteRenderer _reloadBarBG;
 
-    private WeaponBase _currentWeapon;
-    public WeaponBase CurrentWeapon => _currentWeapon;
+    private WeaponBase _equippedWeapon;
+    public WeaponBase EquippedWeapon => _equippedWeapon;
     private Camera _mainCamera;
     private Coroutine _reloadCoroutine;
     private bool _canDropWeapon = true;
 
-    private int _currentWeaponIndex = 0; // Index of the currently equipped weapon
+    private int _equippedWeaponIndex = 0; // Index of the currently equipped weapon
     private bool _isInputEnabled = true;
 
-    [Header("Ammo Types")]
-    [SerializeField] private AmmoType _currentAmmoType = AmmoType.Basic;
-    public AmmoType CurrentAmmoType => _currentAmmoType;
+    [Header("Ammo")]
+    [SerializeField] private InventoryData _playerInventory;
+    [SerializeField] private int _equippedAmmoIndex = 0;
 
-    [Header("Ammo Prefabs per AmmoType")]
-    [Tooltip("Bullet prefab for each AmmoType (order must match the AmmoType enum)")]
-    [SerializeField] private GameObject[] _ammoPrefabs;
+    [SerializeField] private List<MineralData> _ammoDataEquipped;
+    public MineralData EquippedAmmo => _ammoDataEquipped[_equippedAmmoIndex];
+    public int CurrentAmmoInventory => _playerInventory.GetInventoryCount(EquippedAmmo);
 
-    [Header("Ammo Inventory per Type")]
-    [Tooltip("Reserve ammo for each AmmoType (order matches AmmoType enum)")]
-    [SerializeField] private int[] _currentAmmoReserve;
-    [Tooltip("Max reserve ammo per AmmoType")]
-    [SerializeField] private int[] _maxAmmoInventory;
-
-    public int CurrentMagAmmo => _currentWeapon != null ? _currentWeapon.CurrentMagAmmo : 0;
-    public int CurrentAmmoInventory => _currentAmmoReserve[(int)_currentAmmoType];
-
-    [Header("Events")]
-    public UnityEvent<int> MagAmmoChangeEvent = new UnityEvent<int>();
-    public UnityEvent<WeaponBase> WeaponChangeEvent = new UnityEvent<WeaponBase>();
-    public UnityEvent<AmmoType> AmmoTypeChangeEvent = new UnityEvent<AmmoType>();
+    public static event System.Action<WeaponData> OnEquipWeapon = delegate { };
+    public static event System.Action<MineralData> OnEquipAmmo = delegate { };
 
     private void Awake()
     {
         InitializeReferences();
         InitializeUI();
         UpdatePickupText();
-
-        // Ensure prefab & inventory arrays match the enum length
-        int types = System.Enum.GetValues(typeof(AmmoType)).Length;
-        if (_ammoPrefabs.Length != types || _currentAmmoReserve.Length != types || _maxAmmoInventory.Length != types)
-        {
-            Debug.LogWarning($"AmmoType arrays must be length {types}; resetting to defaults.");
-            _ammoPrefabs = new GameObject[types];
-            _currentAmmoReserve = new int[types];
-            _maxAmmoInventory = new int[types];
-            for (int i = 0; i < types; i++)
-                _maxAmmoInventory[i] = 100;
-        }
 
         if(GetComponentInChildren<WeaponBase>() != null)
         {
@@ -88,7 +57,7 @@ public class PlayerWeaponManager : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         if (_weapons.Count > 0)
         {
@@ -98,9 +67,9 @@ public class PlayerWeaponManager : MonoBehaviour
                 weapon.Pickup(_weaponHolder); // Parent the weapon to the weapon holder
             }
 
-            _currentWeapon = _weapons[0]; // Set the current weapon to the first weapon in the list
-            _currentWeaponIndex = 0;
-            _currentWeapon.gameObject.SetActive(true); // Activate the current weapon
+            _equippedWeapon = _weapons[0]; // Set the current weapon to the first weapon in the list
+            _equippedWeaponIndex = 0;
+            _equippedWeapon.gameObject.SetActive(true); // Activate the current weapon
             UpdateCurrentWeapon(); // Update the current weapon
         }
         else
@@ -138,7 +107,7 @@ public class PlayerWeaponManager : MonoBehaviour
         HandleAmmoSwitching();      // cycle ammo types
         HandleReloading();
         HandleAimingAndShooting();
-        UpdateAmmoUI();
+        //UpdateAmmoUI();
     }
 
     public void DisableInput()
@@ -146,7 +115,7 @@ public class PlayerWeaponManager : MonoBehaviour
         _isInputEnabled = false;
         HideReloadBar();
         _pickupText.gameObject.SetActive(false);
-        _currentWeapon.gameObject.SetActive(false);
+        _equippedWeapon.gameObject.SetActive(false);
     }
 
     private void InitializeReferences()
@@ -200,7 +169,7 @@ public class PlayerWeaponManager : MonoBehaviour
                 PickupWeapon();
                 HideReloadBar();
             }
-            else if (_currentWeapon != null && _canDropWeapon)
+            else if (_equippedWeapon != null && _canDropWeapon)
             {
                 DropCurrentWeapon();
                 HideReloadBar();
@@ -223,30 +192,30 @@ public class PlayerWeaponManager : MonoBehaviour
 
             weaponToPickup.Pickup(_weaponHolder);
             _weapons.Add(weaponToPickup); // Add the new weapon to the list
-            _currentWeaponIndex = _weapons.Count - 1; // Switch to the newly picked-up weapon
+            _equippedWeaponIndex = _weapons.Count - 1; // Switch to the newly picked-up weapon
             UpdateCurrentWeapon();
         }
     }
 
     private void DropCurrentWeapon()
     {
-        if (_currentWeapon != null)
+        if (_equippedWeapon != null)
         {
-            _currentWeapon.Drop();
-            _weapons.RemoveAt(_currentWeaponIndex); // Remove the dropped weapon from the list
+            _equippedWeapon.Drop();
+            _weapons.RemoveAt(_equippedWeaponIndex); // Remove the dropped weapon from the list
 
             // Adjust the current weapon index
             if (_weapons.Count > 0)
             {
-                _currentWeaponIndex %= _weapons.Count;
+                _equippedWeaponIndex %= _weapons.Count;
             }
             else
             {
-                _currentWeaponIndex = 0;
+                _equippedWeaponIndex = 0;
             }
 
             UpdateCurrentWeapon();
-            UpdateAmmoUI();
+            //UpdateAmmoUI();
         }
     }
 
@@ -258,9 +227,9 @@ public class PlayerWeaponManager : MonoBehaviour
             _reloadCoroutine = null;
         }
 
-        if (_currentWeapon != null)
+        if (_equippedWeapon != null)
         {
-            _currentWeapon.StopReload();
+            _equippedWeapon.StopReload();
         }
 
         HideReloadBar();
@@ -281,12 +250,12 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void HandleAimingAndShooting()
     {
-        if (_currentWeapon == null) return;
+        if (_equippedWeapon == null) return;
 
         Vector3 mousePosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0f;
 
-        _currentWeapon.Aim(mousePosition);
+        _equippedWeapon.Aim(mousePosition);
 
         if (CanShoot())
         {
@@ -299,49 +268,44 @@ public class PlayerWeaponManager : MonoBehaviour
             var pos = ray.GetPoint(distance);
             Vector3 aimDirection = (pos - transform.position).normalized;
 
-            // select prefab from manager, then tell the weapon to shoot it
-            GameObject prefab = _ammoPrefabs[(int)_currentAmmoType];
-            _currentWeapon.Shoot(aimDirection, prefab);
-            UpdateAmmoUI();
+            // tell the weapon to shoot select ammo type
+            _equippedWeapon.Shoot(aimDirection, EquippedAmmo);
+            //UpdateAmmoUI();
         }
     }
 
     private bool CanShoot()
     {
-        if (_currentWeapon == null || _currentWeapon.CurrentMagAmmo <= 0) return false;
+        if (_equippedWeapon == null || !EquippedWeapon.CanShoot()) return false;
 
-        if (_currentWeapon != null)
-        {
-            return _currentWeapon.IsAutomatic ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
-        }
-        return Input.GetMouseButtonDown(0);
+        return _equippedWeapon.IsAutomatic ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
     }
 
     private void HandleReloading()
     {
-        if (_currentWeapon == null || _reloadCoroutine != null) return;
+        if (_equippedWeapon == null || _reloadCoroutine != null) return;
 
         // Allow reload if R is pressed or if left click is pressed with no ammo in the mag
-        if (Input.GetKeyDown(KeyCode.R) || (Input.GetMouseButtonDown(0) && _currentWeapon.CurrentMagAmmo <= 0))
+        if (Input.GetKeyDown(KeyCode.R) || (Input.GetMouseButtonDown(0) && _equippedWeapon.CurrentMagAmmo <= 0))
         {
-            int ammoNeeded = _currentWeapon.AmmoNeededForReload;
-            int ammoAvailable = _currentAmmoReserve[(int)_currentAmmoType];
+            int ammoNeeded = _equippedWeapon.AmmoNeededForReload;
+            int ammoAvailable = CurrentAmmoInventory;
             int ammoToReload = Mathf.Min(ammoNeeded, ammoAvailable);
 
             if (ammoToReload > 0)
             {
-                _currentWeapon.Reload(); // Ensure the weapon's reload logic is called
+                _equippedWeapon.Reload(); // Ensure the weapon's reload logic is called
             }
         }
     }
         
     public void StartReloadCoroutine()
     {
-        int ammoNeeded = _currentWeapon.AmmoNeededForReload;
-        int ammoAvailable = _currentAmmoReserve[(int)_currentAmmoType];
+        int ammoNeeded = _equippedWeapon.AmmoNeededForReload;
+        int ammoAvailable = CurrentAmmoInventory;
         int ammoToReload = Mathf.Min(ammoNeeded, ammoAvailable);
 
-        _reloadCoroutine = StartCoroutine(ReloadWithBar(_currentWeapon.ReloadTime, ammoToReload));
+        _reloadCoroutine = StartCoroutine(ReloadWithBar(_equippedWeapon.ReloadTime, ammoToReload));
     }
 
     private IEnumerator ReloadWithBar(float reloadTime, int ammoToReload)
@@ -354,10 +318,10 @@ public class PlayerWeaponManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             UpdateReloadBar(elapsedTime / reloadTime);
 
-            if (_currentWeapon == null)
+            if (_equippedWeapon == null)
             {
                 // Weapon was dropped or swapped during reload
-                _currentWeapon.StopCoroutine(_currentWeapon.ReloadCoroutine());
+                _equippedWeapon.StopCoroutine(_equippedWeapon.ReloadCoroutine());
                 yield break;
             }
 
@@ -395,17 +359,12 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         HideReloadBar();
 
-        if (_currentWeapon != null)
+        if (_equippedWeapon != null)
         {
             // Reload secondary weapon and update reserve ammo
             //_currentAmmoInventory[(int)_currentAmmoType] -= ammoToReload;
-            UpdateAmmoUI();
+            //UpdateAmmoUI();
         }
-    }
-
-    private void UpdateAmmoUI()
-    {
-        MagAmmoChangeEvent.Invoke(CurrentMagAmmo);
     }
 
     private void HandleWeaponSwitching()
@@ -424,9 +383,9 @@ public class PlayerWeaponManager : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Alpha1 + i))
                 {
-                    _currentWeaponIndex = i;
+                    _equippedWeaponIndex = i;
                     UpdateCurrentWeapon();
-                    UpdateAmmoUI();
+                    //UpdateAmmoUI();
                     break;
                 }
             }
@@ -437,7 +396,7 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         if (_weapons.Count == 0) return;
 
-        _currentWeaponIndex = (_currentWeaponIndex + 1) % _weapons.Count;
+        _equippedWeaponIndex = (_equippedWeaponIndex + 1) % _weapons.Count;
         UpdateCurrentWeapon();
     }
 
@@ -445,7 +404,7 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         if (_weapons.Count == 0) return;
 
-        _currentWeaponIndex = (_currentWeaponIndex - 1 + _weapons.Count) % _weapons.Count;
+        _equippedWeaponIndex = (_equippedWeaponIndex - 1 + _weapons.Count) % _weapons.Count;
         UpdateCurrentWeapon();
     }
 
@@ -455,65 +414,65 @@ public class PlayerWeaponManager : MonoBehaviour
 
         if (_weapons.Count > 0)
         {
-            _currentWeapon = _weapons[_currentWeaponIndex];
+            _equippedWeapon = _weapons[_equippedWeaponIndex];
         }
         else
         {
-            _currentWeapon = null;
+            _equippedWeapon = null;
         }
 
         UpdateWeaponVisibility();
-        WeaponChangeEvent.Invoke(_currentWeapon);
-        UpdateAmmoUI();
+        OnEquipWeapon?.Invoke(EquippedWeapon.Data);
+        //WeaponChangeEvent.Invoke(_equippedWeapon);
+        //UpdateAmmoUI();
     }
 
     private void UpdateWeaponVisibility()
     {
         for (int i = 0; i < _weapons.Count; i++)
         {
-            _weapons[i].gameObject.SetActive(i == _currentWeaponIndex);
+            _weapons[i].gameObject.SetActive(i == _equippedWeaponIndex);
         }
     }
 
     // Ammo Cycling
     private void HandleAmmoSwitching()
     {
-        int count = System.Enum.GetValues(typeof(AmmoType)).Length;
+        int count = _ammoDataEquipped.Count;
 
         if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.G))
         {
             int direction = Input.GetKeyDown(KeyCode.F) ? 1 : -1;
-            _currentAmmoType = (AmmoType)(((int)_currentAmmoType + direction + count) % count);
-            AmmoTypeChangeEvent.Invoke(_currentAmmoType);
+            _equippedAmmoIndex = (_equippedAmmoIndex + direction + count) % count;
+            OnEquipAmmo?.Invoke(EquippedAmmo);
+            //AmmoTypeChangeEvent.Invoke(EquippedAmmo);
             ResetAndReloadWeapon();
         }
     }
 
     private void ResetAndReloadWeapon()
     {
-        if (_currentWeapon != null)
+        if (_equippedWeapon != null)
         {
-            _currentWeapon.CurrentMagAmmo = 0; // Reset mag ammo when switching ammo types
+            _equippedWeapon.CurrentMagAmmo = 0; // Reset mag ammo when switching ammo types
             StopReloadCoroutines();
-            _currentWeapon.StopReload(); // Stop reloading if in progress
-            _currentWeapon.Reload(); // Start reloading if needed
+            _equippedWeapon.StopReload(); // Stop reloading if in progress
+            _equippedWeapon.Reload(); // Start reloading if needed
         }
     }
 
     public void AddAmmo(int amount)
     {
-        int idx = (int)_currentAmmoType;
-        _currentAmmoReserve[idx] = Mathf.Clamp(_currentAmmoReserve[idx] + amount, 0, _maxAmmoInventory[idx]);
+        _playerInventory.AddItemToInventory(EquippedAmmo, amount);
 
-        UpdateAmmoUI();
+        //UpdateAmmoUI();
     }
 
     public void SubtractAmmo(int amount)
     {
-        int idx = (int)_currentAmmoType;
-        _currentAmmoReserve[idx] = Mathf.Clamp(_currentAmmoReserve[idx] - amount, 0, _maxAmmoInventory[idx]);
+        _playerInventory.RemoveItemFromInventory(EquippedAmmo, amount);
 
-        UpdateAmmoUI();
+        //UpdateAmmoUI();
     }
 
     private void OnDrawGizmosSelected()

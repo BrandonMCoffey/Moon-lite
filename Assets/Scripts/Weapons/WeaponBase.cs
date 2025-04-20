@@ -8,6 +8,7 @@ public abstract class WeaponBase : MonoBehaviour
     public event Action Fired = delegate { };
 
     [SerializeField] private WeaponData _data;
+    public WeaponData Data => _data;
     [Header("Weapon Properties")]
     [SerializeField] protected string _weaponName = "Default Weapon";
     public string WeaponName => _weaponName;
@@ -167,7 +168,7 @@ public abstract class WeaponBase : MonoBehaviour
     }
 
     // Now takes an optional override bullet prefab from the manager
-    public virtual void Shoot(Vector3 aimDirection, GameObject bulletPrefab = null)
+    public virtual void Shoot(Vector3 aimDirection, MineralData bulletData = null)
     {
         if (Time.time < _lastFireTime + _data.FireDelay || !CanShoot()) return;
 
@@ -185,14 +186,12 @@ public abstract class WeaponBase : MonoBehaviour
 
         Vector3 spawnPosition = _shootTransform.position;
 
-        Transform bulletInstance = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity).transform;
+        BulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
-        if (bulletInstance.TryGetComponent(out BulletBase bullet))
-        {
-            bullet.BulletSetup(aimDirection, angle, _data);
-            bullet.PreRaycastCheck();
-        }
+        // Sending bullet data to insure that prefab has correct bullet data
+        bulletInstance.BulletSetup(aimDirection, angle, _data, bulletData);
+        bulletInstance.PreRaycastCheck();
 
         if (_recoilCoroutine != null)
         {
