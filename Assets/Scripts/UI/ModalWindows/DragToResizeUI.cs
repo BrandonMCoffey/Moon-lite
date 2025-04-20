@@ -30,8 +30,8 @@ public class DragToResizeUI : MonoBehaviour, IPointerDownHandler
     {
         if (!_resizing) return;
 
-        _sizeOffset.x = Mathf.Clamp(Input.mousePosition.x, 0, Screen.width) - _startMousePos.x;
-        _sizeOffset.y = Mathf.Clamp(Input.mousePosition.y, 0, Screen.height) - _startMousePos.y;
+        _sizeOffset.x = Mathf.Clamp(PlayerInput.MousePosition.x, 0, Screen.width) - _startMousePos.x;
+        _sizeOffset.y = Mathf.Clamp(PlayerInput.MousePosition.y, 0, Screen.height) - _startMousePos.y;
 
         // New width and height
         _sizeOffset.x = Mathf.Clamp(_startSize.x + (_rightSide ? _sizeOffset.x : -_sizeOffset.x) * 2f, _widthMinMax.x, _widthMinMax.y);
@@ -58,7 +58,7 @@ public class DragToResizeUI : MonoBehaviour, IPointerDownHandler
 
         _transformToResize.anchoredPosition = _startPos + _sizeOffset * 0.5f;
 
-        if (Input.GetMouseButtonUp(0))
+        if (PlayerInput.MouseLeftReleased)
         {
             _resizing = false;
         }
@@ -72,7 +72,7 @@ public class DragToResizeUI : MonoBehaviour, IPointerDownHandler
             _startSize.x = Mathf.Clamp(_transformToResize.rect.width, _widthMinMax.x, _widthMinMax.y);
             _startSize.y = Mathf.Clamp(_transformToResize.rect.height, _heightMinMax.x, _heightMinMax.y);
             _startPos = _transformToResize.anchoredPosition;
-            _startMousePos = Input.mousePosition;
+            _startMousePos = PlayerInput.MousePosition;
             _transformToResize.SetAsLastSibling();
         }
     }

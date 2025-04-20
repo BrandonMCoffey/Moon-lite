@@ -11,7 +11,7 @@ public class GameCanvasManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Cancel"))
+        if (PlayerInput.Cancel)
         {
             TogglePauseMenu();
         }

@@ -17,16 +17,13 @@ public class TerrainClickToDestroy : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (PlayerInput.MouseLeftPressed)
         {
             _destroyTimer -= Time.deltaTime;
             if (_destroyTimer < 0)
             {
                 _destroyTimer = _destroyTime;
-                var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                Plane xy = new Plane(Vector3.forward, new Vector3(0, 0, _world.transform.position.z));
-                xy.Raycast(ray, out float distance);
-                var pos = ray.GetPoint(distance);
+                var pos = PlayerInput.MousePositionWorld(transform.position.z);
                 if (_single) _world.DamageTileAt(pos);
                 else _world.DamageTileInCircle(pos, _radius);
             }

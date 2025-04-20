@@ -112,7 +112,7 @@ public class PlayerMovementCustom : MonoBehaviour
 
     private void CheckFacingDir()
     {
-        var mousePosition = Input.mousePosition;
+        var mousePosition = PlayerInput.MousePosition;
         mousePosition.z = Camera.main.nearClipPlane;
         Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
@@ -236,22 +236,22 @@ public class PlayerMovementCustom : MonoBehaviour
 
     private void CheckPlayerInput()
     {
-        _moveHorz = Input.GetAxisRaw("Horizontal");
-        _moveVert = Input.GetAxisRaw("Vertical");
+        _moveHorz = PlayerInput.PlayerMoveHorz;
+        _moveVert = PlayerInput.PlayerMoveVert;
 
-        var jumpInput = Input.GetButton("Jump");
+        var jumpInput = PlayerInput.PlayerJump;
         if (jumpInput != _jumpInput)
         {
             _jumpInput = jumpInput;
             if (jumpInput) _jumpTimer = _data.jumpInputBufferTime;
         }
-        var dashInput = Input.GetButton("Dash");
+        var dashInput = PlayerInput.PlayerDash;
         if (dashInput != _dashInput)
         {
             _dashInput = dashInput;
             if (dashInput) _dashTimer = _data.dashInputBufferTime;
         }
-        _jetpackInput = Input.GetButton("Jump");
+        _jetpackInput = PlayerInput.PlayerJetpack;
     }
 
     private void CheckJump()

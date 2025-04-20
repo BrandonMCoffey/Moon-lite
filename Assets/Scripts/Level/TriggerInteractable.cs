@@ -21,7 +21,7 @@ public class TriggerInteractable : MonoBehaviour
 
     private void Update()
     {
-        if (_insideTrigger && Input.GetButtonDown("Submit") && MouseControllerManager.ActionsThisFrame == 0)
+        if (_insideTrigger && PlayerInput.InteractOrSubmit && MouseControllerManager.ActionsThisFrame == 0)
         {
             _onPlayerInteract?.Invoke();
         }

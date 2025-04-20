@@ -29,7 +29,7 @@ public class DragToResizeUIDynamic : MonoBehaviour, IPointerDownHandler
     {
         if (!_resizing) return;
 
-        _sizeOffset = ((Vector2)Input.mousePosition - _startMousePos);
+        _sizeOffset = ((Vector2)PlayerInput.MousePosition - _startMousePos);
 
         _sizeOffset.x = Mathf.Clamp(_startSize.x + (_rightSide ? _sizeOffset.x : -_sizeOffset.x) * 2f, _widthMinMaxDyn.x, _widthMinMaxDyn.y);
         if (_sizeOffset.x > _widthMinMaxDyn.x) _widthMinMaxDyn.x = Mathf.Min(_widthMinMax.x, _sizeOffset.x);
@@ -48,7 +48,7 @@ public class DragToResizeUIDynamic : MonoBehaviour, IPointerDownHandler
 
         _transformToResize.anchoredPosition = _startPos + _sizeOffset * 0.25f;
 
-        if (Input.GetMouseButtonUp(0))
+        if (PlayerInput.MouseLeftReleased)
         {
             _resizing = false;
         }
@@ -66,7 +66,7 @@ public class DragToResizeUIDynamic : MonoBehaviour, IPointerDownHandler
             _heightMinMaxDyn.x = Mathf.Min(_startSize.y, _heightMinMax.x);
             _heightMinMaxDyn.y = Mathf.Max(_startSize.y, _heightMinMax.y);
             _startPos = _transformToResize.anchoredPosition;
-            _startMousePos = Input.mousePosition;
+            _startMousePos = PlayerInput.MousePosition;
             _transformToResize.SetAsLastSibling();
         }
     }

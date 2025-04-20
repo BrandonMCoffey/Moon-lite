@@ -165,7 +165,7 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void HandleWeaponPickupAndDrop()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (PlayerInput.InteractOrSubmit)
         {
             if (IsOverPickup())
             {
@@ -255,7 +255,8 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         if (_equippedWeapon == null) return;
 
-        Vector3 mousePosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        // TODO: Replace below with PlayerInput.MousePositionWorld?
+        Vector3 mousePosition = _mainCamera.ScreenToWorldPoint(PlayerInput.MousePosition);
         mousePosition.z = 0f;
 
         _equippedWeapon.Aim(mousePosition);
@@ -265,10 +266,7 @@ public class PlayerWeaponManager : MonoBehaviour
             StopReloadCoroutines();
 
             // Replace the old aiming code with a raycast (For perspective camera)
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Plane xy = new Plane(Vector3.forward, new Vector3(0, 0, transform.position.z));
-            xy.Raycast(ray, out float distance);
-            var pos = ray.GetPoint(distance);
+            var pos = PlayerInput.MousePositionWorld(transform.position.z);
             Vector3 aimDirection = (pos - transform.position).normalized;
 
             // tell the weapon to shoot select ammo type
@@ -443,9 +441,9 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         int count = _ammoDataEquipped.Count;
 
-        if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.G))
+        if (PlayerInput.SwitchToPreviousAmmo || PlayerInput.SwitchToNextAmmo)
         {
-            int direction = Input.GetKeyDown(KeyCode.F) ? 1 : -1;
+            int direction = PlayerInput.SwitchToNextAmmo ? 1 : -1;
             _equippedAmmoIndex = (_equippedAmmoIndex + direction + count) % count;
             OnEquipAmmo?.Invoke(EquippedAmmo);
             //AmmoTypeChangeEvent.Invoke(EquippedAmmo);

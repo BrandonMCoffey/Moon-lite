@@ -23,7 +23,7 @@ public class ShipMenuManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Cancel"))
+        if (PlayerInput.Cancel)
         {
             if (_currentMenu != null && _currentMenu.CurrentlyOpen)
             {

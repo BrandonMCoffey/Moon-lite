@@ -18,7 +18,7 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler
     {
         if (!_isDragging) return;
 
-        Vector3 newPos = Input.mousePosition + _mouseOffset;
+        Vector3 newPos = PlayerInput.MousePosition + _mouseOffset;
         _rect.position = newPos;
         var corners = new Vector3[4];
         _rect.GetWorldCorners(corners);
@@ -28,7 +28,7 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler
         if (corners[2].y > Screen.height) newPos.y -= corners[2].y - Screen.height;
         _rect.position = newPos;
 
-        if (Input.GetMouseButtonUp(0))
+        if (PlayerInput.MouseLeftReleased)
         {
             _isDragging = false;
         }
@@ -39,7 +39,7 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             _isDragging = true;
-            _mouseOffset = _rect.position - Input.mousePosition;
+            _mouseOffset = _rect.position - PlayerInput.MousePosition;
             transform.SetAsLastSibling();
         }
     }

@@ -66,7 +66,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (PlayerInput.ToggleInfiniteAmmo)
         {
             _infiniteAmmo = !_infiniteAmmo;
             Debug.Log($"Infinite ammo cheat {(_infiniteAmmo ? "activated" : "deactivated")} for {_weaponName}!");
@@ -144,10 +144,7 @@ public abstract class WeaponBase : MonoBehaviour
     public virtual void Aim(Vector3 targetPosition)
     {
         // Replace the old aiming code with a raycast (For perspective camera)
-        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane xy = new Plane(Vector3.forward, new Vector3(0, 0, transform.position.z));
-        xy.Raycast(ray, out float distance);
-        var pos = ray.GetPoint(distance);
+        var pos = PlayerInput.MousePositionWorld(transform.position.z);
         Vector3 aimDirection = (pos - transform.position).normalized;
 
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;

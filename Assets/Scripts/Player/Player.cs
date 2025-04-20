@@ -14,10 +14,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float _pickupItemRange = 1f;
 
     [Header("Throwables and Placeables")]
-    [SerializeField] private KeyCode _throwGlowstick = KeyCode.G;
-    [SerializeField] private KeyCode _throwDirtBomb = KeyCode.B;
-    [SerializeField] private KeyCode _buildTempPlatform = KeyCode.C;
-    [SerializeField] private KeyCode _buildAutoMine = KeyCode.Z;
     [SerializeField] private ThrowableBase _glowstickPrefab;
     [SerializeField] private ThrowableBase _dirtBombPrefab;
     [SerializeField] private PlaceableBase _tempPlatformPrefab;
@@ -41,10 +37,10 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(_throwGlowstick)) Throw(_glowstickPrefab);
-        if (Input.GetKeyDown(_throwDirtBomb)) Throw(_dirtBombPrefab);
-        if (Input.GetKeyDown(_buildTempPlatform)) Place(_tempPlatformPrefab);
-        if (Input.GetKeyDown(_buildAutoMine)) Place(_autoMinerPrefab);
+        if (PlayerInput.Throwable01) Throw(_glowstickPrefab);
+        if (PlayerInput.Throwable02) Throw(_dirtBombPrefab);
+        if (PlayerInput.Placeable01) Place(_tempPlatformPrefab);
+        if (PlayerInput.Placeable02) Place(_autoMinerPrefab);
     }
 
     public void AddItemToInventory(ItemData item, int count = 1) => _inventory.AddItemToInventory(item, count);
