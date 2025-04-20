@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
     public static Player Instance => _instance;
     private static Player _instance;
 
+    // TODO: Move this to where health is calculated
+    public static System.Action<float> OnHealthChanged = delegate { };
+
     [SerializeField] private InventoryData _inventory;
     [SerializeField] private float _magnetItemRange = 2.5f;
     [SerializeField] private float _magnetItemSpeed = 5f;
