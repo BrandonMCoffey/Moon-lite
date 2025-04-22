@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa9103aff1c20a648934a54cf97d81e9, type: 3}
   m_Name: Stone
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  _spriteColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  _itemName: Stone
+  _itemDescription: 
+  _itemIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  _itemIconTint: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
