@@ -51,12 +51,7 @@ public class Player : MonoBehaviour
 
     private void Throw(ThrowableBase prefab)
     {
-        // TODO: Make this better? How to get mouse position?
-        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane xy = new Plane(-Camera.main.transform.forward, new Vector3(0, 0, transform.position.z));
-        xy.Raycast(ray, out float distance);
-        var pos = ray.GetPoint(distance);
-
+        var pos = PlayerInput.MousePositionWorld(transform.position.z);
         var dir = (pos - transform.position).normalized;
 
         var throwable = Instantiate(prefab, transform.position + dir * 0.2f, Quaternion.identity);
