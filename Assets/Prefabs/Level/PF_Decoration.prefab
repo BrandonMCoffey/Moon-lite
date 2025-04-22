@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8753025499201755146}
   - component: {fileID: 2172473414405261098}
   m_Layer: 9
-  m_Name: PF_CaveDecoration
+  m_Name: PF_Decoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

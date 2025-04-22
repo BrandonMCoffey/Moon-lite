@@ -172,7 +172,7 @@ public class Chunk : MonoBehaviour
     {
         // 8x8 atlas (64 tiles total)
         float textureUnit = 0.125f;
-        Vector2 uvCoord = World.TileData.GetTileData(type).UVData;
+        Vector2 uvCoord = World.Settings.GetTileData(type).UVData;
         if (damage > 0) uvCoord.x += 4;
         uvCoord.y = 7 - uvCoord.y;
 
