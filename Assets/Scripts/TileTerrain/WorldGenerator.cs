@@ -68,11 +68,15 @@ public class WorldGenerator : MonoBehaviour
     {
         if (_modifiedChunks.Count > 0)
         {
+            UpdateChunkAt(_modifiedChunks[0]);
+            _modifiedChunks.RemoveAt(0);
+            /*
             foreach (var coords in _modifiedChunks)
             {
                 UpdateChunkAt(coords);
             }
             _modifiedChunks.Clear();
+            */
         }
     }
 

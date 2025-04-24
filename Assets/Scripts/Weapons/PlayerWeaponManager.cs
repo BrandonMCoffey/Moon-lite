@@ -240,6 +240,7 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private bool IsOverPickup()
     {
+        // TODO: Add layer to only check for Weapon objects (This is expensive atm)
         Collider[] colliders = Physics.OverlapSphere(transform.position, _pickupRadius);
         foreach (Collider col in colliders)
         {

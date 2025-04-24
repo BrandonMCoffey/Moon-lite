@@ -103,6 +103,7 @@ public class DroppedItem : MonoBehaviour
     private void ApplyGravity()
     {
         float offset = _velocity * Time.deltaTime;
+        // TODO: This is expensive because a lot of items are called. Maybe move to fixed update or every other frame?
         _grounded = Physics.Raycast(transform.position, Vector3.down, out var hit, offset + _radius, _groundLayer);
 
         if (_grounded)
