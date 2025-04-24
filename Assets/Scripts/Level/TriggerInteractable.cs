@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
+using SaiUtils.Extensions;
 
 public class TriggerInteractable : MonoBehaviour
 {
+    [SerializeField] private float _triggerRadius = 2;
     [SerializeField] private bool _invokeExitOnGameStart;
     [SerializeField] private UnityEvent _onPlayerEnter;
     [SerializeField] private UnityEvent _onPlayerExit;
@@ -11,38 +13,39 @@ public class TriggerInteractable : MonoBehaviour
 
     [SerializeField, ReadOnly] private bool _insideTrigger;
 
+    private Transform _player;
+
     private void Start()
     {
         if (_invokeExitOnGameStart)
         {
             _onPlayerExit?.Invoke();
         }
+        _player = Player.Instance.transform;
     }
 
     private void Update()
     {
-        if (_insideTrigger && PlayerInput.InteractOrSubmit && MouseControllerManager.ActionsThisFrame == 0)
+        float dist = Vector3.Distance(transform.position, _player.position);
+        if (!_insideTrigger && dist <= _triggerRadius)
+        {
+            _insideTrigger = true;
+            _onPlayerEnter?.Invoke();
+        }
+        else if (_insideTrigger && dist > _triggerRadius)
+        {
+            _insideTrigger = false;
+            _onPlayerExit?.Invoke();
+        }
+        if (_insideTrigger && PlayerInput.InteractOrSubmit)
         {
             _onPlayerInteract?.Invoke();
         }
     }
 
-    // TODO: Fix this to work with new player raycast system
-    private void OnTriggerEnter(Collider other)
+    private void OnDrawGizmosSelected()
     {
-        if (other.GetComponent<Player>())
-        {
-            _insideTrigger = true;
-            _onPlayerEnter?.Invoke();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<Player>())
-        {
-            _insideTrigger = false;
-            _onPlayerExit?.Invoke();
-        }
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, _triggerRadius);
     }
 }

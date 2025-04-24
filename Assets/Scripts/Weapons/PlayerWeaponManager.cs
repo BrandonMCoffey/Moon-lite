@@ -165,7 +165,7 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void HandleWeaponPickupAndDrop()
     {
-        if (PlayerInput.InteractOrSubmit)
+        if (PlayerInput.PickupDropWeapon)
         {
             if (IsOverPickup())
             {
@@ -423,7 +423,7 @@ public class PlayerWeaponManager : MonoBehaviour
         }
 
         UpdateWeaponVisibility();
-        OnEquipWeapon?.Invoke(EquippedWeapon.Data);
+        if (EquippedWeapon != null) OnEquipWeapon?.Invoke(EquippedWeapon.Data);
         //WeaponChangeEvent.Invoke(_equippedWeapon);
         //UpdateAmmoUI();
     }

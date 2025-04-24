@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 181444080}
   - component: {fileID: 181444079}
   - component: {fileID: 181444078}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +648,7 @@ GameObject:
   - component: {fileID: 211792643}
   - component: {fileID: 211792642}
   - component: {fileID: 211792641}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -784,7 +784,7 @@ GameObject:
   - component: {fileID: 224068783}
   - component: {fileID: 224068782}
   - component: {fileID: 224068781}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1025,7 +1025,7 @@ GameObject:
   - component: {fileID: 247580594}
   - component: {fileID: 247580593}
   - component: {fileID: 247580592}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1425,7 +1425,7 @@ GameObject:
   - component: {fileID: 365009524}
   - component: {fileID: 365009523}
   - component: {fileID: 365009522}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2003,7 +2003,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 530645798}
-  - component: {fileID: 530645799}
   - component: {fileID: 530645800}
   m_Layer: 0
   m_Name: Research
@@ -2029,19 +2028,6 @@ Transform:
   m_Father: {fileID: 768501977}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &530645799
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 530645797}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3, y: 3, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &530645800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2054,6 +2040,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1341d3386cf55f14e9307e84a295eedf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _triggerRadius: 2
   _invokeExitOnGameStart: 1
   _onPlayerEnter:
     m_PersistentCalls:
@@ -2110,7 +2097,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543108400}
-  - component: {fileID: 543108402}
   - component: {fileID: 543108401}
   m_Layer: 0
   m_Name: LoadoutManager
@@ -2148,6 +2134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1341d3386cf55f14e9307e84a295eedf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _triggerRadius: 2
   _invokeExitOnGameStart: 1
   _onPlayerEnter:
     m_PersistentCalls:
@@ -2195,19 +2182,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _insideTrigger: 0
---- !u!65 &543108402
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 543108399}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3, y: 3, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &566525615
 GameObject:
   m_ObjectHideFlags: 0
@@ -2217,7 +2191,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 566525616}
-  - component: {fileID: 566525617}
   - component: {fileID: 566525618}
   m_Layer: 0
   m_Name: Shop
@@ -2243,19 +2216,6 @@ Transform:
   m_Father: {fileID: 768501977}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &566525617
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566525615}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3, y: 3, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &566525618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2268,6 +2228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1341d3386cf55f14e9307e84a295eedf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _triggerRadius: 2
   _invokeExitOnGameStart: 1
   _onPlayerEnter:
     m_PersistentCalls:
@@ -2327,7 +2288,7 @@ GameObject:
   - component: {fileID: 568299597}
   - component: {fileID: 568299596}
   - component: {fileID: 568299595}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2421,7 +2382,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 609490786}
-  - component: {fileID: 609490788}
   - component: {fileID: 609490787}
   m_Layer: 0
   m_Name: StartRun
@@ -2458,6 +2418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1341d3386cf55f14e9307e84a295eedf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _triggerRadius: 2
   _invokeExitOnGameStart: 1
   _onPlayerEnter:
     m_PersistentCalls:
@@ -2505,19 +2466,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _insideTrigger: 0
---- !u!65 &609490788
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 609490785}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.5, y: 3, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &648699937
 GameObject:
   m_ObjectHideFlags: 0
@@ -3117,7 +3065,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 875849459}
-  - component: {fileID: 875849460}
   - component: {fileID: 875849461}
   m_Layer: 0
   m_Name: GunRoom
@@ -3134,7 +3081,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 875849458}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.5, y: 5.5, z: -2}
+  m_LocalPosition: {x: 31.5, y: 4.5, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3142,19 +3089,6 @@ Transform:
   m_Father: {fileID: 768501977}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &875849460
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 875849458}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 25, y: 11, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &875849461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3167,6 +3101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1341d3386cf55f14e9307e84a295eedf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _triggerRadius: 13
   _invokeExitOnGameStart: 1
   _onPlayerEnter:
     m_PersistentCalls:
@@ -3373,7 +3308,7 @@ GameObject:
   - component: {fileID: 888331009}
   - component: {fileID: 888331008}
   - component: {fileID: 888331007}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4808,7 +4743,7 @@ GameObject:
   - component: {fileID: 1230507072}
   - component: {fileID: 1230507071}
   - component: {fileID: 1230507070}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7363,7 +7298,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1595886325}
-  - component: {fileID: 1595886326}
   - component: {fileID: 1595886327}
   m_Layer: 0
   m_Name: PromptStartRun
@@ -7390,19 +7324,6 @@ Transform:
   m_Father: {fileID: 768501977}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1595886326
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1595886324}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3, y: 3, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &1595886327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7415,6 +7336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1341d3386cf55f14e9307e84a295eedf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _triggerRadius: 2
   _invokeExitOnGameStart: 0
   _onPlayerEnter:
     m_PersistentCalls:
@@ -7539,7 +7461,7 @@ GameObject:
   - component: {fileID: 1717496389}
   - component: {fileID: 1717496388}
   - component: {fileID: 1717496387}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7636,7 +7558,7 @@ GameObject:
   - component: {fileID: 1740763036}
   - component: {fileID: 1740763035}
   - component: {fileID: 1740763034}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8035,7 +7957,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 2}
   m_SizeDelta: {x: 200, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1826211289

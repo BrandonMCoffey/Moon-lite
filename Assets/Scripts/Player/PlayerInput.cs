@@ -32,10 +32,11 @@ public class PlayerInput : MonoBehaviour
     public static bool PlayerJetpack => Input.GetButton("Jump");
 
     // Interactions
-    public static bool InteractOrSubmit => Input.GetButtonDown("Submit");
+    public static bool InteractOrSubmit => Input.GetButtonDown("Submit") && MouseControllerManager.ActionsThisFrame == 0;
     public static bool Cancel => Input.GetButtonDown("Cancel");
 
     // Weapon System
+    public static bool PickupDropWeapon => Input.GetKeyDown(KeyCode.E);
     public static bool SwitchToPreviousAmmo => Input.GetKeyDown(KeyCode.F);
     public static bool SwitchToNextAmmo => Input.GetKeyDown(KeyCode.G);
     public static bool ReloadAmmo => Input.GetKeyDown(KeyCode.R);
