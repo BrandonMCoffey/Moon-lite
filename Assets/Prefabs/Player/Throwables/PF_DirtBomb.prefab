@@ -49,7 +49,7 @@ MonoBehaviour:
   _physicsEnabled: 1
   _gravityScale: 2
   _maxVelocity: 20
-  _physicsLayerMash:
+  _physicsLayerMask:
     serializedVersion: 2
     m_Bits: 257
   _radius: 0.2

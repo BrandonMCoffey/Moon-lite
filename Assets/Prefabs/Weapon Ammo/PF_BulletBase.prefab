@@ -97,15 +97,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ff39bdcdf37894c81a4423efe829e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _physicsEnabled: 1
+  _gravityScale: 1
+  _maxVelocity: 50
+  _physicsLayerMask:
+    serializedVersion: 2
+    m_Bits: 1048833
+  _radius: 0.2
+  _bounceVelocityMultiplierX: 0.8
+  _bounceVelocityMultiplierY: 0.4
+  _drag: 0.5
+  _velocity: {x: 0, y: 0, z: 0}
+  _grounded: 0
+  _groundedTimer: 0
   _data: {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
   _shotSpeed: 5
   _damage: 1
   _knockback: 3
   _size: 0.1
   _lifetime: 3
-  _gravityScale: 1
-  _bulletCollisionMask:
-    serializedVersion: 2
-    m_Bits: 1048832
   _hasAOE: 0
   _aoeRadius: 1

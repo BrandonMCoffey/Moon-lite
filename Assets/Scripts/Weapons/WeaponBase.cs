@@ -187,7 +187,6 @@ public abstract class WeaponBase : MonoBehaviour
 
         // Sending bullet data to insure that prefab has correct bullet data
         bulletInstance.BulletSetup(aimDirection, angle, _data, bulletData);
-        bulletInstance.PreRaycastCheck();
 
         if (_recoilCoroutine != null)
         {

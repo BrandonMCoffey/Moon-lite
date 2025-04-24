@@ -2,10 +2,9 @@ using System.Collections;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class BulletBase : MonoBehaviour
+public class BulletBase : SimplePhysicsObject
 {
     [SerializeField] protected MineralData _data;
-    [SerializeField] private LayerMask _bulletCollisionMask = 1;
 
     [Header("Bullet Data (Dynamic from weapon and bullet data)")]
     [SerializeField, ReadOnly] protected float _shotSpeed = 5;
@@ -13,7 +12,6 @@ public class BulletBase : MonoBehaviour
     [SerializeField, ReadOnly] protected float _knockback = 3;
     [SerializeField, ReadOnly] protected float _size = 1;
     [SerializeField, ReadOnly] protected float _lifetime = 3;
-    [SerializeField, ReadOnly] protected float _gravityScale = 0f; // Artificial gravity scale
     [SerializeField, ReadOnly] private bool _hasAOE = false;
     [SerializeField, ReadOnly] private float _aoeRadius = 1f;
 
@@ -25,8 +23,6 @@ public class BulletBase : MonoBehaviour
     protected Vector3 _startPosition;
     protected bool _once = false;
     protected bool _isVisible = true;
-
-    protected Vector3 _velocity;
 
     protected virtual void Awake()
     {
@@ -57,10 +53,16 @@ public class BulletBase : MonoBehaviour
     //     }
     // }
 
-    protected virtual void Update()
+    protected override void Update()
     {
-        ApplyGravity();
-        RaycastCheck();
+        base.Update();
+
+        // Rotate the bullet to face the direction of movement
+        transform.rotation = Quaternion.LookRotation(Vector3.forward, _velocity.normalized);
+
+        // NOTE: Merged with SimplePhysicsObject to only raycast on fixed update and use interpolation
+        //ApplyGravity();
+        //RaycastCheck();
 
         // if (!_isVisible && Vector3.Distance(_startPosition, transform.position) >= 0.5f)
         // {
@@ -113,7 +115,10 @@ public class BulletBase : MonoBehaviour
         transform.localScale = new Vector3(_size, _size, _size);
         transform.eulerAngles = new Vector3(0, 0, angle);
 
-        _velocity = shootDir * _shotSpeed;
+        SetVelocity(shootDir * _shotSpeed);
+        //_velocity = shootDir * _shotSpeed;
+
+        PreRaycastCheck();
 
         StartCoroutine(DelayedDestroy(_lifetime));
     }
@@ -164,25 +169,27 @@ public class BulletBase : MonoBehaviour
         }
     }
 
-    protected void RaycastCheck()
+    protected override void OnHit(RaycastHit hit)
     {
-        if(Physics.Raycast(transform.position, _velocity.normalized, out RaycastHit hit, 0.5f, _bulletCollisionMask, QueryTriggerInteraction.Ignore))
+        var chunk = hit.collider.GetComponent<Chunk>();
+        if (chunk != null)
         {
-            var chunk = hit.collider.GetComponent<Chunk>();
-            if (chunk != null)
-            {
-                Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.01f;
-                OnHitChunk(chunk, pointToDestroy);
-            }
-
-            DestroySelf();
+            Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.01f;
+            OnHitChunk(chunk, pointToDestroy);
         }
+
+        // TODO: Enemy or other hit objects
+
+        // TODO: Bullet impact feedback
+
+        DestroySelf();
     }
+
     public void PreRaycastCheck()
     {
         //Debug.DrawRay(transform.position - _velocity.normalized * 2, _velocity.normalized * 2.5f, Color.red, 1.5f);
 
-        if(Physics.Raycast(transform.position - _velocity.normalized * 2, _velocity.normalized, out RaycastHit hit, 2.5f, _bulletCollisionMask, QueryTriggerInteraction.Ignore))
+        if(Physics.Raycast(transform.position - _velocity.normalized * 2, _velocity.normalized, out RaycastHit hit, 2.5f, _physicsLayerMask, QueryTriggerInteraction.Ignore))
         {
             //Debug.Log("Hit: " + hit.collider.name);
             var chunk = hit.collider.GetComponent<Chunk>();

@@ -7,15 +7,15 @@ public class SimplePhysicsObject : MonoBehaviour
     [SerializeField] protected bool _physicsEnabled = true;
     [SerializeField] protected float _gravityScale = 2f;
     [SerializeField] private float _maxVelocity = 20;
-    [SerializeField] private LayerMask _physicsLayerMash = 1;
+    [SerializeField] protected LayerMask _physicsLayerMask = 1;
     [SerializeField] private float _radius = 0.2f;
     [SerializeField, Range(0f, 1f)] private float _bounceVelocityMultiplierX = 0.8f;
     [SerializeField, Range(0f, 1f)] private float _bounceVelocityMultiplierY = 0.4f;
     [SerializeField, Range(0f, 1f)] private float _drag = 0.5f;
 
     [Header("Physics Debug")]
-    [SerializeField, ReadOnly] private Vector3 _velocity;
-    [SerializeField, ReadOnly] private bool _grounded;
+    [SerializeField, ReadOnly] protected Vector3 _velocity;
+    [SerializeField, ReadOnly] protected bool _grounded;
     [SerializeField, ReadOnly] private float _groundedTimer;
     private Vector3 previousPosition;
     private Vector3 currentPosition;
@@ -77,7 +77,7 @@ public class SimplePhysicsObject : MonoBehaviour
     protected virtual void ApplyVelocity(float deltaTime)
     {
         Vector3 offset = _velocity * deltaTime;
-        if (Physics.Raycast(transform.position, _velocity.normalized, out var hit, offset.magnitude + _radius, _physicsLayerMash, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(transform.position, _velocity.normalized, out var hit, offset.magnitude + _radius, _physicsLayerMask, QueryTriggerInteraction.Ignore))
         {
             OnHit(hit);
             // Match object to ground
