@@ -70,7 +70,7 @@ namespace SaiUtils.ImprovedTimers
             {
                 PrintSubsystem(subSystem, sb, 0);
             }
-            Debug.Log(sb.ToString());
+            //Debug.Log(sb.ToString());
         }
 
         static void PrintSubsystem(PlayerLoopSystem system, StringBuilder sb, int level)
