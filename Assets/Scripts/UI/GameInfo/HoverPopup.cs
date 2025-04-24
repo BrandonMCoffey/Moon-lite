@@ -4,20 +4,31 @@ public class HoverPopup : MonoBehaviour
 {
     [SerializeField] private Canvas _popupCanvas;
 
-    private HoverPopupVisual _current;
+    private ShowPopupOnHover _current;
+
+    private void Awake()
+    {
+        _popupCanvas.enabled = false;
+    }
 
     private void OnEnable()
     {
-        HoverPopupVisual.OnHovered += HandleHover;
+        ShowPopupOnHover.OnHovered += HandleHover;
     }
 
     private void OnDisable()
     {
-        HoverPopupVisual.OnHovered -= HandleHover;
+        ShowPopupOnHover.OnHovered -= HandleHover;
     }
 
-    private void HandleHover(HoverPopupVisual visual, bool hovered)
+    private void Update()
     {
+        transform.position = PlayerInput.MousePosition;
+    }
+
+    private void HandleHover(ShowPopupOnHover visual, bool hovered)
+    {
+        Debug.Log($"{(hovered ? "Hover " : "Leave ")} from {visual.name}");
         if (hovered)
         {
             // Handle hiding _current visual if needed?
@@ -31,7 +42,7 @@ public class HoverPopup : MonoBehaviour
         }
     }
 
-    private void SetupVisual(HoverPopupVisual visual)
+    private void SetupVisual(ShowPopupOnHover visual)
     {
         _current = visual;
 

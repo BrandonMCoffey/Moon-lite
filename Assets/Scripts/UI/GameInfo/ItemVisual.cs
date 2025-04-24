@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemVisual : MonoBehaviour
+public class ItemVisual : ShowPopupOnHover
 {
     [SerializeField] protected InventoryData _inventory;
     [SerializeField] protected ItemData _itemData;

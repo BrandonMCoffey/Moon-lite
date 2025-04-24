@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponVisual : MonoBehaviour
+public class WeaponVisual : ShowPopupOnHover
 {
     [SerializeField] protected WeaponData _weaponData;
 

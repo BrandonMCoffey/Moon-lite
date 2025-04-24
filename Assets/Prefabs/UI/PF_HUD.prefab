@@ -603,6 +603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8118040061269805042}
   - component: {fileID: 8118040061269805043}
+  - component: {fileID: 2699661552393216702}
   m_Layer: 5
   m_Name: PF_HUD
   m_TagString: Untagged
@@ -655,6 +656,23 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &2699661552393216702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8118040061269805040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 2182148023
 --- !u!1 &8118040061964622053
 GameObject:
   m_ObjectHideFlags: 0
@@ -1856,6 +1874,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_ItemVisual (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7534917151153449000, guid: c4505c4fa681c384fb4cb8e3605a76dd,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.3499911
+      objectReference: {fileID: 0}
+    - target: {fileID: 7534917151153449000, guid: c4505c4fa681c384fb4cb8e3605a76dd,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.4371994
+      objectReference: {fileID: 0}
+    - target: {fileID: 7534917151153449000, guid: c4505c4fa681c384fb4cb8e3605a76dd,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.6132076
       objectReference: {fileID: 0}
     - target: {fileID: 9176882320657806387, guid: c4505c4fa681c384fb4cb8e3605a76dd,
         type: 3}

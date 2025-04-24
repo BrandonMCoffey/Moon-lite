@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class HoverPopupVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ShowPopupOnHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public static System.Action<HoverPopupVisual, bool> OnHovered = delegate { };
+    public static System.Action<ShowPopupOnHover, bool> OnHovered = delegate { };
 
     public void OnPointerEnter(PointerEventData eventData)
     {
