@@ -215,7 +215,7 @@ public class WorldGenerator : MonoBehaviour
                     {
                         if (Random.value < Settings.CaveFloorDecoChance)
                         {
-                            var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y), transform.rotation, transform);
+                            var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y + 1), transform.rotation, transform);
                             deco.RandomizeCave(true);
                             deco.ConnectToTile(x, y);
                         }

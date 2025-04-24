@@ -17,7 +17,7 @@ public class TerrainClickToDestroy : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerInput.MouseLeftPressed)
+        if (PlayerInput.MouseLeftHeld)
         {
             _destroyTimer -= Time.deltaTime;
             if (_destroyTimer < 0)

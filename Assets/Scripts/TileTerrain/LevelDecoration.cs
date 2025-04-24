@@ -22,6 +22,7 @@ public class LevelDecoration : MonoBehaviour
     {
         _connectedTileX = x;
         _connectedTileY = y;
+        // TODO: Does this need to be optimized?
         WorldGenerator.OnTileDestroyed += ConnectedTileDestroyed;
     }
 
@@ -36,12 +37,14 @@ public class LevelDecoration : MonoBehaviour
     public void RandomizeGrass()
     {
         _renderer.material = GetRandomMaterial(_grassMaterials);
+        transform.position += transform.forward * 0.25f;
         transform.localScale = new Vector3(_randomFlipX && Random.value > 0.5f ? -1f : 1f, 1f, 1f);
     }
 
     public void RandomizeCave(bool floor)
     {
         _renderer.material = GetRandomMaterial(floor ? _caveFloorSprites : _caveCeilingSprites);
+        transform.position += transform.forward * 0.25f;
         transform.localScale = new Vector3(_randomFlipX && Random.value > 0.5f ? -1f : 1f, !floor && _flipCeilingSprites ? -1f : 1f, 1f);
     }
 
