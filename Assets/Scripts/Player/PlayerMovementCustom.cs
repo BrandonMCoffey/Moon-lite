@@ -2,23 +2,13 @@ using System.Collections;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class PlayerMovementCustom : MonoBehaviour
+public class PlayerMovementCustom : EntityMovement
 {
+    [Header("Player Settings")]
     [SerializeField] private CustomMovementData _data;
     [SerializeField] private Transform _art;
     [SerializeField] private bool _debug;
     [SerializeField] private float _jetpackMaxFuel = 1;
-
-    [Header("Collisions")]
-    [SerializeField] private LayerMask _groundLayer = 1;
-    [SerializeField] private float _playerHeight = 1.6f;
-    [SerializeField] private float _playerWidth = 1.0f;
-    [SerializeField] private float _groundOffset = 0.8f;
-    [SerializeField] private float _groundCheckWidth = 0.3f;
-    [SerializeField] private float _ceilingCheckWidth = 0.3f;
-    [SerializeField] private float _wallCheckWidth = 0.5f;
-    [SerializeField] private float _wallChecVerticalOffset = 0.25f;
-    [SerializeField] private float _checkRaycastDistance = 5f;
 
     [Header("Feedback")]
     [SerializeField] private SfxReference _jumpSfx;
@@ -31,28 +21,16 @@ public class PlayerMovementCustom : MonoBehaviour
     [SerializeField] private ParticleSystem _jetpackParticles;
 
     [Header("Debug - Movement")]
-    [SerializeField, ReadOnly] private Vector3 _velocity;
-    [SerializeField, ReadOnly] private bool _facingLeft;
     [SerializeField, ReadOnly] private float _moveHorz;
     [SerializeField, ReadOnly] private float _moveVert;
-    [SerializeField, ReadOnly] private float _gravityScale;
-
-    [Header("Debug - Collisions")]
-    [SerializeField, ReadOnly] private bool _groundCollided;
-    [SerializeField, ReadOnly] private float _groundDistance;
-    [SerializeField, ReadOnly] private float _coyoteGrounded;
-    [SerializeField, ReadOnly] private bool _ceilingCollided;
-    [SerializeField, ReadOnly] private float _ceilingDistance;
-    [SerializeField, ReadOnly] private bool _leftWallCollided;
-    [SerializeField, ReadOnly] private float _leftWallDistance;
-    [SerializeField, ReadOnly] private bool _rightWallCollided;
-    [SerializeField, ReadOnly] private float _rightWallDistance;
+    [SerializeField, ReadOnly] private bool _facingLeft;
 
     [Header("Debug - Jump")]
     [SerializeField, ReadOnly] private bool _jumpInput;
     [SerializeField, ReadOnly] private float _jumpTimer;
     [SerializeField, ReadOnly] private bool _isJumping;
     [SerializeField, ReadOnly] private bool _isJumpFalling;
+    [SerializeField, ReadOnly] private float _coyoteGrounded;
 
     [Header("Debug - Dash")]
     [SerializeField, ReadOnly] private bool _dashInput;
@@ -71,12 +49,7 @@ public class PlayerMovementCustom : MonoBehaviour
 
     private Coroutine _dashRoutine;
 
-    private void Start()
-    {
-        CheckCollisions(true);
-    }
-
-    private void Update()
+    protected override void Update()
     {
         CheckCollisions();
         UpdateTimers(Time.deltaTime);
@@ -88,118 +61,13 @@ public class PlayerMovementCustom : MonoBehaviour
         Run(Time.deltaTime);
         CheckFacingDir();
 
-        // Gravity
-        _velocity += Vector3.up * (Physics.gravity.y * _gravityScale * Time.deltaTime);
-
+        ApplyGravity();
         if (_ceilingCollided && _velocity.y > 0)
         {
             _velocity.y = 0;
             _isJumping = false;
         }
-        _velocity.y = Mathf.Clamp(_velocity.y, -20, 20);
-        if (_groundCollided && _velocity.y < 0) _velocity.y = 0;
-        Vector3 offset = _velocity * Time.deltaTime;
-        offset.y = Mathf.Clamp(offset.y, -_groundDistance, _ceilingDistance);
-        offset.x = Mathf.Clamp(offset.x, -_leftWallDistance, _rightWallDistance);
-        transform.position += offset;
-        if ((_leftWallCollided && _velocity.x < 0) || (_rightWallCollided && _velocity.x > 0)) _velocity.x = 0;
-    }
-
-    private void SetGravityScale(float gravityScale)
-    {
-        _gravityScale = gravityScale;
-    }
-
-    private void CheckFacingDir()
-    {
-        var mousePosition = PlayerInput.MousePosition;
-        mousePosition.z = Camera.main.nearClipPlane;
-        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-        Vector3 directionToMouse = worldMousePosition - transform.position;
-        bool facingLeft = directionToMouse.x < 0;
-
-        if (_facingLeft != facingLeft)
-        {
-            _facingLeft = facingLeft;
-            Vector3 scale = _art.localScale;
-            scale.x = Mathf.Abs(scale.x) * (_facingLeft ? -1 : 1);
-            _art.localScale = scale;
-        }
-    }
-
-    private void CheckCollisions(bool force = false)
-    {
-        var pos = transform.position;
-        RaycastHit hitInfo;
-
-        _groundDistance = Mathf.Infinity;
-        for (int i = -1; i <= 1; i++)
-        {
-            if (Physics.Raycast(pos + Vector3.right * _groundCheckWidth * i, Vector3.down, out hitInfo, _groundOffset + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
-            {
-                var dist = hitInfo.distance - _groundOffset;
-                if (dist < _groundDistance) _groundDistance = dist;
-            }
-        }
-        bool grounded = _groundDistance < 0.05f;
-
-        _ceilingDistance = Mathf.Infinity;
-        for (int i = -1; i <= 1; i++)
-        {
-            if (Physics.Raycast(pos + Vector3.right * _ceilingCheckWidth * i, Vector3.up, out hitInfo, (_playerHeight - _groundOffset) + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
-            {
-                var dist = hitInfo.distance - (_playerHeight - _groundOffset);
-                if (dist < _ceilingDistance) _ceilingDistance = dist;
-            }
-        }
-        bool ceiling = _ceilingDistance < 0.05f;
-
-        _leftWallDistance = Mathf.Infinity;
-        _rightWallDistance = Mathf.Infinity;
-        for (int i = -1; i <= 1; i++)
-        {
-            var wallPos = pos + Vector3.up * (_wallChecVerticalOffset + _wallCheckWidth * i);
-            if (Physics.Raycast(wallPos, Vector3.left, out hitInfo, _playerWidth * 0.5f + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
-            {
-                var dist = hitInfo.distance - _playerWidth * 0.5f;
-                if (dist < _leftWallDistance) _leftWallDistance = dist;
-            }
-            if (Physics.Raycast(wallPos, Vector3.right, out hitInfo, _playerWidth * 0.5f + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
-            {
-                var dist = hitInfo.distance - _playerWidth * 0.5f;
-                if (dist < _rightWallDistance) _rightWallDistance = dist;
-            }
-        }
-        bool leftWall = _leftWallDistance < 0.05f;
-        bool rightWall = _rightWallDistance < 0.05f;
-
-        if (grounded != _groundCollided || force)
-        {
-            _groundCollided = grounded;
-            if (_groundCollided)
-            {
-                _landSfx.Play();
-                _landParticles.Play();
-                _walkParticles.Play();
-            }
-            else
-            {
-                _walkParticles.Stop();
-            }
-        }
-        if (ceiling != _ceilingCollided || force)
-        {
-            _ceilingCollided = ceiling;
-        }
-        if (leftWall != _leftWallCollided || force)
-        {
-            _leftWallCollided = leftWall;
-        }
-        if (rightWall != _rightWallCollided || force)
-        {
-            _rightWallCollided = rightWall;
-        }
+        ApplyVelocity();
     }
 
     private void UpdateTimers(float deltaTime)
@@ -254,6 +122,23 @@ public class PlayerMovementCustom : MonoBehaviour
         _jetpackInput = PlayerInput.PlayerJetpack;
     }
 
+    protected override void UpdateGrounded(bool grounded)
+    {
+        base.UpdateGrounded(grounded);
+        if (_groundCollided)
+        {
+            _landSfx.Play();
+            _landParticles.Play();
+            _walkParticles.Play();
+        }
+        else
+        {
+            _walkParticles.Stop();
+        }
+    }
+
+#region Jump
+
     private void CheckJump()
     {
         if (_isJumping && _velocity.y < 0)
@@ -307,17 +192,6 @@ public class PlayerMovementCustom : MonoBehaviour
         if (particles) _jumpParticles.Play();
     }
 
-    private void StopDashing()
-    {
-        if (_dashRoutine != null)
-        {
-            StopCoroutine(_dashRoutine);
-            _isDashAttacking = false;
-            _isDashing = false;
-            _postDashTimer = 0;
-        }
-    }
-
     private void ResetAllJumpValues()
     {
         _isJumping = false;
@@ -329,6 +203,9 @@ public class PlayerMovementCustom : MonoBehaviour
         _leftWallCollided = false;
         _rightWallCollided = false;
     }
+
+#endregion
+#region Dash
 
     private void CheckDash()
     {
@@ -396,6 +273,19 @@ public class PlayerMovementCustom : MonoBehaviour
         _postDashTimer = _data.dashJumpBonusBufferTime;
         _dashRoutine = null;
     }
+
+    private void StopDashing()
+    {
+        if (_dashRoutine != null)
+        {
+            StopCoroutine(_dashRoutine);
+            _isDashAttacking = false;
+            _isDashing = false;
+            _postDashTimer = 0;
+        }
+    }
+
+    #endregion
 
     private void CheckJetpack()
     {
@@ -479,25 +369,23 @@ public class PlayerMovementCustom : MonoBehaviour
         _velocity += Vector3.right * movement * deltaTime;
     }
 
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
+    private void CheckFacingDir()
     {
-        var pos = transform.position;
-        Gizmos.color = Color.red;
-        for (int i = -1; i <= 1; i++)
+        var mousePosition = PlayerInput.MousePosition;
+        mousePosition.z = Camera.main.nearClipPlane;
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+        Vector3 directionToMouse = worldMousePosition - transform.position;
+        bool facingLeft = directionToMouse.x < 0;
+
+        if (_facingLeft != facingLeft)
         {
-            Gizmos.DrawRay(pos + Vector3.down * _groundOffset + Vector3.right * _groundCheckWidth * i, Vector3.down * 0.1f);
-            Gizmos.DrawRay(pos + Vector3.up * (_playerHeight - _groundOffset) + Vector3.right * _ceilingCheckWidth * i, Vector3.up * 0.1f);
-            Gizmos.DrawRay(pos + Vector3.left * _playerWidth * 0.5f + Vector3.up * (_wallChecVerticalOffset + _wallCheckWidth * i), Vector3.left * 0.1f);
-            Gizmos.DrawRay(pos + Vector3.right * _playerWidth * 0.5f + Vector3.up * (_wallChecVerticalOffset + _wallCheckWidth * i), Vector3.right * 0.1f);
+            _facingLeft = facingLeft;
+            Vector3 scale = _art.localScale;
+            scale.x = Mathf.Abs(scale.x) * (_facingLeft ? -1 : 1);
+            _art.localScale = scale;
         }
-        pos += Vector3.up * (_playerHeight * 0.5f - _groundOffset);
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(pos, new Vector3(_playerWidth, _playerHeight, 0f));
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(pos, _velocity);
     }
-#endif
 
     private void Log(string message)
     {
