@@ -1,7 +1,3 @@
-using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Moonlite/Weapon Data")]

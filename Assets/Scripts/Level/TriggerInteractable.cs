@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
-using SaiUtils.Extensions;
 
 public class TriggerInteractable : MonoBehaviour
 {

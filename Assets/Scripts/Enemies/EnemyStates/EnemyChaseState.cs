@@ -1,6 +1,5 @@
 using UnityEngine;
 using SaiUtils.StateMachine;
-using TMPro;
 using SaiUtils.ImprovedTimers;
 
 public class EnemyChaseState : EnemyBaseState

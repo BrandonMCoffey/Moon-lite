@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using Sirenix.OdinInspector;
 
 public abstract class WeaponBase : MonoBehaviour
 {
