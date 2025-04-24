@@ -182,6 +182,8 @@ public abstract class WeaponBase : MonoBehaviour
 
         Vector3 spawnPosition = _shootTransform.position;
 
+        // TODO: If all bullets use the same prefab, implement object pooling for bullets
+        // We can handle bullet effects through the data object or some other way. Not sure what is best
         BulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
