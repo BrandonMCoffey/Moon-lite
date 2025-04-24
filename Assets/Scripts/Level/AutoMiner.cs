@@ -22,7 +22,11 @@ public class AutoMiner : PlaceableBase
             _destroyTimer -= _destroyTime;
             DestroyNextTile();
         }
-        ApplyGravity();
+    }
+
+    private void FixedUpdate()
+    {
+        ApplyGravity(Time.fixedDeltaTime);
     }
 
     private void DestroyNextTile()
@@ -41,9 +45,9 @@ public class AutoMiner : PlaceableBase
         }
     }
 
-    private void ApplyGravity()
+    private void ApplyGravity(float deltaTime)
     {
-        float offset = _velocity * Time.deltaTime;
+        float offset = _velocity * deltaTime;
         RaycastHit hit;
         _grounded = Physics.Raycast(transform.position, -transform.up, out hit, offset + _groundOffset, _groundLayer);
         bool g2 = Physics.Raycast(transform.position + transform.right * _world.TileSizeMult, -transform.up, out var hit2, offset + _groundOffset, _groundLayer);
@@ -63,7 +67,7 @@ public class AutoMiner : PlaceableBase
         }
         else
         {
-            _velocity += -9.81f * Time.deltaTime;
+            _velocity += -9.81f * deltaTime;
             _velocity = Mathf.Max(_velocity, -20f);
             transform.position += new Vector3(0, offset, 0);
         }

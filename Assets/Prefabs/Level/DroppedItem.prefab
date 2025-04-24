@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1581836335077417544}
   - component: {fileID: 1581836335077417545}
   - component: {fileID: 5461611520489040012}
+  - component: {fileID: -7268053482029340590}
   m_Layer: 15
   m_Name: DroppedItem
   m_TagString: Untagged
@@ -45,15 +46,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f67c76ef621c50e4f891670811239d81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _physicsEnabled: 1
+  _gravityScale: 2
+  _maxVelocity: 20
+  _physicsLayerMash:
+    serializedVersion: 2
+    m_Bits: 257
+  _radius: 0.1
+  _bounceVelocityMultiplierX: 0.8
+  _bounceVelocityMultiplierY: 0.4
+  _drag: 0.5
+  _velocity: {x: 0, y: 0, z: 0}
+  _grounded: 0
+  _groundedTimer: 0
+  _renderer: {fileID: 5461611520489040012}
   _lifespan: 100
   _despawnRange: 20
+  _canMerge: 1
   _mergeUpdateTime: 0.5
   _mergeRadius: 0.25
-  _groundLayer:
+  _itemMergeLayer:
     serializedVersion: 2
-    m_Bits: 256
-  _radius: 0.1
-  _renderer: {fileID: 5461611520489040012}
+    m_Bits: 32768
 --- !u!212 &5461611520489040012
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -106,3 +120,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!135 &-7268053482029340590
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581836335077417546}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1
+  m_Center: {x: 0, y: 0, z: 0}

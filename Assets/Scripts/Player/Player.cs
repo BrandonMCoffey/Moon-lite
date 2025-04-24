@@ -14,8 +14,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _pickupItemRange = 1f;
 
     [Header("Throwables and Placeables")]
-    [SerializeField] private ThrowableBase _glowstickPrefab;
-    [SerializeField] private ThrowableBase _dirtBombPrefab;
+    [SerializeField] private SimplePhysicsObject _glowstickPrefab;
+    [SerializeField] private SimplePhysicsObject _dirtBombPrefab;
     [SerializeField] private PlaceableBase _tempPlatformPrefab;
     [SerializeField] private PlaceableBase _autoMinerPrefab;
 
@@ -46,13 +46,13 @@ public class Player : MonoBehaviour
     public void AddItemToInventory(ItemData item, int count = 1) => _inventory.AddItemToInventory(item, count);
     public int GetInventoryCount(ItemData item) => _inventory.GetInventoryCount(item);
 
-    private void Throw(ThrowableBase prefab)
+    private void Throw(SimplePhysicsObject prefab)
     {
         var pos = PlayerInput.MousePositionWorld(transform.position.z);
         var dir = (pos - transform.position).normalized;
 
         var throwable = Instantiate(prefab, transform.position + dir * 0.2f, Quaternion.identity);
-        throwable.Throw(dir, 10f);
+        throwable.SetVelocity(dir * 10f);
     }
 
     private void Place(PlaceableBase prefab)

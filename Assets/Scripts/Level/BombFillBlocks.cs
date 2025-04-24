@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class BombFillBlocks : ThrowableBase
+public class BombFillBlocks : SimplePhysicsObject
 {
+    [Header("Bomb Fill Settings")]
     [SerializeField] private float _fillRadius = 2;
     [SerializeField] private int _bouncesBeforeFilling = 0;
     [SerializeField] private TileType _fillType = TileType.Dirt;

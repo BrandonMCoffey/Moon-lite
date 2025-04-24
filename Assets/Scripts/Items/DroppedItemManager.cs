@@ -5,8 +5,8 @@ using Sirenix.OdinInspector;
 public class DroppedItemManager : MonoBehaviour
 {
     [SerializeField] private DroppedItem _itemPrefab;
-    [SerializeField] private int _itemPoolSize;
-    [SerializeField, ReadOnly] private int _actualSize;
+    [SerializeField] private int _startPoolSize = 100;
+    [SerializeField, ReadOnly] private int _actualPoolSize;
 
     private static DroppedItemManager _instance;
 
@@ -15,14 +15,14 @@ public class DroppedItemManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        _itemPool = new List<DroppedItem>(_itemPoolSize);
-        for (int i = 0; i < _itemPoolSize; i++)
+        _itemPool = new List<DroppedItem>(_startPoolSize);
+        for (int i = 0; i < _startPoolSize; i++)
         {
             var item = Instantiate(_itemPrefab, transform);
             item.gameObject.SetActive(false);
             _itemPool.Add(item);
         }
-        _actualSize = _itemPoolSize;
+        _actualPoolSize = _startPoolSize;
     }
 
     public void SpawnDroppedItem(Vector3 location, ItemData itemData)
@@ -42,7 +42,7 @@ public class DroppedItemManager : MonoBehaviour
         }
         else
         {
-            _actualSize++;
+            _actualPoolSize++;
             return Instantiate(_itemPrefab, transform);
         }
     }

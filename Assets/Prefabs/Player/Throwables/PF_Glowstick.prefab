@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1738573448612976916}
-  - component: {fileID: 1738573448612976919}
+  - component: {fileID: 5679274224674146491}
   m_Layer: 14
   m_Name: PF_Glowstick
   m_TagString: Untagged
@@ -34,7 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1738573448612976919
+--- !u!114 &5679274224674146491
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,15 +43,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1738573448612976917}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2b30021be2d0af46812965c29668204, type: 3}
+  m_Script: {fileID: 11500000, guid: 43fee13836863024b8b3e29b917e91fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _physicsEnabled: 1
   _gravityScale: 2
-  _projectileLayerMask:
+  _maxVelocity: 20
+  _physicsLayerMash:
     serializedVersion: 2
     m_Bits: 257
-  _velocityAfterBounce: 0.5
+  _radius: 0.2
+  _bounceVelocityMultiplierX: 0.8
+  _bounceVelocityMultiplierY: 0.4
   _drag: 0.5
+  _velocity: {x: 0, y: 0, z: 0}
+  _grounded: 0
+  _groundedTimer: 0
 --- !u!1 &3997671537684017270
 GameObject:
   m_ObjectHideFlags: 0

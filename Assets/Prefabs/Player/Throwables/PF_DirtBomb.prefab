@@ -46,12 +46,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 792e96198274f4c40902af719dddf841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _physicsEnabled: 1
   _gravityScale: 2
-  _projectileLayerMask:
+  _maxVelocity: 20
+  _physicsLayerMash:
     serializedVersion: 2
     m_Bits: 257
-  _velocityAfterBounce: 0.5
+  _radius: 0.2
+  _bounceVelocityMultiplierX: 0.8
+  _bounceVelocityMultiplierY: 0.4
   _drag: 0.5
+  _velocity: {x: 0, y: 0, z: 0}
+  _grounded: 0
+  _groundedTimer: 0
   _fillRadius: 3.2
   _bouncesBeforeFilling: 0
   _fillType: 1
