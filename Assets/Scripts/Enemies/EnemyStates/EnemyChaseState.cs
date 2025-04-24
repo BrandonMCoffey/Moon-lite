@@ -4,15 +4,15 @@ using SaiUtils.ImprovedTimers;
 
 public class EnemyChaseState : EnemyBaseState
 {
-    float playerRememberTime;
-    float chaseSpeed;
-    Transform playerTransform;
-    LayerMask groundLayerMask;
-    float pitCheckDistance;
+    private float playerRememberTime;
+    private float chaseSpeed;
+    private Transform playerTransform;
+    private LayerMask groundLayerMask;
+    private float pitCheckDistance;
 
-    CountdownTimer playerRememberTimer;
-    CountdownTimer checkForObstacleTimer;
-    bool canChasePlayer;
+    private CountdownTimer playerRememberTimer;
+    private CountdownTimer checkForObstacleTimer;
+    private bool canChasePlayer;
 
     public EnemyChaseState(
         EnemyBrain enemyBrain, 
@@ -72,7 +72,7 @@ public class EnemyChaseState : EnemyBaseState
         Debug.Log("Chase State Exited");
     }
 
-    void ChasePlayer()
+    private void ChasePlayer()
     {
         Vector3 directionToPlayer = (playerTransform.position - enemyRigidbody.position).normalized;
         directionToPlayer.y = 0; // Ignore vertical movement

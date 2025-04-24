@@ -4,10 +4,10 @@ using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] Rigidbody rb;
-    FrameInputs _inputs;
+    [SerializeField] private Rigidbody rb;
+    private FrameInputs _inputs;
 
-    void Update()
+    private void Update()
     {
         GatherInputs();
         HandleGrounding();
@@ -18,9 +18,9 @@ public class PlayerController : MonoBehaviour
         HandleDashing();
     }
 
-    bool _facingLeft;
+    private bool _facingLeft;
 
-    void GatherInputs()
+    private void GatherInputs()
     {
         _inputs.RawX = (int) Input.GetAxisRaw("Horizontal");
         _inputs.RawY = (int) Input.GetAxisRaw("Vertical");
@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
         if (!_grabbing) SetFacingDirection(_facingLeft); // Don't turn while grabbing the wall
     }
 
-    void SetFacingDirection(bool facingLeft)
+    private void SetFacingDirection(bool facingLeft)
     {
         if (facingLeft) transform.localScale = new Vector3(-1, 1, 1);
         else transform.localScale = new Vector3(1, 1, 1);

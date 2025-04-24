@@ -107,7 +107,7 @@ public class PlayerControllerGemini : MonoBehaviour
 
     #region Unity Methods
 
-    void Awake()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         coll = GetComponent<CapsuleCollider>();
@@ -119,12 +119,12 @@ public class PlayerControllerGemini : MonoBehaviour
         rb.freezeRotation = true; // Prevent unwanted tipping
     }
 
-    void Start()
+    private void Start()
     {
         currentFuel = maxFuel; // Start with full fuel
     }
 
-    void Update()
+    private void Update()
     {
         GatherInput();
         HandleTimers();
@@ -143,7 +143,7 @@ public class PlayerControllerGemini : MonoBehaviour
         if (isGrappling && grappleLineRenderer) UpdateGrappleLine();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         // Only process movement if not being knocked back
         if (!isKnockedBack)
@@ -172,7 +172,7 @@ public class PlayerControllerGemini : MonoBehaviour
 
     #region Input Handling
 
-    void GatherInput()
+    private void GatherInput()
     {
         horizontalInput = Input.GetAxis("Horizontal"); // A/D or Left/Right Arrow
         verticalInput = Input.GetAxis("Vertical");     // W/S or Up/Down Arrow (for 3D movement)
@@ -194,7 +194,7 @@ public class PlayerControllerGemini : MonoBehaviour
 
     #region State Checks
 
-    void CheckGrounded()
+    private void CheckGrounded()
     {
         // Use a sphere cast at the ground check point position
         isGrounded = Physics.CheckSphere(groundCheckPoint.position, groundCheckRadius, groundLayerMask);
@@ -210,7 +210,7 @@ public class PlayerControllerGemini : MonoBehaviour
 
     #region Timers
 
-    void HandleTimers()
+    private void HandleTimers()
     {
         // Decrement timers if they are active
         if (coyoteTimeCounter > 0f) coyoteTimeCounter -= Time.deltaTime;
@@ -225,7 +225,7 @@ public class PlayerControllerGemini : MonoBehaviour
 
     #region Movement Logic
 
-    void HandleMovement()
+    private void HandleMovement()
     {
         // Calculate move direction based on camera or world space
         // Assuming world space movement for simplicity in a Terraria-like cube world
@@ -261,7 +261,7 @@ public class PlayerControllerGemini : MonoBehaviour
 
     #region Jumping & Gravity Logic
 
-    void HandleCoyoteTime()
+    private void HandleCoyoteTime()
     {
         // If we were grounded last frame but are not now, start coyote timer
         if (wasGroundedLastFrame && !isGrounded && !isJetpacking && !isGrappling) // Don't activate if starting jetpack/grapple
@@ -274,7 +274,7 @@ public class PlayerControllerGemini : MonoBehaviour
         }
     }
 
-    void HandleJumpBuffering()
+    private void HandleJumpBuffering()
     {
         // If jump pressed but not allowed (e.g., in air without coyote time), start buffer
         if (jumpInputDown && !CanJump())
@@ -288,12 +288,12 @@ public class PlayerControllerGemini : MonoBehaviour
         }
     }
 
-    bool CanJump()
+    private bool CanJump()
     {
         return (isGrounded || coyoteTimeCounter > 0f) && !isDashing && !isGrappling && !isKnockedBack;
     }
 
-    bool ShouldJump()
+    private bool ShouldJump()
     {
         // Actual jump trigger: Jump pressed now AND allowed, OR buffer is active AND we just landed
         bool jump = jumpInputDown;
@@ -301,7 +301,7 @@ public class PlayerControllerGemini : MonoBehaviour
         return (jump && CanJump()) || (jumpBufferCounter > 0f && isGrounded);
     }
 
-    void HandleJumpingAndGravity()
+    private void HandleJumpingAndGravity()
     {
         // --- Jumping ---
         if (ShouldJump())
@@ -332,7 +332,7 @@ public class PlayerControllerGemini : MonoBehaviour
         }
     }
 
-    void LimitFallSpeed()
+    private void LimitFallSpeed()
     {
         // Clamp vertical velocity to prevent excessive fall speeds
         if (rb.velocity.y < -maxFallSpeed)
@@ -346,14 +346,14 @@ public class PlayerControllerGemini : MonoBehaviour
 
     #region Dashing Logic
 
-    void HandleDashMovement()
+    private void HandleDashMovement()
     {
         // Dash logic is handled by setting velocity directly when starting the dash
         // Optionally, slightly modify gravity during dash if desired
         rb.useGravity = false; // Example: Turn off gravity during dash
     }
 
-    void TryDash()
+    private void TryDash()
     {
         if (dashInputDown && canDash && dashCooldownTimer <= 0f && !isKnockedBack)
         {
@@ -361,7 +361,7 @@ public class PlayerControllerGemini : MonoBehaviour
         }
     }
 
-    void StartDash()
+    private void StartDash()
     {
         isDashing = true;
         canDash = false; // Use up the dash charge
@@ -406,7 +406,7 @@ public class PlayerControllerGemini : MonoBehaviour
     }
 
 
-    void StopDash()
+    private void StopDash()
     {
         isDashing = false;
         rb.useGravity = true; // Re-enable gravity if it was turned off
@@ -423,7 +423,7 @@ public class PlayerControllerGemini : MonoBehaviour
 
     #region Grapple Hook Logic
 
-    void TryGrapple()
+    private void TryGrapple()
     {
         if (grappleInputDown && !isDashing && !isKnockedBack)
         {
@@ -435,7 +435,7 @@ public class PlayerControllerGemini : MonoBehaviour
         }
     }
 
-    void StartGrapple()
+    private void StartGrapple()
     {
         // Raycast to find a grapple point
         RaycastHit hit;
@@ -486,7 +486,7 @@ public class PlayerControllerGemini : MonoBehaviour
         }
     }
 
-    void HandleGrappleMovement()
+    private void HandleGrappleMovement()
     {
         if (!usePhysicsJointForGrapple)
         {
@@ -515,7 +515,7 @@ public class PlayerControllerGemini : MonoBehaviour
     }
 
 
-    void StopGrapple()
+    private void StopGrapple()
     {
         isGrappling = false;
 
@@ -531,7 +531,7 @@ public class PlayerControllerGemini : MonoBehaviour
         }
     }
 
-    void UpdateGrappleLine()
+    private void UpdateGrappleLine()
     {
         if (isGrappling && grappleLineRenderer && grappleLineRenderer.enabled)
         {
@@ -544,7 +544,7 @@ public class PlayerControllerGemini : MonoBehaviour
 
     #region Jetpack Logic
 
-    void HandleJetpackFuelRegen()
+    private void HandleJetpackFuelRegen()
     {
         // If not using jetpack and regen delay is over
         if (!isJetpacking && currentFuel < maxFuel && fuelRegenTimer <= 0f)
@@ -554,7 +554,7 @@ public class PlayerControllerGemini : MonoBehaviour
         }
     }
 
-    void HandleJetpackMovement()
+    private void HandleJetpackMovement()
     {
         // Check input and not grappling/dashing, and has fuel
         if (jetpackInputHeld && currentFuel > 0f && !isGrappling && !isDashing)
@@ -609,7 +609,7 @@ public class PlayerControllerGemini : MonoBehaviour
         Debug.Log($"Applied Knockback: Dir={direction.normalized}, Force={effectiveForce}, Duration={duration}");
     }
 
-    void StopKnockback()
+    private void StopKnockback()
     {
         isKnockedBack = false;
         // Optionally reset velocity or let physics take over
@@ -620,7 +620,7 @@ public class PlayerControllerGemini : MonoBehaviour
 
     #region Gizmos (for debugging in Scene view)
 
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         // Draw Ground Check sphere
         if (groundCheckPoint != null)

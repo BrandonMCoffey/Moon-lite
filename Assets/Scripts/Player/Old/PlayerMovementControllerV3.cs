@@ -12,36 +12,36 @@ public struct FrameInput
 public class PlayerMovementControllerV3 : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] PCStatsV3 stats; 
-    [SerializeField] Transform _groundCheck; 
-    [SerializeField] Transform _ceilingCheck; 
-    [SerializeField]  Rigidbody _rb;
-    [SerializeField] Collider _collider;
+    [SerializeField] private PCStatsV3 stats; 
+    [SerializeField] private Transform _groundCheck; 
+    [SerializeField] private Transform _ceilingCheck; 
+    [SerializeField] private Rigidbody _rb;
+    [SerializeField] private Collider _collider;
 
     [Header("General Debug")]
-    [SerializeField, ReadOnly] FrameInput _frameInput;
+    [SerializeField, ReadOnly] private FrameInput _frameInput;
     public FrameInput FrameInput => _frameInput;
-    [SerializeField, ReadOnly] Vector3 _frameVelocity;
-    [SerializeField, ReadOnly] float _time;
+    [SerializeField, ReadOnly] private Vector3 _frameVelocity;
+    [SerializeField, ReadOnly] private float _time;
 
     [Header("Collision Debug")]
-    [SerializeField, ReadOnly] float _frameLeftGrounded = float.MinValue;
-    [SerializeField, ReadOnly] bool _grounded;
+    [SerializeField, ReadOnly] private float _frameLeftGrounded = float.MinValue;
+    [SerializeField, ReadOnly] private bool _grounded;
 
     [Header("Jump Debug")]
-    [SerializeField, ReadOnly] bool _jumpToConsume;
-    [SerializeField, ReadOnly] bool _bufferedJumpUseable;
-    [SerializeField, ReadOnly] bool _endedJumpEarly;
-    [SerializeField, ReadOnly] bool _coyoteUseable;
-    [SerializeField, ReadOnly] float _timeJumpWasPressed;
+    [SerializeField, ReadOnly] private bool _jumpToConsume;
+    [SerializeField, ReadOnly] private bool _bufferedJumpUseable;
+    [SerializeField, ReadOnly] private bool _endedJumpEarly;
+    [SerializeField, ReadOnly] private bool _coyoteUseable;
+    [SerializeField, ReadOnly] private float _timeJumpWasPressed;
 
-    bool HasBufferedJump => _bufferedJumpUseable && _time < _timeJumpWasPressed + stats.JumpBuffer;
-    bool HasCoyoteJump => _coyoteUseable && !_grounded && _time < _frameLeftGrounded + stats.CoyoteTime;
+    private bool HasBufferedJump => _bufferedJumpUseable && _time < _timeJumpWasPressed + stats.JumpBuffer;
+    private bool HasCoyoteJump => _coyoteUseable && !_grounded && _time < _frameLeftGrounded + stats.CoyoteTime;
     public event Action<bool> OnGroundedChanged;
     public event Action Jumped;
 
 
-    void Awake() 
+    private void Awake() 
     {
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
@@ -49,13 +49,13 @@ public class PlayerMovementControllerV3 : MonoBehaviour
 
     }
 
-    void Update()
+    private void Update()
     {
         _time += Time.deltaTime;
         GatherInput();
     }
 
-    void GatherInput()
+    private void GatherInput()
     {
         _frameInput = new FrameInput
         {
@@ -77,7 +77,7 @@ public class PlayerMovementControllerV3 : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         CheckCollisions();
 
@@ -88,7 +88,7 @@ public class PlayerMovementControllerV3 : MonoBehaviour
         ApplyMovement();
     }
 
-    void CheckCollisions()
+    private void CheckCollisions()
     {
         RaycastHit hitGround;
         bool groundHit = Physics.SphereCast(_groundCheck.position, _collider.bounds.extents.x, Vector3.down, out hitGround, stats.GrounderDistance, stats.PlayerLayer);
@@ -114,7 +114,7 @@ public class PlayerMovementControllerV3 : MonoBehaviour
         }
     }
 
-    void HandleJump()
+    private void HandleJump()
     {
         if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && _rb.velocity.y > 0) _endedJumpEarly = true;
         if (!_jumpToConsume && !HasBufferedJump) return;
@@ -122,7 +122,7 @@ public class PlayerMovementControllerV3 : MonoBehaviour
         _jumpToConsume = false;
     }
 
-    void ExecuteJump()
+    private void ExecuteJump()
     {
         _endedJumpEarly = false;
         _timeJumpWasPressed = 0;
@@ -132,7 +132,7 @@ public class PlayerMovementControllerV3 : MonoBehaviour
         Jumped?.Invoke();
     }
 
-    void HandleDirection()
+    private void HandleDirection()
     {
         if (_frameInput.MoveInput.x == 0)
         {
@@ -145,7 +145,7 @@ public class PlayerMovementControllerV3 : MonoBehaviour
         }
     }
 
-    void HandleGravity()
+    private void HandleGravity()
     {
         if (_grounded && _frameVelocity.y <= 0f)
         {
@@ -159,5 +159,5 @@ public class PlayerMovementControllerV3 : MonoBehaviour
         }
     }
 
-    void ApplyMovement() => _rb.velocity = new Vector3(_frameVelocity.x, _frameVelocity.y, 0f);
+    private void ApplyMovement() => _rb.velocity = new Vector3(_frameVelocity.x, _frameVelocity.y, 0f);
 }

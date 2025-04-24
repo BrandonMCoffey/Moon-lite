@@ -4,15 +4,15 @@ using SaiUtils.ImprovedTimers;
 
 public class EnemyWanderState : EnemyBaseState
 {
-    CountdownTimer wanderTimer;
-    CountdownTimer reactionCooldownTimer;
-    LayerMask groundLayerMask; 
-    float facingDirection;
-    float pitCheckDistance; 
-    Vector3 wanderPosition;
-    Vector2 wanderTimeRange;
-    float wanderSpeed;
-    float wanderRadius; 
+    private CountdownTimer wanderTimer;
+    private CountdownTimer reactionCooldownTimer;
+    private LayerMask groundLayerMask;
+    private float facingDirection;
+    private float pitCheckDistance;
+    private Vector3 wanderPosition;
+    private Vector2 wanderTimeRange;
+    private float wanderSpeed;
+    private float wanderRadius; 
 
     public EnemyWanderState(
         EnemyBrain enemyBrain, 

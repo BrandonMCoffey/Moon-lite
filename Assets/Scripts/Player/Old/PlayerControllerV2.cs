@@ -13,30 +13,30 @@ public struct RaycastOrigins3D
 
 public class PlayerControllerV2 : MonoBehaviour
 {
-    [SerializeField] PCStats _stats;
-    [SerializeField] LayerMask _collisionMask;
+    [SerializeField] private PCStats _stats;
+    [SerializeField] private LayerMask _collisionMask;
     [Header("3D Collider Settings")]
-    [SerializeField] Vector3 _colliderSize = new Vector3(1f, 2f, 1f);
-    [SerializeField] Vector3 _colliderCenterOffset = Vector3.zero;
-    [SerializeField] float _skinWidth = 0.015f; 
-    [SerializeField] int _horizontalRayCount = 4;
-    [SerializeField] int _verticalRayCount = 4;
+    [SerializeField] private Vector3 _colliderSize = new Vector3(1f, 2f, 1f);
+    [SerializeField] private Vector3 _colliderCenterOffset = Vector3.zero;
+    [SerializeField] private float _skinWidth = 0.015f; 
+    [SerializeField] private int _horizontalRayCount = 4;
+    [SerializeField] private int _verticalRayCount = 4;
 
     [Header("Debug")]
-    [SerializeField, ReadOnly] Vector3 _velocity;
-    [SerializeField, ReadOnly] Vector2 _input;
-    [SerializeField, ReadOnly] bool _grounded;
-    [SerializeField, ReadOnly] bool _wasGroundedLastFrame;
-    [SerializeField, ReadOnly] bool _jumpHeld;
-    [SerializeField, ReadOnly] bool _jumpPressed;
-    [SerializeField, ReadOnly] bool _jumpReleased;
-    [SerializeField, ReadOnly] Vector3 _position; 
-    float _initialZPosition; 
+    [SerializeField, ReadOnly] private Vector3 _velocity;
+    [SerializeField, ReadOnly] private Vector2 _input;
+    [SerializeField, ReadOnly] private bool _grounded;
+    [SerializeField, ReadOnly] private bool _wasGroundedLastFrame;
+    [SerializeField, ReadOnly] private bool _jumpHeld;
+    [SerializeField, ReadOnly] private bool _jumpPressed;
+    [SerializeField, ReadOnly] private bool _jumpReleased;
+    [SerializeField, ReadOnly] private Vector3 _position;
+    private float _initialZPosition;
 
-    float _horizontalRaySpacing;
-    float _verticalRaySpacing;
-    BoxCollider _collider; 
-    RaycastOrigins3D _raycastOrigins; 
+    private float _horizontalRaySpacing;
+    private float _verticalRaySpacing;
+    private BoxCollider _collider;
+    private RaycastOrigins3D _raycastOrigins; 
 
     public Vector3 Velocity => _velocity; 
     public Vector2 Input => _input;
@@ -45,10 +45,10 @@ public class PlayerControllerV2 : MonoBehaviour
     public event Action<bool, float> GroundedChanged;
     public event Action Jumped;
 
-    [SerializeField, ReadOnly] float _coyoteTimer;
-    [SerializeField, ReadOnly] float _jumpBufferTimer;
+    [SerializeField, ReadOnly] private float _coyoteTimer;
+    [SerializeField, ReadOnly] private float _jumpBufferTimer;
 
-    void Awake()
+    private void Awake()
     {
         _position = transform.position;
         _initialZPosition = _position.z;
@@ -67,7 +67,7 @@ public class PlayerControllerV2 : MonoBehaviour
         CalculateRaySpacing();
     }
 
-    void Update()
+    private void Update()
     {
         _wasGroundedLastFrame = _grounded;
         _position = transform.position;
@@ -109,7 +109,7 @@ public class PlayerControllerV2 : MonoBehaviour
         }
     }
 
-    void GatherInput()
+    private void GatherInput()
     {
         float x = UnityEngine.Input.GetAxisRaw("Horizontal");
         // float y = UnityEngine.Input.GetAxisRaw("Vertical");
@@ -129,7 +129,7 @@ public class PlayerControllerV2 : MonoBehaviour
         _jumpReleased = UnityEngine.Input.GetButtonUp("Jump");
     }
 
-    void HandleTimers()
+    private void HandleTimers()
     {
         if (!_grounded && _wasGroundedLastFrame)
         {
@@ -154,7 +154,7 @@ public class PlayerControllerV2 : MonoBehaviour
         _jumpBufferTimer = Mathf.Max(0, _jumpBufferTimer);
     }
 
-    void HandleJump()
+    private void HandleJump()
     {
         if (_jumpBufferTimer > 0)
         {
@@ -167,7 +167,7 @@ public class PlayerControllerV2 : MonoBehaviour
         }
     }
 
-    void PerformJump()
+    private void PerformJump()
     {
         _velocity.y = _stats.JumpPower;
         _grounded = false;
@@ -175,7 +175,7 @@ public class PlayerControllerV2 : MonoBehaviour
         _wasGroundedLastFrame = false;
     }
 
-    void HandleJumpCut()
+    private void HandleJumpCut()
     {
          if (_jumpReleased && _velocity.y > 0)
          {
@@ -192,7 +192,7 @@ public class PlayerControllerV2 : MonoBehaviour
          }
     }
 
-    void ApplyGravity()
+    private void ApplyGravity()
     {
         if (!_grounded)
         {
@@ -209,7 +209,7 @@ public class PlayerControllerV2 : MonoBehaviour
         _velocity.y = Mathf.Max(_velocity.y, -_stats.MaxFallSpeed);
     }
 
-    void CalculateHorizontalVelocity()
+    private void CalculateHorizontalVelocity()
     {
         float targetSpeed = _input.x * _stats.MaxSpeed;
         float acceleration = _grounded ? _stats.Acceleration : _stats.AirAcceleration;
@@ -230,13 +230,13 @@ public class PlayerControllerV2 : MonoBehaviour
     }
 
 
-    Bounds GetColliderBounds()
+    private Bounds GetColliderBounds()
     {
         Vector3 center = _position + _colliderCenterOffset;
         return new Bounds(center, _colliderSize);
     }
 
-    void UpdateRaycastOrigins()
+    private void UpdateRaycastOrigins()
     {
         Bounds bounds = GetColliderBounds();
         bounds.Expand(_skinWidth * -2);
@@ -248,7 +248,7 @@ public class PlayerControllerV2 : MonoBehaviour
         // Using bounds.center.z assumes rays cast from the middle depth.
     }
 
-    void CalculateRaySpacing()
+    private void CalculateRaySpacing()
     {
         Bounds bounds = GetColliderBounds();
         bounds.Expand(_skinWidth * -2);
@@ -260,7 +260,7 @@ public class PlayerControllerV2 : MonoBehaviour
         _verticalRaySpacing = bounds.size.x / (_verticalRayCount - 1);
     }
 
-    void CheckCollisions()
+    private void CheckCollisions()
     {
         _grounded = false;
         float rayLength = _skinWidth + 0.5f; 
@@ -289,7 +289,7 @@ public class PlayerControllerV2 : MonoBehaviour
     }
 
 
-    void MoveAndSlide(Vector3 moveAmount) 
+    private void MoveAndSlide(Vector3 moveAmount) 
     {
         UpdateRaycastOrigins(); 
 
@@ -349,7 +349,7 @@ public class PlayerControllerV2 : MonoBehaviour
 
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         Vector3 currentPosition = Application.isPlaying ? _position : transform.position;
         currentPosition.z = Application.isPlaying ? _initialZPosition : transform.position.z; 

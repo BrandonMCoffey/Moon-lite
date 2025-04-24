@@ -3,20 +3,20 @@ using SaiUtils.ImprovedTimers;
 
 public class PlayerDetector : MonoBehaviour 
 {
-    [SerializeField] float detectionAngle = 45f; 
-    [SerializeField] float detectionRadius = 10f;
-    [SerializeField] float innerDetectionRadius = 5f;
-    [SerializeField] float detectionCooldown = 1f;
-    [SerializeField] LayerMask playerLayerMask;
+    [SerializeField] private float detectionAngle = 45f; 
+    [SerializeField] private float detectionRadius = 10f;
+    [SerializeField] private float innerDetectionRadius = 5f;
+    [SerializeField] private float detectionCooldown = 1f;
+    [SerializeField] private LayerMask playerLayerMask;
     public LayerMask PlayerLayer => playerLayerMask;
-    [SerializeField] LayerMask obstacleLayerMask;
+    [SerializeField] private LayerMask obstacleLayerMask;
     public LayerMask ObstacleLayer => obstacleLayerMask;
 
     public Transform PlayerTransform { get; private set; }
-    CountdownTimer detectionTimer;
-    IDetectionStrategy detectionStrategy;
+    private CountdownTimer detectionTimer;
+    private IDetectionStrategy detectionStrategy;
 
-    void Start() 
+    private void Start() 
     {
         detectionTimer = new CountdownTimer(detectionCooldown);
         PlayerTransform = Player.Instance.transform; 

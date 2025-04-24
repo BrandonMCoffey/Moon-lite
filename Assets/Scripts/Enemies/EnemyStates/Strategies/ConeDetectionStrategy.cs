@@ -3,12 +3,12 @@ using SaiUtils.ImprovedTimers;
 
 public class ConeDetectionStrategy : IDetectionStrategy
 {
-    readonly float detectionAngle;
-    readonly float detectionRadius;
-    readonly float innerDetectionRadius;
-    readonly int numOfRays;
-    readonly LayerMask playerLayer;
-    readonly LayerMask groundLayer;
+    private readonly float detectionAngle;
+    private readonly float detectionRadius;
+    private readonly float innerDetectionRadius;
+    private readonly int numOfRays;
+    private readonly LayerMask playerLayer;
+    private readonly LayerMask groundLayer;
 
     public ConeDetectionStrategy(LayerMask playerLayer, LayerMask groundLayer, float detectionAngle, float detectionRadius, float innerDetectionRadius, int numOfRays = 10)
     {
