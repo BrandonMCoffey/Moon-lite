@@ -109,6 +109,8 @@ public class BulletBase : SimplePhysicsObject
         _hasAOE = _data.HasAOE || weaponData.ForceAoe;
         _aoeRadius = _data.AoeRadius * weaponData.BulletAoeRadius;
 
+        _sr.sprite = _data.BulletSprite;
+
         // Too small to use AOE (Might happen because bullet is too weak)
         if (_aoeRadius < 0.5f) _hasAOE = false;
 
