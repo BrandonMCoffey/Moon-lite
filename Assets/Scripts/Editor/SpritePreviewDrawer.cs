@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEditor;
+using System.Drawing;
 
 [CustomPropertyDrawer(typeof(Sprite))]
 public class SpritePreviewDrawer : PropertyDrawer
 {
+    private const float Size = 48;
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         var ident = EditorGUI.indentLevel;
@@ -22,7 +25,7 @@ public class SpritePreviewDrawer : PropertyDrawer
 
         if (sp != null)
         {
-            Rect previewRect = new Rect(position.x + spriteRect.width - 64, position.y + EditorGUIUtility.singleLineHeight + 4, 64, 64);
+            Rect previewRect = new Rect(position.x + spriteRect.width - Size, position.y + EditorGUIUtility.singleLineHeight + 4, Size, Size);
 
             Texture2D tex = sp.texture;
 
@@ -42,6 +45,6 @@ public class SpritePreviewDrawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        return base.GetPropertyHeight(property, label) + 74f;
+        return base.GetPropertyHeight(property, label) + Size + 8f;
     }
 }

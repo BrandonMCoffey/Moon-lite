@@ -179,7 +179,6 @@ public class Chunk : MonoBehaviour
         if (damage > 0)
         {
             int offset = Mathf.RoundToInt(data.DamageUVCount * ((float)damage / (float)data.TileHealth));
-            Debug.Log(damage + " " + offset);
             uvCoord.x += _world.Settings.DamageOffsetUV.x * offset;
             uvCoord.y += _world.Settings.DamageOffsetUV.y * offset;
         }
