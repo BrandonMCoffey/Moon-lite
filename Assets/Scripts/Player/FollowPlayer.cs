@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class FollowPlayer : MonoBehaviour
 {
+    [SerializeField] private bool _followX = true;
+    [SerializeField] private bool _followY = true;
+
     private Transform _player;
 
     private void Start()
@@ -11,8 +14,9 @@ public class FollowPlayer : MonoBehaviour
 
     private void LateUpdate()
     {
-        var pos = _player.transform.position;
-        pos.z = transform.position.z;
+        var pos = transform.position;
+        if (_followX) pos.x = _player.position.x;
+        if (_followY) pos.y = _player.position.y;
         transform.position = pos;
     }
 }
