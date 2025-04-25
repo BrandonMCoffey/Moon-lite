@@ -27,7 +27,7 @@ MonoBehaviour:
   _recoilForce: {x: 0.5, y: 10}
   _artType: 2
   _bulletSize: 1
-  _bulletDamage: 1
+  _bulletDamage: 5.5
   _bulletKnockback: 1
   _bulletLifetime: 1
   _bulletGravityScale: 1

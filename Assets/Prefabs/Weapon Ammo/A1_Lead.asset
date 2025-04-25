@@ -15,7 +15,6 @@ MonoBehaviour:
   _itemName: Lead
   _itemDescription: Standard
   _itemIcon: {fileID: 1682490860, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
-  _itemIconTint: {r: 1, g: 1, b: 1, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
     type: 3}
   _tileType: 11
@@ -31,5 +30,6 @@ MonoBehaviour:
   _size: 0.25
   _lifetime: 3
   _gravityScale: 1
+  _bounces: 0
   _hasAOE: 0
   _aoeRadius: 1

@@ -48,11 +48,14 @@ public class WorldSettings : SerializedScriptableObject
 
     public TerrainTileDataStruct GetTileData(TileType type)
     {
+        return _data[type];
+        /*
         if (_data.TryGetValue(type, out var data))
         {
             return data;
         }
         throw new System.Exception("Attempted to get tile data that does not exist in data set");
+        */
     }
 
     // Type, StartDepth, NoiseScale, Frequency

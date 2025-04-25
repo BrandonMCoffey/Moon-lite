@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
+using DG.Tweening.Core.Easing;
 
 public class BulletBase : SimplePhysicsObject
 {
@@ -13,6 +14,7 @@ public class BulletBase : SimplePhysicsObject
     [SerializeField, ReadOnly] protected float _knockback = 3;
     [SerializeField, ReadOnly] protected float _size = 1;
     [SerializeField, ReadOnly] protected float _lifetime = 3;
+    [SerializeField, ReadOnly] protected int _bounces = 0;
     [SerializeField, ReadOnly] private bool _hasAOE = false;
     [SerializeField, ReadOnly] private float _aoeRadius = 1f;
 
@@ -65,6 +67,7 @@ public class BulletBase : SimplePhysicsObject
         _size = _data.Size * weaponData.BulletSize;
         _lifetime = _data.Lifetime * weaponData.BulletLifetime;
         _gravityScale = _data.GravityScale * weaponData.BulletGravityScale;
+        _bounces = _data.Bounces;
         _hasAOE = _data.HasAOE || weaponData.ForceAoe;
         _aoeRadius = _data.AoeRadius * weaponData.BulletAoeRadius;
 
@@ -132,6 +135,12 @@ public class BulletBase : SimplePhysicsObject
         var chunk = hit.collider.GetComponent<Chunk>();
         if (chunk != null)
         {
+            if (_bounces > 0)
+            {
+                _bounces--;
+                base.OnHit(hit);
+                return;
+            }
             Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.01f;
             OnHitChunk(chunk, pointToDestroy);
         }
@@ -150,6 +159,10 @@ public class BulletBase : SimplePhysicsObject
                 {
                     DestroySelf();
                 }
+                break;
+            case TileType.Lead:
+                chunk.World.DestroyTilesAlongRay(hit.point, _velocity.normalized, 10, 20);
+                DestroySelf();
                 break;
             default:
                 DestroySelf();

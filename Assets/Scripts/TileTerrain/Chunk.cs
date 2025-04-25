@@ -166,19 +166,12 @@ public class Chunk : MonoBehaviour
 
         vertexIndex += 4;
 
-        // Add UVs
-        Vector2[] tileUVs = GetUVsForTile(tileType, reverse, front, damage);
-        uvs.AddRange(tileUVs);
-    }
-
-    private Vector2[] GetUVsForTile(TileType type, bool reverse, bool front, int damage)
-    {
-        // TODO: Optimize this, its expensive atm
-        var data = _world.Settings.GetTileData(type);
+        // TODO: Optimize this, its expensive atm (Might be better now?)
+        var data = _world.Settings.GetTileData(tileType);
         Vector2 uvCoord = data.UVCoords;
         if (damage > 0)
         {
-            int offset = Mathf.RoundToInt(data.DamageUVCount * ((float)damage / (float)data.TileHealth));
+            int offset = Mathf.RoundToInt(data.DamageUVCount * ((float)damage / data.TileHealth));
             uvCoord.x += _world.Settings.DamageOffsetUV.x * offset;
             uvCoord.y += _world.Settings.DamageOffsetUV.y * offset;
         }
@@ -200,21 +193,17 @@ public class Chunk : MonoBehaviour
         // Adjust to change texture orientation
         if (reverse)
         {
-            return new Vector2[] {
-                new Vector2(uMin, vMin), // Bottom-Left UV
-                new Vector2(uMax, vMin), // Bottom-Right UV
-                new Vector2(uMin, vMax), // Top-Left UV
-                new Vector2(uMax, vMax), // Top-Right UV
-            };
+            uvs.Add(new Vector2(uMin, vMin)); // Bottom-Left UV
+            uvs.Add(new Vector2(uMax, vMin)); // Bottom-Right UV
+            uvs.Add(new Vector2(uMin, vMax)); // Top-Left UV
+            uvs.Add(new Vector2(uMax, vMax)); // Top-Right UV
         }
         else
         {
-            return new Vector2[] {
-                new Vector2(uMin, vMin), // Bottom-Left UV
-                new Vector2(uMin, vMax), // Top-Left UV
-                new Vector2(uMax, vMin), // Bottom-Right UV
-                new Vector2(uMax, vMax), // Top-Right UV
-            };
+            uvs.Add(new Vector2(uMin, vMin)); // Bottom-Left UV
+            uvs.Add(new Vector2(uMin, vMax)); // Top-Left UV
+            uvs.Add(new Vector2(uMax, vMin)); // Bottom-Right UV
+            uvs.Add(new Vector2(uMax, vMax)); // Top-Right UV
         }
     }
 }

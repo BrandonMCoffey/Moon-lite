@@ -19,6 +19,7 @@ public class MineralData : ItemData
     [SerializeField] private float _size = 0.1f;
     [SerializeField] private float _lifetime = 3f;
     [SerializeField] private float _gravityScale = 1f;
+    [SerializeField] private int _bounces = 0;
     [SerializeField] private bool _hasAOE = false;
     [SerializeField, ShowIf(nameof(_hasAOE))] private float _aoeRadius = 1f;
 
@@ -31,6 +32,7 @@ public class MineralData : ItemData
     public float Size => _size;
     public float Lifetime => _lifetime;
     public float GravityScale => _gravityScale;
+    public int Bounces => _bounces;
     public bool HasAOE => _hasAOE;
     public float AoeRadius => _aoeRadius;
 

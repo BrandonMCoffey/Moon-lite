@@ -5309,7 +5309,7 @@ PrefabInstance:
     - target: {fileID: 3081370178779755054, guid: 64f661075a1f7bb43a4dc028a50978fd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3081370178779755054, guid: 64f661075a1f7bb43a4dc028a50978fd,
         type: 3}
@@ -5780,10 +5780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eeb15bda8a055547957ea3b6b5b6be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data: {fileID: 11400000, guid: 0b20425b14700094990e3092b9b7f32f, type: 2}
-  _art: {fileID: 1419291363}
-  _debug: 1
-  _jetpackMaxFuel: 1
+  _gravityScale: 0
   _groundLayer:
     serializedVersion: 2
     m_Bits: 257
@@ -5795,6 +5792,19 @@ MonoBehaviour:
   _wallCheckWidth: 0.5
   _wallChecVerticalOffset: 0.2
   _checkRaycastDistance: 5
+  _velocity: {x: 0, y: 0, z: 0}
+  _groundCollided: 0
+  _groundDistance: 0
+  _ceilingCollided: 0
+  _ceilingDistance: 0
+  _leftWallCollided: 0
+  _leftWallDistance: 0
+  _rightWallCollided: 0
+  _rightWallDistance: 0
+  _data: {fileID: 11400000, guid: 0b20425b14700094990e3092b9b7f32f, type: 2}
+  _art: {fileID: 1419291363}
+  _debug: 1
+  _jetpackMaxFuel: 1
   _jumpSfx:
     UseClip: 0
     Clip: {fileID: 0}
@@ -5812,24 +5822,14 @@ MonoBehaviour:
     Base: {fileID: 0}
   _dashParticles: {fileID: 1865770196}
   _jetpackParticles: {fileID: 1758492823}
-  _velocity: {x: 0, y: 0, z: 0}
-  _facingLeft: 0
   _moveHorz: 0
   _moveVert: 0
-  _gravityScale: 0
-  _groundCollided: 0
-  _groundDistance: 0
-  _coyoteGrounded: 0
-  _ceilingCollided: 0
-  _ceilingDistance: 0
-  _leftWallCollided: 0
-  _leftWallDistance: 0
-  _rightWallCollided: 0
-  _rightWallDistance: 0
+  _facingLeft: 0
   _jumpInput: 0
   _jumpTimer: 0
   _isJumping: 0
   _isJumpFalling: 0
+  _coyoteGrounded: 0
   _dashInput: 0
   _dashesLeft: 0
   _dashTimer: 0
@@ -5853,9 +5853,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 951b1fb86201eb643be2f1375a814544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inventory: {fileID: 0}
   _magnetItemRange: 2.5
   _magnetItemSpeed: 5
   _pickupItemRange: 1
+  _glowstickPrefab: {fileID: 0}
+  _dirtBombPrefab: {fileID: 0}
+  _tempPlatformPrefab: {fileID: 0}
+  _autoMinerPrefab: {fileID: 0}
 --- !u!1 &1419291362
 GameObject:
   m_ObjectHideFlags: 0
@@ -20444,12 +20449,12 @@ PrefabInstance:
     - target: {fileID: 5117368386678242867, guid: 0569cd27e5ddb5b4fafb03dd0548d889,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5117368386678242867, guid: 0569cd27e5ddb5b4fafb03dd0548d889,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5117368386678242867, guid: 0569cd27e5ddb5b4fafb03dd0548d889,
         type: 3}
