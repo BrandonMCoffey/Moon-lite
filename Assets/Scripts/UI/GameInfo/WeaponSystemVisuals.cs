@@ -8,10 +8,18 @@ public class WeaponSystemVisuals : MonoBehaviour
     [SerializeField] private List<AmmoVisual> _ammoVisuals = new List<AmmoVisual>();
 
     private PlayerWeaponManager _weaponManager;
+    public PlayerWeaponManager WeaponManager
+    {
+        get
+        {
+            if (_weaponManager != null) return _weaponManager;
+            _weaponManager = Player.Instance.GetComponent<PlayerWeaponManager>();
+            return _weaponManager;
+        }
+    }
 
     private void Start()
     {
-        _weaponManager = Player.Instance.GetComponent<PlayerWeaponManager>();
         UpdateAllVisuals();
     }
 
@@ -55,7 +63,7 @@ public class WeaponSystemVisuals : MonoBehaviour
     private void UpdateAllVisuals()
     {
         int i = 0;
-        for (; i < _weaponManager.Weapons.Count; i++)
+        for (; i < WeaponManager.Weapons.Count; i++)
         {
             _weaponVisuals[i].UpdateData(_weaponManager.Weapons[i].Data);
             _weaponVisuals[i].SetSelected(i == _weaponManager.EquippedWeaponIndex);
