@@ -148,6 +148,8 @@ public class BulletBase : SimplePhysicsObject
 
         // TODO: Bullet impact feedback
 
+        // TODO: Fix bullets impacting at the same time as each other (Same with raycasts)
+
         DestroySelf();
     }
 
