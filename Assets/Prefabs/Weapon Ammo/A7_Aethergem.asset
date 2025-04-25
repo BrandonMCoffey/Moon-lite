@@ -19,10 +19,10 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
     type: 3}
   _bulletSprite: {fileID: 138685584, guid: 5453db182330ff0409f37f9e5f16b73e, type: 3}
-  _ammoSpriteBullet: {fileID: 973396337, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
+  _ammoSpriteBullet: {fileID: 461922872, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _ammoSpriteShotgun: {fileID: 132643310, guid: 8e4fc4feca315b543a46cace76a3b313,
     type: 3}
-  _ammoSpriteLaser: {fileID: 461922872, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
+  _ammoSpriteLaser: {fileID: 973396337, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _ammoSpriteEffect: {fileID: -759993354, guid: 8e4fc4feca315b543a46cace76a3b313,
     type: 3}
   _bulletSpeedModifier: 1
