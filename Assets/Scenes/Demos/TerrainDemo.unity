@@ -169,8 +169,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemPrefab: {fileID: 1581836335077417545, guid: 673b3f64dfef2324296f438bcc99926e,
     type: 3}
-  _itemPoolSize: 100
-  _actualSize: 0
+  _startPoolSize: 100
+  _actualPoolSize: 0
 --- !u!1001 &900150982
 PrefabInstance:
   m_ObjectHideFlags: 0

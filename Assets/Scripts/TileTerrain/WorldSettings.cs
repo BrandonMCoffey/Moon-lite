@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,16 +29,20 @@ public class WorldSettings : SerializedScriptableObject
 
     [Header("References")]
     [SerializeField] private Material _terrainMaterial;
+    [SerializeField] private int _gridSize = 8;
+    [SerializeField] private Vector2Int _damageOffsetUV = new Vector2Int(1, 0);
     [SerializeField] private LevelDecoration _decorationPrefab;
     [SerializeField] private StructureData _shopStructure;
+
+    public Material TerrainMaterial => _terrainMaterial;
+    public int GridSize => _gridSize;
+    public Vector2Int DamageOffsetUV => _damageOffsetUV;
+    public LevelDecoration DecorationPrefab => _decorationPrefab;
+    public StructureData ShopStructure => _shopStructure;
 
     [Header("Tile Types")]
     [DictionaryDrawerSettings(KeyLabel = "Tile Type", ValueLabel = "Tile Data")]
     [SerializeField] private Dictionary<TileType, TerrainTileDataStruct> _data = new Dictionary<TileType, TerrainTileDataStruct>();
-
-    public Material TerrainMaterial => _terrainMaterial;
-    public LevelDecoration DecorationPrefab => _decorationPrefab;
-    public StructureData ShopStructure => _shopStructure;
 
     public TerrainTileDataStruct GetTileData(TileType type)
     {
@@ -73,7 +78,7 @@ public class WorldSettings : SerializedScriptableObject
             int row = index % 4;
             int column = index / 4;
             bool mineral = column >= 1;
-            _data.Add(type, new TerrainTileDataStruct(row, new Vector2(row, column), mineral, 0.1f, mineral ? (row + (column - 1) * 4) * 100 : 0));
+            _data.Add(type, new TerrainTileDataStruct(row, new Vector2(row, column), 1, mineral, 0.1f, mineral ? (row + (column - 1) * 4) * 100 : 0));
         }
     }
 #endif
@@ -83,16 +88,18 @@ public struct TerrainTileDataStruct
 {
     public int TileHealth;
     [Tooltip("X is left-right, Y is bottom-top")]
-    public Vector2 UVData;
+    [PreviouslySerializedAs("UVData")]public Vector2 UVCoords;
+    public int DamageUVCount;
     public ItemData ItemData;
     public bool Mineral;
     [ShowIf("Mineral"), Range(0f, 1f)] public float Frequency;
     [ShowIf("Mineral")] public int StartDepth;
 
-    public TerrainTileDataStruct(int health, Vector2 uvData, bool mineral, float frequency, int startDepth)
+    public TerrainTileDataStruct(int health, Vector2 uvData, int damageUVCount, bool mineral, float frequency, int startDepth)
     {
         TileHealth = health;
-        UVData = uvData;
+        UVCoords = uvData;
+        DamageUVCount = damageUVCount;
         ItemData = null;
         Mineral = mineral;
         Frequency = frequency;

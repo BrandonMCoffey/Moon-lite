@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemName: Corestone
   _itemDescription: Knockback
-  _itemIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  _itemIcon: {fileID: 132643310, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _itemIconTint: {r: 1, g: 1, b: 1, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
     type: 3}

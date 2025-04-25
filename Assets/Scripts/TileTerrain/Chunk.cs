@@ -11,6 +11,7 @@ public class Chunk : MonoBehaviour
 
     private WorldGenerator _world;
     private Vector2Int _chunkCoord;
+    private float _uvSize = 0.125f;
 
     public WorldGenerator World => _world;
 
@@ -38,6 +39,7 @@ public class Chunk : MonoBehaviour
 
         int startX = _chunkCoord.x * _world.ChunkSize;
         int startY = _chunkCoord.y * _world.ChunkSize;
+        _uvSize = 1f / _world.Settings.GridSize;
 
         float borderOffset = 0f;
 
@@ -170,19 +172,21 @@ public class Chunk : MonoBehaviour
 
     private Vector2[] GetUVsForTile(TileType type, bool front, int damage)
     {
-        // 8x8 atlas (64 tiles total)
-        float textureUnit = 0.125f;
         // TODO: Optimize this, its expensive atm
-        Vector2 uvCoord = World.Settings.GetTileData(type).UVData;
-        if (damage > 0) uvCoord.x += 4;
-        uvCoord.y = 7 - uvCoord.y;
+        Vector2 uvCoord = _world.Settings.GetTileData(type).UVCoords;
+        if (damage > 0)
+        {
+            uvCoord.x += _world.Settings.DamageOffsetUV.x;
+            uvCoord.y += _world.Settings.DamageOffsetUV.y;
+        }
+        uvCoord.y = _world.Settings.GridSize - 1 - uvCoord.y;
 
-        float border = textureUnit * 0.01f;
+        float border = _uvSize * 0.01f;
 
-        float uMin = uvCoord.x * textureUnit + border;
-        float vMin = uvCoord.y * textureUnit + border;
-        float uMax = uMin + textureUnit - border * 2;
-        float vMax = vMin + textureUnit - border * 2;
+        float uMin = uvCoord.x * _uvSize + border;
+        float vMin = uvCoord.y * _uvSize + border;
+        float uMax = uMin + _uvSize - border * 2;
+        float vMax = vMin + _uvSize - border * 2;
 
         // Return UV array matching the AddFace vertex order (BL, BR, TL, TR)
         // Adjust to change texture orientation
