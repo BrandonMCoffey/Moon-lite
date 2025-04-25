@@ -5,6 +5,7 @@ public class EntityMovement : MonoBehaviour
 {
     [Header("Collision Settings")]
     [SerializeField] protected float _gravityScale = 1;
+    [SerializeField] protected float _maxVelocity = 40;
     [SerializeField] protected LayerMask _groundLayer = 1;
     [SerializeField] protected float _playerHeight = 1.4f;
     [SerializeField] protected float _playerWidth = 1.0f;
@@ -125,10 +126,26 @@ public class EntityMovement : MonoBehaviour
 
     protected void ApplyVelocity()
     {
-        _velocity.y = Mathf.Clamp(_velocity.y, -20, 20);
+        _velocity.x = Mathf.Clamp(_velocity.x, -_maxVelocity, _maxVelocity);
+        _velocity.y = Mathf.Clamp(_velocity.y, -_maxVelocity, _maxVelocity);
         if (_groundCollided && _velocity.y < 0) _velocity.y = 0;
         Vector3 offset = (_velocity + _additionalVelocity) * Time.deltaTime;
-        _additionalVelocity *= 0.75f / Time.deltaTime;
+
+        if (_additionalVelocity.y < -_velocity.y * 0.5f)
+        {
+            _velocity.y += _additionalVelocity.y;
+            _additionalVelocity.y = 0f;
+        }
+        if (_additionalVelocity.magnitude < 0.1f)
+        {
+            _additionalVelocity = Vector3.zero;
+        }
+        else
+        {
+            _additionalVelocity.x = Mathf.Lerp(_additionalVelocity.x, 0, 10 * Time.deltaTime);
+            _additionalVelocity.y = Mathf.Lerp(_additionalVelocity.y, 0, 3 * Time.deltaTime);
+        }
+
         offset.y = Mathf.Clamp(offset.y, -_groundDistance, _ceilingDistance);
         offset.x = Mathf.Clamp(offset.x, -_leftWallDistance, _rightWallDistance);
         transform.position += offset;

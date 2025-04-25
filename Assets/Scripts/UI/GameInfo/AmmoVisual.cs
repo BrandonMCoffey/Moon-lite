@@ -54,6 +54,7 @@ public class AmmoVisual : ShowPopupOnHover
 
     public void EquipWeapon(WeaponData weapon)
     {
+        if (weapon == null) return;
         _ammoArtType = weapon.ArtType;
         _iconImage.sprite = _mineralData.GetAmmoSprite(_ammoArtType);
     }

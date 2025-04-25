@@ -138,18 +138,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gravityScale: 1
+  _maxVelocity: 40
   _groundLayer:
     serializedVersion: 2
     m_Bits: 385
   _playerHeight: 1.4
   _playerWidth: 1
   _groundOffset: 0.7
-  _groundCheckWidth: 0.4
+  _groundCheckWidth: 0.35
   _ceilingCheckWidth: 0.25
   _wallCheckWidth: 0.5
   _wallChecVerticalOffset: 0.15
   _checkRaycastDistance: 5
   _velocity: {x: 0, y: 0, z: 0}
+  _additionalVelocity: {x: 0, y: 0, z: 0}
   _groundCollided: 0
   _groundDistance: 0
   _ceilingCollided: 0
@@ -211,6 +213,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventory: {fileID: 11400000, guid: b6a67fd92f617614a9e8dfbcad5ba9ae, type: 2}
+  _weaponManager: {fileID: 3081370178779755053}
+  _movement: {fileID: 3081370178779755055}
   _magnetItemRange: 2.5
   _magnetItemSpeed: 10
   _pickupItemRange: 1

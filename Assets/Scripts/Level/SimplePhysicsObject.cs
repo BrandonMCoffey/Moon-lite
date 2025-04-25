@@ -49,9 +49,7 @@ public class SimplePhysicsObject : MonoBehaviour
 
     private void InterpolatePosition()
     {
-        float interpolationFactor = (Time.time - Time.fixedTime) / Time.fixedDeltaTime;
-        Vector3 interpolatedPosition = Vector3.Lerp(previousPosition, currentPosition, interpolationFactor);
-        transform.position = interpolatedPosition;
+        transform.position = Vector3.Lerp(previousPosition, currentPosition, (Time.time - Time.fixedTime) / Time.fixedDeltaTime);
     }
 
     public void SetPhysicsEnabled(bool enabled)

@@ -187,7 +187,7 @@ public abstract class WeaponBase : MonoBehaviour
 
         Vector3 spawnPosition = _shootTransform.position;
 
-        Player.Movement.AddKnockback(-aimDirection * 50);
+        Player.Movement.AddKnockback(-aimDirection * _data.BulletKickback * bulletData.Kickback);
 
         if (_data.HitScan)
         {

@@ -27,9 +27,10 @@ MonoBehaviour:
   _bulletSpeedModifier: 0.5
   _damage: 2
   _knockback: 3
+  _kickback: 30
   _size: 0.25
   _lifetime: 3
   _gravityScale: 2
   _bounces: 0
   _hasAOE: 1
-  _aoeRadius: 3
+  _aoeRadius: 2.5

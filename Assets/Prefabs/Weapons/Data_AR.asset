@@ -29,6 +29,7 @@ MonoBehaviour:
   _bulletSize: 1
   _bulletDamage: 5.5
   _bulletKnockback: 1
+  _bulletKickback: 1
   _bulletLifetime: 1
   _bulletGravityScale: 1
   _forceAoe: 0

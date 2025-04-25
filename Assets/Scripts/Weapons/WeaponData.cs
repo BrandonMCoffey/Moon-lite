@@ -46,6 +46,7 @@ public class WeaponData : ScriptableObject
     [SerializeField] private float _bulletSize = 1f;
     [SerializeField] private float _bulletDamage = 1f;
     [SerializeField] private float _bulletKnockback = 1f;
+    [SerializeField] private float _bulletKickback = 1f;
     [SerializeField] private float _bulletLifetime = 1f;
     [SerializeField] private float _bulletGravityScale = 1f;
     [SerializeField] private bool _forceAoe = false;
@@ -55,6 +56,7 @@ public class WeaponData : ScriptableObject
     public float BulletSize => _bulletSize;
     public float BulletDamage => _bulletDamage;
     public float BulletKnockback => _bulletKnockback;
+    public float BulletKickback => _bulletKickback;
     public float BulletLifetime => _bulletLifetime;
     public float BulletGravityScale => _bulletGravityScale;
     public bool ForceAoe => _forceAoe;

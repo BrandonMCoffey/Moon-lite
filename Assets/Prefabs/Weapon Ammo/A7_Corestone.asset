@@ -28,6 +28,7 @@ MonoBehaviour:
   _bulletSpeedModifier: 0.5
   _damage: 2
   _knockback: 3
+  _kickback: 20
   _size: 0.25
   _lifetime: 3
   _gravityScale: 10

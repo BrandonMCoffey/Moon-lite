@@ -296,7 +296,6 @@ public class PlayerMovementCustom : EntityMovement
 
             if (_jetpackParticles) 
             {
-
                 if (_jetpackActive) _jetpackParticles.Play();
                 else _jetpackParticles.Stop();
             }

@@ -16,6 +16,7 @@ public class MineralData : ItemData
     [SerializeField, Range(0.01f, 5f)] private float _bulletSpeedModifier = 1f;
     [SerializeField] private float _damage = 1f;
     [SerializeField] private float _knockback = 3f;
+    [SerializeField] private float _kickback = 10f;
     [SerializeField] private float _size = 0.1f;
     [SerializeField] private float _lifetime = 3f;
     [SerializeField] private float _gravityScale = 1f;
@@ -29,6 +30,7 @@ public class MineralData : ItemData
     public float ShotSpeed => _bulletSpeedModifier;
     public float Damage => _damage;
     public float Knockback => _knockback;
+    public float Kickback => _kickback;
     public float Size => _size;
     public float Lifetime => _lifetime;
     public float GravityScale => _gravityScale;
