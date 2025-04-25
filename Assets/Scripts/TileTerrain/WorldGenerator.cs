@@ -126,10 +126,8 @@ public class WorldGenerator : MonoBehaviour
     {
         for (int x = 0; x < _width; x++)
         {
-            float noiseValue = Mathf.PerlinNoise((x + _noiseOffsetX) * Settings.SurfaceNoiseScale * _tileSizeMult,
-                                                  _noiseOffsetY * Settings.SurfaceNoiseScale * _tileSizeMult);
-            int surfaceHeight = Mathf.RoundToInt(Mathf.Lerp(_height - 10, _height - Settings.SurfaceLevelSize - 10, noiseValue) + Random.Range(0, 1));
-            surfaceHeight = Mathf.Clamp(surfaceHeight, 1, _height - 1);
+            float noiseValue = Mathf.PerlinNoise((x + _noiseOffsetX) * Settings.SurfaceNoiseScale * _tileSizeMult, _noiseOffsetY * Settings.SurfaceNoiseScale * _tileSizeMult);
+            int surfaceHeight = Mathf.RoundToInt(Mathf.Lerp(_height - Settings.MinSurfaceDepth, _height - Settings.MaxSurfaceDepth, noiseValue) + Random.Range(0, 1));
 
             for (int y = 0; y < _height; y++)
             {
@@ -138,20 +136,20 @@ public class WorldGenerator : MonoBehaviour
                     int rand = Random.Range(0, 2) + Random.Range(0, 2);
                     if (x < 5 - rand || x > _width - 5 + rand)
                     {
-                        _grid[x, y] = TileType.StoneEdge;
+                        _grid[x, y] = TileType.UndergroundEdge;
                     }
                     else
                     {
-                        _grid[x, y] = TileType.Stone;
+                        _grid[x, y] = TileType.Underground;
                     }
                 }
                 else if (y < surfaceHeight)
                 {
-                    _grid[x, y] = TileType.Dirt;
+                    _grid[x, y] = TileType.SurfaceUnderground;
                 }
                 else if (y == surfaceHeight)
                 {
-                    _grid[x, y] = TileType.Grass;
+                    _grid[x, y] = TileType.Surface;
                     if (Random.value < Settings.GrassDecoChance)
                     {
                         var grass = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y + 1), transform.rotation, transform);
@@ -172,7 +170,7 @@ public class WorldGenerator : MonoBehaviour
         float caveNoiseOffsetX = _noiseOffsetX + 100f;
         float caveNoiseOffsetY = _noiseOffsetY + 100f;
 
-        int maxCaveHeight = _height - Settings.SurfaceLevelSize - 10;
+        int maxCaveHeight = _height - Settings.CaveStartDepth;
         int minCaveHeight = 10;
 
         for (int y = maxCaveHeight - 1; y >= minCaveHeight; y--)
@@ -182,7 +180,7 @@ public class WorldGenerator : MonoBehaviour
 
             for (int x = 0; x < _width; x++)
             {
-                if (_grid[x, y] == TileType.Stone)
+                if (_grid[x, y] == TileType.Underground)
                 {
                     float caveNoiseValue = Mathf.PerlinNoise(
                         (x + caveNoiseOffsetX) * Settings.CaveNoiseScale * _tileSizeMult,
@@ -204,7 +202,7 @@ public class WorldGenerator : MonoBehaviour
                     {
                         _grid[x, y] = TileType.Air;
                         // If current tile is air, and above tile is stone
-                        if (_grid[x, y + 1] == TileType.Stone)
+                        if (_grid[x, y + 1] == TileType.Underground)
                         {
                             if (Random.value < Settings.CaveCeilingDecoChance)
                             {
@@ -215,7 +213,7 @@ public class WorldGenerator : MonoBehaviour
                         }
                     }
                     // If current tile is stone, and above tile is air
-                    else if (_grid[x, y] == TileType.Stone && _grid[x, y + 1] == TileType.Air)
+                    else if (_grid[x, y] == TileType.Underground && _grid[x, y + 1] == TileType.Air)
                     {
                         if (Random.value < Settings.CaveFloorDecoChance)
                         {
@@ -239,7 +237,7 @@ public class WorldGenerator : MonoBehaviour
         {
             for (int y = 0; y < _height; y++)
             {
-                if (_grid[x, y] == TileType.Stone)
+                if (_grid[x, y] == TileType.Underground)
                 {
                     for (int i = 0; i < mineralData.Count; i++)
                     {
@@ -294,7 +292,7 @@ public class WorldGenerator : MonoBehaviour
             int y = yCenter - yOff - 1;
             for (int x = xCenter + yOff * 2; x < xCenter + s.y - yOff * 2; x++)
             {
-                if (_grid[x, y] == TileType.Air) _grid[x, y] = TileType.Stone;
+                if (_grid[x, y] == TileType.Air) _grid[x, y] = TileType.Underground;
             }
         }
     }

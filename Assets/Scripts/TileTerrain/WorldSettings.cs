@@ -7,8 +7,10 @@ using UnityEngine;
 public class WorldSettings : SerializedScriptableObject
 {
     [Header("Settings")]
-    [SerializeField] private int _surfaceLevelSize = 20;
+    [SerializeField] private int _minSurfaceDepth = 5;
+    [SerializeField] private int _maxSurfaceDepth = 20;
     [SerializeField, Range(0f, 0.5f)] private float _surfaceNoiseScale = 0.04f;
+    [SerializeField] private int _caveStartDepth = 30;
     [SerializeField, Range(0f, 1f)] private float _grassDecoChance = 0.2f;
     [SerializeField, Range(0f, 0.5f)] private float _caveNoiseScale = 0.08f;
     [SerializeField, Range(0f, 1f)] private float _caveThreshold = 0.55f;
@@ -16,8 +18,10 @@ public class WorldSettings : SerializedScriptableObject
     [SerializeField, Range(0f, 1f)] private float _caveCeilingDecoChance = 0.1f;
     [SerializeField, Range(0f, 1f)] private float _caveFloorDecoChance = 0.1f;
 
-    public int SurfaceLevelSize => _surfaceLevelSize;
+    public int MinSurfaceDepth => _minSurfaceDepth;
+    public int MaxSurfaceDepth => _maxSurfaceDepth;
     public float SurfaceNoiseScale => _surfaceNoiseScale;
+    public int CaveStartDepth => _caveStartDepth;
     public float GrassDecoChance => _grassDecoChance;
     public float CaveNoiseScale => _caveNoiseScale;
     public float CaveThreshold => _caveThreshold;

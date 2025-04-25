@@ -50,7 +50,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 12
+      Data: 13
     - Name: 
       Entry: 7
       Data: 
@@ -71,7 +71,7 @@ MonoBehaviour:
       Data: 0
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -119,7 +119,7 @@ MonoBehaviour:
       Data: 0
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -206,7 +206,7 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 40
+      Data: 4
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -215,7 +215,7 @@ MonoBehaviour:
       Data: 0
     - Name: 
       Entry: 4
-      Data: 5
+      Data: 4
     - Name: 
       Entry: 8
       Data: 
@@ -248,7 +248,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 5
+      Data: 10
     - Name: $v
       Entry: 7
       Data: TerrainTileDataStruct, Assembly-CSharp
@@ -296,7 +296,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 6
+      Data: 11
     - Name: $v
       Entry: 7
       Data: TerrainTileDataStruct, Assembly-CSharp
@@ -344,7 +344,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 7
+      Data: 12
     - Name: $v
       Entry: 7
       Data: TerrainTileDataStruct, Assembly-CSharp
@@ -392,7 +392,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 8
+      Data: 13
     - Name: $v
       Entry: 7
       Data: TerrainTileDataStruct, Assembly-CSharp
@@ -440,7 +440,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 9
+      Data: 14
     - Name: $v
       Entry: 7
       Data: TerrainTileDataStruct, Assembly-CSharp
@@ -488,7 +488,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 10
+      Data: 15
     - Name: $v
       Entry: 7
       Data: TerrainTileDataStruct, Assembly-CSharp
@@ -536,7 +536,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 11
+      Data: 16
     - Name: $v
       Entry: 7
       Data: TerrainTileDataStruct, Assembly-CSharp
@@ -584,7 +584,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 12
+      Data: 17
     - Name: $v
       Entry: 7
       Data: TerrainTileDataStruct, Assembly-CSharp
@@ -628,13 +628,63 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 7
+      Data: TerrainTileDataStruct, Assembly-CSharp
+    - Name: TileHealth
+      Entry: 3
+      Data: 40
+    - Name: UVCoords
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: DamageUVCount
+      Entry: 3
+      Data: 1
+    - Name: ItemData
+      Entry: 10
+      Data: 1
+    - Name: Mineral
+      Entry: 5
+      Data: false
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0.2
+    - Name: Frequency
+      Entry: 4
+      Data: 0.1
+    - Name: StartDepth
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
       Entry: 8
       Data: 
-  _surfaceLevelSize: 20
+  _minSurfaceDepth: 5
+  _maxSurfaceDepth: 20
   _surfaceNoiseScale: 0.04
+  _caveStartDepth: 30
   _grassDecoChance: 0.5
   _caveNoiseScale: 0.08
   _caveThreshold: 0.55

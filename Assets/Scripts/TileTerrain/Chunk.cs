@@ -183,7 +183,7 @@ public class Chunk : MonoBehaviour
             uvCoord.y += _world.Settings.DamageOffsetUV.y * offset;
         }
         uvCoord.y = _world.Settings.GridSize - 1 - uvCoord.y;
-        if (!front && type == TileType.Grass) uvCoord.y -= 1;
+        if (!front && type == TileType.Surface) uvCoord.y -= 1;
 
         float border = _uvSize * 0.02f;
 
