@@ -34,4 +34,4 @@ MonoBehaviour:
   _lifetime: 3
   _gravityScale: 1
   _hasAOE: 1
-  _aoeRadius: 1
+  _aoeRadius: 2

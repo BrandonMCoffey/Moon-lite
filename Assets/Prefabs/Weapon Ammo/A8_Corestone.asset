@@ -26,11 +26,11 @@ MonoBehaviour:
   _ammoSpriteLaser: {fileID: 1302302269, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _ammoSpriteEffect: {fileID: -1456547918, guid: 8e4fc4feca315b543a46cace76a3b313,
     type: 3}
-  _bulletSpeedModifier: 1
-  _damage: 1
+  _bulletSpeedModifier: 0.5
+  _damage: 2
   _knockback: 3
   _size: 0.25
   _lifetime: 3
-  _gravityScale: 1
+  _gravityScale: 10
   _hasAOE: 0
   _aoeRadius: 1
