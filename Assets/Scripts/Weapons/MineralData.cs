@@ -23,6 +23,7 @@ public class MineralData : ItemData
 
     public BulletBase BulletPrefab => _bulletPrefab;
     public Sprite BulletSprite => _bulletSprite;
+    public Sprite AmmoSpriteEffect => _ammoSpriteEffect;
     public float ShotSpeed => _bulletSpeedModifier;
     public float Damage => _damage;
     public float Knockback => _knockback;

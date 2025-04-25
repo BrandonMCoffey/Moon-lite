@@ -7,17 +7,20 @@ public class WeaponVisual : ShowPopupOnHover
 
     [Header("References")]
     [SerializeField] protected Image _iconImage;
+    [SerializeField] protected Image _effectImage;
     [SerializeField] private GameObject _selectedVisual;
 
     private void OnEnable()
     {
         PlayerWeaponManager.OnEquipWeapon += EquipWeapon;
+        PlayerWeaponManager.OnEquipAmmo += EquipAmmo;
         // TODO: Get equipped weapon (Singleton?)
     }
 
     private void OnDisable()
     {
         PlayerWeaponManager.OnEquipWeapon -= EquipWeapon;
+        PlayerWeaponManager.OnEquipAmmo -= EquipAmmo;
     }
 
     private void OnValidate()
@@ -28,5 +31,18 @@ public class WeaponVisual : ShowPopupOnHover
     private void EquipWeapon(WeaponData equipped)
     {
         _selectedVisual.SetActive(_weaponData == equipped);
+    }
+
+    private void EquipAmmo(MineralData equipped)
+    {
+        if (equipped.AmmoSpriteEffect != null)
+        {
+            _effectImage.sprite = equipped.AmmoSpriteEffect;
+            _effectImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            _effectImage.gameObject.SetActive(false);
+        }
     }
 }
