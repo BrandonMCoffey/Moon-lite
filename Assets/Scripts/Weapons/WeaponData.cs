@@ -76,10 +76,3 @@ public class WeaponData : ScriptableObject
         if (string.IsNullOrEmpty(_weaponName)) _weaponName = name;
     }
 }
-
-public enum WeaponAmmoArtType
-{
-    Default,
-    Shotgun,
-    Laser
-}
