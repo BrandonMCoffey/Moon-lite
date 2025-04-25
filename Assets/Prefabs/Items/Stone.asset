@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemName: Stone
   _itemDescription: 
-  _itemIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  _itemIconTint: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
+  _itemIcon: {fileID: 1328361122, guid: 8f248677bc5a95a4ba449bc35c1d16a5, type: 3}
+  _itemIconTint: {r: 1, g: 1, b: 1, a: 1}
