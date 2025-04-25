@@ -17,9 +17,6 @@ public class BulletBase : SimplePhysicsObject
 
     public LayerMask BulletLayerMask => _physicsLayerMask;
 
-    //[SerializeField] private GameObject _psBloodDirectional;
-    //[SerializeField] private GameObject _psBloodCircle;
-    //[SerializeField] private GameObject _psOtherDirectional;
     protected SpriteRenderer _sr;
     //protected TrailRenderer _tr;
     protected Vector3 _startPosition;
@@ -36,24 +33,6 @@ public class BulletBase : SimplePhysicsObject
 
         _startPosition = transform.position;
     }
-
-    // Checks if the bullet spawns inside a wall/collision
-    // NEEDS TO CHECK IF A TILE WAS ACTUALLY DAMAGED TO DESTROY THE BULLET
-    // void Start()
-    // {
-    //     Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
-    //     foreach (var hitCollider in hitColliders)
-    //     {
-    //         var chunk = hitCollider.GetComponent<Chunk>();
-    //         if (chunk != null)
-    //         {
-    //             chunk.World.DamageTileAt(transform.position);
-    //             //chunk.World.DamageTileInCircle(transform.position, 2);
-    //             DestroySelf();
-    //             break; // Exit the loop after handling the first collision
-    //         }
-    //     }
-    // }
 
     protected override void Update()
     {
@@ -73,18 +52,6 @@ public class BulletBase : SimplePhysicsObject
         //     _isVisible = true;
         // }
     }
-
-    // protected virtual void OnCollisionEnter(Collision collision)
-    // {
-    //     var chunk = collision.gameObject.GetComponent<Chunk>();
-    //     if (chunk != null)
-    //     {
-    //         Vector3 pointToDestroy = collision.GetContact(0).point + _rb.velocity.normalized * 0.1f;
-    //         OnHitChunk(chunk, pointToDestroy);
-    //     }
-
-    //     DestroySelf();
-    // }
 
     // Override this to customize chunk hit behavior
     public virtual void OnHitChunk(Chunk chunk, Vector3 hitPoint)
@@ -127,25 +94,6 @@ public class BulletBase : SimplePhysicsObject
         StartCoroutine(DelayedDestroy(_lifetime));
     }
 
-    // private void HandleEnemyCollision(Collider collision)
-    // {
-    //     collision.GetComponent<EnemyHealth>().TakeDamage(_rb.velocity.normalized * _knockback, _damage);
-
-    //     Vector3 hitPoint = collision.ClosestPoint(transform.position);
-    //     Vector3 bulletDirection = _rb.velocity.normalized;
-    //     float angle = Mathf.Atan2(bulletDirection.y, bulletDirection.x) * Mathf.Rad2Deg;
-
-    //     Instantiate(_psBloodDirectional, hitPoint, Quaternion.Euler(0, 0, angle));
-    //     Instantiate(_psBloodCircle, collision.transform.position, Quaternion.identity);
-
-    //     if (Random.value < 0.2f)
-    //     {
-    //         Instantiate(_psOtherDirectional, hitPoint, Quaternion.Euler(0, 0, angle));
-    //     }
-
-    //     DestroySelf();
-    // }
-
     protected virtual IEnumerator DelayedDestroy(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -157,6 +105,20 @@ public class BulletBase : SimplePhysicsObject
         if (!_once)
         {
             _once = true;
+
+            if (_hasAOE)
+            {
+                Collider[] hitColliders = Physics.OverlapSphere(transform.position, _aoeRadius, _physicsLayerMask, QueryTriggerInteraction.Ignore);
+                foreach (var collider in hitColliders)
+                {
+                    var chunk = collider.GetComponent<Chunk>();
+                    if (chunk != null)
+                    {
+                        chunk.World.DamageTileInCircle(transform.position, _aoeRadius, _damage);
+                    }
+                }
+            }
+
             StopAllCoroutines();
             Destroy(gameObject);
         }
