@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e981d16f31e3a004f9e8b94072c57225, type: 3}
+  m_Name: A8_Explosive
+  m_EditorClassIdentifier: 
+  _itemName: Explosive
+  _itemDescription: Explosive
+  _itemIcon: {fileID: -551960179, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
+  _itemIconTint: {r: 1, g: 1, b: 1, a: 1}
+  _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
+    type: 3}
+  _tileType: 18
+  _bulletSprite: {fileID: 1404292371, guid: 5453db182330ff0409f37f9e5f16b73e, type: 3}
+  _ammoSpriteBullet: {fileID: 956901718, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
+  _ammoSpriteShotgun: {fileID: 91191732, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
+  _ammoSpriteLaser: {fileID: 1777375607, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
+  _ammoSpriteEffect: {fileID: -1263030861, guid: 8e4fc4feca315b543a46cace76a3b313,
+    type: 3}
+  _bulletSpeedModifier: 0.5
+  _damage: 2
+  _knockback: 3
+  _size: 0.25
+  _lifetime: 3
+  _gravityScale: 10
+  _hasAOE: 0
+  _aoeRadius: 1

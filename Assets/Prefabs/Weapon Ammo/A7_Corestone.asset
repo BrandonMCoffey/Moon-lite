@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e981d16f31e3a004f9e8b94072c57225, type: 3}
-  m_Name: A8_Corestone
+  m_Name: A7_Corestone
   m_EditorClassIdentifier: 
   _itemName: Corestone
   _itemDescription: Knockback
-  _itemIcon: {fileID: 1850090354, guid: 8f248677bc5a95a4ba449bc35c1d16a5, type: 3}
-  _itemIconTint: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
+  _itemIcon: {fileID: 1242680117, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
+  _itemIconTint: {r: 1, g: 1, b: 1, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
     type: 3}
   _tileType: 17

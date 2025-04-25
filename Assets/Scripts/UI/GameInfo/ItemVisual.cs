@@ -27,7 +27,6 @@ public class ItemVisual : ShowPopupOnHover
     {
         if (_iconImage != null)
         {
-            _iconImage.color = _itemData == null ? Color.white : _itemData.SpriteColor;
             _iconImage.sprite = _itemData == null ? null : _itemData.Sprite;
         }
         if (_countText == null) _countText = GetComponentInChildren<TMP_Text>();
@@ -38,7 +37,6 @@ public class ItemVisual : ShowPopupOnHover
     {
         _itemData = data;
         _iconImage.sprite = _itemData.Sprite;
-        _iconImage.color = _itemData.SpriteColor;
     }
 
     protected virtual void UpdateCount()

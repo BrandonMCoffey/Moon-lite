@@ -10,23 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e981d16f31e3a004f9e8b94072c57225, type: 3}
-  m_Name: A3_Cryselium
+  m_Name: A0_Copper
   m_EditorClassIdentifier: 
-  _itemName: Cryselium
-  _itemDescription: Freezing
-  _itemIcon: {fileID: 1010809011, guid: 387e5e56ce2cfd341bd2b8dc709c9b55, type: 3}
+  _itemName: Copper
+  _itemDescription: Weak
+  _itemIcon: {fileID: -154867337, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _itemIconTint: {r: 1, g: 1, b: 1, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
     type: 3}
-  _tileType: 12
-  _bulletSprite: {fileID: -156757544, guid: 5453db182330ff0409f37f9e5f16b73e, type: 3}
-  _ammoSpriteBullet: {fileID: -881573553, guid: 8e4fc4feca315b543a46cace76a3b313,
+  _tileType: 10
+  _bulletSprite: {fileID: 723841582, guid: 5453db182330ff0409f37f9e5f16b73e, type: 3}
+  _ammoSpriteBullet: {fileID: 313751767, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
+  _ammoSpriteShotgun: {fileID: -2021169823, guid: 8e4fc4feca315b543a46cace76a3b313,
     type: 3}
-  _ammoSpriteShotgun: {fileID: 1098039945, guid: 8e4fc4feca315b543a46cace76a3b313,
-    type: 3}
-  _ammoSpriteLaser: {fileID: -286210755, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
-  _ammoSpriteEffect: {fileID: 1815693326, guid: 8e4fc4feca315b543a46cace76a3b313,
-    type: 3}
+  _ammoSpriteLaser: {fileID: 1906790496, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
+  _ammoSpriteEffect: {fileID: 0}
   _bulletSpeedModifier: 1
   _damage: 1
   _knockback: 3

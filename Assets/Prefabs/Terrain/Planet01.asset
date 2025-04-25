@@ -20,12 +20,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 00d45476f6806ff4cb20893147291c76, type: 2}
     - {fileID: 11400000, guid: 4e0fb6c9495b01744ba0486a14346392, type: 2}
     - {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
-    - {fileID: 11400000, guid: d8f2c2c7f06634f4ea5c33eff0ef43a5, type: 2}
-    - {fileID: 11400000, guid: 1613e5cf9c17fa0498f81f33e265d679, type: 2}
     - {fileID: 11400000, guid: fd4587940d1a54c47a14ba76678a0620, type: 2}
-    - {fileID: 11400000, guid: 737238d39c85bce44b83b7b26f85465f, type: 2}
     - {fileID: 11400000, guid: 43e01edfaf5d16d4abca112a9a3b7e2d, type: 2}
-    - {fileID: 11400000, guid: c1b511ad41029a7409a491e619cbb7fe, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -50,7 +46,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 13
+      Data: 9
     - Name: 
       Entry: 7
       Data: 
@@ -69,6 +65,18 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 1
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: UVOffsetSides
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
     - Name: 
       Entry: 4
       Data: 0
@@ -112,6 +120,18 @@ MonoBehaviour:
       Entry: 3
       Data: 1
     - Name: UVCoords
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: UVOffsetSides
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
     - Name: 
@@ -165,6 +185,18 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 2
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: UVOffsetSides
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
     - Name: 
       Entry: 4
       Data: 0
@@ -213,6 +245,18 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 2
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: UVOffsetSides
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
     - Name: 
       Entry: 4
       Data: 0
@@ -254,7 +298,7 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -264,6 +308,18 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: UVOffsetSides
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -302,7 +358,7 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 1
+      Data: 3
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -312,6 +368,18 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: UVOffsetSides
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -344,22 +412,34 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 16
+      Data: 12
     - Name: $v
       Entry: 7
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 2
+      Data: 4
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 4
-      Data: 2
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: UVOffsetSides
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -369,102 +449,6 @@ MonoBehaviour:
     - Name: ItemData
       Entry: 10
       Data: 4
-    - Name: Mineral
-      Entry: 5
-      Data: true
-    - Name: NoiseScale
-      Entry: 4
-      Data: 0.2
-    - Name: Frequency
-      Entry: 4
-      Data: 0.1
-    - Name: StartDepth
-      Entry: 3
-      Data: 200
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 17
-    - Name: $v
-      Entry: 7
-      Data: TerrainTileDataStruct, Assembly-CSharp
-    - Name: TileHealth
-      Entry: 3
-      Data: 3
-    - Name: UVCoords
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 3
-    - Name: 
-      Entry: 4
-      Data: 2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: DamageUVCount
-      Entry: 3
-      Data: 1
-    - Name: ItemData
-      Entry: 10
-      Data: 5
-    - Name: Mineral
-      Entry: 5
-      Data: true
-    - Name: NoiseScale
-      Entry: 4
-      Data: 0.2
-    - Name: Frequency
-      Entry: 4
-      Data: 0.1
-    - Name: StartDepth
-      Entry: 3
-      Data: 300
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 12
-    - Name: $v
-      Entry: 7
-      Data: TerrainTileDataStruct, Assembly-CSharp
-    - Name: TileHealth
-      Entry: 3
-      Data: 0
-    - Name: UVCoords
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 2
-    - Name: 
-      Entry: 4
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: DamageUVCount
-      Entry: 3
-      Data: 1
-    - Name: ItemData
-      Entry: 10
-      Data: 6
     - Name: Mineral
       Entry: 5
       Data: true
@@ -494,16 +478,28 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 1
+      Data: 4
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 4
-      Data: 2
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: UVOffsetSides
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -512,7 +508,7 @@ MonoBehaviour:
       Data: 1
     - Name: ItemData
       Entry: 10
-      Data: 7
+      Data: 5
     - Name: Mineral
       Entry: 5
       Data: true
@@ -525,102 +521,6 @@ MonoBehaviour:
     - Name: StartDepth
       Entry: 3
       Data: 500
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 14
-    - Name: $v
-      Entry: 7
-      Data: TerrainTileDataStruct, Assembly-CSharp
-    - Name: TileHealth
-      Entry: 3
-      Data: 2
-    - Name: UVCoords
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: DamageUVCount
-      Entry: 3
-      Data: 1
-    - Name: ItemData
-      Entry: 10
-      Data: 8
-    - Name: Mineral
-      Entry: 5
-      Data: true
-    - Name: NoiseScale
-      Entry: 4
-      Data: 0.2
-    - Name: Frequency
-      Entry: 4
-      Data: 0.1
-    - Name: StartDepth
-      Entry: 3
-      Data: 600
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 13
-    - Name: $v
-      Entry: 7
-      Data: TerrainTileDataStruct, Assembly-CSharp
-    - Name: TileHealth
-      Entry: 3
-      Data: 3
-    - Name: UVCoords
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 3
-    - Name: 
-      Entry: 4
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: DamageUVCount
-      Entry: 3
-      Data: 1
-    - Name: ItemData
-      Entry: 10
-      Data: 9
-    - Name: Mineral
-      Entry: 5
-      Data: true
-    - Name: NoiseScale
-      Entry: 4
-      Data: 0.2
-    - Name: Frequency
-      Entry: 4
-      Data: 0.1
-    - Name: StartDepth
-      Entry: 3
-      Data: 700
     - Name: 
       Entry: 8
       Data: 
@@ -645,6 +545,18 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 3
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: UVOffsetSides
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
     - Name: 
       Entry: 4
       Data: 0

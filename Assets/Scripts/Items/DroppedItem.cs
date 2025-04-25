@@ -76,7 +76,6 @@ public class DroppedItem : SimplePhysicsObject
         _item = data;
         _itemCount = 1;
         _renderer.sprite = data.Sprite;
-        _renderer.color = data.SpriteColor;
         _lifeTimer = 0;
         ResetPhysics();
         gameObject.SetActive(true);

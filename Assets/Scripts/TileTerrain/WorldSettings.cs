@@ -91,7 +91,8 @@ public struct TerrainTileDataStruct
 {
     public int TileHealth;
     [Tooltip("X is left-right, Y is bottom-top")]
-    [PreviouslySerializedAs("UVData")]public Vector2 UVCoords;
+    public Vector2 UVCoords;
+    public Vector2 UVOffsetSides;
     public int DamageUVCount;
     public ItemData ItemData;
     public bool Mineral;
@@ -103,6 +104,7 @@ public struct TerrainTileDataStruct
     {
         TileHealth = health;
         UVCoords = uvData;
+        UVOffsetSides = new Vector2(0, 0);
         DamageUVCount = damageUVCount;
         ItemData = null;
         Mineral = mineral;
