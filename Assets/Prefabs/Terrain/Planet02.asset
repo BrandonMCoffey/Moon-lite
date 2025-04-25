@@ -206,7 +206,7 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 9
+      Data: 40
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
