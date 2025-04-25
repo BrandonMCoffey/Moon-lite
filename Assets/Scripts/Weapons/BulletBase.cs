@@ -135,14 +135,14 @@ public class BulletBase : SimplePhysicsObject
         var chunk = hit.collider.GetComponent<Chunk>();
         if (chunk != null)
         {
+            Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.01f;
+            OnHitChunk(chunk, pointToDestroy);
             if (_bounces > 0)
             {
                 _bounces--;
                 base.OnHit(hit);
                 return;
             }
-            Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.01f;
-            OnHitChunk(chunk, pointToDestroy);
         }
 
         // TODO: Enemy or other hit objects
@@ -160,13 +160,17 @@ public class BulletBase : SimplePhysicsObject
                     DestroySelf();
                 }
                 break;
+            // case TileType.Lead:
+            // chunk.World.DestroyTilesAlongRay(hit.point, _velocity.normalized, 50, 50);
+            // DestroySelf();
+            //     break;
             default:
                 DestroySelf();
                 break;
         }
     }
 
-        // Override this to customize chunk hit behavior
+    // Override this to customize chunk hit behavior
     public virtual void OnHitChunk(Chunk chunk, Vector3 hitPoint)
     {
         if(_hasAOE)
