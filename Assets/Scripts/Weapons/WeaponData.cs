@@ -13,6 +13,7 @@ public class WeaponData : ScriptableObject
     public string Name => _weaponName;
     public string Description => _weaponDescription;
     public Sprite Sprite => _weaponSprite;
+    public WeaponBase WeaponPrefab => _weaponPrefab;
 
 
     [Header("Reload and Ammo Properties")]

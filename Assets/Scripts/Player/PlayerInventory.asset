@@ -55,7 +55,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 3
-      Data: 500
+      Data: 712
     - Name: 
       Entry: 8
       Data: 
@@ -67,7 +67,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 3
-      Data: 500
+      Data: 650
     - Name: 
       Entry: 8
       Data: 
@@ -79,7 +79,7 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 3
-      Data: 500
+      Data: 504
     - Name: 
       Entry: 8
       Data: 
@@ -91,7 +91,7 @@ MonoBehaviour:
       Data: 3
     - Name: $v
       Entry: 3
-      Data: 500
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -127,7 +127,7 @@ MonoBehaviour:
       Data: 6
     - Name: $v
       Entry: 3
-      Data: 500
+      Data: 497
     - Name: 
       Entry: 8
       Data: 
@@ -175,7 +175,7 @@ MonoBehaviour:
       Data: 10
     - Name: $v
       Entry: 3
-      Data: 500
+      Data: 480
     - Name: 
       Entry: 8
       Data: 
@@ -197,3 +197,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  _startWeapons:
+  - {fileID: 11400000, guid: 0f9e59fc885f6a24fa9865216402337d, type: 2}
+  - {fileID: 11400000, guid: 5f1e938987e1058468ea2c6eea242e32, type: 2}
+  _equippedAmmos:
+  - {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
+  - {fileID: 11400000, guid: 737238d39c85bce44b83b7b26f85465f, type: 2}
+  - {fileID: 11400000, guid: 1613e5cf9c17fa0498f81f33e265d679, type: 2}
+  - {fileID: 11400000, guid: 08420528d54e7b3408fae684b26fd1bd, type: 2}

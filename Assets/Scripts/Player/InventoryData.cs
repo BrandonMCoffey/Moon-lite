@@ -12,6 +12,9 @@ public class InventoryData : SerializedScriptableObject
     [SerializeField] private List<WeaponData> _startWeapons = new List<WeaponData>();
     [SerializeField] private List<MineralData> _equippedAmmos = new List<MineralData>();
 
+    public List<WeaponData> StartWeapons => _startWeapons;
+    public List<MineralData> EquippedAmmos => _equippedAmmos;
+
     [DictionaryDrawerSettings(KeyLabel = "Item Data", ValueLabel = "Count")]
     [SerializeField] private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
 

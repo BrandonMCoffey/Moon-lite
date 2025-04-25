@@ -119,7 +119,7 @@ public class WorldGenerator : MonoBehaviour
         GenerateStructures();
         CreateChunks();
         OptimizeChunks();
-        Debug.Log("World Generation Complete");
+        //Debug.Log("World Generation Complete");
     }
 
     private void GenerateSurface()
