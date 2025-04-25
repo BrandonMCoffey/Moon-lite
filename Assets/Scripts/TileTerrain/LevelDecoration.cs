@@ -4,7 +4,8 @@ using UnityEngine;
 public class LevelDecoration : MonoBehaviour
 {
     [SerializeField] private MeshRenderer _renderer;
-    [SerializeField] private bool _flipCeilingSprites;
+    [SerializeField] private bool _flipCaveFloorSprites;
+    [SerializeField] private bool _flipCaveCeilingSprites;
     [SerializeField] private bool _randomFlipX;
     [SerializeField] private List<Material> _grassMaterials = new List<Material>();
     [SerializeField] private List<Material> _caveFloorSprites = new List<Material>();
@@ -44,7 +45,9 @@ public class LevelDecoration : MonoBehaviour
     {
         _renderer.material = GetRandomMaterial(floor ? _caveFloorSprites : _caveCeilingSprites);
         transform.position += transform.forward * 0.25f;
-        transform.localScale = new Vector3(_randomFlipX && Random.value > 0.5f ? -1f : 1f, !floor && _flipCeilingSprites ? -1f : 1f, 1f);
+        float x = _randomFlipX && Random.value > 0.5f ? -1f : 1f;
+        float y = (floor && _flipCaveFloorSprites) || (!floor && _flipCaveCeilingSprites) ? -1f : 1f;
+        transform.localScale = new Vector3(x, y, 1f);
     }
 
     private Material GetRandomMaterial(List<Material> mats) => mats[Random.Range(0, mats.Count - 1)];

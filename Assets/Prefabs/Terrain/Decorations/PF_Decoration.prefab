@@ -47,15 +47,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 4902858693870188281}
-  _flipCeilingSprites: 1
+  _flipCaveFloorSprites: 1
+  _flipCaveCeilingSprites: 0
   _randomFlipX: 0
   _grassMaterials:
-  - {fileID: 2100000, guid: 80a0b50cac1077a43aefc03b6fd6d84f, type: 2}
+  - {fileID: 2100000, guid: 2d4e3e22dc26bb0419ddcd5ad3c7eee6, type: 2}
+  - {fileID: 2100000, guid: 57c35ae5b9c489949b209894ec8ff345, type: 2}
+  - {fileID: 2100000, guid: 5312cfa8fe40c4947943d61423415f1a, type: 2}
+  - {fileID: 2100000, guid: 29f194418d69f774bb32c056e1884d9b, type: 2}
   _caveFloorSprites:
-  - {fileID: 2100000, guid: b288dd0141ee1204aba1bbebb7199c35, type: 2}
-  - {fileID: 2100000, guid: bce398106a872e749ad19b77aa244e61, type: 2}
+  - {fileID: 2100000, guid: 816743623caa532448c9976c36c32e81, type: 2}
+  - {fileID: 2100000, guid: 5e2098cb1e5d49c4fa43c6ee4eaae233, type: 2}
+  - {fileID: 2100000, guid: 61711d64ebe75fa4aa012e49c0192ab2, type: 2}
+  - {fileID: 2100000, guid: a1e19f7aaded4f749a9388b79ec41f96, type: 2}
+  - {fileID: 2100000, guid: 5d05cf5072d2c5342b7088bcdee4f280, type: 2}
+  - {fileID: 2100000, guid: 4ede0ec2f24d3e747a8e049c79e945aa, type: 2}
+  - {fileID: 2100000, guid: 08a1ae0539804da4583c7a808c2ca41a, type: 2}
+  - {fileID: 2100000, guid: ac6b9f918f8ccde419fdb1e9a1a1d58e, type: 2}
   _caveCeilingSprites:
-  - {fileID: 2100000, guid: b288dd0141ee1204aba1bbebb7199c35, type: 2}
+  - {fileID: 2100000, guid: 816743623caa532448c9976c36c32e81, type: 2}
+  - {fileID: 2100000, guid: 5e2098cb1e5d49c4fa43c6ee4eaae233, type: 2}
+  - {fileID: 2100000, guid: 61711d64ebe75fa4aa012e49c0192ab2, type: 2}
+  - {fileID: 2100000, guid: a1e19f7aaded4f749a9388b79ec41f96, type: 2}
+  - {fileID: 2100000, guid: 5d05cf5072d2c5342b7088bcdee4f280, type: 2}
+  - {fileID: 2100000, guid: 4ede0ec2f24d3e747a8e049c79e945aa, type: 2}
+  - {fileID: 2100000, guid: 08a1ae0539804da4583c7a808c2ca41a, type: 2}
+  - {fileID: 2100000, guid: ac6b9f918f8ccde419fdb1e9a1a1d58e, type: 2}
   _connectedTileX: 0
   _connectedTileY: 0
 --- !u!33 &3980881933199398010
@@ -86,7 +103,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b288dd0141ee1204aba1bbebb7199c35, type: 2}
+  - {fileID: 2100000, guid: 2d4e3e22dc26bb0419ddcd5ad3c7eee6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
