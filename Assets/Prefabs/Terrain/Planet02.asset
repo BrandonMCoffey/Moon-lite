@@ -635,12 +635,12 @@ MonoBehaviour:
       Data: 
   _surfaceLevelSize: 20
   _surfaceNoiseScale: 0.04
-  _grassDecoChance: 0.2
+  _grassDecoChance: 0.5
   _caveNoiseScale: 0.08
   _caveThreshold: 0.55
   _caveNoiseDetail: 0.15
-  _caveCeilingDecoChance: 0.1
-  _caveFloorDecoChance: 0.1
+  _caveCeilingDecoChance: 0.15
+  _caveFloorDecoChance: 0.15
   _terrainMaterial: {fileID: 2100000, guid: efb26339e8c987040bde7f0e634c4e1e, type: 2}
   _gridSize: 8
   _damageOffsetUV: {x: 1, y: 0}
