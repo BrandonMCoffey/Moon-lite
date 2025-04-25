@@ -41,6 +41,7 @@ public class WeaponData : ScriptableObject
 
 
     [Header("Bullet Modifiers (Multiply)")] // Multiplied on to bullet settings
+    [SerializeField] private WeaponAmmoArtType _artType = WeaponAmmoArtType.Default;
     [SerializeField] private float _bulletSize = 1f;
     [SerializeField] private float _bulletDamage = 1f;
     [SerializeField] private float _bulletKnockback = 1f;
@@ -48,7 +49,8 @@ public class WeaponData : ScriptableObject
     [SerializeField] private float _bulletGravityScale = 1f;
     [SerializeField] private bool _forceAoe = false;
     [SerializeField] [ShowIf ("_forceAoe")] private float _aoeRadius = 1f;
-    
+
+    public WeaponAmmoArtType ArtType => _artType;
     public float BulletSize => _bulletSize;
     public float BulletDamage => _bulletDamage;
     public float BulletKnockback => _bulletKnockback;
@@ -73,4 +75,11 @@ public class WeaponData : ScriptableObject
     {
         if (string.IsNullOrEmpty(_weaponName)) _weaponName = name;
     }
+}
+
+public enum WeaponAmmoArtType
+{
+    Default,
+    Shotgun,
+    Laser
 }

@@ -18,6 +18,14 @@ MonoBehaviour:
     ReferencedUnityObjects:
     - {fileID: 11400000, guid: c52405b6a86b58d4fbb1a5044f7a2457, type: 2}
     - {fileID: 11400000, guid: 00d45476f6806ff4cb20893147291c76, type: 2}
+    - {fileID: 11400000, guid: 4e0fb6c9495b01744ba0486a14346392, type: 2}
+    - {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
+    - {fileID: 11400000, guid: fd4587940d1a54c47a14ba76678a0620, type: 2}
+    - {fileID: 11400000, guid: c1b511ad41029a7409a491e619cbb7fe, type: 2}
+    - {fileID: 11400000, guid: 43e01edfaf5d16d4abca112a9a3b7e2d, type: 2}
+    - {fileID: 11400000, guid: 737238d39c85bce44b83b7b26f85465f, type: 2}
+    - {fileID: 11400000, guid: d8f2c2c7f06634f4ea5c33eff0ef43a5, type: 2}
+    - {fileID: 11400000, guid: 1613e5cf9c17fa0498f81f33e265d679, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -251,8 +259,8 @@ MonoBehaviour:
       Entry: 3
       Data: 3
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 2
     - Name: Mineral
       Entry: 5
       Data: true
@@ -296,8 +304,8 @@ MonoBehaviour:
       Entry: 3
       Data: 3
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 3
     - Name: Mineral
       Entry: 5
       Data: true
@@ -341,8 +349,8 @@ MonoBehaviour:
       Entry: 3
       Data: 3
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 4
     - Name: Mineral
       Entry: 5
       Data: true
@@ -386,8 +394,8 @@ MonoBehaviour:
       Entry: 3
       Data: 3
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 5
     - Name: Mineral
       Entry: 5
       Data: true
@@ -431,8 +439,8 @@ MonoBehaviour:
       Entry: 3
       Data: 3
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 6
     - Name: Mineral
       Entry: 5
       Data: true
@@ -476,8 +484,8 @@ MonoBehaviour:
       Entry: 3
       Data: 3
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 7
     - Name: Mineral
       Entry: 5
       Data: true
@@ -521,8 +529,8 @@ MonoBehaviour:
       Entry: 3
       Data: 3
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 8
     - Name: Mineral
       Entry: 5
       Data: true
@@ -566,8 +574,8 @@ MonoBehaviour:
       Entry: 3
       Data: 3
     - Name: ItemData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 9
     - Name: Mineral
       Entry: 5
       Data: true
