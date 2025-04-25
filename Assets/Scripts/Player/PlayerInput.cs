@@ -41,8 +41,8 @@ public class PlayerInput : MonoBehaviour
 
     // Game Special Actions
     public static bool Throwable01 => Input.GetKeyDown(KeyCode.R);
-    public static bool Throwable02 => Input.GetKeyDown(KeyCode.F);
-    public static bool Throwable03 => Input.GetKeyDown(KeyCode.G);
+    public static bool Throwable02 => Input.GetKeyDown(KeyCode.T);
+    public static bool Throwable03 => Input.GetKeyDown(KeyCode.Y);
     public static bool Placeable01 => Input.GetKeyDown(KeyCode.C);
     public static bool Placeable02 => Input.GetKeyDown(KeyCode.X);
     public static bool Placeable03 => Input.GetKeyDown(KeyCode.Z);
