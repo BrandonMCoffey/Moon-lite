@@ -19,7 +19,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private int _width = 320;
     [SerializeField] private int _height = 960;
     [SerializeField] private int _chunkSize = 32;
-    [SerializeField] private int _tilesPerUnit = 2;
+    [SerializeField] private float _tilesPerUnit = 2;
     [SerializeField, ReadOnly] private float _tileSizeMult = 0.5f;
     [SerializeField, ReadOnly] private int _chunkCount;
     [SerializeField] private GameObject _chunkPrefab;
