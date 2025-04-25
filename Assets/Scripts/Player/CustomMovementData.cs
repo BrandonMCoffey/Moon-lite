@@ -80,6 +80,7 @@ public class CustomMovementData : ScriptableObject
 
     [Header("Jetpack")]
     public float jetpackForce = 25f;
+    public float jetpackMaxVelocity = 20f;
     public float jetpackConsumeRate = 0.5f;
     public float jetpackRegenDelay = 0.5f;
     public float jetpackRegenRate = 0.3f;

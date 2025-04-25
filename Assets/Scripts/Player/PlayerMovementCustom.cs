@@ -306,6 +306,7 @@ public class PlayerMovementCustom : EntityMovement
     {
         if (_jetpackActive)
         {
+            // TODO: Reduce force as the player approaches _data.jetpackMaxVelocity
             SetGravityScale(-_data.jetpackForce);
         }
         else if (_isDashAttacking)
