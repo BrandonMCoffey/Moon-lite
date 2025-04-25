@@ -244,8 +244,9 @@ MonoBehaviour:
   _equippedAmmoIndex: 0
   _ammoDataEquipped:
   - {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
-  - {fileID: 11400000, guid: 4e0fb6c9495b01744ba0486a14346392, type: 2}
   - {fileID: 11400000, guid: d8f2c2c7f06634f4ea5c33eff0ef43a5, type: 2}
+  - {fileID: 11400000, guid: c1b511ad41029a7409a491e619cbb7fe, type: 2}
+  - {fileID: 11400000, guid: 1613e5cf9c17fa0498f81f33e265d679, type: 2}
 --- !u!65 &8204654888438617097
 BoxCollider:
   m_ObjectHideFlags: 0

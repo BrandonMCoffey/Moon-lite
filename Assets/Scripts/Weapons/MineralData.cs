@@ -6,6 +6,7 @@ public class MineralData : ItemData
 {
     [Header("Bullet Data")]
     [SerializeField] private BulletBase _bulletPrefab;
+    [SerializeField] private TileType _tileType;
     [SerializeField] private Sprite _bulletSprite;
     [SerializeField] private Sprite _ammoSpriteBullet;
     [SerializeField] private Sprite _ammoSpriteShotgun;
@@ -32,6 +33,8 @@ public class MineralData : ItemData
     public float GravityScale => _gravityScale;
     public bool HasAOE => _hasAOE;
     public float AoeRadius => _aoeRadius;
+
+    public TileType TileType => _tileType;
 
     public Sprite GetAmmoSprite(WeaponAmmoArtType type)
     {

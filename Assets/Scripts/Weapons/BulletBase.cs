@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System;
 
 public class BulletBase : SimplePhysicsObject
 {
@@ -22,6 +23,8 @@ public class BulletBase : SimplePhysicsObject
     protected Vector3 _startPosition;
     protected bool _once = false;
     protected bool _isVisible = true;
+
+    protected int _pierceAmount = 0;
 
     protected virtual void Awake()
     {
@@ -53,19 +56,6 @@ public class BulletBase : SimplePhysicsObject
         // }
     }
 
-    // Override this to customize chunk hit behavior
-    public virtual void OnHitChunk(Chunk chunk, Vector3 hitPoint)
-    {
-        if(_hasAOE)
-        {
-            chunk.World.DamageTileInCircle(hitPoint,_aoeRadius, _damage);
-        }
-        else
-        {
-            chunk.World.DamageTileAt(hitPoint, _damage);
-        }
-    }
-
     public virtual void BulletSetup(Vector3 shootDir, float angle, WeaponData weaponData, MineralData overrideData = null)
     {
         if (overrideData != null) _data = overrideData;
@@ -77,6 +67,8 @@ public class BulletBase : SimplePhysicsObject
         _gravityScale = _data.GravityScale * weaponData.BulletGravityScale;
         _hasAOE = _data.HasAOE || weaponData.ForceAoe;
         _aoeRadius = _data.AoeRadius * weaponData.BulletAoeRadius;
+
+        _pierceAmount = Mathf.CeilToInt(_damage * 7.5f);
 
         _sr.sprite = _data.BulletSprite;
 
@@ -150,24 +142,39 @@ public class BulletBase : SimplePhysicsObject
 
         // TODO: Fix bullets impacting at the same time as each other (Same with raycasts)
 
-        DestroySelf();
+        switch(_data.TileType)
+        {
+            case TileType.Aethergem:
+                _pierceAmount -= 1;
+                if (_pierceAmount <= 0)
+                {
+                    DestroySelf();
+                }
+                break;
+            default:
+                DestroySelf();
+                break;
+        }
+    }
+
+        // Override this to customize chunk hit behavior
+    public virtual void OnHitChunk(Chunk chunk, Vector3 hitPoint)
+    {
+        if(_hasAOE)
+        {
+            chunk.World.DamageTileInCircle(hitPoint,_aoeRadius, _damage);
+        }
+        else
+        {
+            chunk.World.DamageTileAt(hitPoint, _damage);
+        }
     }
 
     public void PreRaycastCheck()
     {
-        //Debug.DrawRay(transform.position - _velocity.normalized * 2, _velocity.normalized * 2.5f, Color.red, 1.5f);
-
         if(Physics.Raycast(transform.position - _velocity.normalized * 2, _velocity.normalized, out RaycastHit hit, 2.5f, _physicsLayerMask, QueryTriggerInteraction.Ignore))
         {
-            //Debug.Log("Hit: " + hit.collider.name);
-            var chunk = hit.collider.GetComponent<Chunk>();
-            if (chunk != null)
-            {
-                Vector3 pointToDestroy = hit.point + _velocity.normalized * 0.01f;
-                OnHitChunk(chunk, pointToDestroy);
-            }
-
-            DestroySelf();
+            OnHit(hit);
         }
     }
 }

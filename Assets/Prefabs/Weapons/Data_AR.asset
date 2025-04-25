@@ -23,7 +23,7 @@ MonoBehaviour:
   _ammoPerShot: 1
   _fireRate: 12
   _bulletSpeed: 50
-  _sprayAngle: 50
+  _sprayAngle: 20
   _recoilForce: {x: 0.5, y: 10}
   _artType: 2
   _bulletSize: 1
@@ -36,4 +36,4 @@ MonoBehaviour:
   _multipleBullets: 1
   _bulletAmount: 3
   _hitScan: 1
-  _rayRange: 5
+  _rayRange: 15
