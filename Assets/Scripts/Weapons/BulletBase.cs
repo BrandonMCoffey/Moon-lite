@@ -160,10 +160,6 @@ public class BulletBase : SimplePhysicsObject
                     DestroySelf();
                 }
                 break;
-            case TileType.Lead:
-                chunk.World.DestroyTilesAlongRay(hit.point, _velocity.normalized, 10, 20);
-                DestroySelf();
-                break;
             default:
                 DestroySelf();
                 break;
