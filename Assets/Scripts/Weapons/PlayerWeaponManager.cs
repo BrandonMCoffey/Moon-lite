@@ -10,6 +10,7 @@ public class PlayerWeaponManager : MonoBehaviour
     [SerializeField] private float _pickupRadius = 1f;
     [SerializeField] private int _maxWeapons = 2; // Maximum number of weapons the player can hold
     private List<WeaponBase> _weapons = new List<WeaponBase>(); // List of held weapons
+    public List<WeaponBase> Weapons => _weapons;
     public WeaponBase StarterWeapon => _weapons.Count > 0 ? _weapons[0] : null;
 
     [Header("UI References")]
@@ -25,13 +26,16 @@ public class PlayerWeaponManager : MonoBehaviour
     private bool _canDropWeapon = true;
 
     private int _equippedWeaponIndex = 0; // Index of the currently equipped weapon
+    public int EquippedWeaponIndex => _equippedWeaponIndex;
     private bool _isInputEnabled = true;
 
     [Header("Ammo")]
     [SerializeField] private InventoryData _playerInventory;
     [SerializeField] private int _equippedAmmoIndex = 0;
+    public int EquippedAmmoIndex => _equippedAmmoIndex;
 
     [SerializeField] private List<MineralData> _ammoDataEquipped;
+    public List<MineralData> Ammos => _ammoDataEquipped;
     public MineralData EquippedAmmo => _ammoDataEquipped[_equippedAmmoIndex];
     public int CurrentAmmoInventory => _playerInventory.GetInventoryCount(EquippedAmmo);
 

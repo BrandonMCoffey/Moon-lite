@@ -14,20 +14,17 @@ public class AmmoVisual : ShowPopupOnHover
     [SerializeField] private TMP_Text _countText;
     [SerializeField] private GameObject _selectedVisual;
 
+    public MineralData MineralData => _mineralData;
+
     private void OnEnable()
     {
         _inventory.OnInventoryUpdated += UpdateCount;
-        PlayerWeaponManager.OnEquipWeapon += EquipWeapon;
-        PlayerWeaponManager.OnEquipAmmo += EquipAmmo;
         UpdateCount();
-        // TODO: Get equipped ammo (Singleton?)
     }
 
     private void OnDisable()
     {
         _inventory.OnInventoryUpdated -= UpdateCount;
-        PlayerWeaponManager.OnEquipWeapon -= EquipWeapon;
-        PlayerWeaponManager.OnEquipAmmo -= EquipAmmo;
     }
 
     private void OnValidate()
@@ -40,10 +37,13 @@ public class AmmoVisual : ShowPopupOnHover
         if (_countText != null) _countText.text = _itemCount.ToString();
     }
 
-    private void UpdateData(MineralData data)
+    public void SetSelected(bool selected) => _selectedVisual.SetActive(selected);
+
+    public void UpdateData(MineralData data)
     {
         _mineralData = data;
         _iconImage.sprite = _mineralData.GetAmmoSprite(_ammoArtType);
+        UpdateCount();
     }
 
     private void UpdateCount()
@@ -52,14 +52,9 @@ public class AmmoVisual : ShowPopupOnHover
         _countText.text = _itemCount.ToString();
     }
 
-    private void EquipWeapon(WeaponData weapon)
+    public void EquipWeapon(WeaponData weapon)
     {
         _ammoArtType = weapon.ArtType;
         _iconImage.sprite = _mineralData.GetAmmoSprite(_ammoArtType);
-    }
-
-    private void EquipAmmo(MineralData equipped)
-    {
-        _selectedVisual.SetActive(_mineralData == equipped);
     }
 }

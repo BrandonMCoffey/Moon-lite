@@ -10,30 +10,22 @@ public class WeaponVisual : ShowPopupOnHover
     [SerializeField] protected Image _effectImage;
     [SerializeField] private GameObject _selectedVisual;
 
-    private void OnEnable()
-    {
-        PlayerWeaponManager.OnEquipWeapon += EquipWeapon;
-        PlayerWeaponManager.OnEquipAmmo += EquipAmmo;
-        // TODO: Get equipped weapon (Singleton?)
-    }
-
-    private void OnDisable()
-    {
-        PlayerWeaponManager.OnEquipWeapon -= EquipWeapon;
-        PlayerWeaponManager.OnEquipAmmo -= EquipAmmo;
-    }
+    public WeaponData WeaponData => _weaponData;
 
     private void OnValidate()
     {
         if (_iconImage != null) _iconImage.sprite = _weaponData.Sprite;
     }
 
-    private void EquipWeapon(WeaponData equipped)
+    public void UpdateData(WeaponData weapon)
     {
-        _selectedVisual.SetActive(_weaponData == equipped);
+        _weaponData = weapon;
+        _iconImage.sprite = _weaponData.Sprite;
     }
 
-    private void EquipAmmo(MineralData equipped)
+    public void SetSelected(bool selected) => _selectedVisual.SetActive(selected);
+
+    public void EquipAmmo(MineralData equipped)
     {
         if (equipped.AmmoSpriteEffect != null)
         {
