@@ -2382,7 +2382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _worldSeed: -1
-  _worldSettings: {fileID: 11400000, guid: bc5d4389f0ccc0c4fa871130692e9100, type: 2}
+  _worldSettings: {fileID: 11400000, guid: ab7819b27d56c8849baa0752f0f42bc9, type: 2}
   _centerX: 1
   _downY: 1
   _width: 320

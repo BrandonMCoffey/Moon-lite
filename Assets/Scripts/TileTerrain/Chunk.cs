@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class Chunk : MonoBehaviour
@@ -71,7 +72,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x + unit, y + unit, 0), // Top-Right
                                 new Vector3(x, y + unit, -1),    // Back Top-Left (for thickness)
                                 new Vector3(x + unit, y + unit, -1),// Back Top-Right (for thickness)
-                                currentTile, false, damage);
+                                currentTile, false, false, damage);
                     }
 
                     // Check Bottom Face
@@ -82,7 +83,7 @@ public class Chunk : MonoBehaviour
                                new Vector3(x + unit, y, -1), // Back Bottom-Right
                                new Vector3(x, y, 0),      // Front Bottom-Left
                                new Vector3(x + unit, y, 0),  // Front Bottom-Right
-                               currentTile, false, damage);
+                               currentTile, false, false, damage);
                     }
 
                     // Check Right Face
@@ -93,7 +94,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x + unit, y + 1, 0),  // Front Top-Right
                                 new Vector3(x + unit, y, -1),     // Back Bottom-Right
                                 new Vector3(x + unit, y + unit, -1), // Back Top-Right
-                                currentTile, true, damage);
+                                currentTile, true, false, damage);
                     }
 
                     // Check Left Face
@@ -104,7 +105,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x, y, -1),     // Back Bottom-Left
                                 new Vector3(x, y + unit, 0),  // Front Top-Left
                                 new Vector3(x, y, 0),      // Front Bottom-Left
-                                currentTile, false, damage);
+                                currentTile, false, false, damage);
                     }
 
                     // Front Face
@@ -113,7 +114,7 @@ public class Chunk : MonoBehaviour
                                new Vector3(x + unit, y, -1),     // Bottom-Right
                                new Vector3(x, y + unit, -1),     // Top-Left
                                new Vector3(x + unit, y + unit, -1), // Top-Right
-                               currentTile, true, damage);
+                               currentTile, true, true, damage);
                 }
             }
         }
@@ -145,8 +146,8 @@ public class Chunk : MonoBehaviour
     }
 
     private void AddFace(ref List<Vector3> vertices, ref List<int> triangles, ref List<Vector2> uvs, ref int vertexIndex,
-                         Vector3 bl, Vector3 br, Vector3 tl, Vector3 tr, // Use consistent corner names relative to face direction
-                         TileType tileType, bool front, int damage)
+                         Vector3 bl, Vector3 br, Vector3 tl, Vector3 tr,
+                         TileType tileType, bool reverse, bool front, int damage)
     {
         // Add Vertices
         vertices.Add(bl); // 0
@@ -156,21 +157,21 @@ public class Chunk : MonoBehaviour
 
         // Add Triangles
         triangles.Add(vertexIndex + 0);
-        triangles.Add(vertexIndex + (front ? 2 : 1));
-        triangles.Add(vertexIndex + (front ? 1 : 2));
+        triangles.Add(vertexIndex + (reverse ? 2 : 1));
+        triangles.Add(vertexIndex + (reverse ? 1 : 2));
 
         triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + (front ? 2 : 3));
-        triangles.Add(vertexIndex + (front ? 3 : 2));
+        triangles.Add(vertexIndex + (reverse ? 2 : 3));
+        triangles.Add(vertexIndex + (reverse ? 3 : 2));
 
         vertexIndex += 4;
 
         // Add UVs
-        Vector2[] tileUVs = GetUVsForTile(tileType, front, damage);
+        Vector2[] tileUVs = GetUVsForTile(tileType, reverse, front, damage);
         uvs.AddRange(tileUVs);
     }
 
-    private Vector2[] GetUVsForTile(TileType type, bool front, int damage)
+    private Vector2[] GetUVsForTile(TileType type, bool reverse, bool front, int damage)
     {
         // TODO: Optimize this, its expensive atm
         Vector2 uvCoord = _world.Settings.GetTileData(type).UVCoords;
@@ -180,8 +181,9 @@ public class Chunk : MonoBehaviour
             uvCoord.y += _world.Settings.DamageOffsetUV.y;
         }
         uvCoord.y = _world.Settings.GridSize - 1 - uvCoord.y;
+        if (!front && type == TileType.Grass) uvCoord.y -= 1;
 
-        float border = _uvSize * 0.01f;
+        float border = _uvSize * 0.02f;
 
         float uMin = uvCoord.x * _uvSize + border;
         float vMin = uvCoord.y * _uvSize + border;
@@ -190,7 +192,7 @@ public class Chunk : MonoBehaviour
 
         // Return UV array matching the AddFace vertex order (BL, BR, TL, TR)
         // Adjust to change texture orientation
-        if (front)
+        if (reverse)
         {
             return new Vector2[] {
                 new Vector2(uMin, vMin), // Bottom-Left UV
