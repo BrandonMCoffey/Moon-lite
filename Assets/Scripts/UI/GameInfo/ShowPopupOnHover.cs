@@ -14,4 +14,9 @@ public class ShowPopupOnHover : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         OnHovered?.Invoke(this, false);
     }
+
+    public virtual string GetHoverText()
+    {
+        return "Hover Placeholder\nText";
+    }
 }

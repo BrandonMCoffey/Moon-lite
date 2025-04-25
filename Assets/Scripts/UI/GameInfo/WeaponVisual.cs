@@ -37,4 +37,9 @@ public class WeaponVisual : ShowPopupOnHover
             _effectImage.gameObject.SetActive(false);
         }
     }
+
+    public override string GetHoverText()
+    {
+        return _weaponData.Name + "\n" + _weaponData.Description;
+    }
 }

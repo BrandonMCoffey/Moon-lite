@@ -1,8 +1,10 @@
+using TMPro;
 using UnityEngine;
 
 public class HoverPopup : MonoBehaviour
 {
     [SerializeField] private Canvas _popupCanvas;
+    [SerializeField] private TMP_Text _popupText;
 
     private ShowPopupOnHover _current;
 
@@ -31,23 +33,13 @@ public class HoverPopup : MonoBehaviour
         Debug.Log($"{(hovered ? "Hover " : "Leave ")} from {visual.name}");
         if (hovered)
         {
-            // Handle hiding _current visual if needed?
-
-            SetupVisual(visual);
+            _popupText.text = visual.GetHoverText();
+            _popupCanvas.enabled = true;
         }
         else if (_current == visual)
         {
             _popupCanvas.enabled = false;
             _current = null;
         }
-    }
-
-    private void SetupVisual(ShowPopupOnHover visual)
-    {
-        _current = visual;
-
-        // TODO: Load data into visual here
-
-        _popupCanvas.enabled = true;
     }
 }

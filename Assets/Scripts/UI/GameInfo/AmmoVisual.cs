@@ -57,4 +57,9 @@ public class AmmoVisual : ShowPopupOnHover
         _ammoArtType = weapon.ArtType;
         _iconImage.sprite = _mineralData.GetAmmoSprite(_ammoArtType);
     }
+
+    public override string GetHoverText()
+    {
+        return _mineralData.Name + "\n" + _mineralData.Description;
+    }
 }
