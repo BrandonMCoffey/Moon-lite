@@ -17,11 +17,11 @@ MonoBehaviour:
   _weaponSprite: {fileID: 21300000, guid: 8dc79b004e3f1f84cac6f3b82644e015, type: 3}
   _weaponPrefab: {fileID: 7707075139789495896, guid: c958379195c000c408934530b050b3d9,
     type: 3}
-  _maxMagSize: 10
+  _maxMagSize: 25
   _reloadTime: 1
   _isAutomatic: 1
   _ammoPerShot: 1
-  _fireRate: 12
+  _fireRate: 15
   _bulletSpeed: 45
   _sprayAngle: 15
   _recoilForce: {x: 0.2, y: 5}
