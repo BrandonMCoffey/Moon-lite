@@ -22,13 +22,17 @@ MonoBehaviour:
   _isAutomatic: 0
   _ammoPerShot: 1
   _fireRate: 4
-  _bulletSpeed: 10
-  _sprayAngle: 0
+  _bulletSpeed: 40
+  _sprayAngle: 30
   _recoilForce: {x: 0.3, y: 10}
-  _bulletSize: 1.2
-  _bulletDamage: 1.5
+  _bulletSize: 0.66
+  _bulletDamage: 0.5
   _bulletKnockback: 1
-  _bulletLifetime: 1
-  _bulletGravityScale: 1.5
-  _forceAoe: 1
+  _bulletLifetime: 8
+  _bulletGravityScale: 1
+  _forceAoe: 0
   _aoeRadius: 2
+  _multipleBullets: 1
+  _bulletAmount: 6
+  _hitScan: 0
+  _rayRange: 1

@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Moonlite/Weapon Data")]
@@ -46,8 +47,8 @@ public class WeaponData : ScriptableObject
     [SerializeField] private float _bulletLifetime = 1f;
     [SerializeField] private float _bulletGravityScale = 1f;
     [SerializeField] private bool _forceAoe = false;
-    [SerializeField] private float _aoeRadius = 1f;
-
+    [SerializeField] [ShowIf ("_forceAoe")] private float _aoeRadius = 1f;
+    
     public float BulletSize => _bulletSize;
     public float BulletDamage => _bulletDamage;
     public float BulletKnockback => _bulletKnockback;
@@ -56,6 +57,17 @@ public class WeaponData : ScriptableObject
     public bool ForceAoe => _forceAoe;
     public float BulletAoeRadius => _aoeRadius;
 
+    [Header("Alternate Weapon Types")]
+    [Tooltip("If true, make sure to change the spray angle.")]
+    [SerializeField] private bool _multipleBullets = false;
+    [SerializeField] [ShowIf ("_multipleBullets")] private int _bulletAmount = 1;
+    [SerializeField] private bool _hitScan = false;
+    [SerializeField] [ShowIf ("_hitScan")] private float _rayRange = 1f;
+
+    public bool MultipleBullets => _multipleBullets;
+    public int BulletAmount => _bulletAmount;
+    public bool HitScan => _hitScan;
+    public float RayRange => _rayRange;
 
     private void OnValidate()
     {

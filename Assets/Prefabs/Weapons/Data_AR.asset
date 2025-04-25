@@ -30,4 +30,9 @@ MonoBehaviour:
   _bulletKnockback: 1
   _bulletLifetime: 1
   _bulletGravityScale: 1
+  _forceAoe: 0
   _aoeRadius: 1
+  _multipleBullets: 0
+  _bulletAmount: 0
+  _hitScan: 1
+  _rayRange: 5
