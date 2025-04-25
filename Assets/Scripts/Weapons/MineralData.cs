@@ -6,7 +6,10 @@ public class MineralData : ItemData
 {
     [Header("Bullet Data")]
     [SerializeField] private BulletBase _bulletPrefab;
-    [SerializeField] private Sprite _bulletSprite;
+    [SerializeField] private Sprite _bulletSpriteLaser;
+    [SerializeField] private Sprite _bulletSpriteShotgun;
+    [SerializeField] private Sprite _bulletSpriteBullet;
+    [SerializeField] private Sprite _bulletSpriteEffect;
     [Tooltip("Modifies the speed of the bullet from the gun by multiplying")]
     [SerializeField, Range(0.01f, 5f)] private float _bulletSpeedModifier = 1f;
     [SerializeField] private float _damage = 1f;
@@ -18,7 +21,7 @@ public class MineralData : ItemData
     [SerializeField, ShowIf(nameof(_hasAOE))] private float _aoeRadius = 1f;
 
     public BulletBase BulletPrefab => _bulletPrefab;
-    public Sprite BulletSprite => _bulletSprite;
+    public Sprite BulletSprite => _bulletSpriteBullet;
     public float ShotSpeed => _bulletSpeedModifier;
     public float Damage => _damage;
     public float Knockback => _knockback;
