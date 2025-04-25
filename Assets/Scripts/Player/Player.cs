@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     public static System.Action<float> OnHealthChanged = delegate { };
 
     [SerializeField] private InventoryData _inventory;
+    [SerializeField] private PlayerWeaponManager _weaponManager;
+    [SerializeField] private PlayerMovementCustom _movement;
     [SerializeField] private float _magnetItemRange = 2.5f;
     [SerializeField] private float _magnetItemSpeed = 5f;
     [SerializeField] private float _pickupItemRange = 1f;
@@ -19,6 +21,8 @@ public class Player : MonoBehaviour
     [SerializeField] private PlaceableBase _tempPlatformPrefab;
     [SerializeField] private PlaceableBase _autoMinerPrefab;
 
+    public static PlayerWeaponManager WeaponManager => Instance._weaponManager;
+    public static PlayerMovementCustom Movement => Instance._movement;
     public float MagnetItemRange => _magnetItemRange;
     public float MagnetItemSpeed => _magnetItemSpeed;
     public float PickupItemRange => _pickupItemRange;
@@ -28,6 +32,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        if (_weaponManager == null) _weaponManager = GetComponent<PlayerWeaponManager>();
+        if (_movement == null) _movement = GetComponent<PlayerMovementCustom>();
     }
 
     private void Start()

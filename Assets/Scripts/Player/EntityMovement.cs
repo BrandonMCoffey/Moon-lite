@@ -17,6 +17,7 @@ public class EntityMovement : MonoBehaviour
 
     [Header("Debug - Movement")]
     [SerializeField, ReadOnly] protected Vector3 _velocity;
+    [SerializeField, ReadOnly] protected Vector3 _additionalVelocity;
     [SerializeField, ReadOnly] protected bool _groundCollided;
     [SerializeField, ReadOnly] protected float _groundDistance;
     [SerializeField, ReadOnly] protected bool _ceilingCollided;
@@ -112,6 +113,11 @@ public class EntityMovement : MonoBehaviour
         _gravityScale = gravityScale;
     }
 
+    public void AddKnockback(Vector3 velocity)
+    {
+        _additionalVelocity += velocity;
+    }
+
     protected void ApplyGravity()
     {
         _velocity += Vector3.up * (Physics.gravity.y * _gravityScale * Time.deltaTime);
@@ -121,7 +127,8 @@ public class EntityMovement : MonoBehaviour
     {
         _velocity.y = Mathf.Clamp(_velocity.y, -20, 20);
         if (_groundCollided && _velocity.y < 0) _velocity.y = 0;
-        Vector3 offset = _velocity * Time.deltaTime;
+        Vector3 offset = (_velocity + _additionalVelocity) * Time.deltaTime;
+        _additionalVelocity *= 0.75f / Time.deltaTime;
         offset.y = Mathf.Clamp(offset.y, -_groundDistance, _ceilingDistance);
         offset.x = Mathf.Clamp(offset.x, -_leftWallDistance, _rightWallDistance);
         transform.position += offset;

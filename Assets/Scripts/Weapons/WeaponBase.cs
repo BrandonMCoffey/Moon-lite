@@ -51,7 +51,6 @@ public abstract class WeaponBase : MonoBehaviour
         _col = GetComponent<Collider>();
         _anim = GetComponentInChildren<Animator>();
         _sr = GetComponentInChildren<SpriteRenderer>();
-        _pwm = FindObjectOfType<PlayerWeaponManager>();
 
         //_sr.sprite = _data.Sprite;
 
@@ -61,6 +60,11 @@ public abstract class WeaponBase : MonoBehaviour
         if (!_sr) Debug.LogWarning($"SpriteRenderer component is missing in children of {gameObject.name}");
 
         _tempAmmoPerShot = _data.AmmoPerShot;
+    }
+
+    private void Start()
+    {
+        _pwm = Player.WeaponManager;
     }
 
     private void Update()
@@ -182,6 +186,8 @@ public abstract class WeaponBase : MonoBehaviour
         aimDirection = Quaternion.Euler(0, 0, randomAngle) * aimDirection;
 
         Vector3 spawnPosition = _shootTransform.position;
+
+        Player.Movement.AddKnockback(-aimDirection * 50);
 
         if (_data.HitScan)
         {
