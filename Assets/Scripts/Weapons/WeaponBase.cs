@@ -178,17 +178,60 @@ public abstract class WeaponBase : MonoBehaviour
 
         // Apply spray effect
         float randomAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
+        Vector3 preSpreadAim = aimDirection;
         aimDirection = Quaternion.Euler(0, 0, randomAngle) * aimDirection;
 
         Vector3 spawnPosition = _shootTransform.position;
 
-        // TODO: If all bullets use the same prefab, implement object pooling for bullets
-        // We can handle bullet effects through the data object or some other way. Not sure what is best
-        BulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
-        float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+        if (_data.HitScan)
+        {
+            Physics.Raycast(spawnPosition, aimDirection, out RaycastHit hit, _data.RayRange, bulletData.BulletPrefab.BulletLayerMask, QueryTriggerInteraction.Ignore);
+            Debug.DrawRay(spawnPosition, aimDirection * _data.RayRange, Color.red, 2f); // Visualize the ray
 
-        // Sending bullet data to insure that prefab has correct bullet data
-        bulletInstance.BulletSetup(aimDirection, angle, _data, bulletData);
+            if (hit.collider != null)
+            {
+                Debug.Log($"Raycast hit: {hit.collider.name} at {hit.point}");
+                var chunk = hit.collider.GetComponent<Chunk>();
+                if (chunk != null)
+                {
+                    Vector3 pointToDestroy = new Vector3(hit.point.x, hit.point.y, 0) + aimDirection.normalized * 0.01f;
+                    if(_data.ForceAoe)
+                    {
+                        chunk.World.DamageTileInCircle(pointToDestroy, _data.BulletAoeRadius, _data.BulletDamage);
+                    }
+                    else
+                    {
+                        chunk.World.DamageTileAt(pointToDestroy, _data.BulletDamage);
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("Raycast did not hit anything.");
+            }
+        }
+        else if (_data.MultipleBullets)
+        {
+            // Handle multiple bullets logic
+            for (int i = 0; i < _data.BulletAmount; i++)
+            {
+                float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
+                Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
+
+                BulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
+                float angle = Mathf.Atan2(spreadDirection.y, spreadDirection.x) * Mathf.Rad2Deg;
+
+                bulletInstance.BulletSetup(spreadDirection, angle, _data, bulletData);
+            }
+        }
+        else
+        {
+            // Default single bullet logic
+            BulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
+            float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+            bulletInstance.BulletSetup(aimDirection, angle, _data, bulletData);
+        }
 
         if (_recoilCoroutine != null)
         {

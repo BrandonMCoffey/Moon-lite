@@ -15,6 +15,8 @@ public class BulletBase : SimplePhysicsObject
     [SerializeField, ReadOnly] private bool _hasAOE = false;
     [SerializeField, ReadOnly] private float _aoeRadius = 1f;
 
+    public LayerMask BulletLayerMask => _physicsLayerMask;
+
     //[SerializeField] private GameObject _psBloodDirectional;
     //[SerializeField] private GameObject _psBloodCircle;
     //[SerializeField] private GameObject _psOtherDirectional;
