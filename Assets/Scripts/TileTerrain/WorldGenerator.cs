@@ -388,6 +388,68 @@ public class WorldGenerator : MonoBehaviour
         ModifyChunk(x, y);
     }
 
+    public void DestroyTilesAlongRay(Vector3 origin, Vector3 dir, float maxDist, float damage = 10f)
+    {
+        int x = WorldToTileX(origin.x);
+        int y = WorldToTileY(origin.y);
+
+        float deltaDistX = Mathf.Abs(1f / dir.x);
+        float deltaDistY = Mathf.Abs(1f / dir.y);
+
+        int stepX = dir.x < 0 ? -1 : 1;
+        int stepY = dir.y < 0 ? -1 : 1;
+
+        float tileSize = _tileSizeMult;
+        float tileXWorld = x * tileSize + OffsetX;
+        float tileYWorld = y * tileSize + OffsetY;
+
+        float sideDistX = (stepX > 0) ? ((tileXWorld + tileSize - origin.x) / dir.x) : ((tileXWorld - origin.x) / dir.x);
+        float sideDistY = (stepY > 0) ? ((tileYWorld + tileSize - origin.y) / dir.y) : ((tileYWorld - origin.y) / dir.y);
+
+        float currentDamage = 0;
+
+        while (currentDamage < damage && sideDistX + sideDistY < maxDist)
+        {
+            currentDamage += AttemptDestroyAt(x, y, damage - currentDamage);
+
+            if (sideDistX < sideDistY)
+            {
+                sideDistX += deltaDistX;
+                x += stepX;
+            }
+            else
+            {
+                sideDistY += deltaDistY;
+                y += stepY;
+            }
+        }
+    }
+    public float AttemptDestroyAt(int x, int y, float maxDamage)
+    {
+        if (GetTile(x, y) == TileType.Air)
+        {
+            return 0;
+        }
+        var data = Settings.GetTileData(_grid[x, y]);
+
+        var coord = new Vector2Int(x, y);
+        float currentDamage = 0;
+        bool hasDamage = _tileDamageData.TryGetValue(coord, out currentDamage);
+        if (data.TileHealth - currentDamage <= maxDamage)
+        {
+            DestroyTileAt(x, y, data.ItemData);
+            if (hasDamage) _tileDamageData.Remove(coord);
+            return data.TileHealth - currentDamage; // Return dealt damage
+        }
+        else
+        {
+            if (hasDamage) _tileDamageData[coord] = currentDamage + maxDamage;
+            else _tileDamageData.Add(coord, currentDamage + maxDamage);
+            ModifyChunk(x, y);
+            return maxDamage;
+        }
+    }
+
     public bool DamageTileAt(Vector3 worldPos, float damage = 1)
     {
         var x = WorldToTileX(worldPos.x);
