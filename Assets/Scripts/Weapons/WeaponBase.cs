@@ -189,28 +189,35 @@ public abstract class WeaponBase : MonoBehaviour
             Vector3 adjustedStart = spawnPosition - aimDirection.normalized * .75f; // Start slightly behind
             float adjustedRange = _data.RayRange + .75f; // Extend the range to compensate
 
-            Physics.Raycast(adjustedStart, aimDirection, out RaycastHit hit, adjustedRange, bulletData.BulletPrefab.BulletLayerMask, QueryTriggerInteraction.Ignore);
-            Debug.DrawRay(adjustedStart, aimDirection * adjustedRange, Color.red, 2f); // Visualize the ray
-
-            if (hit.collider != null)
+            for (int i = 0; i < (_data.MultipleBullets ? _data.BulletAmount : 1); i++)
             {
-                var chunk = hit.collider.GetComponent<Chunk>();
-                if (chunk != null)
+                // Apply spread for each raycast
+                float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
+                Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
+
+                Physics.Raycast(adjustedStart, spreadDirection, out RaycastHit hit, adjustedRange, bulletData.BulletPrefab.BulletLayerMask, QueryTriggerInteraction.Ignore);
+                Debug.DrawRay(adjustedStart, spreadDirection * adjustedRange, Color.red, 2f); // Visualize the ray
+
+                if (hit.collider != null)
                 {
-                    Vector3 pointToDestroy = hit.point; // Use the actual hit point
-                    if (_data.ForceAoe)
+                    var chunk = hit.collider.GetComponent<Chunk>();
+                    if (chunk != null)
                     {
-                        chunk.World.DamageTileInCircle(pointToDestroy, _data.BulletAoeRadius, _data.BulletDamage);
-                    }
-                    else
-                    {
-                        chunk.World.DamageTileAt(pointToDestroy, _data.BulletDamage);
+                        Vector3 pointToDestroy = hit.point; // Use the actual hit point
+                        if (_data.ForceAoe)
+                        {
+                            chunk.World.DamageTileInCircle(pointToDestroy, _data.BulletAoeRadius, _data.BulletDamage);
+                        }
+                        else
+                        {
+                            chunk.World.DamageTileAt(pointToDestroy, _data.BulletDamage);
+                        }
                     }
                 }
-            }
-            else
-            {
-                Debug.Log("Raycast did not hit anything.");
+                else
+                {
+                    //Debug.Log("Raycast did not hit anything.");
+                }
             }
         }
         else if (_data.MultipleBullets)
