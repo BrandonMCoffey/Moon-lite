@@ -30,9 +30,10 @@ public class HoverPopup : MonoBehaviour
 
     private void HandleHover(ShowPopupOnHover visual, bool hovered)
     {
-        Debug.Log($"{(hovered ? "Hover " : "Leave ")} from {visual.name}");
+        //Debug.Log($"{(hovered ? "Hover " : "Leave ")} from {visual.name}");
         if (hovered)
         {
+            _current = visual;
             _popupText.text = visual.GetHoverText();
             _popupCanvas.enabled = true;
         }

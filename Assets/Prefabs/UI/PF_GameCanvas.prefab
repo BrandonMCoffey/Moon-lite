@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _popupCanvas: {fileID: 8224950535796872191}
-  _popupText: {fileID: 0}
+  _popupText: {fileID: 4262735085323906147}
 --- !u!1 &822606936018329328
 GameObject:
   m_ObjectHideFlags: 0

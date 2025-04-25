@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5e62cb1d87a5940a0f19f9dd96412f, type: 3}
   m_Name: Data_SMG
   m_EditorClassIdentifier: 
-  _weaponName: Data_SMG
-  _weaponDescription: 
+  _weaponName: SMG
+  _weaponDescription: Low damage, rapid fire
   _weaponSprite: {fileID: 21300000, guid: 8dc79b004e3f1f84cac6f3b82644e015, type: 3}
   _weaponPrefab: {fileID: 7707075139789495896, guid: c958379195c000c408934530b050b3d9,
     type: 3}
