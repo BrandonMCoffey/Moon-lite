@@ -77,13 +77,16 @@ MonoBehaviour:
       Data: 
     - Name: DamageUVCount
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: ItemData
       Entry: 10
       Data: 0
     - Name: Mineral
       Entry: 5
       Data: false
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -129,6 +132,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: false
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -174,6 +180,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: false
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -219,6 +228,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: false
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -242,7 +254,7 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -264,6 +276,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: true
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0.2
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -287,7 +302,7 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 1
+      Data: 2
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -309,6 +324,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: true
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0.2
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -354,6 +372,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: true
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0.2
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -399,6 +420,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: true
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0.2
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -422,7 +446,7 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 0
+      Data: 3
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -444,6 +468,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: true
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0.2
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -467,7 +494,7 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 1
+      Data: 3
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -489,6 +516,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: true
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0.2
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -512,7 +542,7 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 2
+      Data: 3
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -534,6 +564,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: true
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0.2
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -557,7 +590,7 @@ MonoBehaviour:
       Data: TerrainTileDataStruct, Assembly-CSharp
     - Name: TileHealth
       Entry: 3
-      Data: 3
+      Data: 4
     - Name: UVCoords
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -579,6 +612,9 @@ MonoBehaviour:
     - Name: Mineral
       Entry: 5
       Data: true
+    - Name: NoiseScale
+      Entry: 4
+      Data: 0.2
     - Name: Frequency
       Entry: 4
       Data: 0.1
@@ -605,7 +641,6 @@ MonoBehaviour:
   _caveNoiseDetail: 0.15
   _caveCeilingDecoChance: 0.1
   _caveFloorDecoChance: 0.1
-  _mineralNoiseScale: 0.2
   _terrainMaterial: {fileID: 2100000, guid: efb26339e8c987040bde7f0e634c4e1e, type: 2}
   _gridSize: 8
   _damageOffsetUV: {x: 1, y: 0}

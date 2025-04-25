@@ -248,9 +248,9 @@ public class WorldGenerator : MonoBehaviour
                             continue;
                         }
                         float noise = Mathf.PerlinNoise(
-                            (x + offX + i * 100f) * Settings.MineralNoiseScale * _tileSizeMult,
-                            (y + offY + i * 100f) * Settings.MineralNoiseScale * _tileSizeMult);
-                        if (noise < mineralData[i].Item3)
+                            (x + offX + i * 100f) * mineralData[i].Item3 * _tileSizeMult,
+                            (y + offY + i * 100f) * mineralData[i].Item3 * _tileSizeMult);
+                        if (noise < mineralData[i].Item4)
                         {
                             _grid[x, y] = mineralData[i].Item1;
                             break;

@@ -174,11 +174,13 @@ public class Chunk : MonoBehaviour
     private Vector2[] GetUVsForTile(TileType type, bool reverse, bool front, int damage)
     {
         // TODO: Optimize this, its expensive atm
-        Vector2 uvCoord = _world.Settings.GetTileData(type).UVCoords;
+        var data = _world.Settings.GetTileData(type);
+        Vector2 uvCoord = data.UVCoords;
         if (damage > 0)
         {
-            uvCoord.x += _world.Settings.DamageOffsetUV.x;
-            uvCoord.y += _world.Settings.DamageOffsetUV.y;
+            int offset = Mathf.RoundToInt(data.DamageUVCount * (damage / data.TileHealth));
+            uvCoord.x += _world.Settings.DamageOffsetUV.x * offset;
+            uvCoord.y += _world.Settings.DamageOffsetUV.y * offset;
         }
         uvCoord.y = _world.Settings.GridSize - 1 - uvCoord.y;
         if (!front && type == TileType.Grass) uvCoord.y -= 1;
