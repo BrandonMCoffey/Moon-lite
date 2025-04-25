@@ -185,17 +185,20 @@ public abstract class WeaponBase : MonoBehaviour
 
         if (_data.HitScan)
         {
-            Physics.Raycast(spawnPosition, aimDirection, out RaycastHit hit, _data.RayRange, bulletData.BulletPrefab.BulletLayerMask, QueryTriggerInteraction.Ignore);
-            Debug.DrawRay(spawnPosition, aimDirection * _data.RayRange, Color.red, 2f); // Visualize the ray
+            // Adjust the raycast start position and range
+            Vector3 adjustedStart = spawnPosition - aimDirection.normalized * .75f; // Start slightly behind
+            float adjustedRange = _data.RayRange + .75f; // Extend the range to compensate
+
+            Physics.Raycast(adjustedStart, aimDirection, out RaycastHit hit, adjustedRange, bulletData.BulletPrefab.BulletLayerMask, QueryTriggerInteraction.Ignore);
+            Debug.DrawRay(adjustedStart, aimDirection * adjustedRange, Color.red, 2f); // Visualize the ray
 
             if (hit.collider != null)
             {
-                Debug.Log($"Raycast hit: {hit.collider.name} at {hit.point}");
                 var chunk = hit.collider.GetComponent<Chunk>();
                 if (chunk != null)
                 {
-                    Vector3 pointToDestroy = new Vector3(hit.point.x, hit.point.y, 0) + aimDirection.normalized * 0.01f;
-                    if(_data.ForceAoe)
+                    Vector3 pointToDestroy = hit.point; // Use the actual hit point
+                    if (_data.ForceAoe)
                     {
                         chunk.World.DamageTileInCircle(pointToDestroy, _data.BulletAoeRadius, _data.BulletDamage);
                     }
