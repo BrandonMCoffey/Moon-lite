@@ -62,4 +62,10 @@ public class AmmoVisual : ShowPopupOnHover
     {
         return _mineralData.Name + "\n" + _mineralData.Description;
     }
+
+    public override void ClickOnVisual()
+    {
+        // TODO: Fix this
+        Player.Instance.GetComponent<PlayerWeaponManager>().SwitchToAmmo(_mineralData);
+    }
 }

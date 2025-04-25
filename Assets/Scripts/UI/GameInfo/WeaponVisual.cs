@@ -42,4 +42,11 @@ public class WeaponVisual : ShowPopupOnHover
     {
         return _weaponData.Name + "\n" + _weaponData.Description;
     }
+
+    // TODO: Use button UI instead
+    public override void ClickOnVisual()
+    {
+        // TODO: Fix this
+        Player.Instance.GetComponent<PlayerWeaponManager>().SwitchToWeapon(_weaponData);
+    }
 }

@@ -8,6 +8,10 @@ public class InventoryData : SerializedScriptableObject
 {
     public event System.Action OnInventoryUpdated = delegate { };
 
+    // TODO: This stores the weapons and ammo that the player starts with
+    [SerializeField] private List<WeaponData> _startWeapons = new List<WeaponData>();
+    [SerializeField] private List<MineralData> _equippedAmmos = new List<MineralData>();
+
     [DictionaryDrawerSettings(KeyLabel = "Item Data", ValueLabel = "Count")]
     [SerializeField] private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
 

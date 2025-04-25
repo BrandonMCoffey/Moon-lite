@@ -413,6 +413,20 @@ public class PlayerWeaponManager : MonoBehaviour
         UpdateCurrentWeapon();
     }
 
+    public void SwitchToWeapon(WeaponData weapon)
+    {
+        if (_weapons.Count == 0) return;
+        for (int i = 0; i < _weapons.Count; i++)
+        {
+            if (_weapons[i].Data == weapon)
+            {
+                _equippedWeaponIndex = i;
+                UpdateCurrentWeapon();
+                return;
+            }
+        }
+    }
+
     private void UpdateCurrentWeapon()
     {
         StopReloadCoroutines();
@@ -452,6 +466,23 @@ public class PlayerWeaponManager : MonoBehaviour
             OnEquipAmmo?.Invoke(EquippedAmmo);
             //AmmoTypeChangeEvent.Invoke(EquippedAmmo);
             ResetAndReloadWeapon();
+        }
+    }
+
+    public void SwitchToAmmo(MineralData ammo)
+    {
+        if (_ammoDataEquipped.Count == 0) return;
+
+        for (int i = 0; i < _ammoDataEquipped.Count; i++)
+        {
+            if (_ammoDataEquipped[i] == ammo)
+            {
+                _equippedAmmoIndex = i;
+                OnEquipAmmo?.Invoke(EquippedAmmo);
+                //AmmoTypeChangeEvent.Invoke(EquippedAmmo);
+                ResetAndReloadWeapon();
+                return;
+            }
         }
     }
 
