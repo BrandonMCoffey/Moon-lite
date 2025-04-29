@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using static UnityEditor.ShaderData;
 
 public class WorldGenerator : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class WorldGenerator : MonoBehaviour
     private List<Vector2Int> _modifiedChunks;
     private Dictionary<Vector2Int, float> _tileDamageData;
     private List<StructureData> _structures;
+    private List<LevelDecoration> _decorations;
     private Transform _player;
 
     private float _noiseOffsetX;
@@ -95,6 +97,11 @@ public class WorldGenerator : MonoBehaviour
                 Destroy(_structures[i].gameObject);
             }
             _structures.Clear();
+            for (int i = _decorations.Count - 1; i >= 0; i--)
+            {
+                Destroy(_decorations[i].gameObject);
+            }
+            _decorations.Clear();
         }
         InitializeWorld();
     }
@@ -106,6 +113,7 @@ public class WorldGenerator : MonoBehaviour
         _modifiedChunks = new List<Vector2Int>();
         _tileDamageData = new Dictionary<Vector2Int, float>(100);
         _structures = new List<StructureData>();
+        _decorations = new List<LevelDecoration>();
 
         if (_worldSeed < 0) _worldSeed = Random.Range(1, 100000);
         Random.InitState(_worldSeed);
@@ -152,9 +160,10 @@ public class WorldGenerator : MonoBehaviour
                     _grid[x, y] = TileType.Surface;
                     if (Random.value < Settings.GrassDecoChance)
                     {
-                        var grass = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y + 1), transform.rotation, transform);
-                        grass.RandomizeGrass();
-                        grass.ConnectToTile(x, y);
+                        var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y + 1), transform.rotation, transform);
+                        deco.RandomizeGrass();
+                        deco.ConnectToTile(x, y);
+                        _decorations.Add(deco);
                     }
                 }
                 else
@@ -170,35 +179,52 @@ public class WorldGenerator : MonoBehaviour
         float caveNoiseOffsetX = _noiseOffsetX + 100f;
         float caveNoiseOffsetY = _noiseOffsetY + 100f;
 
-        int maxCaveHeight = _height - Settings.CaveStartDepth;
-        int minCaveHeight = 10;
-
-        for (int y = maxCaveHeight - 1; y >= minCaveHeight; y--)
+        for (int y = _height - 1; y > 0; y--)
         {
-            // Suface bias (reduce caves near surface)
-            float surfaceThresholdOffset = Mathf.Clamp01((y + 10 - maxCaveHeight) * 0.1f) * (1 - Settings.CaveThreshold);
-
             for (int x = 0; x < _width; x++)
             {
                 if (_grid[x, y] == TileType.Underground)
                 {
-                    float caveNoiseValue = Mathf.PerlinNoise(
-                        (x + caveNoiseOffsetX) * Settings.CaveNoiseScale * _tileSizeMult,
-                        (y + caveNoiseOffsetY) * Settings.CaveNoiseScale * _tileSizeMult
-                    );
-                    float caveNoiseValue2 = Mathf.PerlinNoise(
-                        (x + caveNoiseOffsetX * 0.25f) * Settings.CaveNoiseScale * _tileSizeMult * 4f,
-                        (y + caveNoiseOffsetY * 0.25f) * Settings.CaveNoiseScale * _tileSizeMult * 4f
-                    );
-                    caveNoiseValue = Mathf.Lerp(caveNoiseValue, caveNoiseValue2, Settings.CaveNoiseDetail);
+                    float caveNoiseValue = 0;
+
+                    if (Settings.LargeCaves)
+                    {
+                        float caveNoiseValue3 = Mathf.PerlinNoise(
+                            (x + caveNoiseOffsetX) * Settings.LargeCaveNoiseScale.x * _tileSizeMult,
+                            (y + caveNoiseOffsetY) * Settings.LargeCaveNoiseScale.y * _tileSizeMult
+                        );
+                        if (caveNoiseValue3 > Settings.LargeCaveThreshold)
+                        {
+                            caveNoiseValue = 1;
+
+                            // Suface bias (reduce caves near surface)
+                            caveNoiseValue -= Mathf.Clamp01((y + 10 + Settings.LargeCavesStartDepth - _height) * 0.1f);
+                        }
+                    }
+                    if (Settings.RegularCaves && caveNoiseValue < 1)
+                    {
+                        float caveNoiseValue1 = Mathf.PerlinNoise(
+                            (x + caveNoiseOffsetX) * Settings.CaveNoiseScale.x * _tileSizeMult,
+                            (y + caveNoiseOffsetY) * Settings.CaveNoiseScale.y * _tileSizeMult
+                        );
+                        float midScale = (Settings.CaveNoiseScale.x + Settings.CaveNoiseScale.y) * 0.5f;
+                        float caveNoiseValue2 = Mathf.PerlinNoise(
+                            (x + caveNoiseOffsetX * 0.25f) * midScale * _tileSizeMult * 4f,
+                            (y + caveNoiseOffsetY * 0.25f) * midScale * _tileSizeMult * 4f
+                        );
+                        caveNoiseValue = Mathf.Lerp(caveNoiseValue1, caveNoiseValue2, Settings.CaveNoiseDetail);
+
+                        // Suface bias (reduce caves near surface)
+                        caveNoiseValue -= Mathf.Clamp01((y + 10 + Settings.CaveStartDepth - _height) * 0.1f);
+                    }
 
                     // Edge bias (reduce caves near edge)
                     float edgeThresholdOffset = 0;
                     if (x < 12) edgeThresholdOffset += (10 - (x - 2)) * 0.1f;
                     if (x > _width - 12) edgeThresholdOffset += (10 - (_width - x - 2)) * 0.1f;
-                    edgeThresholdOffset = Mathf.Clamp01(edgeThresholdOffset * (1 - Settings.CaveThreshold));
+                    edgeThresholdOffset = Mathf.Clamp01(edgeThresholdOffset);
 
-                    if (caveNoiseValue > Settings.CaveThreshold + surfaceThresholdOffset + edgeThresholdOffset)
+                    if (caveNoiseValue > Settings.CaveThreshold + edgeThresholdOffset)
                     {
                         _grid[x, y] = TileType.Air;
                         // If current tile is air, and above tile is stone
@@ -209,6 +235,7 @@ public class WorldGenerator : MonoBehaviour
                                 var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y), transform.rotation, transform);
                                 deco.RandomizeCave(false);
                                 deco.ConnectToTile(x, y + 1);
+                                _decorations.Add(deco);
                             }
                         }
                     }
@@ -220,6 +247,7 @@ public class WorldGenerator : MonoBehaviour
                             var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y + 1), transform.rotation, transform);
                             deco.RandomizeCave(true);
                             deco.ConnectToTile(x, y);
+                            _decorations.Add(deco);
                         }
                     }
                 }

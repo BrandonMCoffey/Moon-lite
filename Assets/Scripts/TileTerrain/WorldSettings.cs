@@ -6,26 +6,42 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Moonlite/World Settings")]
 public class WorldSettings : SerializedScriptableObject
 {
-    [Header("Settings")]
+    [Header("Surface Settings")]
     [SerializeField] private int _minSurfaceDepth = 5;
     [SerializeField] private int _maxSurfaceDepth = 20;
     [SerializeField, Range(0f, 0.5f)] private float _surfaceNoiseScale = 0.04f;
-    [SerializeField] private int _caveStartDepth = 30;
-    [SerializeField, Range(0f, 1f)] private float _grassDecoChance = 0.2f;
-    [SerializeField, Range(0f, 0.5f)] private float _caveNoiseScale = 0.08f;
-    [SerializeField, Range(0f, 1f)] private float _caveThreshold = 0.55f;
-    [SerializeField, Range(0f, 1f)] public float _caveNoiseDetail = 0.15f;
-    [SerializeField, Range(0f, 1f)] private float _caveCeilingDecoChance = 0.1f;
-    [SerializeField, Range(0f, 1f)] private float _caveFloorDecoChance = 0.1f;
 
     public int MinSurfaceDepth => _minSurfaceDepth;
     public int MaxSurfaceDepth => _maxSurfaceDepth;
     public float SurfaceNoiseScale => _surfaceNoiseScale;
+
+    [Header("Caves Settings")]
+    [SerializeField] private bool _regularCaves = true;
+    [SerializeField] private int _caveStartDepth = 30;
+    [SerializeField] private Vector2 _caveNoiseScale = Vector2.one * 0.08f;
+    [SerializeField, Range(0f, 1f)] private float _caveThreshold = 0.55f;
+    [SerializeField, Range(0f, 1f)] public float _caveNoiseDetail = 0.15f;
+    [SerializeField] private bool _largeCaves = true;
+    [SerializeField] private int _largeCavesStartDepth = 10;
+    [SerializeField] private Vector2 _largeCaveNoiseScale = Vector2.one * 0.02f;
+    [SerializeField, Range(0f, 1f)] private float _largeCaveThreshold = 0.7f;
+
+    public bool RegularCaves => _regularCaves;
     public int CaveStartDepth => _caveStartDepth;
-    public float GrassDecoChance => _grassDecoChance;
-    public float CaveNoiseScale => _caveNoiseScale;
+    public Vector2 CaveNoiseScale => _caveNoiseScale;
     public float CaveThreshold => _caveThreshold;
     public float CaveNoiseDetail => _caveNoiseDetail;
+    public bool LargeCaves => _largeCaves;
+    public int LargeCavesStartDepth => _largeCavesStartDepth;
+    public Vector2 LargeCaveNoiseScale => _largeCaveNoiseScale;
+    public float LargeCaveThreshold => _largeCaveThreshold;
+
+    [Header("Decoration Settings")]
+    [SerializeField, Range(0f, 1f)] private float _grassDecoChance = 0.2f;
+    [SerializeField, Range(0f, 1f)] private float _caveCeilingDecoChance = 0.1f;
+    [SerializeField, Range(0f, 1f)] private float _caveFloorDecoChance = 0.1f;
+
+    public float GrassDecoChance => _grassDecoChance;
     public float CaveCeilingDecoChance => _caveCeilingDecoChance;
     public float CaveFloorDecoChance => _caveFloorDecoChance;
 
