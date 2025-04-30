@@ -20,12 +20,12 @@ public class WeaponData : ScriptableObject
     [SerializeField] private int _maxMagSize = 10; // Ammo capacity of the magazine.
     [SerializeField] private float _reloadTime = 2f; // Time it takes to reload.
     [SerializeField] private bool _isAutomatic = false;
-    [SerializeField] private int _ammoPerShot = 1; // Amount of ammo consumed per shot
+    [SerializeField] private float _ammoPerShot = 1; // Amount of ammo consumed per shot
 
     public int MaxMagSize => _maxMagSize;
     public float ReloadTime => _reloadTime;
     public bool IsAutomatic => _isAutomatic;
-    public int AmmoPerShot => _ammoPerShot;
+    public float AmmoPerShot => _ammoPerShot;
 
 
     [Header("Fire Settings")]

@@ -17,9 +17,9 @@ public class WeaponBase : MonoBehaviour
     [SerializeField] protected Transform _shootTransform;
     [SerializeField] protected Transform _gunSprite;
 
-    protected int _currentMagAmmo; // Ammo left in the magazine.
-    public int CurrentMagAmmo { get => _currentMagAmmo; set => _currentMagAmmo = value; }
-    public int AmmoNeededForReload => _data.MaxMagSize - _currentMagAmmo;
+    protected float _currentMagAmmo; // Ammo left in the magazine.
+    public float CurrentMagAmmo { get => _currentMagAmmo; set => _currentMagAmmo = value; }
+    public float AmmoNeededForReload => _data.MaxMagSize - _currentMagAmmo;
     public bool IsAutomatic => _data.IsAutomatic;
 
     protected bool _isReloading = false;
@@ -29,7 +29,7 @@ public class WeaponBase : MonoBehaviour
     protected float _lastFireTime;
 
     [Header("Ammo Consumption")]
-    private int _tempAmmoPerShot = 0; // Amount of ammo consumed per shot
+    private float _tempAmmoPerShot = 0; // Amount of ammo consumed per shot
 
     protected bool _infiniteAmmo;
 
@@ -320,8 +320,8 @@ public class WeaponBase : MonoBehaviour
 
         yield return new WaitForSeconds(_data.ReloadTime);
 
-        int ammoNeeded = _data.MaxMagSize - _currentMagAmmo;
-        int ammoToReload = Mathf.Min(ammoNeeded, _pwm.CurrentAmmoInventory);
+        float ammoNeeded = _data.MaxMagSize - _currentMagAmmo;
+        float ammoToReload = Mathf.Min(ammoNeeded, _pwm.CurrentAmmoInventory);
 
         _currentMagAmmo += ammoToReload;
 

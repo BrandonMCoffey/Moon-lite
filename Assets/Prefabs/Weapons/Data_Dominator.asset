@@ -25,7 +25,7 @@ MonoBehaviour:
   _bulletSpeed: 45
   _sprayAngle: 15
   _recoilForce: {x: 0.2, y: 5}
-  _artType: 0
+  _artType: 2
   _bulletSize: 1
   _bulletDamage: 0.6
   _bulletKnockback: 0.5
@@ -36,5 +36,5 @@ MonoBehaviour:
   _aoeRadius: 1
   _multipleBullets: 0
   _bulletAmount: 1
-  _hitScan: 0
-  _rayRange: 1
+  _hitScan: 1
+  _rayRange: 5

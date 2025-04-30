@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     }
 
     public void AddItemToInventory(ItemData item, int count = 1) => _inventory.AddItemToInventory(item, count);
-    public int GetInventoryCount(ItemData item) => _inventory.GetInventoryCount(item);
+    public float GetInventoryCount(ItemData item) => _inventory.GetInventoryCount(item);
 
     private void Throw(SimplePhysicsObject prefab)
     {

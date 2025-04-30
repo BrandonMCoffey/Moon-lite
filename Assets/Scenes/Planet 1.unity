@@ -4118,6 +4118,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3081370178779755053, guid: 64f661075a1f7bb43a4dc028a50978fd,
+        type: 3}
+      propertyPath: _maxWeapons
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3081370178779755054, guid: 64f661075a1f7bb43a4dc028a50978fd,
         type: 3}
       propertyPath: m_RootOrder

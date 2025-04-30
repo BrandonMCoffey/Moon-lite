@@ -16,11 +16,11 @@ public class InventoryData : SerializedScriptableObject
     public List<MineralData> EquippedAmmos => _equippedAmmos;
 
     [DictionaryDrawerSettings(KeyLabel = "Item Data", ValueLabel = "Count")]
-    [SerializeField] private Dictionary<ItemData, int> _inventory = new Dictionary<ItemData, int>();
+    [SerializeField] private Dictionary<ItemData, float> _inventory = new Dictionary<ItemData, float>();
 
-    public int GetInventoryCount(ItemData item)
+    public float GetInventoryCount(ItemData item)
     {
-        int count = 0;
+        float count = 0;
         _inventory.TryGetValue(item, out count);
         return count;
     }
@@ -38,7 +38,7 @@ public class InventoryData : SerializedScriptableObject
         OnInventoryUpdated?.Invoke();
     }
 
-    public void RemoveItemFromInventory(ItemData item, int count = 1)
+    public void RemoveItemFromInventory(ItemData item, float count = 1)
     {
         if (_inventory.ContainsKey(item))
         {

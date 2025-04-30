@@ -7,7 +7,7 @@ public class AmmoVisual : ShowPopupOnHover
     [SerializeField] private InventoryData _inventory;
     [SerializeField] private MineralData _mineralData;
     [SerializeField] private WeaponAmmoArtType _ammoArtType;
-    [SerializeField] private int _itemCount;
+    [SerializeField] private float _itemCount;
 
     [Header("References")]
     [SerializeField] private Image _iconImage;

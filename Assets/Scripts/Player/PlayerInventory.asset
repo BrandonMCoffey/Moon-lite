@@ -35,7 +35,7 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _inventory
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[ItemData, Assembly-CSharp],[System.Int32,
+      Data: 0|System.Collections.Generic.Dictionary`2[[ItemData, Assembly-CSharp],[System.Single,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
@@ -54,8 +54,8 @@ MonoBehaviour:
       Entry: 10
       Data: 0
     - Name: $v
-      Entry: 3
-      Data: 981
+      Entry: 4
+      Data: 500
     - Name: 
       Entry: 8
       Data: 
@@ -66,8 +66,8 @@ MonoBehaviour:
       Entry: 10
       Data: 1
     - Name: $v
-      Entry: 3
-      Data: 1985
+      Entry: 4
+      Data: 500
     - Name: 
       Entry: 8
       Data: 
@@ -78,8 +78,8 @@ MonoBehaviour:
       Entry: 10
       Data: 2
     - Name: $v
-      Entry: 3
-      Data: 520
+      Entry: 4
+      Data: 500
     - Name: 
       Entry: 8
       Data: 
@@ -90,8 +90,8 @@ MonoBehaviour:
       Entry: 10
       Data: 3
     - Name: $v
-      Entry: 3
-      Data: 753
+      Entry: 4
+      Data: 500
     - Name: 
       Entry: 8
       Data: 
@@ -102,7 +102,7 @@ MonoBehaviour:
       Entry: 10
       Data: 4
     - Name: $v
-      Entry: 3
+      Entry: 4
       Data: 500
     - Name: 
       Entry: 8
@@ -114,7 +114,7 @@ MonoBehaviour:
       Entry: 10
       Data: 5
     - Name: $v
-      Entry: 3
+      Entry: 4
       Data: 500
     - Name: 
       Entry: 8
@@ -126,8 +126,8 @@ MonoBehaviour:
       Entry: 10
       Data: 6
     - Name: $v
-      Entry: 3
-      Data: 497
+      Entry: 4
+      Data: 500
     - Name: 
       Entry: 8
       Data: 
@@ -138,7 +138,7 @@ MonoBehaviour:
       Entry: 10
       Data: 7
     - Name: $v
-      Entry: 3
+      Entry: 4
       Data: 500
     - Name: 
       Entry: 8
@@ -150,7 +150,7 @@ MonoBehaviour:
       Entry: 10
       Data: 8
     - Name: $v
-      Entry: 3
+      Entry: 4
       Data: 500
     - Name: 
       Entry: 8
@@ -162,8 +162,8 @@ MonoBehaviour:
       Entry: 10
       Data: 9
     - Name: $v
-      Entry: 3
-      Data: 947
+      Entry: 4
+      Data: 500
     - Name: 
       Entry: 8
       Data: 
@@ -174,8 +174,8 @@ MonoBehaviour:
       Entry: 10
       Data: 10
     - Name: $v
-      Entry: 3
-      Data: 468
+      Entry: 4
+      Data: 500
     - Name: 
       Entry: 8
       Data: 
@@ -186,7 +186,7 @@ MonoBehaviour:
       Entry: 10
       Data: 11
     - Name: $v
-      Entry: 3
+      Entry: 4
       Data: 500
     - Name: 
       Entry: 8
@@ -200,6 +200,11 @@ MonoBehaviour:
   _startWeapons:
   - {fileID: 11400000, guid: 0f9e59fc885f6a24fa9865216402337d, type: 2}
   - {fileID: 11400000, guid: 5f1e938987e1058468ea2c6eea242e32, type: 2}
+  - {fileID: 11400000, guid: e32d4033b799a7e418d00c0b8b388172, type: 2}
+  - {fileID: 11400000, guid: 3cd1ff006c20a3d448ae06ffb0759ec7, type: 2}
+  - {fileID: 11400000, guid: 22f251ea0215170479ea314b2337f32a, type: 2}
+  - {fileID: 11400000, guid: 8f00d6383fd3a3840ade7dcf5449adbb, type: 2}
+  - {fileID: 11400000, guid: 946906a3464e57b449de254a7a5282aa, type: 2}
   _equippedAmmos:
   - {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
   - {fileID: 11400000, guid: 737238d39c85bce44b83b7b26f85465f, type: 2}

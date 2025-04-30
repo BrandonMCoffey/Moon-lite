@@ -22,7 +22,7 @@ MonoBehaviour:
   _isAutomatic: 1
   _ammoPerShot: 1
   _fireRate: 15
-  _bulletSpeed: 45
+  _bulletSpeed: 40
   _sprayAngle: 15
   _recoilForce: {x: 0.2, y: 5}
   _artType: 0

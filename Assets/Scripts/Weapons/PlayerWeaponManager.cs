@@ -36,7 +36,7 @@ public class PlayerWeaponManager : MonoBehaviour
 
     public List<MineralData> Ammos => _playerInventory.EquippedAmmos;
     public MineralData EquippedAmmo => Ammos[_equippedAmmoIndex];
-    public int CurrentAmmoInventory => _playerInventory.GetInventoryCount(EquippedAmmo);
+    public float CurrentAmmoInventory => _playerInventory.GetInventoryCount(EquippedAmmo);
 
     public static event System.Action<WeaponData> OnEquipWeapon = delegate { };
     public static event System.Action<MineralData> OnEquipAmmo = delegate { };
@@ -272,9 +272,9 @@ public class PlayerWeaponManager : MonoBehaviour
         // Allow reload if R is pressed or if left click is pressed with no ammo in the mag
         if (PlayerInput.ReloadAmmo || (PlayerInput.MouseLeftPressed && EquippedWeapon.CurrentMagAmmo <= 0))
         {
-            int ammoNeeded = EquippedWeapon.AmmoNeededForReload;
-            int ammoAvailable = CurrentAmmoInventory;
-            int ammoToReload = Mathf.Min(ammoNeeded, ammoAvailable);
+            float ammoNeeded = EquippedWeapon.AmmoNeededForReload;
+            float ammoAvailable = CurrentAmmoInventory;
+            float ammoToReload = Mathf.Min(ammoNeeded, ammoAvailable);
 
             if (ammoToReload > 0)
             {
@@ -285,14 +285,14 @@ public class PlayerWeaponManager : MonoBehaviour
         
     public void StartReloadCoroutine()
     {
-        int ammoNeeded = EquippedWeapon.AmmoNeededForReload;
-        int ammoAvailable = CurrentAmmoInventory;
-        int ammoToReload = Mathf.Min(ammoNeeded, ammoAvailable);
+        float ammoNeeded = EquippedWeapon.AmmoNeededForReload;
+        float ammoAvailable = CurrentAmmoInventory;
+        float ammoToReload = Mathf.Min(ammoNeeded, ammoAvailable);
 
         _reloadCoroutine = StartCoroutine(ReloadWithBar(EquippedWeapon.ReloadTime, ammoToReload));
     }
 
-    private IEnumerator ReloadWithBar(float reloadTime, int ammoToReload)
+    private IEnumerator ReloadWithBar(float reloadTime, float ammoToReload)
     {
         ShowReloadBar();
 
@@ -339,7 +339,7 @@ public class PlayerWeaponManager : MonoBehaviour
         }
     }
 
-    private void CompleteReload(int ammoToReload)
+    private void CompleteReload(float ammoToReload)
     {
         HideReloadBar();
 
@@ -471,7 +471,7 @@ public class PlayerWeaponManager : MonoBehaviour
         //UpdateAmmoUI();
     }
 
-    public void SubtractAmmo(int amount)
+    public void SubtractAmmo(float amount)
     {
         _playerInventory.RemoveItemFromInventory(EquippedAmmo, amount);
 

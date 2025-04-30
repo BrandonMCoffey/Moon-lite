@@ -6,7 +6,7 @@ public class ItemVisual : ShowPopupOnHover
 {
     [SerializeField] protected InventoryData _inventory;
     [SerializeField] protected ItemData _itemData;
-    [SerializeField] protected int _itemCount;
+    [SerializeField] protected float _itemCount;
 
     [Header("References")]
     [SerializeField] protected Image _iconImage;
