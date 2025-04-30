@@ -72,7 +72,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x + unit, y + unit, 0), // Top-Right
                                 new Vector3(x, y + unit, -1),    // Back Top-Left (for thickness)
                                 new Vector3(x + unit, y + unit, -1),// Back Top-Right (for thickness)
-                                currentTile, false, 0, damage);
+                                currentTile, 0, damage);
                     }
 
                     // Check Bottom Face
@@ -83,7 +83,7 @@ public class Chunk : MonoBehaviour
                                new Vector3(x + unit, y, -1), // Back Bottom-Right
                                new Vector3(x, y, 0),      // Front Bottom-Left
                                new Vector3(x + unit, y, 0),  // Front Bottom-Right
-                               currentTile, false, 4, damage);
+                               currentTile, 4, damage);
                     }
 
                     // Check Right Face
@@ -94,7 +94,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x + unit, y + 1, 0),  // Front Top-Right
                                 new Vector3(x + unit, y, -1),     // Back Bottom-Right
                                 new Vector3(x + unit, y + unit, -1), // Back Top-Right
-                                currentTile, true, 2, damage);
+                                currentTile, 2, damage);
                     }
 
                     // Check Left Face
@@ -105,7 +105,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x, y, -1),     // Back Bottom-Left
                                 new Vector3(x, y + unit, 0),  // Front Top-Left
                                 new Vector3(x, y, 0),      // Front Bottom-Left
-                                currentTile, false, 1, damage);
+                                currentTile, 1, damage);
                     }
 
                     // Front Face
@@ -114,7 +114,7 @@ public class Chunk : MonoBehaviour
                                new Vector3(x + unit, y, -1),     // Bottom-Right
                                new Vector3(x, y + unit, -1),     // Top-Left
                                new Vector3(x + unit, y + unit, -1), // Top-Right
-                               currentTile, true, 3, damage);
+                               currentTile, 3, damage);
                 }
             }
         }
@@ -147,13 +147,15 @@ public class Chunk : MonoBehaviour
 
     private void AddFace(ref List<Vector3> vertices, ref List<int> triangles, ref List<Vector2> uvs, ref int vertexIndex,
                          Vector3 bl, Vector3 br, Vector3 tl, Vector3 tr,
-                         TileType tileType, bool reverse, int side, int damage)
+                         TileType tileType, int side, int damage)
     {
         // Add Vertices
         vertices.Add(bl); // 0
         vertices.Add(br); // 1
         vertices.Add(tl); // 2
         vertices.Add(tr); // 3
+
+        bool reverse = side == 2 || side == 3;
 
         // Add Triangles
         triangles.Add(vertexIndex + 0);
@@ -199,19 +201,28 @@ public class Chunk : MonoBehaviour
 
         // Return UV array matching the AddFace vertex order (BL, BR, TL, TR)
         // Adjust to change texture orientation
-        if (reverse)
+        switch (side)
         {
-            uvs.Add(new Vector2(uMin, vMin)); // Bottom-Left UV
-            uvs.Add(new Vector2(uMax, vMin)); // Bottom-Right UV
-            uvs.Add(new Vector2(uMin, vMax)); // Top-Left UV
-            uvs.Add(new Vector2(uMax, vMax)); // Top-Right UV
-        }
-        else
-        {
-            uvs.Add(new Vector2(uMin, vMin)); // Bottom-Left UV
-            uvs.Add(new Vector2(uMin, vMax)); // Top-Left UV
-            uvs.Add(new Vector2(uMax, vMin)); // Bottom-Right UV
-            uvs.Add(new Vector2(uMax, vMax)); // Top-Right UV
+            case 0: // Top
+            case 2: // Front
+            case 4: // Bottom
+                uvs.Add(new Vector2(uMin, vMin)); // Bottom-Left UV
+                uvs.Add(new Vector2(uMin, vMax)); // Top-Left UV
+                uvs.Add(new Vector2(uMax, vMin)); // Bottom-Right UV
+                uvs.Add(new Vector2(uMax, vMax)); // Top-Right UV
+                break;
+            case 1: // Left
+                uvs.Add(new Vector2(uMax, vMax)); // Top-Right UV
+                uvs.Add(new Vector2(uMax, vMin)); // Bottom-Right UV
+                uvs.Add(new Vector2(uMin, vMax)); // Top-Left UV
+                uvs.Add(new Vector2(uMin, vMin)); // Bottom-Left UV
+                break;
+            case 3: // Right
+                uvs.Add(new Vector2(uMin, vMin)); // Bottom-Left UV
+                uvs.Add(new Vector2(uMax, vMin)); // Bottom-Right UV
+                uvs.Add(new Vector2(uMin, vMax)); // Top-Left UV
+                uvs.Add(new Vector2(uMax, vMax)); // Top-Right UV
+                break;
         }
     }
 }
