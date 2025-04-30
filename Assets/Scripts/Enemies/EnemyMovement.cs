@@ -11,7 +11,6 @@ public class EnemyMovement : EntityMovement
     [Header("Enemy Settings")]
     [SerializeField] float _moveSpeed = 5f;
     [SerializeField] float _jumpForce = 10f;
-    [SerializeField] float _obstacleCheckDistance = 0.6f;
 
     [Header("Debug - Enemy")]
     [SerializeField] bool _enableDebug = false;
@@ -130,23 +129,9 @@ public class EnemyMovement : EntityMovement
         //_wallAhead = (_facingRight && _rightWallCollided) || (!_facingRight && _leftWallCollided);
     
         
-        Vector3 direction = _facingRight ? Vector3.right : Vector3.left;
-        Vector3 baseOrigin = transform.position;
-
-        _wallAhead = false;
-        float checkHeightInterval = _playerHeight / 3.0f; 
-        for (int i = 0; i <= 2; i++) // 3 checks: base, middle, top
-        {
-            Vector3 verticalOffset = Vector3.up * (checkHeightInterval * i + 0.1f); // Add small base offset
-            Vector3 wallCheckStart = baseOrigin + verticalOffset;
-
-            if (_enableDebug) Debug.DrawRay(wallCheckStart, direction * _obstacleCheckDistance, Color.yellow); 
-            if (Physics.Raycast(wallCheckStart, direction, _obstacleCheckDistance, _groundLayer, QueryTriggerInteraction.Ignore))
-            {
-                _wallAhead = true;
-                break; 
-            }
-        }
+        if (_facingRight && RightWallCollided) _wallAhead = true;
+        else if (!_facingRight && LeftWallCollided) _wallAhead = true;
+        else _wallAhead = false;
 
         if (!LeftBottomCollided || !RightBottomCollided) _pitAhead = true;
         else _pitAhead = false;

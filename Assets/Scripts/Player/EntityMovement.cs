@@ -31,9 +31,11 @@ public class EntityMovement : MonoBehaviour
     [SerializeField, ReadOnly] protected float _leftBottomDistance;
     [SerializeField, ReadOnly] protected bool _rightBottomCollided;
     [SerializeField, ReadOnly] protected float _rightBottomDistance;
-
     public bool LeftBottomCollided => _leftBottomCollided;
     public bool RightBottomCollided => _rightBottomCollided;
+    public bool LeftWallCollided => _leftWallCollided;
+    public bool RightWallCollided => _rightWallCollided;
+    public Vector3 Velocity => _velocity;
 
     private void Start()
     {

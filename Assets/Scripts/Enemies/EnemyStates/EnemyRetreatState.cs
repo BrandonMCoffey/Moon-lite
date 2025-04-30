@@ -5,15 +5,17 @@ using SaiUtils.StateMachine;
 
 public class EnemyRetreatState : EnemyBaseState
 {
-    PlayerDetector _playerDetector;
-    public EnemyRetreatState(EnemyBrain enemyBrain, PlayerDetector playerDetector, StateMachine enemyStateMachine, EnemyMovement enemyMovement)
-        : base(enemyBrain, enemyStateMachine, enemyMovement) { 
-        _playerDetector = playerDetector;
+    public EnemyRetreatState(EnemyBrain enemyBrain, StateMachine enemyStateMachine)
+    : base(enemyBrain, enemyStateMachine) { }
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        Debug.Log("Retreating from Player!");
     }
 
     public override void Update()
     {
         base.Update();
-        enemyMovement.Retreat(_playerDetector.LastKnownPlayerPosition); //pass in the last known position of the player from PlayerDetector
     }
 }
