@@ -77,29 +77,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2122804177599547945}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13917158cc9ca2c4ba599793c7f7deb6, type: 3}
+  m_Script: {fileID: 11500000, guid: dfbb17313b3a17846ab666450ff0ba3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 0f9e59fc885f6a24fa9865216402337d, type: 2}
   _weaponName: Shotgun
-  _weaponSprite: {fileID: 21300000, guid: c77aacf561ced124eb22f9591a5996d4, type: 3}
   _shootTransform: {fileID: 2122804178461797388}
   _gunSprite: {fileID: 2122804177998014980}
-  _maxMagSize: 4
-  _reloadTime: 0.2
-  _isAutomatic: 0
-  _fireRate: 4
-  _bulletSize: 0.3
-  _bulletSpeed: 10
-  _bulletDamage: 2
-  _bulletKnockback: 1
-  _bulletLifetime: 5
-  _bulletGravityScale: 1.5
-  _hasAOE: 1
-  _aoeRadius: 2
-  _ammoPerShot: 1
-  _sprayAngle: 0
-  _recoilForce: {x: 0.3, y: 10}
 --- !u!65 &2467125778329937797
 BoxCollider:
   m_ObjectHideFlags: 0

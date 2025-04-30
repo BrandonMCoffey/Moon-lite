@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public abstract class WeaponBase : MonoBehaviour
+public class WeaponBase : MonoBehaviour
 {
     public event Action Fired = delegate { };
 
