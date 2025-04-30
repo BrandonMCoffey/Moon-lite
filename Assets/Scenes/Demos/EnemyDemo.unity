@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -591,8 +590,7 @@ GameObject:
   - component: {fileID: 267538042}
   - component: {fileID: 267538046}
   - component: {fileID: 267538045}
-  - component: {fileID: 267538044}
-  - component: {fileID: 267538043}
+  - component: {fileID: 267538047}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -608,7 +606,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 267538041}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.52, y: 3.0768867, z: 0}
+  m_LocalPosition: {x: 13.8, y: 4.16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -616,35 +614,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &267538043
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 267538041}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 1
---- !u!135 &267538044
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 267538041}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &267538045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -679,19 +648,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d46c9dfd6cccc40a05905ec1b8178e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyRigidbody: {fileID: 267538043}
-  playerDetector: {fileID: 267538045}
-  groundLayerMask:
+--- !u!114 &267538047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267538041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d44503969cb8f034785455becd8689dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gravityScale: 1
+  _maxVelocity: 40
+  _groundLayer:
     serializedVersion: 2
-    m_Bits: 256
-  wanderSpeed: 2
-  wanderRadius: 5
-  pitCheckDistance: 5
-  wanderTimeRange: {x: 1, y: 3}
-  playerRememberTime: 5
-  chaseSpeed: 5
-  attackDistance: 2
-  _facingDirection: 0
+    m_Bits: 257
+  _playerHeight: 1.4
+  _playerWidth: 1
+  _groundOffset: 0.7
+  _groundCheckWidth: 0.4
+  _ceilingCheckWidth: 0.25
+  _wallCheckWidth: 0.5
+  _wallChecVerticalOffset: 0.15
+  _checkRaycastDistance: 5
+  _velocity: {x: 0, y: 0, z: 0}
+  _additionalVelocity: {x: 0, y: 0, z: 0}
+  _groundCollided: 0
+  _groundDistance: 0
+  _ceilingCollided: 0
+  _ceilingDistance: 0
+  _leftWallCollided: 0
+  _leftWallDistance: 0
+  _rightWallCollided: 0
+  _rightWallDistance: 0
+  _playerDetector: {fileID: 267538045}
+  _moveSpeed: 5
+  _jumpForce: 10
+  _obstacleCheckDistance: 0.6
+  _pitfallVerticalOffset: 0.1
+  _pitfallCheckDistance: 0.97
+  _enableDebug: 1
+  _facingRight: 1
+  _wallAhead: 0
+  _pitAhead: 0
 --- !u!1 &345437391
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,6 +1148,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5117368387023377168, guid: 0569cd27e5ddb5b4fafb03dd0548d889,
+        type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5117368387023377168, guid: 0569cd27e5ddb5b4fafb03dd0548d889,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5117368387023377168, guid: 0569cd27e5ddb5b4fafb03dd0548d889,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5117368387023377168, guid: 0569cd27e5ddb5b4fafb03dd0548d889,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0569cd27e5ddb5b4fafb03dd0548d889, type: 3}
 --- !u!1 &1022734143
@@ -1387,7 +1408,7 @@ Transform:
   m_GameObject: {fileID: 1754056689}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.65, y: 0.8, z: 0.7222222}
+  m_LocalScale: {x: 0.47, y: 0.7, z: 0.5222222}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 267538042}
