@@ -68,24 +68,25 @@ public class ConeDetectionStrategy : IDetectionStrategy
 
     public void DrawGizmos(Transform detector)
     {
-        Gizmos.color = Color.yellow;
 
-        Vector3 baseDirection = detector.right; // treat right as forward
-        float halfAngle = detectionAngle / 2f;
-        float angleStep = detectionAngle / numOfRays;
+        // Gizmos.color = Color.yellow;
 
-        for (int i = 0; i <= numOfRays; i++) // include the final ray
-        {
-            float angleOffset = -halfAngle + (angleStep * i);
-            Vector3 rayDirection = Quaternion.AngleAxis(angleOffset, Vector3.forward) * baseDirection;
-            Gizmos.DrawRay(detector.position, rayDirection.normalized * detectionRadius);
-        }
+        // Vector3 baseDirection = detector.right; // treat right as forward
+        // float halfAngle = detectionAngle / 2f;
+        // float angleStep = detectionAngle / numOfRays;
 
-        // Draw inner detection radius as a wire circle
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(detector.position, innerDetectionRadius);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(detector.position, detectionRadius);
+        // for (int i = 0; i <= numOfRays; i++) // include the final ray
+        // {
+        //     float angleOffset = -halfAngle + (angleStep * i);
+        //     Vector3 rayDirection = Quaternion.AngleAxis(angleOffset, Vector3.forward) * baseDirection;
+        //     Gizmos.DrawRay(detector.position, rayDirection.normalized * detectionRadius);
+        // }
+
+        // // Draw inner detection radius as a wire circle
+        // Gizmos.color = Color.cyan;
+        // Gizmos.DrawWireSphere(detector.position, innerDetectionRadius);
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawWireSphere(detector.position, detectionRadius);
 
     }
 

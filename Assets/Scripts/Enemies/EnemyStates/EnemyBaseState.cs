@@ -5,13 +5,13 @@ public class EnemyBaseState : IState
 {
     protected EnemyBrain enemyBrain;
     protected StateMachine enemyStateMachine;
-    protected Rigidbody enemyRigidbody;
+    protected EnemyMovement enemyMovement;
 
-    public EnemyBaseState(EnemyBrain enemyBrain, StateMachine enemyStateMachine, Rigidbody enemyRigidbody)
+    public EnemyBaseState(EnemyBrain enemyBrain, StateMachine enemyStateMachine, EnemyMovement enemyMovement)
     {
         this.enemyBrain = enemyBrain;
         this.enemyStateMachine = enemyStateMachine;
-        this.enemyRigidbody = enemyRigidbody;
+        this.enemyMovement = enemyMovement;
     }
 
     public virtual void FixedUpdate() { }

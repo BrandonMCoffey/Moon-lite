@@ -13,8 +13,11 @@ public class PlayerDetector : MonoBehaviour
     public LayerMask ObstacleLayer => obstacleLayerMask;
 
     public Transform PlayerTransform { get; private set; }
+    public Vector3 LastKnownPlayerPosition { get; private set; } = Vector3.zero;
     private CountdownTimer detectionTimer;
     private IDetectionStrategy detectionStrategy;
+
+    bool _doOnce = false;
 
     private void Start() 
     {
@@ -23,7 +26,10 @@ public class PlayerDetector : MonoBehaviour
         detectionStrategy = new ConeDetectionStrategy(playerLayerMask, obstacleLayerMask, detectionAngle, detectionRadius, innerDetectionRadius);    
     }
 
-    public bool CanDetectPlayer() => detectionTimer.IsRunning || detectionStrategy.IsPlayerDetected(PlayerTransform, transform, detectionTimer);
+    public bool CanDetectPlayer() 
+    {
+        return detectionTimer.IsRunning || detectionStrategy.IsPlayerDetected(PlayerTransform, transform, detectionTimer);
+    }
     public void SetDetectionStrategy(IDetectionStrategy strategy) => detectionStrategy = strategy;
 
     private void OnDrawGizmosSelected() 
@@ -31,6 +37,22 @@ public class PlayerDetector : MonoBehaviour
         if (detectionStrategy != null) 
         {
             detectionStrategy.DrawGizmos(transform);
+        }
+    }
+    
+    void Update()
+    {
+        if (!CanDetectPlayer())
+        {
+            if (!_doOnce) 
+            {
+                LastKnownPlayerPosition = PlayerTransform.position;
+                _doOnce = true;
+            }
+        }
+        else
+        {
+            _doOnce = false;
         }
     }
 }

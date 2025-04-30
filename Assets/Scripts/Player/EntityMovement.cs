@@ -27,6 +27,13 @@ public class EntityMovement : MonoBehaviour
     [SerializeField, ReadOnly] protected float _leftWallDistance;
     [SerializeField, ReadOnly] protected bool _rightWallCollided;
     [SerializeField, ReadOnly] protected float _rightWallDistance;
+    [SerializeField, ReadOnly] protected bool _leftBottomCollided;
+    [SerializeField, ReadOnly] protected float _leftBottomDistance;
+    [SerializeField, ReadOnly] protected bool _rightBottomCollided;
+    [SerializeField, ReadOnly] protected float _rightBottomDistance;
+
+    public bool LeftBottomCollided => _leftBottomCollided;
+    public bool RightBottomCollided => _rightBottomCollided;
 
     private void Start()
     {
@@ -52,9 +59,14 @@ public class EntityMovement : MonoBehaviour
             {
                 var dist = hitInfo.distance - _groundOffset;
                 if (dist < _groundDistance) _groundDistance = dist;
+
+                if (i == -1) _leftBottomDistance = dist;
+                if (i == 1) _rightBottomDistance = dist;
             }
         }
         bool grounded = _groundDistance < 0.05f;
+        _leftBottomCollided = _leftBottomDistance < 0.05f;
+        _rightBottomCollided = _rightBottomDistance < 0.05f;
 
         _ceilingDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
