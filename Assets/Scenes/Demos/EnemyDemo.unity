@@ -606,7 +606,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 267538041}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.8, y: 4.16, z: 0}
+  m_LocalPosition: {x: 8.62, y: 4.16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -648,6 +648,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d46c9dfd6cccc40a05905ec1b8178e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyMovement: {fileID: 267538047}
+  playerDetector: {fileID: 267538045}
 --- !u!114 &267538047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -683,12 +685,14 @@ MonoBehaviour:
   _leftWallDistance: 0
   _rightWallCollided: 0
   _rightWallDistance: 0
+  _leftBottomCollided: 0
+  _leftBottomDistance: 0
+  _rightBottomCollided: 0
+  _rightBottomDistance: 0
   _playerDetector: {fileID: 267538045}
   _moveSpeed: 5
   _jumpForce: 10
   _obstacleCheckDistance: 0.6
-  _pitfallVerticalOffset: 0.1
-  _pitfallCheckDistance: 0.97
   _enableDebug: 1
   _facingRight: 1
   _wallAhead: 0

@@ -12,8 +12,6 @@ public class EnemyMovement : EntityMovement
     [SerializeField] float _moveSpeed = 5f;
     [SerializeField] float _jumpForce = 10f;
     [SerializeField] float _obstacleCheckDistance = 0.6f;
-    [SerializeField] private float _pitfallVerticalOffset = 0.1f; 
-    [SerializeField] private float _pitfallCheckDistance = 1.5f; 
 
     [Header("Debug - Enemy")]
     [SerializeField] bool _enableDebug = false;
@@ -28,12 +26,10 @@ public class EnemyMovement : EntityMovement
     public bool Patrol()
     {
         CheckObstacleAhead();
-
         if (_wallAhead || _pitAhead)
         {
             _velocity.x = 0f;
             return false; 
-
             // TODO: Add logic to turn around or change direction
         }
 
@@ -136,7 +132,6 @@ public class EnemyMovement : EntityMovement
         
         Vector3 direction = _facingRight ? Vector3.right : Vector3.left;
         Vector3 baseOrigin = transform.position;
-        RaycastHit hitInfo;
 
         _wallAhead = false;
         float checkHeightInterval = _playerHeight / 3.0f; 
@@ -153,31 +148,12 @@ public class EnemyMovement : EntityMovement
             }
         }
 
-        _pitAhead = false;
-        if (!_wallAhead)
-        {
-            
-            Vector3 horizontalOffset = direction * (_playerWidth * 0.5f + 0.05f); 
-            Vector3 verticalOffset = Vector3.up * _pitfallVerticalOffset; 
-            Vector3 pitCheckOrigin = baseOrigin + horizontalOffset + verticalOffset;
-
-            
-            if (_enableDebug) Debug.DrawRay(pitCheckOrigin, Vector3.down * _pitfallCheckDistance, Color.cyan); 
-            if (!Physics.Raycast(pitCheckOrigin, Vector3.down, out hitInfo, _pitfallCheckDistance, _groundLayer, QueryTriggerInteraction.Ignore))
-            {
-                _pitAhead = true;
-            }
-        }
-
-        if (_enableDebug && Time.frameCount % 30 == 0) // Log ~twice per second
-        {
-           Debug.Log($"Facing: {(_facingRight?"Right":"Left")} WallAhead: {_wallAhead} PitAhead: {_pitAhead}");
-        }
+        if (!LeftBottomCollided || !RightBottomCollided) _pitAhead = true;
+        else _pitAhead = false;
     
     }
 
-    
-
+    [Button("Flip")]
     private void Flip()
     {
         _facingRight = !_facingRight;
