@@ -72,7 +72,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x + unit, y + unit, 0), // Top-Right
                                 new Vector3(x, y + unit, -1),    // Back Top-Left (for thickness)
                                 new Vector3(x + unit, y + unit, -1),// Back Top-Right (for thickness)
-                                currentTile, false, false, damage);
+                                currentTile, false, 0, damage);
                     }
 
                     // Check Bottom Face
@@ -83,7 +83,7 @@ public class Chunk : MonoBehaviour
                                new Vector3(x + unit, y, -1), // Back Bottom-Right
                                new Vector3(x, y, 0),      // Front Bottom-Left
                                new Vector3(x + unit, y, 0),  // Front Bottom-Right
-                               currentTile, false, false, damage);
+                               currentTile, false, 4, damage);
                     }
 
                     // Check Right Face
@@ -94,7 +94,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x + unit, y + 1, 0),  // Front Top-Right
                                 new Vector3(x + unit, y, -1),     // Back Bottom-Right
                                 new Vector3(x + unit, y + unit, -1), // Back Top-Right
-                                currentTile, true, false, damage);
+                                currentTile, true, 2, damage);
                     }
 
                     // Check Left Face
@@ -105,7 +105,7 @@ public class Chunk : MonoBehaviour
                                 new Vector3(x, y, -1),     // Back Bottom-Left
                                 new Vector3(x, y + unit, 0),  // Front Top-Left
                                 new Vector3(x, y, 0),      // Front Bottom-Left
-                                currentTile, false, false, damage);
+                                currentTile, false, 1, damage);
                     }
 
                     // Front Face
@@ -114,7 +114,7 @@ public class Chunk : MonoBehaviour
                                new Vector3(x + unit, y, -1),     // Bottom-Right
                                new Vector3(x, y + unit, -1),     // Top-Left
                                new Vector3(x + unit, y + unit, -1), // Top-Right
-                               currentTile, true, true, damage);
+                               currentTile, true, 3, damage);
                 }
             }
         }
@@ -147,7 +147,7 @@ public class Chunk : MonoBehaviour
 
     private void AddFace(ref List<Vector3> vertices, ref List<int> triangles, ref List<Vector2> uvs, ref int vertexIndex,
                          Vector3 bl, Vector3 br, Vector3 tl, Vector3 tr,
-                         TileType tileType, bool reverse, bool front, int damage)
+                         TileType tileType, bool reverse, int side, int damage)
     {
         // Add Vertices
         vertices.Add(bl); // 0
@@ -176,10 +176,17 @@ public class Chunk : MonoBehaviour
             uvCoord.x += _world.Settings.DamageOffsetUV.x * offset;
             uvCoord.y += _world.Settings.DamageOffsetUV.y * offset;
         }
-        if (!front)
+        if (tileType == TileType.Surface)
         {
-            uvCoord.x += data.UVOffsetSides.x;
-            uvCoord.y += data.UVOffsetSides.y;
+            switch (side)
+            {
+                case 0: // Top
+                    uvCoord.y--;
+                    break;
+                case 4: // Bottom
+                    uvCoord.y++;
+                    break;
+            }
         }
         uvCoord.y = _world.Settings.GridSize - 1 - uvCoord.y;
 
