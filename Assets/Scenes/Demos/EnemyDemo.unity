@@ -628,7 +628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: defd980ba155770459cb395f6903e6f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionAngle: 45
+  detectionAngle: 60
   detectionRadius: 15
   innerDetectionRadius: 1
   detectionCooldown: 1
@@ -714,11 +714,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHolder: {fileID: 1756424413}
   _enemyBrain: {fileID: 267538046}
-  _currentWeapon: {fileID: 0}
-  _currentAmmo: {fileID: 0}
-  _infiniteAmmo: 0
+  _currentWeapon: {fileID: -6148849880405768673, guid: 96c8d90dcdd5983419d40addec229547,
+    type: 3}
+  _currentAmmo: {fileID: 11400000, guid: 1210b5d46439fae4faa63dbb10baa8f8, type: 2}
+  _infiniteAmmo: 1
   _currentMagAmmo: 0
   _isReloading: 0
+  _lastFireTime: 0
 --- !u!1 &345437391
 GameObject:
   m_ObjectHideFlags: 0
