@@ -17,7 +17,7 @@ MonoBehaviour:
   _weaponSprite: {fileID: 21300000, guid: b665309384b0b1942b85d931f0398a11, type: 3}
   _weaponPrefab: {fileID: 7707075139789495896, guid: de53fb9537f1286429aa75d79986787a,
     type: 3}
-  _maxMagSize: 25
+  _maxMagSize: 10
   _reloadTime: 1
   _isAutomatic: 1
   _ammoPerShot: 1

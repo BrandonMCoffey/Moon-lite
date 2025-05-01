@@ -84,6 +84,20 @@ public class BulletBase : SimplePhysicsObject
         SetVelocity(shootDir * _shotSpeed);
         //_velocity = shootDir * _shotSpeed;
 
+         switch(_data.TileType)
+        {
+            case TileType.Explosive:
+                if(weaponData.ForceAoe)
+                {
+                    _aoeRadius = weaponData.BulletAoeRadius * 1.5f;
+                }
+                else
+                {
+                    _aoeRadius = weaponData.BulletAoeRadius * 2.5f;
+                }
+                break;
+        }
+
         PreRaycastCheck();
 
         StartCoroutine(DelayedDestroy(_lifetime));
