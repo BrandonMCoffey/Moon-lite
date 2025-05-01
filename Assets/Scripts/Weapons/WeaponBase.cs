@@ -219,13 +219,16 @@ public class WeaponBase : MonoBehaviour
                         if (chunk != null)
                         {
                             Vector3 pointToDestroy = hit.point; // Use the actual hit point
-                            if (_data.ForceAoe)
+
+                            // Apply ammo type effects
+                            if (_data.ForceAoe || bulletData.HasAOE)
                             {
-                                chunk.World.DamageTileInCircle(pointToDestroy, _data.BulletAoeRadius, _data.BulletDamage);
+                                float aoeRadius = bulletData.AoeRadius * _data.BulletAoeRadius;
+                                chunk.World.DamageTileInCircle(pointToDestroy, aoeRadius, _data.BulletDamage * bulletData.Damage);
                             }
                             else
                             {
-                                chunk.World.DamageTileAt(pointToDestroy, _data.BulletDamage);
+                                chunk.World.DamageTileAt(pointToDestroy, _data.BulletDamage * bulletData.Damage);
                             }
                         }
 
