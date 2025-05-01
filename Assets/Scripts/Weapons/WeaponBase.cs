@@ -223,7 +223,23 @@ public class WeaponBase : MonoBehaviour
                             // Apply ammo type effects
                             if (_data.ForceAoe || bulletData.HasAOE)
                             {
-                                float aoeRadius = bulletData.AoeRadius * _data.BulletAoeRadius;
+                                // if the weapon already has AOE, make the mult a bit smaller
+                                float aoeRadius = 0f;
+                                
+                                switch(bulletData.TileType)
+                                {
+                                    case TileType.Explosive:
+                                    if(_data.ForceAoe)
+                                    {
+                                        aoeRadius = _data.BulletAoeRadius * bulletData.AoeRadius * 0.75f;
+                                    }
+                                    else
+                                    {
+                                        aoeRadius = _data.BulletAoeRadius * bulletData.AoeRadius;
+                                    }
+                                    break;
+                                }
+
                                 chunk.World.DamageTileInCircle(pointToDestroy, aoeRadius, _data.BulletDamage * bulletData.Damage);
                             }
                             else

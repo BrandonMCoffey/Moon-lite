@@ -35,7 +35,7 @@ MonoBehaviour:
   _bulletBounces: 0
   _forceHitOnBounce: 0
   _forceAoe: 0
-  _aoeRadius: 2
+  _aoeRadius: 1
   _multipleBullets: 1
   _bulletAmount: 12
   _hitScan: 0

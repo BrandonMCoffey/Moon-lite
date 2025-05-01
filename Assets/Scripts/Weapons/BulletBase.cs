@@ -89,6 +89,7 @@ public class BulletBase : SimplePhysicsObject
 
          switch(_data.TileType)
         {
+            // if the weapon already has AOE, make the mult a bit smaller
             case TileType.Explosive:
                 if(weaponData.ForceAoe)
                 {
