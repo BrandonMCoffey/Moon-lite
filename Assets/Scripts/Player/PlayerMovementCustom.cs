@@ -141,7 +141,7 @@ public class PlayerMovementCustom : EntityMovement
 
     private void CheckJump()
     {
-        if (_isJumping && _velocity.y < 0)
+        if (_isJumping && _velocity.y < 2)
         {
             _isJumping = false;
             _isJumpFalling = true;
