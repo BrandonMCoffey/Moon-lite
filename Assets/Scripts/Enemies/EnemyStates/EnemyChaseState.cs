@@ -5,16 +5,32 @@ using SaiUtils.StateMachine;
 
 public class EnemyChaseState : EnemyBaseState
 {
-    PlayerDetector _playerDetector;
-    public EnemyChaseState(EnemyBrain enemyBrain, PlayerDetector playerDetector, StateMachine enemyStateMachine, EnemyMovement enemyMovement) 
-    : base(enemyBrain, enemyStateMachine, enemyMovement) 
+    public EnemyChaseState(EnemyBrain enemyBrain, StateMachine enemyStateMachine) 
+    : base(enemyBrain, enemyStateMachine) { }
+
+    public override void OnEnter()
     {
-        _playerDetector = playerDetector;
+        base.OnEnter();
+        Debug.Log("Chasing Player!");
     }
 
     public override void Update()
     {
         base.Update();
-        enemyMovement.ChaseTarget(_playerDetector.PlayerTransform); 
+        if (enemyBrain.PlayerDetector.CanDetectPlayer())
+        {
+            if (Vector3.Distance(enemyBrain.transform.position, enemyBrain.PlayerDetector.PlayerTransform.position) < enemyBrain.AttackRange)
+            {
+                enemyStateMachine.ChangeState(enemyBrain.AttackState);
+            }
+            else
+            {
+                enemyBrain.EnemyMovement.ChaseTarget(enemyBrain.PlayerDetector.PlayerTransform);
+            }
+        }
+        else 
+        {
+            enemyStateMachine.ChangeState(enemyBrain.PatrolState);
+        }
     }
 }
