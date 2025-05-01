@@ -8,6 +8,8 @@ public class EnemyBrain : MonoBehaviour
     public EnemyMovement EnemyMovement => enemyMovement;
     [SerializeField] PlayerDetector playerDetector;
     public PlayerDetector PlayerDetector => playerDetector;
+    [SerializeField] EnemyWeaponManager enemyWeaponManager;
+    public EnemyWeaponManager EnemyWeaponManager => enemyWeaponManager;
 
     [Header("Settings")]
     [SerializeField] float attackRange = 10f;

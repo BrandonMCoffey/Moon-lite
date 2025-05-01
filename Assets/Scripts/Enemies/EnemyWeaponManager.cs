@@ -1,23 +1,33 @@
 using Sirenix.OdinInspector;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Rendering;
+using System.Collections;
 
 public class EnemyWeaponManager : MonoBehaviour
 {
     [Header("Weapon References")]
     [SerializeField] Transform _weaponHolder;
+    [SerializeField] EnemyBrain _enemyBrain;
 
-    [Header("Weapon Settings")]
-    [SerializeField] bool _canPickupWeapons = true;
-    [SerializeField, ShowIf("_canPickupWeapons")] float _pickupRadius = 1f;
+    // [Header("Weapon Settings")]
+    // [SerializeField] bool _canPickupWeapons = true;
+    // [SerializeField, ShowIf("_canPickupWeapons")] float _pickupRadius = 1f;
     
     [Header("Weapon Inventory")]
     [SerializeField] WeaponBase _currentWeapon;
     [SerializeField] MineralData _currentAmmo;
+    [SerializeField] bool _infiniteAmmo = false;
 
     Coroutine _reloadCoroutine;
+    [SerializeField, ReadOnly] int _currentMagAmmo = 0;
+    [SerializeField, ReadOnly] bool _isReloading = false;
 
     float _lastFireTime = 0f;
+
+    private void Start() {
+        _currentMagAmmo = _currentWeapon.Data.MaxMagSize; 
+    }
 
     public void Attack(PlayerMovementCustom playerMovement) 
     {
@@ -46,6 +56,122 @@ public class EnemyWeaponManager : MonoBehaviour
     {
         if (_currentWeapon == null || !_currentWeapon.CanShoot()) return false;
         return true;
+    }
+
+    void Shoot(Vector3 aimDirection)
+    {
+        var _data = _currentWeapon.Data;
+
+        if (Time.time < _lastFireTime + _currentWeapon.Data.FireDelay || !_currentWeapon.CanShoot()) return;
+
+        if (_currentMagAmmo <= 0 && !_infiniteAmmo)
+        {
+            Reload();
+            return;
+        }
+
+        if (_isReloading) return;
+
+        _currentWeapon.StopReload();
+
+        if (!_infiniteAmmo && _currentWeapon.Data.AmmoPerShot > 0)
+        {
+            _currentMagAmmo -= _currentWeapon.Data.AmmoPerShot;
+            SubtractAmmo(_currentWeapon.Data.AmmoPerShot);
+        }
+
+        float randomAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
+        Vector3 preSpreadAim = aimDirection;
+        aimDirection = Quaternion.Euler(0, 0, randomAngle) * aimDirection;
+
+        Vector3 spawnPos = _weaponHolder.position;
+        _enemyBrain.EnemyMovement.AddKnockback(-aimDirection * _data.BulletKickback * _currentAmmo.Kickback);
+
+        if (_data.HitScan)
+        {
+            Vector3 adjustedStart = spawnPos - aimDirection.normalized * 0.75f;
+            float adjustedRange = _data.RayRange + 0.75f;
+
+            for (int i = 0; i < (_data.MultipleBullets ? _data.BulletAmount : 1); i++)
+            {
+                // Apply spread for each raycast
+                float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
+                Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
+
+                WorldGenerator.Instance.DestroyTilesAlongRay(adjustedStart, spreadDirection, adjustedRange, _data.BulletDamage);
+
+                Debug.DrawRay(adjustedStart, spreadDirection * adjustedRange, Color.red, 2f); // Visualize the ray
+            }
+        }
+        else if (_data.MultipleBullets)
+        {
+            // Handle multiple bullets logic
+            for (int i = 0; i < _data.BulletAmount; i++)
+            {
+                float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
+                Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
+
+                BulletBase bulletInstance = Instantiate(_currentAmmo.BulletPrefab, spawnPos, Quaternion.identity);
+                float angle = Mathf.Atan2(spreadDirection.y, spreadDirection.x) * Mathf.Rad2Deg;
+
+                bulletInstance.BulletSetup(spreadDirection, angle, _data, _currentAmmo);
+            }
+        }
+        else 
+        {
+            // Default single bullet logic
+            BulletBase bulletInstance = Instantiate(_currentAmmo.BulletPrefab, spawnPos, Quaternion.identity);
+            float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+            bulletInstance.BulletSetup(aimDirection, angle, _data, _currentAmmo);
+        }
+
+        _lastFireTime = Time.time;
+    }
+
+    public void Reload()
+    {
+        if (_currentWeapon == null || _currentWeapon.Data == null) return;
+        
+        if (_reloadCoroutine != null) StopCoroutine(_reloadCoroutine);
+        _reloadCoroutine = StartCoroutine(ReloadCoroutine());
+    }
+
+    IEnumerator ReloadCoroutine()
+    {
+        if (_currentWeapon == null || _currentWeapon.Data == null) yield break;
+        
+
+        _isReloading = true;
+        yield return new WaitForSeconds(_currentWeapon.Data.ReloadTime);
+        
+        if (_currentMagAmmo < _currentWeapon.Data.MaxMagSize && !_infiniteAmmo)
+        {
+            int ammoToReload = _currentWeapon.Data.MaxMagSize - _currentMagAmmo;
+            if (ammoToReload > 0)
+            {
+                _currentMagAmmo += ammoToReload;
+            }
+        }
+        else
+        {
+            Debug.Log("Magazine is already full or infinite ammo is enabled.");
+        }
+        
+        _isReloading = false;
+        _reloadCoroutine = null;
+    }
+
+    void SubtractAmmo(int amount)
+    {
+        if (_currentMagAmmo > 0)
+        {
+            _currentMagAmmo -= amount;
+        }
+        else
+        {
+            Debug.LogWarning("No ammo left in the magazine!");
+        }
     }
 
     void HandleShooting()
