@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    [SerializeField] private PlayerInputMapping _currentMapping;
-
     // Mouse Inputs
     public static Vector3 MousePosition => Input.mousePosition;
     public static Vector3 MousePositionWorld(float z)
@@ -25,28 +23,29 @@ public class PlayerInput : MonoBehaviour
     public static float PlayerMoveHorz => Input.GetAxisRaw("Horizontal");
     public static float PlayerMoveVert => Input.GetAxisRaw("Vertical");
     public static Vector3 PlayerMove => new Vector3(PlayerMoveHorz, PlayerMoveVert, 0);
-    public static bool PlayerJump => Input.GetButton("Jump");
-    public static bool PlayerDash => Input.GetButton("Dash");
-    public static bool PlayerJetpack => Input.GetButton("Jump");
+    public static bool PlayerJump => Input.GetKey(KeyCode.Space);
+    public static bool PlayerDash => false;// Input.GetKey(KeyCode.X);
+    public static bool PlayerJetpack => PlayerJump;
 
     // Interactions
-    public static bool InteractOrSubmit => Input.GetButtonDown("Submit") && MouseControllerManager.ActionsThisFrame == 0;
-    public static bool Cancel => Input.GetButtonDown("Cancel");
+    public static bool InteractOrSubmit => Input.GetKeyDown(KeyCode.E) && MouseControllerManager.ActionsThisFrame == 0;
+    public static bool Cancel => Input.GetKeyDown(KeyCode.Escape);
 
     // Weapon System
-    public static bool PickupDropWeapon => Input.GetKeyDown(KeyCode.E);
-    public static bool SwitchToPreviousAmmo => Input.GetKeyDown(KeyCode.F);
-    public static bool SwitchToNextAmmo => Input.GetKeyDown(KeyCode.G);
+    public static bool PickupDropWeapon => Input.GetKeyDown(KeyCode.Q);
+    public static bool SwitchToPreviousAmmo => Input.GetKeyDown(KeyCode.LeftBracket);
+    public static bool SwitchToNextAmmo => Input.GetKeyDown(KeyCode.RightBracket);
     public static bool ReloadAmmo => Input.GetKeyDown(KeyCode.R);
+    public static bool EnableFlashlight => Input.GetKeyDown(KeyCode.F);
 
     // Game Special Actions
-    public static bool Throwable01 => Input.GetKeyDown(KeyCode.R);
-    public static bool Throwable02 => Input.GetKeyDown(KeyCode.T);
-    public static bool Throwable03 => Input.GetKeyDown(KeyCode.Y);
-    public static bool Placeable01 => Input.GetKeyDown(KeyCode.C);
-    public static bool Placeable02 => Input.GetKeyDown(KeyCode.X);
-    public static bool Placeable03 => Input.GetKeyDown(KeyCode.Z);
+    public static bool Throwable01 => Input.GetKeyDown(KeyCode.Z);
+    public static bool Throwable02 => Input.GetKeyDown(KeyCode.X);
+    public static bool Throwable03 => Input.GetKeyDown(KeyCode.C);
+    public static bool Placeable01 => Input.GetKeyDown(KeyCode.V);
+    public static bool Placeable02 => Input.GetKeyDown(KeyCode.G);
+    public static bool Placeable03 => Input.GetKeyDown(KeyCode.T);
 
     // Debug Keys
-    public static bool ToggleInfiniteAmmo => Input.GetKeyDown(KeyCode.V);
+    public static bool ToggleInfiniteAmmo => Input.GetKeyDown(KeyCode.I);
 }
