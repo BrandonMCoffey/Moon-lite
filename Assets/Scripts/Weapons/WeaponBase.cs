@@ -224,14 +224,14 @@ public class WeaponBase : MonoBehaviour
                             if (_data.ForceAoe || bulletData.HasAOE)
                             {
                                 // if the weapon already has AOE, make the mult a bit smaller
-                                float aoeRadius = 0f;
-                                
+                                float aoeRadius = _data.BulletAoeRadius;
+
                                 switch(bulletData.TileType)
                                 {
                                     case TileType.Explosive:
                                     if(_data.ForceAoe)
                                     {
-                                        aoeRadius = _data.BulletAoeRadius * bulletData.AoeRadius * 0.75f;
+                                        aoeRadius = _data.BulletAoeRadius * bulletData.AoeRadius * 0.5f;
                                     }
                                     else
                                     {

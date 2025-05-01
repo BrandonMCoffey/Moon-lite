@@ -93,7 +93,7 @@ public class BulletBase : SimplePhysicsObject
             case TileType.Explosive:
                 if(weaponData.ForceAoe)
                 {
-                    _aoeRadius = weaponData.BulletAoeRadius * _data.AoeRadius * 0.75f;
+                    _aoeRadius = weaponData.BulletAoeRadius * _data.AoeRadius * 0.5f;
                 }
                 else
                 {
