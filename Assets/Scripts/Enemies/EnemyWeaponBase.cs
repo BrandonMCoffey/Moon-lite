@@ -6,8 +6,8 @@ public class EnemyWeaponBase : MonoBehaviour
 {
     public event Action Fired = delegate { };
 
-    [SerializeField] private WeaponData _data;
-    public WeaponData Data => _data;
+    [SerializeField] private EnemyWeaponData _data;
+    public EnemyWeaponData Data => _data;
     [Header("Weapon Properties")]
     [SerializeField] protected string _weaponName = "Default Weapon";
     public string WeaponName => _weaponName;
@@ -38,7 +38,7 @@ public class EnemyWeaponBase : MonoBehaviour
     protected SpriteRenderer _sr;
     protected Rigidbody _rb;
     protected Collider _col;
-    protected PlayerWeaponManager _pwm;
+    protected EnemyWeaponManager _ewm;
     private Coroutine _reloadCoroutine; // Track the reload coroutine
 
     private Coroutine _recoilCoroutine; // Track the recoil coroutine
@@ -64,7 +64,7 @@ public class EnemyWeaponBase : MonoBehaviour
 
     private void Start()
     {
-        _pwm = Player.WeaponManager;
+        _ewm = GetComponent<EnemyWeaponManager>();
     }
 
     private void Update()
@@ -168,7 +168,7 @@ public class EnemyWeaponBase : MonoBehaviour
     }
 
     // Now takes an optional override bullet prefab from the manager
-    public virtual void Shoot(Vector3 aimDirection, MineralData bulletData = null)
+    public virtual void Shoot(Vector3 aimDirection, EnemyMineralData bulletData = null)
     {
         if (Time.time < _lastFireTime + _data.FireDelay || !CanShoot()) return;
 
@@ -177,7 +177,7 @@ public class EnemyWeaponBase : MonoBehaviour
         if (!_infiniteAmmo && _data.AmmoPerShot > 0)
         {
             _currentMagAmmo -= _data.AmmoPerShot;
-            _pwm.SubtractAmmo(_data.AmmoPerShot);
+            _ewm.SubtractAmmo(_data.AmmoPerShot);
         }
 
         // Apply spray effect
@@ -239,7 +239,7 @@ public class EnemyWeaponBase : MonoBehaviour
                 float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
                 Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
 
-                BulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
+                EnemyBulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
                 float angle = Mathf.Atan2(spreadDirection.y, spreadDirection.x) * Mathf.Rad2Deg;
 
                 bulletInstance.BulletSetup(spreadDirection, angle, _data, bulletData);
@@ -248,7 +248,7 @@ public class EnemyWeaponBase : MonoBehaviour
         else
         {
             // Default single bullet logic
-            BulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
+            EnemyBulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
             float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
             bulletInstance.BulletSetup(aimDirection, angle, _data, bulletData);
@@ -303,31 +303,33 @@ public class EnemyWeaponBase : MonoBehaviour
         }
     }
 
-    public virtual void Reload()
-    {
-        // Prevent reload if the magazine is full and there is no reserve ammo or if the remaining ammo exactly matches the current magazine capacity.
-        if (_isReloading || _currentMagAmmo == _data.MaxMagSize || _pwm.CurrentAmmoInventory == _currentMagAmmo) return;
+    // Enemy doesn't need to reload?
 
-        // Start the reload coroutine and store its reference
-        _reloadCoroutine = StartCoroutine(ReloadCoroutine());
+    // public virtual void Reload()
+    // {
+    //     // Prevent reload if the magazine is full and there is no reserve ammo or if the remaining ammo exactly matches the current magazine capacity.
+    //     if (_isReloading || _currentMagAmmo == _data.MaxMagSize || _ewm.CurrentAmmoInventory == _currentMagAmmo) return;
 
-        _pwm.StartReloadCoroutine();
-    }
+    //     // Start the reload coroutine and store its reference
+    //     _reloadCoroutine = StartCoroutine(ReloadCoroutine());
 
-    public IEnumerator ReloadCoroutine()
-    {
-        _isReloading = true;
+    //     _ewm.StartReloadCoroutine();
+    // }
 
-        yield return new WaitForSeconds(_data.ReloadTime);
+    // public IEnumerator ReloadCoroutine()
+    // {
+    //     _isReloading = true;
 
-        float ammoNeeded = _data.MaxMagSize - _currentMagAmmo;
-        float ammoToReload = Mathf.Min(ammoNeeded, _pwm.CurrentAmmoInventory);
+    //     yield return new WaitForSeconds(_data.ReloadTime);
 
-        _currentMagAmmo += ammoToReload;
+    //     float ammoNeeded = _data.MaxMagSize - _currentMagAmmo;
+    //     float ammoToReload = Mathf.Min(ammoNeeded, _ewm.CurrentAmmoInventory);
 
-        _isReloading = false;
-        _reloadCoroutine = null;
-    }
+    //     _currentMagAmmo += ammoToReload;
+
+    //     _isReloading = false;
+    //     _reloadCoroutine = null;
+    // }
 
     protected void OnFired()
     {

@@ -58,7 +58,7 @@ public class EnemyBulletBase : SimplePhysicsObject
         // }
     }
 
-    public virtual void BulletSetup(Vector3 shootDir, float angle, WeaponData weaponData, EnemyMineralData overrideData = null)
+    public virtual void BulletSetup(Vector3 shootDir, float angle, EnemyWeaponData weaponData, EnemyMineralData overrideData = null)
     {
         if (overrideData != null) _data = overrideData;
         _shotSpeed = _data.ShotSpeed * weaponData.BulletSpeed;

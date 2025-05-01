@@ -15,8 +15,8 @@ public class EnemyWeaponManager : MonoBehaviour
     // [SerializeField, ShowIf("_canPickupWeapons")] float _pickupRadius = 1f;
     
     [Header("Weapon Inventory")]
-    [SerializeField] WeaponBase _currentWeapon;
-    [SerializeField] MineralData _currentAmmo;
+    [SerializeField] EnemyWeaponBase _currentWeapon;
+    [SerializeField] EnemyMineralData _currentAmmo;
     [SerializeField] bool _infiniteAmmo = false;
 
     Coroutine _reloadCoroutine;
@@ -111,7 +111,7 @@ public class EnemyWeaponManager : MonoBehaviour
                 float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
                 Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
 
-                BulletBase bulletInstance = Instantiate(_currentAmmo.BulletPrefab, spawnPos, Quaternion.identity);
+                EnemyBulletBase bulletInstance = Instantiate(_currentAmmo.BulletPrefab, spawnPos, Quaternion.identity);
                 float angle = Mathf.Atan2(spreadDirection.y, spreadDirection.x) * Mathf.Rad2Deg;
 
                 bulletInstance.BulletSetup(spreadDirection, angle, _data, _currentAmmo);
@@ -120,7 +120,7 @@ public class EnemyWeaponManager : MonoBehaviour
         else 
         {
             // Default single bullet logic
-            BulletBase bulletInstance = Instantiate(_currentAmmo.BulletPrefab, spawnPos, Quaternion.identity);
+            EnemyBulletBase bulletInstance = Instantiate(_currentAmmo.BulletPrefab, spawnPos, Quaternion.identity);
             float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
             bulletInstance.BulletSetup(aimDirection, angle, _data, _currentAmmo);
@@ -162,7 +162,7 @@ public class EnemyWeaponManager : MonoBehaviour
         _reloadCoroutine = null;
     }
 
-    void SubtractAmmo(float amount)
+    public void SubtractAmmo(float amount)
     {
         if (_currentMagAmmo > 0)
         {
@@ -174,7 +174,7 @@ public class EnemyWeaponManager : MonoBehaviour
         }
     }
 
-    void HandleShooting()
+    public void HandleShooting()
     {
         if (_currentWeapon == null || _currentAmmo == null) return;
         
@@ -184,7 +184,7 @@ public class EnemyWeaponManager : MonoBehaviour
         }
     }
 
-    void HandleAiming(PlayerMovementCustom playerMovement)
+    public void HandleAiming(PlayerMovementCustom playerMovement)
     {
         Vector3 playerPos = playerMovement.transform.position;
         Vector3 playerVel = playerMovement.Velocity;
