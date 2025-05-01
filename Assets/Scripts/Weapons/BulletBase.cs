@@ -45,7 +45,8 @@ public class BulletBase : SimplePhysicsObject
         base.Update();
 
         // Rotate the bullet to face the direction of movement
-        transform.rotation = Quaternion.LookRotation(Vector3.forward, _velocity.normalized);
+        float angle = Mathf.Atan2(_velocity.y, _velocity.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
 
         // NOTE: Merged with SimplePhysicsObject to only raycast on fixed update and use interpolation
         //ApplyGravity();
@@ -91,11 +92,11 @@ public class BulletBase : SimplePhysicsObject
             case TileType.Explosive:
                 if(weaponData.ForceAoe)
                 {
-                    _aoeRadius = weaponData.BulletAoeRadius * 1.5f;
+                    _aoeRadius = weaponData.BulletAoeRadius * _data.AoeRadius * 0.75f;
                 }
                 else
                 {
-                    _aoeRadius = weaponData.BulletAoeRadius * 2.5f;
+                    _aoeRadius = weaponData.BulletAoeRadius * _data.AoeRadius;
                 }
                 break;
         }
