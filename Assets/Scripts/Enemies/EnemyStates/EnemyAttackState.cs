@@ -11,7 +11,6 @@ public class EnemyAttackState : EnemyBaseState
     public override void OnEnter()
     {
         base.OnEnter();
-        Debug.Log("Attacking Player!");
 
         playerMovement = enemyBrain.PlayerDetector.PlayerTransform.GetComponent<PlayerMovementCustom>();
         if (playerMovement != null)

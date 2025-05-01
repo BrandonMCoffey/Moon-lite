@@ -54,7 +54,6 @@ public class ConeDetectionStrategy : IDetectionStrategy
                         var playerRef = hit.collider.GetComponent<Player>();
                         if (playerRef != null)
                         {
-                            Debug.Log($"Player detected by raycast: {hit.collider.name}");
                             timer.Start();
                             return true;
                         }

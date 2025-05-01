@@ -48,10 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 316ff2e3ff96cc24392c6ad27bed03bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data: {fileID: 11400000, guid: a000fe1249984014b8f4a832532b2e6c, type: 2}
-  _weaponName: Default Weapon
-  _shootTransform: {fileID: 0}
-  _gunSprite: {fileID: 0}
+  _data: {fileID: 11400000, guid: 4aad594dae41ae742acc9e3e2f0d8ab2, type: 2}
+  _weaponName: Bungus
+  _shootTransform: {fileID: 2122804178461797388}
+  _gunSprite: {fileID: 2122804177998014980}
 --- !u!65 &2467125778329937797
 BoxCollider:
   m_ObjectHideFlags: 0

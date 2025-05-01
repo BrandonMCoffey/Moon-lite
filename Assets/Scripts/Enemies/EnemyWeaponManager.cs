@@ -1,7 +1,5 @@
 using Sirenix.OdinInspector;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Rendering;
 using System.Collections;
 
 public class EnemyWeaponManager : MonoBehaviour
@@ -22,8 +20,7 @@ public class EnemyWeaponManager : MonoBehaviour
     Coroutine _reloadCoroutine;
     [SerializeField, ReadOnly] float _currentMagAmmo = 0;
     [SerializeField, ReadOnly] bool _isReloading = false;
-
-    float _lastFireTime = 0f;
+    [SerializeField, ReadOnly] float _lastFireTime = 0f;
 
     private void Start() {
         _currentMagAmmo = _currentWeapon.Data.MaxMagSize; 
@@ -49,8 +46,77 @@ public class EnemyWeaponManager : MonoBehaviour
         if (Time.timeScale == 0) return;
 
         HandleAiming(playerMovement);
-        // HandleShooting(); // You'll likely call shooting logic after aiming
+        HandleShooting(); // You'll likely call shooting logic after aiming
     }
+
+    
+
+    public void HandleShooting()
+    {
+        if (_currentWeapon == null || _currentAmmo == null) return;
+        
+        Shoot();
+    }
+
+    public void HandleAiming(PlayerMovementCustom playerMovement)
+    {
+        Vector3 playerPos = playerMovement.transform.position;
+        Vector3 playerVel = playerMovement.Velocity;
+        Vector3 weaponPos = _weaponHolder.position;
+
+        if (_currentWeapon.Data == null)
+        {
+            Debug.LogError("WeaponData is null on the current weapon!");
+            
+            // Fallback: Aim directly at the player if WeaponData is missing
+            Vector3 directDirection = playerPos - weaponPos;
+            if (directDirection != Vector3.zero)
+            {
+                _weaponHolder.rotation = Quaternion.LookRotation(directDirection.normalized);
+            }
+            return;
+        }
+
+        float bulletSpeed = _currentWeapon.Data.BulletSpeed * _currentAmmo.ShotSpeed;
+
+        if (Mathf.Approximately(bulletSpeed, 0f))
+        {
+            Debug.LogWarning("Bullet speed is zero or negative. Cannot aim.");
+            Vector3 directDirection = playerPos - weaponPos;
+            if (directDirection != Vector3.zero)
+            {
+                _weaponHolder.rotation = Quaternion.LookRotation(directDirection.normalized);
+            }
+            return;
+        }
+
+        Vector3 toPlayer = playerPos - weaponPos;
+        float distanceToPlayer = toPlayer.magnitude;
+        float timeToReach = distanceToPlayer / bulletSpeed;
+        Vector3 predictedPlayerPos = playerPos + (playerVel * timeToReach);
+        Vector3 predictedDirection = predictedPlayerPos - weaponPos;
+
+        if (predictedDirection != Vector3.zero)
+        {
+            // only 3D rotation
+            // Quaternion targetRotation = Quaternion.LookRotation(predictedDirection.normalized);
+            // float rotationSpeed = 10f;
+            // _weaponHolder.rotation = Quaternion.Slerp(_weaponHolder.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+            // 2D rotation
+            float angle = Mathf.Atan2(predictedDirection.y, predictedDirection.x) * Mathf.Rad2Deg;
+            _weaponHolder.rotation = Quaternion.Euler(0f, 0f, angle + 5); // No offset needed as forward is positive x
+        
+            Vector3 localScale = transform.localScale;
+            localScale.y = Mathf.Abs(localScale.y) * ((angle > 90 || angle < -90) ? -1f : 1f);
+            transform.localScale = localScale;
+            
+            Debug.DrawRay(weaponPos, predictedDirection.normalized * 10f, Color.red);
+            Debug.DrawLine(weaponPos, predictedPlayerPos, Color.yellow); 
+            Debug.DrawLine(playerPos, predictedPlayerPos, Color.cyan); 
+        }
+    }
+
 
     bool CanShoot()
     {
@@ -58,11 +124,13 @@ public class EnemyWeaponManager : MonoBehaviour
         return true;
     }
 
-    void Shoot(Vector3 aimDirection)
+    [Button("Test Shoot")]
+    void Shoot()
     {
+        var aimDirection = _weaponHolder.transform.right;
         var _data = _currentWeapon.Data;
 
-        if (Time.time < _lastFireTime + _currentWeapon.Data.FireDelay || !_currentWeapon.CanShoot()) return;
+        if (Time.time < _lastFireTime + _currentWeapon.Data.FireDelay) return;
 
         if (_currentMagAmmo <= 0 && !_infiniteAmmo)
         {
@@ -72,7 +140,6 @@ public class EnemyWeaponManager : MonoBehaviour
 
         if (_isReloading) return;
 
-        _currentWeapon.StopReload();
 
         if (!_infiniteAmmo && _currentWeapon.Data.AmmoPerShot > 0)
         {
@@ -171,75 +238,6 @@ public class EnemyWeaponManager : MonoBehaviour
         else
         {
             Debug.LogWarning("No ammo left in the magazine!");
-        }
-    }
-
-    public void HandleShooting()
-    {
-        if (_currentWeapon == null || _currentAmmo == null) return;
-        
-        if (CanShoot())
-        {
-            // TODO: Implement shooting logic here
-        }
-    }
-
-    public void HandleAiming(PlayerMovementCustom playerMovement)
-    {
-        Vector3 playerPos = playerMovement.transform.position;
-        Vector3 playerVel = playerMovement.Velocity;
-        Vector3 weaponPos = _weaponHolder.position;
-
-        if (_currentWeapon.Data == null)
-        {
-            Debug.LogError("WeaponData is null on the current weapon!");
-            
-            // Fallback: Aim directly at the player if WeaponData is missing
-            Vector3 directDirection = playerPos - weaponPos;
-            if (directDirection != Vector3.zero)
-            {
-                _weaponHolder.rotation = Quaternion.LookRotation(directDirection.normalized);
-            }
-            return;
-        }
-
-        float bulletSpeed = _currentWeapon.Data.BulletSpeed * _currentAmmo.ShotSpeed;
-
-        if (Mathf.Approximately(bulletSpeed, 0f))
-        {
-            Debug.LogWarning("Bullet speed is zero or negative. Cannot aim.");
-            Vector3 directDirection = playerPos - weaponPos;
-            if (directDirection != Vector3.zero)
-            {
-                _weaponHolder.rotation = Quaternion.LookRotation(directDirection.normalized);
-            }
-            return;
-        }
-
-        Vector3 toPlayer = playerPos - weaponPos;
-        float distanceToPlayer = toPlayer.magnitude;
-        float timeToReach = distanceToPlayer / bulletSpeed;
-        Vector3 predictedPlayerPos = playerPos + (playerVel * timeToReach);
-        Vector3 predictedDirection = predictedPlayerPos - weaponPos;
-
-        if (predictedDirection != Vector3.zero)
-        {
-            // only 3D rotation
-            // Quaternion targetRotation = Quaternion.LookRotation(predictedDirection.normalized);
-            // float rotationSpeed = 10f;
-            // _weaponHolder.rotation = Quaternion.Slerp(_weaponHolder.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-
-            // 2D rotation
-            float angle = Mathf.Atan2(predictedDirection.y, predictedDirection.x) * Mathf.Rad2Deg;
-            _weaponHolder.rotation = Quaternion.Euler(0f, 0f, angle); // No offset needed as forward is positive x
-        
-            Vector3 localScale = transform.localScale;
-            localScale.y = Mathf.Abs(localScale.y) * ((angle > 90 || angle < -90) ? -1f : 1f);
-            transform.localScale = localScale;
-            
-            Debug.DrawRay(weaponPos, predictedDirection.normalized * 10f, Color.red);
-            Debug.DrawLine(weaponPos, predictedPlayerPos, Color.yellow); 
-            Debug.DrawLine(playerPos, predictedPlayerPos, Color.cyan); 
         }
     }
 
