@@ -202,33 +202,50 @@ public class WeaponBase : MonoBehaviour
                 Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
 
                 // TODO: Needs more damage to actually pierce. Damage int input eats through each tile at a time absorbing the damage
-                WorldGenerator.Instance.DestroyTilesAlongRay(adjustedStart, spreadDirection, adjustedRange, _data.BulletDamage);
+                //WorldGenerator.Instance.DestroyTilesAlongRay(adjustedStart, spreadDirection, adjustedRange, _data.BulletDamage);
 
-                Debug.DrawRay(adjustedStart, spreadDirection * adjustedRange, Color.red, 2f); // Visualize the ray
-                
-                Physics.Raycast(adjustedStart, spreadDirection, out RaycastHit hit, adjustedRange, bulletData.BulletPrefab.BulletLayerMask, QueryTriggerInteraction.Ignore);
+                int remainingBounces = _data.BulletBounces; // Number of allowed bounces
+                Vector3 currentStart = adjustedStart;
+                Vector3 currentDirection = spreadDirection;
 
-                if (hit.collider != null)
+                // Predefined colors for visualization
+                Color[] bounceColors = { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta };
+
+                while (remainingBounces >= 0)
                 {
-                    var chunk = hit.collider.GetComponent<Chunk>();
-                    if (chunk != null)
+                    if (Physics.Raycast(currentStart, currentDirection, out RaycastHit hit, adjustedRange, bulletData.BulletPrefab.BulletLayerMask, QueryTriggerInteraction.Ignore))
                     {
-                        Vector3 pointToDestroy = hit.point; // Use the actual hit point
-                        if (_data.ForceAoe)
+                        var chunk = hit.collider.GetComponent<Chunk>();
+                        if (chunk != null)
                         {
-                            chunk.World.DamageTileInCircle(pointToDestroy, _data.BulletAoeRadius, _data.BulletDamage);
+                            Vector3 pointToDestroy = hit.point; // Use the actual hit point
+                            if (_data.ForceAoe)
+                            {
+                                chunk.World.DamageTileInCircle(pointToDestroy, _data.BulletAoeRadius, _data.BulletDamage);
+                            }
+                            else
+                            {
+                                chunk.World.DamageTileAt(pointToDestroy, _data.BulletDamage);
+                            }
                         }
-                        else
-                        {
-                            chunk.World.DamageTileAt(pointToDestroy, _data.BulletDamage);
-                        }
+
+                        // Visualize the ray with a color based on the bounce count
+                        Color rayColor = bounceColors[remainingBounces % bounceColors.Length];
+                        Debug.DrawLine(currentStart, hit.point, rayColor, 2f);
+
+                        // Reflect the raycast direction
+                        currentDirection = Vector3.Reflect(currentDirection, hit.normal);
+                        currentStart = hit.point + currentDirection * 0.01f; // Offset to avoid immediate re-hit
+                        remainingBounces--;
+                    }
+                    else
+                    {
+                        // Visualize the final ray segment if no hit occurs
+                        Color rayColor = bounceColors[remainingBounces % bounceColors.Length];
+                        Debug.DrawRay(currentStart, currentDirection * adjustedRange, rayColor, 2f);
+                        break; // Exit if no hit
                     }
                 }
-                else
-                {
-                    //Debug.Log("Raycast did not hit anything.");
-                }
-                
             }
         }
         else if (_data.MultipleBullets)
