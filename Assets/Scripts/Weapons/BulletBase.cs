@@ -15,6 +15,7 @@ public class BulletBase : SimplePhysicsObject
     [SerializeField, ReadOnly] protected float _size = 1;
     [SerializeField, ReadOnly] protected float _lifetime = 3;
     [SerializeField, ReadOnly] protected int _bounces = 0;
+    [SerializeField, ReadOnly] protected bool _hitOnBounce = true;
     [SerializeField, ReadOnly] private bool _hasAOE = false;
     [SerializeField, ReadOnly] private float _aoeRadius = 1f;
 
@@ -67,7 +68,8 @@ public class BulletBase : SimplePhysicsObject
         _size = _data.Size * weaponData.BulletSize;
         _lifetime = _data.Lifetime * weaponData.BulletLifetime;
         _gravityScale = _data.GravityScale * weaponData.BulletGravityScale;
-        _bounces = _data.Bounces;
+        _bounces = _data.Bounces + weaponData.BulletBounces;
+        _hitOnBounce = _data.HitOnBounce || weaponData.ForceHitOnBounce;
         _hasAOE = _data.HasAOE || weaponData.ForceAoe;
         _aoeRadius = _data.AoeRadius * weaponData.BulletAoeRadius;
 
@@ -154,7 +156,10 @@ public class BulletBase : SimplePhysicsObject
             if (_bounces > 0)
             {
                 _bounces--;
-                base.OnHit(hit);
+                if(_hitOnBounce)
+                {
+                    base.OnHit(hit);
+                }
                 return;
             }
         }

@@ -205,7 +205,7 @@ public class WeaponBase : MonoBehaviour
                 WorldGenerator.Instance.DestroyTilesAlongRay(adjustedStart, spreadDirection, adjustedRange, _data.BulletDamage);
 
                 Debug.DrawRay(adjustedStart, spreadDirection * adjustedRange, Color.red, 2f); // Visualize the ray
-                /*
+                
                 Physics.Raycast(adjustedStart, spreadDirection, out RaycastHit hit, adjustedRange, bulletData.BulletPrefab.BulletLayerMask, QueryTriggerInteraction.Ignore);
 
                 if (hit.collider != null)
@@ -228,7 +228,7 @@ public class WeaponBase : MonoBehaviour
                 {
                     //Debug.Log("Raycast did not hit anything.");
                 }
-                */
+                
             }
         }
         else if (_data.MultipleBullets)

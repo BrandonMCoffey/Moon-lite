@@ -17,24 +17,26 @@ MonoBehaviour:
   _weaponSprite: {fileID: 21300000, guid: 220e445b8cc5ce64f83667bac2e7dada, type: 3}
   _weaponPrefab: {fileID: 7707075139789495896, guid: 444bc4d92105d5c4d895a4e72cf78c35,
     type: 3}
-  _maxMagSize: 25
-  _reloadTime: 1
+  _maxMagSize: 16
+  _reloadTime: 1.5
   _isAutomatic: 1
-  _ammoPerShot: 1
-  _fireRate: 15
-  _bulletSpeed: 45
-  _sprayAngle: 15
+  _ammoPerShot: 2
+  _fireRate: 4
+  _bulletSpeed: 30
+  _sprayAngle: 30
   _recoilForce: {x: 0.2, y: 5}
-  _artType: 0
+  _artType: 1
   _bulletSize: 1
-  _bulletDamage: 0.6
-  _bulletKnockback: 0.5
-  _bulletKickback: 0.2
+  _bulletDamage: 1
+  _bulletKnockback: 1
+  _bulletKickback: 0.4
   _bulletLifetime: 1
   _bulletGravityScale: 1
+  _bulletBounces: 0
+  _forceHitOnBounce: 0
   _forceAoe: 0
   _aoeRadius: 1
-  _multipleBullets: 0
-  _bulletAmount: 1
+  _multipleBullets: 1
+  _bulletAmount: 4
   _hitScan: 0
   _rayRange: 1

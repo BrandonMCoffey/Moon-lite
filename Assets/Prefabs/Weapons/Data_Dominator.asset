@@ -27,11 +27,13 @@ MonoBehaviour:
   _recoilForce: {x: 0.2, y: 5}
   _artType: 2
   _bulletSize: 1
-  _bulletDamage: 0.6
+  _bulletDamage: 2
   _bulletKnockback: 0.5
   _bulletKickback: 0.2
   _bulletLifetime: 1
   _bulletGravityScale: 1
+  _bulletBounces: 0
+  _forceHitOnBounce: 0
   _forceAoe: 0
   _aoeRadius: 1
   _multipleBullets: 0

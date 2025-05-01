@@ -32,6 +32,8 @@ MonoBehaviour:
   _bulletKickback: 0.25
   _bulletLifetime: 3
   _bulletGravityScale: 1
+  _bulletBounces: 0
+  _forceHitOnBounce: 0
   _forceAoe: 0
   _aoeRadius: 0
   _multipleBullets: 0
