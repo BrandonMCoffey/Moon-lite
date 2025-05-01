@@ -18,7 +18,7 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
     type: 3}
   _tileType: 17
-  _bulletSprite: {fileID: 47835980, guid: 5453db182330ff0409f37f9e5f16b73e, type: 3}
+  _bulletSprite: {fileID: 1342045412, guid: 5453db182330ff0409f37f9e5f16b73e, type: 3}
   _ammoSpriteBullet: {fileID: -33607844, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _ammoSpriteShotgun: {fileID: 1206134126, guid: 8e4fc4feca315b543a46cace76a3b313,
     type: 3}
@@ -29,9 +29,10 @@ MonoBehaviour:
   _damage: 2
   _knockback: 3
   _kickback: 20
-  _size: 0.25
+  _size: 0.2
   _lifetime: 3
   _gravityScale: 10
   _bounces: 2
+  _hitOnBounce: 1
   _hasAOE: 0
   _aoeRadius: 1

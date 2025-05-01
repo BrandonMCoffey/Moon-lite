@@ -15,11 +15,13 @@ MonoBehaviour:
   _itemName: Copper
   _itemDescription: Weak
   _itemIcon: {fileID: -154867337, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
-  _itemIconTint: {r: 1, g: 1, b: 1, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
     type: 3}
   _tileType: 10
-  _bulletSprite: {fileID: 723841582, guid: 5453db182330ff0409f37f9e5f16b73e, type: 3}
+  _bulletSprite: {fileID: 1861605307, guid: 5453db182330ff0409f37f9e5f16b73e, type: 3}
+  _ammoBulletColor:
+    serializedVersion: 2
+    rgba: 4285248246
   _ammoSpriteBullet: {fileID: 313751767, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _ammoSpriteShotgun: {fileID: -2021169823, guid: 8e4fc4feca315b543a46cace76a3b313,
     type: 3}
@@ -28,8 +30,11 @@ MonoBehaviour:
   _bulletSpeedModifier: 1
   _damage: 1
   _knockback: 3
+  _kickback: 10
   _size: 0.25
   _lifetime: 3
   _gravityScale: 1
+  _bounces: 0
+  _hitOnBounce: 1
   _hasAOE: 0
   _aoeRadius: 1
