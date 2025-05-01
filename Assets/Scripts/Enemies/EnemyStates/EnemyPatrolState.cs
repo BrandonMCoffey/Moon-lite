@@ -5,12 +5,23 @@ using SaiUtils.StateMachine;
 
 public class EnemyPatrolState : EnemyBaseState
 {
-    public EnemyPatrolState(EnemyBrain enemyBrain, StateMachine enemyStateMachine, EnemyMovement enemyMovement)
-        : base(enemyBrain, enemyStateMachine, enemyMovement) { }
+    public EnemyPatrolState(EnemyBrain enemyBrain, StateMachine enemyStateMachine)
+        : base(enemyBrain, enemyStateMachine) { }
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        Debug.Log("Patrolling!");
+    }
 
     public override void Update()
     {
         base.Update();
-        enemyMovement.Patrol();
+        enemyBrain.EnemyMovement.Patrol();
+
+        if (enemyBrain.PlayerDetector.CanDetectPlayer())
+        {
+            enemyStateMachine.ChangeState(enemyBrain.ChaseState);
+        }
     }
 }

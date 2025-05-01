@@ -589,6 +589,7 @@ GameObject:
   m_Component:
   - component: {fileID: 267538042}
   - component: {fileID: 267538046}
+  - component: {fileID: 267538048}
   - component: {fileID: 267538045}
   - component: {fileID: 267538047}
   m_Layer: 0
@@ -611,6 +612,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1754056690}
+  - {fileID: 1756424413}
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -627,7 +629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionAngle: 45
-  detectionRadius: 10
+  detectionRadius: 15
   innerDetectionRadius: 1
   detectionCooldown: 1
   playerLayerMask:
@@ -650,6 +652,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyMovement: {fileID: 267538047}
   playerDetector: {fileID: 267538045}
+  enemyWeaponManager: {fileID: 267538048}
+  attackRange: 10
 --- !u!114 &267538047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,11 +696,29 @@ MonoBehaviour:
   _playerDetector: {fileID: 267538045}
   _moveSpeed: 5
   _jumpForce: 10
-  _obstacleCheckDistance: 0.6
   _enableDebug: 1
   _facingRight: 1
   _wallAhead: 0
   _pitAhead: 0
+--- !u!114 &267538048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267538041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a3d80a61ad3a3a48a1abafd1f5525d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponHolder: {fileID: 1756424413}
+  _enemyBrain: {fileID: 267538046}
+  _currentWeapon: {fileID: 0}
+  _currentAmmo: {fileID: 0}
+  _infiniteAmmo: 0
+  _currentMagAmmo: 0
+  _isReloading: 0
 --- !u!1 &345437391
 GameObject:
   m_ObjectHideFlags: 0
@@ -1470,3 +1492,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1756424412
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1756424413}
+  m_Layer: 0
+  m_Name: WeaponHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1756424413
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756424412}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 267538042}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
