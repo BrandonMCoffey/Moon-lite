@@ -20,7 +20,7 @@ public class EnemyWeaponManager : MonoBehaviour
     [SerializeField] bool _infiniteAmmo = false;
 
     Coroutine _reloadCoroutine;
-    [SerializeField, ReadOnly] int _currentMagAmmo = 0;
+    [SerializeField, ReadOnly] float _currentMagAmmo = 0;
     [SerializeField, ReadOnly] bool _isReloading = false;
 
     float _lastFireTime = 0f;
@@ -147,7 +147,7 @@ public class EnemyWeaponManager : MonoBehaviour
         
         if (_currentMagAmmo < _currentWeapon.Data.MaxMagSize && !_infiniteAmmo)
         {
-            int ammoToReload = _currentWeapon.Data.MaxMagSize - _currentMagAmmo;
+            float ammoToReload = _currentWeapon.Data.MaxMagSize - _currentMagAmmo;
             if (ammoToReload > 0)
             {
                 _currentMagAmmo += ammoToReload;
@@ -162,7 +162,7 @@ public class EnemyWeaponManager : MonoBehaviour
         _reloadCoroutine = null;
     }
 
-    void SubtractAmmo(int amount)
+    void SubtractAmmo(float amount)
     {
         if (_currentMagAmmo > 0)
         {
