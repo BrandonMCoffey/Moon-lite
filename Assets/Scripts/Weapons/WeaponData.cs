@@ -72,11 +72,13 @@ public class WeaponData : ScriptableObject
     [SerializeField] [ShowIf ("_multipleBullets")] private int _bulletAmount = 1;
     [SerializeField] private bool _hitScan = false;
     [SerializeField] [ShowIf ("_hitScan")] private float _rayRange = 1f;
+    [SerializeField] [ShowIf ("_hitScan")] private Color32 _rayColor = Color.red;
 
     public bool MultipleBullets => _multipleBullets;
     public int BulletAmount => _bulletAmount;
     public bool HitScan => _hitScan;
     public float RayRange => _rayRange;
+    public Color32 RayColor => _rayColor;
 
     private void OnValidate()
     {

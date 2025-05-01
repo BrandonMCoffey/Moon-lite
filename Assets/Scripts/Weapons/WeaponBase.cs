@@ -201,15 +201,9 @@ public class WeaponBase : MonoBehaviour
                 float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
                 Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
 
-                // TODO: Needs more damage to actually pierce. Damage int input eats through each tile at a time absorbing the damage
-                //WorldGenerator.Instance.DestroyTilesAlongRay(adjustedStart, spreadDirection, adjustedRange, _data.BulletDamage);
-
                 int remainingBounces = _data.BulletBounces; // Number of allowed bounces
                 Vector3 currentStart = adjustedStart;
                 Vector3 currentDirection = spreadDirection;
-
-                // Predefined colors for visualization
-                Color[] bounceColors = { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta };
 
                 while (remainingBounces >= 0)
                 {
@@ -248,9 +242,8 @@ public class WeaponBase : MonoBehaviour
                             }
                         }
 
-                        // Visualize the ray with a color based on the bounce count
-                        Color rayColor = bounceColors[remainingBounces % bounceColors.Length];
-                        Debug.DrawLine(currentStart, hit.point, rayColor, 2f);
+                        // Visualize the ray with a LineRenderer
+                        CreateLaserVisual(currentStart, hit.point, _data.RayColor);
 
                         // Reflect the raycast direction
                         currentDirection = Vector3.Reflect(currentDirection, hit.normal);
@@ -260,8 +253,7 @@ public class WeaponBase : MonoBehaviour
                     else
                     {
                         // Visualize the final ray segment if no hit occurs
-                        Color rayColor = bounceColors[remainingBounces % bounceColors.Length];
-                        Debug.DrawRay(currentStart, currentDirection * adjustedRange, rayColor, 2f);
+                        CreateLaserVisual(currentStart, currentStart + currentDirection * adjustedRange, _data.RayColor);
                         break; // Exit if no hit
                     }
                 }
@@ -299,6 +291,46 @@ public class WeaponBase : MonoBehaviour
 
         _lastFireTime = Time.time;
         OnFired();
+    }
+
+    private void CreateLaserVisual(Vector3 start, Vector3 end, Color color)
+    {
+        GameObject laser = new GameObject("LaserRay");
+        LineRenderer lineRenderer = laser.AddComponent<LineRenderer>();
+
+        // Configure the LineRenderer
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, start);
+        lineRenderer.SetPosition(1, end);
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+        lineRenderer.startWidth = 0.05f * _data.BulletSize;
+        lineRenderer.endWidth = 0.05f * _data.BulletSize;
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use a basic material
+
+        // Start fading the laser
+        StartCoroutine(FadeLaser(laser, lineRenderer, 0.33f));
+    }
+
+    private IEnumerator FadeLaser(GameObject laser, LineRenderer lineRenderer, float duration)
+    {
+        float elapsedTime = 0f;
+        Color startColor = lineRenderer.startColor;
+        Color endColor = new Color(0, 0, 0, 0f);
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+
+            Color currentColor = Color.Lerp(startColor, endColor, t);
+            lineRenderer.startColor = currentColor;
+            lineRenderer.endColor = currentColor;
+
+            yield return null;
+        }
+
+        Destroy(laser);
     }
 
     private IEnumerator RecoilCoroutine()

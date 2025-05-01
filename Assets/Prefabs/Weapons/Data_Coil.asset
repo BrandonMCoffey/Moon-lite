@@ -21,12 +21,12 @@ MonoBehaviour:
   _reloadTime: 2
   _isAutomatic: 0
   _ammoPerShot: 4
-  _fireRate: 2
+  _fireRate: 4
   _bulletSpeed: 45
-  _sprayAngle: 15
+  _sprayAngle: 0
   _recoilForce: {x: 0.2, y: 5}
   _artType: 2
-  _bulletSize: 1
+  _bulletSize: 3
   _bulletDamage: 3
   _bulletKnockback: 1
   _bulletKickback: 1
@@ -40,3 +40,6 @@ MonoBehaviour:
   _bulletAmount: 1
   _hitScan: 1
   _rayRange: 10
+  _rayColor:
+    serializedVersion: 2
+    rgba: 4278190335

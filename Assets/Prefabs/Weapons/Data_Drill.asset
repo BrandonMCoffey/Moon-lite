@@ -35,8 +35,11 @@ MonoBehaviour:
   _bulletBounces: 0
   _forceHitOnBounce: 0
   _forceAoe: 1
-  _aoeRadius: 2
+  _aoeRadius: 2.25
   _multipleBullets: 0
   _bulletAmount: 1
   _hitScan: 0
   _rayRange: 1
+  _rayColor:
+    serializedVersion: 2
+    rgba: 4278190335
