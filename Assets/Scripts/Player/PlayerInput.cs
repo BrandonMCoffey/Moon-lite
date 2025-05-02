@@ -28,15 +28,13 @@ public class PlayerInput : MonoBehaviour
     public static bool PlayerJetpack => PlayerJump;
 
     // Interactions
-    public static bool InteractOrSubmit => Input.GetKeyDown(KeyCode.E) && MouseControllerManager.ActionsThisFrame == 0;
+    public static bool InteractOrSubmit => Input.GetKeyDown(KeyCode.F) && MouseControllerManager.ActionsThisFrame == 0;
     public static bool Cancel => Input.GetKeyDown(KeyCode.Escape);
 
     // Weapon System
-    public static bool PickupDropWeapon => Input.GetKeyDown(KeyCode.Q);
-    public static bool SwitchToPreviousAmmo => Input.GetKeyDown(KeyCode.LeftBracket);
-    public static bool SwitchToNextAmmo => Input.GetKeyDown(KeyCode.RightBracket);
+    public static bool SwitchToPreviousAmmo => Input.GetKeyDown(KeyCode.Q);
+    public static bool SwitchToNextAmmo => Input.GetKeyDown(KeyCode.E);
     public static bool ReloadAmmo => Input.GetKeyDown(KeyCode.R);
-    public static bool EnableFlashlight => Input.GetKeyDown(KeyCode.F);
 
     // Game Special Actions
     public static bool Throwable01 => Input.GetKeyDown(KeyCode.Z);
