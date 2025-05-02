@@ -28,6 +28,7 @@ public class BulletPooling : MonoBehaviour
     {
         var bullet = _instance.GetItemFromPool();
         bullet.transform.SetPositionAndRotation(pos, Quaternion.identity);
+        bullet.gameObject.SetActive(true);
         return bullet;
     }
 

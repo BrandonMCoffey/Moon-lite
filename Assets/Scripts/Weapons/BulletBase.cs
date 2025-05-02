@@ -133,7 +133,8 @@ public class BulletBase : SimplePhysicsObject
             }
 
             StopAllCoroutines();
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            BulletPooling.AddItemToPool(this);
         }
     }
 
