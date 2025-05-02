@@ -12,7 +12,7 @@ public class EnemyWeaponManager : MonoBehaviour
     // [Header("Weapon Settings")]
     // [SerializeField] bool _canPickupWeapons = true;
     // [SerializeField, ShowIf("_canPickupWeapons")] float _pickupRadius = 1f;
-    
+
     [Header("Weapon Inventory")]
     [SerializeField] WeaponData _currentWeapon;
     [SerializeField] MineralData _currentAmmo;
@@ -23,11 +23,12 @@ public class EnemyWeaponManager : MonoBehaviour
     [SerializeField, ReadOnly] bool _isReloading = false;
     [SerializeField, ReadOnly] float _lastFireTime = 0f;
 
-    private void Start() {
-        _currentMagAmmo = _currentWeapon.MaxMagSize; 
+    private void Start()
+    {
+        _currentMagAmmo = _currentWeapon.MaxMagSize;
     }
 
-    public void Attack(PlayerMovementCustom playerMovement) 
+    public void Attack(PlayerMovementCustom playerMovement)
     {
         if (_currentWeapon == null || _currentWeapon == null) // Check WeaponData too
         {
@@ -50,12 +51,12 @@ public class EnemyWeaponManager : MonoBehaviour
         HandleShooting(); // You'll likely call shooting logic after aiming
     }
 
-    
+
 
     public void HandleShooting()
     {
         if (_currentWeapon == null || _currentAmmo == null) return;
-        
+
         Shoot();
     }
 
@@ -68,7 +69,7 @@ public class EnemyWeaponManager : MonoBehaviour
         if (_currentWeapon == null)
         {
             Debug.LogError("WeaponData is null on the current weapon!");
-            
+
             // Fallback: Aim directly at the player if WeaponData is missing
             Vector3 directDirection = playerPos - weaponPos;
             if (directDirection != Vector3.zero)
@@ -107,14 +108,14 @@ public class EnemyWeaponManager : MonoBehaviour
             // 2D rotation
             float angle = Mathf.Atan2(predictedDirection.y, predictedDirection.x) * Mathf.Rad2Deg;
             _weaponHolder.rotation = Quaternion.Euler(0f, 0f, angle + 5); // No offset needed as forward is positive x
-        
+
             Vector3 localScale = transform.localScale;
             localScale.y = Mathf.Abs(localScale.y) * ((angle > 90 || angle < -90) ? -1f : 1f);
             transform.localScale = localScale;
-            
+
             Debug.DrawRay(weaponPos, predictedDirection.normalized * 10f, Color.red);
-            Debug.DrawLine(weaponPos, predictedPlayerPos, Color.yellow); 
-            Debug.DrawLine(playerPos, predictedPlayerPos, Color.cyan); 
+            Debug.DrawLine(weaponPos, predictedPlayerPos, Color.yellow);
+            Debug.DrawLine(playerPos, predictedPlayerPos, Color.cyan);
         }
     }
 
@@ -152,7 +153,7 @@ public class EnemyWeaponManager : MonoBehaviour
     public void Reload()
     {
         if (_currentWeapon == null || _currentWeapon == null) return;
-        
+
         if (_reloadCoroutine != null) StopCoroutine(_reloadCoroutine);
         _reloadCoroutine = StartCoroutine(ReloadCoroutine());
     }
@@ -160,11 +161,11 @@ public class EnemyWeaponManager : MonoBehaviour
     IEnumerator ReloadCoroutine()
     {
         if (_currentWeapon == null || _currentWeapon == null) yield break;
-        
+
 
         _isReloading = true;
         yield return new WaitForSeconds(_currentWeapon.ReloadTime);
-        
+
         if (_currentMagAmmo < _currentWeapon.MaxMagSize && !_infiniteAmmo)
         {
             float ammoToReload = _currentWeapon.MaxMagSize - _currentMagAmmo;
@@ -177,7 +178,7 @@ public class EnemyWeaponManager : MonoBehaviour
         {
             Debug.Log("Magazine is already full or infinite ammo is enabled.");
         }
-        
+
         _isReloading = false;
         _reloadCoroutine = null;
     }
@@ -193,6 +194,4 @@ public class EnemyWeaponManager : MonoBehaviour
             Debug.LogWarning("No ammo left in the magazine!");
         }
     }
-
-
 }
