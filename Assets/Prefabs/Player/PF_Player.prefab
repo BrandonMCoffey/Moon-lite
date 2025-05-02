@@ -249,7 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHolder: {fileID: 3081370180031143894}
   _pickupRadius: 1
-  _maxWeapons: 2
+  _maxWeapons: 7
   _weapons: []
   _equippedWeaponIndex: 0
   _playerInventory: {fileID: 11400000, guid: b6a67fd92f617614a9e8dfbcad5ba9ae, type: 2}
