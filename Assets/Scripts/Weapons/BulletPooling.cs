@@ -45,6 +45,7 @@ public class BulletPooling : MonoBehaviour
             var bullet = _bulletPool[0];
             _bulletPool.RemoveAt(0);
             bullet.ResetBullet();
+            bullet.transform.SetPositionAndRotation(pos, Quaternion.identity);
             bullet.gameObject.SetActive(true);
             return bullet;
         }
@@ -63,6 +64,7 @@ public class BulletPooling : MonoBehaviour
             var bullet = _enemyBulletPool[0];
             _enemyBulletPool.RemoveAt(0);
             bullet.ResetBullet();
+            bullet.transform.SetPositionAndRotation(pos, Quaternion.identity);
             bullet.gameObject.SetActive(true);
             return bullet;
         }
