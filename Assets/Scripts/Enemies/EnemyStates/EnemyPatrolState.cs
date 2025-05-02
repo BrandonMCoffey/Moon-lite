@@ -11,6 +11,7 @@ public class EnemyPatrolState : EnemyBaseState
     public override void OnEnter()
     {
         base.OnEnter();
+        Debug.Log($"{Time.time}: Entering Patrol State");
     }
 
     public override void Update()

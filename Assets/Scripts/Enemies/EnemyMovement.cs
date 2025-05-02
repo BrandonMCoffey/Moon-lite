@@ -1,6 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
+using SaiUtils.ImprovedTimers;
 
 public class EnemyMovement : EntityMovement 
 {
@@ -11,6 +12,7 @@ public class EnemyMovement : EntityMovement
     [Header("Enemy Settings")]
     [SerializeField] float _moveSpeed = 5f;
     [SerializeField] float _jumpForce = 10f;
+    [SerializeField] float _strafeSpeedMultiplier = 0.75f;
 
     [Header("Debug - Enemy")]
     [SerializeField] bool _enableDebug = false;
@@ -18,8 +20,21 @@ public class EnemyMovement : EntityMovement
     [SerializeField, ReadOnly] private bool _wallAhead = false;
     [SerializeField, ReadOnly] private bool _pitAhead = false;
 
+    private EnemyBrain _enemyBrain;
+
+    CountdownTimer flipCooldownTimer = new CountdownTimer(2f); // 0.5 seconds cooldown for flipping
+
+    void Awake() 
+    {
+        _enemyBrain = GetComponent<EnemyBrain>();
+        if (_enemyBrain == null) 
+        {
+            Debug.LogError("EnemyMovement requires an EnemyBrain component.");
+        }
+    }
+
+
     // ---- Functions To Be Called By State Machine ----
-    
     // returns true if possible or false if blocked by obstacle
     [Button("Patrol")]
     public bool Patrol()
@@ -27,9 +42,17 @@ public class EnemyMovement : EntityMovement
         CheckObstacleAhead();
         if (_wallAhead || _pitAhead)
         {
-            _velocity.x = 0f;
-            return false; 
-            // TODO: Add logic to turn around or change direction
+            
+
+            Debug.Log($"Obstacle ahead (Wall: {_wallAhead}, Pit: {_pitAhead}). Stopping and flipping.");
+            if (Random.Range(0f, 1f) < 0.5f) // Randomly decide to flip or not
+            {
+                Flip();
+            }
+            else 
+            {
+                Jump(); // Jump over the obstacle
+            }
         }
 
         _velocity.x = _moveSpeed * (_facingRight ? 1 : -1);
@@ -41,19 +64,49 @@ public class EnemyMovement : EntityMovement
     {
         if (_target == null) 
         {
-            if (_enableDebug)
-            {
-                _target = Player.Instance.transform;
-            }
-            else
-            {
-                _velocity.x = 0f;
-                return false; 
-            }
+            if (_enableDebug && Player.Instance != null) _target = Player.Instance.transform;
+            else { _velocity.x = 0f; return false; }
         }
 
         var directionToPlayer = Mathf.Sign(_target.position.x - transform.position.x);
-        if ((directionToPlayer > 0 && !_facingRight) || (directionToPlayer < 0 && _facingRight))
+        if (directionToPlayer != 0 && directionToPlayer != (_facingRight ? 1 : -1))
+        {
+            Flip();
+        }
+
+        if (_wallAhead && !_pitAhead && _groundCollided) // If wall but no pit, maybe jump?
+        {
+            _velocity.x = _moveSpeed * (_facingRight ? 1 : -1); 
+            Jump(); 
+            return true; 
+        }
+        else if (_wallAhead || _pitAhead) // If pit or unjumpable wall
+        {
+            _velocity.x = 0f; 
+            return false; 
+        }
+        
+
+        _velocity.x = _moveSpeed * (_facingRight ? 1 : -1);
+        return true;
+    }
+
+    [Button("Strafe")]
+    public void Strafe(float _direction)
+    {
+        _velocity.x = _moveSpeed * _strafeSpeedMultiplier * _direction;
+    }
+
+    public bool MoveTowards(Vector3 _targetPos)
+    {
+        if (_targetPos == null) 
+        {
+            if (_enableDebug && Player.Instance != null) _targetPos = Player.Instance.transform.position;
+            else { _velocity.x = 0f; return false; }
+        }
+
+        var directionToPlayer = Mathf.Sign(_targetPos.x - transform.position.x);
+        if (directionToPlayer != 0 && directionToPlayer != (_facingRight ? 1 : -1))
         {
             Flip();
         }
@@ -61,11 +114,16 @@ public class EnemyMovement : EntityMovement
         CheckObstacleAhead();
         if (_wallAhead || _pitAhead)
         {
-            _velocity.x = 0f;
+            _velocity.x = 0f; 
             return false; 
         }
 
         _velocity.x = _moveSpeed * (_facingRight ? 1 : -1);
+        if (Mathf.Abs(transform.position.x - _targetPos.x) < 0.5f) {
+            _velocity.x = 0f;
+            return true; // Reached destination (horizontally)
+        }
+        
         return true;
     }
 
@@ -117,6 +175,21 @@ public class EnemyMovement : EntityMovement
         _velocity.x = 0f;
     }
 
+    public void EnsureFacingTarget(Transform target)
+    {
+        if (target == null) return;
+        var directionToTarget = Mathf.Sign(target.position.x - transform.position.x);
+        if (directionToTarget != 0 && directionToTarget != (_facingRight ? 1 : -1))
+        {
+            Flip();
+        }
+    }
+
+    public void SetHorizontalVelocity(float velocity)
+    {
+        _velocity.x = velocity;
+    }
+
     // ----- Private Functions ----
     void CheckObstacleAhead()
     {
@@ -141,6 +214,8 @@ public class EnemyMovement : EntityMovement
     [Button("Flip")]
     private void Flip()
     {
+        if (flipCooldownTimer.IsRunning) return;
+        flipCooldownTimer.Start(); 
         _facingRight = !_facingRight;
         transform.Rotate(0f, 180f, 0f);
         
