@@ -23,7 +23,7 @@ MonoBehaviour:
   _ammoPerShot: 1
   _fireRate: 6
   _bulletSpeed: 45
-  _sprayAngle: 15
+  _sprayAngle: 0
   _recoilForce: {x: 0.2, y: 5}
   _artType: 2
   _bulletSize: 1
@@ -39,7 +39,7 @@ MonoBehaviour:
   _multipleBullets: 0
   _bulletAmount: 1
   _hitScan: 1
-  _rayRange: 8
+  _rayRange: 15
   _rayColor:
     serializedVersion: 2
     rgba: 4293656320

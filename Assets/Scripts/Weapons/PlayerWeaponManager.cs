@@ -116,8 +116,9 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void InitializeUI()
     {
-        _reloadBar = GameObject.Find("ReloadBar")?.GetComponent<SpriteRenderer>();
-        _reloadBarBG = GameObject.Find("ReloadBarBG")?.GetComponent<SpriteRenderer>();
+        // TODO: Serialize
+        _reloadBar = transform.Find("ReloadBar")?.GetComponent<SpriteRenderer>();
+        _reloadBarBG = transform.Find("ReloadBarBG")?.GetComponent<SpriteRenderer>();
 
         HideReloadBar();
     }
@@ -147,16 +148,12 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void HandleWeaponPickupAndDrop()
     {
-        if (PlayerInput.PickupDropWeapon)
+        if (PlayerInput.InteractOrSubmit)
         {
             if (IsOverPickup())
             {
+                if (_weapons.Count >= _maxWeapons - 1) DropCurrentWeapon();
                 PickupWeapon();
-                HideReloadBar();
-            }
-            else if (EquippedWeapon != null && _canDropWeapon)
-            {
-                DropCurrentWeapon();
                 HideReloadBar();
             }
         }

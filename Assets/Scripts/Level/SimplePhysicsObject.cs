@@ -61,7 +61,6 @@ public class SimplePhysicsObject : MonoBehaviour
 
     protected void ResetPhysics()
     {
-        Debug.Log("Reset Physics");
         _velocity = Vector3.zero;
         previousPosition = transform.position;
         currentPosition = transform.position;

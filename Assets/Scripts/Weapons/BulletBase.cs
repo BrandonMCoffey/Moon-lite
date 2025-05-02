@@ -1,8 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using System;
-using DG.Tweening.Core.Easing;
 
 public class BulletBase : SimplePhysicsObject
 {
@@ -28,8 +26,9 @@ public class BulletBase : SimplePhysicsObject
 
     protected int _pierceAmount = 0;
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         //_rb = GetComponent<Rigidbody>();
         _sr = GetComponent<SpriteRenderer>();
         //_tr = GetComponent<TrailRenderer>();
@@ -88,7 +87,6 @@ public class BulletBase : SimplePhysicsObject
         transform.localScale = new Vector3(_size, _size, _size);
         transform.eulerAngles = new Vector3(0, 0, angle);
 
-        Debug.Log("Bullet Setup");
         SetVelocity(shootDir * _shotSpeed);
         //_velocity = shootDir * _shotSpeed;
 
@@ -107,9 +105,9 @@ public class BulletBase : SimplePhysicsObject
                 break;
         }
 
-        StartCoroutine(DelayedDestroy(_lifetime));
-
         PreRaycastCheck();
+
+        StartCoroutine(DelayedDestroy(_lifetime));
     }
 
     protected virtual IEnumerator DelayedDestroy(float delay)
@@ -136,7 +134,6 @@ public class BulletBase : SimplePhysicsObject
         StopAllCoroutines();
         //Destroy(gameObject);
         BulletPooling.AddBulletToPool(this);
-        gameObject.SetActive(false);
     }
 
     protected void ApplyGravity()

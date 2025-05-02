@@ -249,6 +249,8 @@ public class WeaponBase : MonoBehaviour
                         currentDirection = Vector3.Reflect(currentDirection, hit.normal);
                         currentStart = hit.point + currentDirection * 0.01f; // Offset to avoid immediate re-hit
                         remainingBounces--;
+                        // TODO: Put this in SO data object
+                        adjustedRange *= 0.667f;
                     }
                     else
                     {
