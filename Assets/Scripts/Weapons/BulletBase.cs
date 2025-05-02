@@ -166,7 +166,12 @@ public class BulletBase : SimplePhysicsObject
             }
         }
 
-        // TODO: Enemy or other hit objects
+        var damageable = hit.collider.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            damageable.TakeDamage(_damage);
+            DestroySelf();
+        }
 
         // TODO: Bullet impact feedback
 

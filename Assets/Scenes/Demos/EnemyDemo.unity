@@ -592,6 +592,7 @@ GameObject:
   - component: {fileID: 267538048}
   - component: {fileID: 267538045}
   - component: {fileID: 267538047}
+  - component: {fileID: 267538049}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -728,6 +729,23 @@ MonoBehaviour:
   _currentMagAmmo: 0
   _isReloading: 0
   _lastFireTime: 0
+--- !u!114 &267538049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267538041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df767cd9dfde5e447ac7a1428fefcb48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+  _currentHealth: 0
+  _deathEffectPrefab: {fileID: 0}
+  _damageEffectPrefab: {fileID: 0}
+  _healEffectPrefab: {fileID: 0}
 --- !u!1 &345437391
 GameObject:
   m_ObjectHideFlags: 0
