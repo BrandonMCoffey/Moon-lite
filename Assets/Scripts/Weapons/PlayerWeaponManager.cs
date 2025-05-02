@@ -251,7 +251,8 @@ public class PlayerWeaponManager : MonoBehaviour
             Vector3 aimDirection = (pos - transform.position).normalized;
 
             // tell the weapon to shoot select ammo type
-            EquippedWeapon.Shoot(aimDirection, _bulletHitLayer, EquippedAmmo);
+            var knockback = EquippedWeapon.Shoot(aimDirection, _bulletHitLayer, EquippedAmmo);
+            Player.Movement.AddKnockback(knockback);
             //UpdateAmmoUI();
         }
     }

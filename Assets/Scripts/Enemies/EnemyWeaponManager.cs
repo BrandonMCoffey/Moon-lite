@@ -141,51 +141,10 @@ public class EnemyWeaponManager : MonoBehaviour
             SubtractAmmo(_currentWeapon.AmmoPerShot);
         }
 
-        float randomAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
-        Vector3 preSpreadAim = aimDirection;
-        aimDirection = Quaternion.Euler(0, 0, randomAngle) * aimDirection;
-
         Vector3 spawnPos = _weaponHolder.position;
         _enemyBrain.EnemyMovement.AddKnockback(-aimDirection * _data.BulletKickback * _currentAmmo.Kickback);
 
-        if (_data.HitScan)
-        {
-            Vector3 adjustedStart = spawnPos - aimDirection.normalized * 0.75f;
-            float adjustedRange = _data.RayRange + 0.75f;
-
-            for (int i = 0; i < (_data.MultipleBullets ? _data.BulletAmount : 1); i++)
-            {
-                // Apply spread for each raycast
-                float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
-                Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
-
-                WorldGenerator.Instance.DestroyTilesAlongRay(adjustedStart, spreadDirection, adjustedRange, _data.BulletDamage);
-
-                Debug.DrawRay(adjustedStart, spreadDirection * adjustedRange, Color.red, 2f); // Visualize the ray
-            }
-        }
-        else if (_data.MultipleBullets)
-        {
-            // Handle multiple bullets logic
-            for (int i = 0; i < _data.BulletAmount; i++)
-            {
-                float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
-                Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
-
-                BulletBase bulletInstance = BulletPooling.SpawnBullet(spawnPos);
-                float angle = Mathf.Atan2(spreadDirection.y, spreadDirection.x) * Mathf.Rad2Deg;
-
-                bulletInstance.BulletSetup(spreadDirection, angle, _data, _bulletLayer, _currentAmmo);
-            }
-        }
-        else 
-        {
-            // Default single bullet logic
-            BulletBase bulletInstance = BulletPooling.SpawnBullet(spawnPos);
-            float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-
-            bulletInstance.BulletSetup(aimDirection, angle, _data, _bulletLayer, _currentAmmo);
-        }
+        Vector3 knockback = BulletSpawner.ShootBullet(_data, _currentAmmo, _bulletLayer, spawnPos, aimDirection);
 
         _lastFireTime = Time.time;
     }

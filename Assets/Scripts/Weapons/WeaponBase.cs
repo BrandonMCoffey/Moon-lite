@@ -175,108 +175,8 @@ public class WeaponBase : MonoBehaviour
             _pwm.SubtractAmmo(_data.AmmoPerShot);
         }
 
-        // Apply spray effect
-        float randomAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
-        Vector3 preSpreadAim = aimDirection;
-        aimDirection = Quaternion.Euler(0, 0, randomAngle) * aimDirection;
-
         Vector3 spawnPosition = _shootTransform.position;
-        Vector3 knockback = -aimDirection * _data.BulletKickback * bulletData.Kickback;
-
-        if (_data.HitScan)
-        {
-            // Adjust the raycast start position and range
-            Vector3 adjustedStart = spawnPosition - aimDirection.normalized * .75f; // Start slightly behind
-            float adjustedRange = _data.RayRange + .75f; // Extend the range to compensate
-
-            for (int i = 0; i < (_data.MultipleBullets ? _data.BulletAmount : 1); i++)
-            {
-                // Apply spread for each raycast
-                float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
-                Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
-
-                int remainingBounces = _data.BulletBounces; // Number of allowed bounces
-                Vector3 currentStart = adjustedStart;
-                Vector3 currentDirection = spreadDirection;
-
-                while (remainingBounces >= 0)
-                {
-                    if (Physics.Raycast(currentStart, currentDirection, out RaycastHit hit, adjustedRange, bulletData.BulletPrefab.BulletLayerMask, QueryTriggerInteraction.Ignore))
-                    {
-                        var chunk = hit.collider.GetComponent<Chunk>();
-                        if (chunk != null)
-                        {
-                            Vector3 pointToDestroy = hit.point; // Use the actual hit point
-
-                            // Apply ammo type effects
-                            if (_data.ForceAoe || bulletData.HasAOE)
-                            {
-                                // if the weapon already has AOE, make the mult a bit smaller
-                                float aoeRadius = _data.BulletAoeRadius;
-
-                                switch(bulletData.TileType)
-                                {
-                                    case TileType.Explosive:
-                                    if(_data.ForceAoe)
-                                    {
-                                        aoeRadius = _data.BulletAoeRadius * bulletData.AoeRadius * 0.5f;
-                                    }
-                                    else
-                                    {
-                                        aoeRadius = _data.BulletAoeRadius * bulletData.AoeRadius;
-                                    }
-                                    break;
-                                }
-
-                                chunk.World.DamageTileInCircle(pointToDestroy, aoeRadius, _data.BulletDamage * bulletData.Damage);
-                            }
-                            else
-                            {
-                                chunk.World.DamageTileAt(pointToDestroy, _data.BulletDamage * bulletData.Damage);
-                            }
-                        }
-
-                        // Visualize the ray with a LineRenderer
-                        CreateLaserVisual(currentStart, hit.point, _data.RayColor);
-
-                        // Reflect the raycast direction
-                        currentDirection = Vector3.Reflect(currentDirection, hit.normal);
-                        currentStart = hit.point + currentDirection * 0.01f; // Offset to avoid immediate re-hit
-                        remainingBounces--;
-                        // TODO: Put this in SO data object
-                        adjustedRange *= 0.667f;
-                    }
-                    else
-                    {
-                        // Visualize the final ray segment if no hit occurs
-                        CreateLaserVisual(currentStart, currentStart + currentDirection * adjustedRange, _data.RayColor);
-                        break; // Exit if no hit
-                    }
-                }
-            }
-        }
-        else if (_data.MultipleBullets)
-        {
-            // Handle multiple bullets logic
-            for (int i = 0; i < _data.BulletAmount; i++)
-            {
-                float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
-                Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
-
-                BulletBase bulletInstance = BulletPooling.SpawnBullet(spawnPosition);
-                float angle = Mathf.Atan2(spreadDirection.y, spreadDirection.x) * Mathf.Rad2Deg;
-
-                bulletInstance.BulletSetup(spreadDirection, angle, _data, bulletLayer, bulletData);
-            }
-        }
-        else
-        {
-            // Default single bullet logic
-            BulletBase bulletInstance = BulletPooling.SpawnBullet(spawnPosition);
-            float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-
-            bulletInstance.BulletSetup(aimDirection, angle, _data, bulletLayer, bulletData);
-        }
+        Vector3 knockback = BulletSpawner.ShootBullet(_data, bulletData, bulletLayer, spawnPosition, aimDirection);
 
         if (_recoilCoroutine != null)
         {
@@ -289,46 +189,6 @@ public class WeaponBase : MonoBehaviour
         OnFired();
 
         return knockback;
-    }
-
-    private void CreateLaserVisual(Vector3 start, Vector3 end, Color color)
-    {
-        GameObject laser = new GameObject("LaserRay");
-        LineRenderer lineRenderer = laser.AddComponent<LineRenderer>();
-
-        // Configure the LineRenderer
-        lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, start);
-        lineRenderer.SetPosition(1, end);
-        lineRenderer.startColor = color;
-        lineRenderer.endColor = color;
-        lineRenderer.startWidth = 0.05f * _data.BulletSize;
-        lineRenderer.endWidth = 0.05f * _data.BulletSize;
-        lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use a basic material
-
-        // Start fading the laser
-        StartCoroutine(FadeLaser(laser, lineRenderer, 0.33f));
-    }
-
-    private IEnumerator FadeLaser(GameObject laser, LineRenderer lineRenderer, float duration)
-    {
-        float elapsedTime = 0f;
-        Color startColor = lineRenderer.startColor;
-        Color endColor = new Color(0, 0, 0, 0f);
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / duration;
-
-            Color currentColor = Color.Lerp(startColor, endColor, t);
-            lineRenderer.startColor = currentColor;
-            lineRenderer.endColor = currentColor;
-
-            yield return null;
-        }
-
-        Destroy(laser);
     }
 
     private IEnumerator RecoilCoroutine()

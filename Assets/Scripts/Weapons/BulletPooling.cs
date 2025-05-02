@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,5 +51,46 @@ public class BulletPooling : MonoBehaviour
         if (bullet == null || _bulletPool.Contains(bullet)) return;
         bullet.gameObject.SetActive(false);
         _bulletPool.Add(bullet);
+    }
+
+    public static void CreateLaserVisual(Vector3 start, Vector3 end, Color color, float bulletSize) => _instance.CreateLaserVisualLocal(start, end, color, bulletSize);
+    private void CreateLaserVisualLocal(Vector3 start, Vector3 end, Color color, float bulletSize)
+    {
+        GameObject laser = new GameObject("LaserRay");
+        LineRenderer lineRenderer = laser.AddComponent<LineRenderer>();
+
+        // Configure the LineRenderer
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, start);
+        lineRenderer.SetPosition(1, end);
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+        lineRenderer.startWidth = 0.05f * bulletSize;
+        lineRenderer.endWidth = 0.05f * bulletSize;
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use a basic material
+
+        // Start fading the laser
+        StartCoroutine(FadeLaser(laser, lineRenderer, 0.33f));
+    }
+
+    private IEnumerator FadeLaser(GameObject laser, LineRenderer lineRenderer, float duration)
+    {
+        float elapsedTime = 0f;
+        Color startColor = lineRenderer.startColor;
+        Color endColor = new Color(0, 0, 0, 0f);
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+
+            Color currentColor = Color.Lerp(startColor, endColor, t);
+            lineRenderer.startColor = currentColor;
+            lineRenderer.endColor = currentColor;
+
+            yield return null;
+        }
+
+        Destroy(laser);
     }
 }
