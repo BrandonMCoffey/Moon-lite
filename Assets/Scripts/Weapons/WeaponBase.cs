@@ -267,7 +267,7 @@ public class WeaponBase : MonoBehaviour
                 float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
                 Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
 
-                BulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
+                BulletBase bulletInstance = BulletPooling.SpawnBullet(spawnPosition);
                 float angle = Mathf.Atan2(spreadDirection.y, spreadDirection.x) * Mathf.Rad2Deg;
 
                 bulletInstance.BulletSetup(spreadDirection, angle, _data, bulletData);
@@ -276,7 +276,7 @@ public class WeaponBase : MonoBehaviour
         else
         {
             // Default single bullet logic
-            BulletBase bulletInstance = Instantiate(bulletData.BulletPrefab, spawnPosition, Quaternion.identity);
+            BulletBase bulletInstance = BulletPooling.SpawnBullet(spawnPosition);
             float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
             bulletInstance.BulletSetup(aimDirection, angle, _data, bulletData);
