@@ -11,7 +11,7 @@ public class EnemyRetreatState : EnemyBaseState
     public override void OnEnter()
     {
         base.OnEnter();
-        Debug.Log("Retreating from Player!");
+        Debug.Log($"{Time.time}: Entering Retreat State");
     }
 
     public override void Update()

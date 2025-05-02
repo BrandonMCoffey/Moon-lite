@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionAngle: 60
-  detectionRadius: 15
+  detectionRadius: 30
   innerDetectionRadius: 1
   detectionCooldown: 1
   playerLayerMask:
@@ -653,7 +653,13 @@ MonoBehaviour:
   enemyMovement: {fileID: 267538047}
   playerDetector: {fileID: 267538045}
   enemyWeaponManager: {fileID: 267538048}
-  attackRange: 10
+  attackRange: 15.79
+  aggression: 0.5
+  preferredEngagementRange: 8
+  strafeChance: 0.6
+  repositionTimeMin: 3
+  repositionTimeMax: 6
+  searchTime: 5
 --- !u!114 &267538047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,7 +702,8 @@ MonoBehaviour:
   _playerDetector: {fileID: 267538045}
   _moveSpeed: 5
   _jumpForce: 10
-  _enableDebug: 1
+  _strafeSpeedMultiplier: 0.75
+  _enableDebug: 0
   _facingRight: 1
   _wallAhead: 0
   _pitAhead: 0
