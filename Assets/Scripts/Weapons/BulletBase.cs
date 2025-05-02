@@ -24,7 +24,6 @@ public class BulletBase : SimplePhysicsObject
     protected SpriteRenderer _sr;
     //protected TrailRenderer _tr;
     protected Vector3 _startPosition;
-    protected bool _once = false;
     protected bool _isVisible = true;
 
     protected int _pierceAmount = 0;
@@ -89,6 +88,7 @@ public class BulletBase : SimplePhysicsObject
         transform.localScale = new Vector3(_size, _size, _size);
         transform.eulerAngles = new Vector3(0, 0, angle);
 
+        Debug.Log("Bullet Setup");
         SetVelocity(shootDir * _shotSpeed);
         //_velocity = shootDir * _shotSpeed;
 
@@ -107,9 +107,9 @@ public class BulletBase : SimplePhysicsObject
                 break;
         }
 
-        PreRaycastCheck();
-
         StartCoroutine(DelayedDestroy(_lifetime));
+
+        PreRaycastCheck();
     }
 
     protected virtual IEnumerator DelayedDestroy(float delay)
@@ -120,27 +120,23 @@ public class BulletBase : SimplePhysicsObject
 
     protected virtual void DestroySelf()
     {
-        if (!_once)
+        if (_hasAOE)
         {
-            _once = true;
-
-            if (_hasAOE)
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, _aoeRadius, _physicsLayerMask, QueryTriggerInteraction.Ignore);
+            foreach (var collider in hitColliders)
             {
-                Collider[] hitColliders = Physics.OverlapSphere(transform.position, _aoeRadius, _physicsLayerMask, QueryTriggerInteraction.Ignore);
-                foreach (var collider in hitColliders)
+                var chunk = collider.GetComponent<Chunk>();
+                if (chunk != null)
                 {
-                    var chunk = collider.GetComponent<Chunk>();
-                    if (chunk != null)
-                    {
-                        chunk.World.DamageTileInCircle(transform.position, _aoeRadius, _damage);
-                    }
+                    chunk.World.DamageTileInCircle(transform.position, _aoeRadius, _damage);
                 }
             }
-
-            StopAllCoroutines();
-            //Destroy(gameObject);
-            BulletPooling.AddBulletToPool(this);
         }
+
+        StopAllCoroutines();
+        //Destroy(gameObject);
+        BulletPooling.AddBulletToPool(this);
+        gameObject.SetActive(false);
     }
 
     protected void ApplyGravity()

@@ -44,8 +44,8 @@ public class BulletPooling : MonoBehaviour
         {
             var bullet = _bulletPool[0];
             _bulletPool.RemoveAt(0);
-            bullet.ResetBullet();
             bullet.transform.SetPositionAndRotation(pos, Quaternion.identity);
+            bullet.ResetBullet();
             bullet.gameObject.SetActive(true);
             return bullet;
         }
@@ -63,8 +63,8 @@ public class BulletPooling : MonoBehaviour
         {
             var bullet = _enemyBulletPool[0];
             _enemyBulletPool.RemoveAt(0);
-            bullet.ResetBullet();
             bullet.transform.SetPositionAndRotation(pos, Quaternion.identity);
+            bullet.ResetBullet();
             bullet.gameObject.SetActive(true);
             return bullet;
         }
@@ -80,7 +80,6 @@ public class BulletPooling : MonoBehaviour
     {
         if (bullet == null || _bulletPool.Contains(bullet)) return;
         bullet.gameObject.SetActive(false);
-        bullet.ResetBullet();
         _bulletPool.Add(bullet);
     }
 
@@ -89,7 +88,6 @@ public class BulletPooling : MonoBehaviour
     {
         if (bullet == null || _enemyBulletPool.Contains(bullet)) return;
         bullet.gameObject.SetActive(false);
-        bullet.ResetBullet();
         _enemyBulletPool.Add(bullet);
     }
 }

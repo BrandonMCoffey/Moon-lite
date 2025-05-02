@@ -20,7 +20,7 @@ public class SimplePhysicsObject : MonoBehaviour
     private Vector3 previousPosition;
     private Vector3 currentPosition;
 
-    protected virtual void OnEnable()
+    protected virtual void Awake()
     {
         ResetPhysics();
     }
@@ -61,6 +61,7 @@ public class SimplePhysicsObject : MonoBehaviour
 
     protected void ResetPhysics()
     {
+        Debug.Log("Reset Physics");
         _velocity = Vector3.zero;
         previousPosition = transform.position;
         currentPosition = transform.position;

@@ -136,6 +136,7 @@ public class EnemyBulletBase : SimplePhysicsObject
             StopAllCoroutines();
             //Destroy(gameObject);
             BulletPooling.AddEnemyBulletToPool(this);
+            gameObject.SetActive(false);
         }
     }
 
