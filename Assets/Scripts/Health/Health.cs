@@ -4,8 +4,8 @@ using UnityEngine.PlayerLoop;
 
 public class Health : MonoBehaviour, IDamageable
 {
-    [SerializeField] private float _maxHealth = 100f;
-    [SerializeField] private float _currentHealth;
+    [SerializeField] protected float _maxHealth = 100f;
+    [SerializeField] protected float _currentHealth;
     [SerializeField] private GameObject _deathEffectPrefab; 
     [SerializeField] private GameObject _damageEffectPrefab;
     [SerializeField] private GameObject _healEffectPrefab;
@@ -13,37 +13,12 @@ public class Health : MonoBehaviour, IDamageable
     [SerializeField] List<DamageOverTimeEffect> _damageOverTimeEffects = new();
 
 
-    private void Start() => _currentHealth = _maxHealth;
-    public float GetHealth() => _currentHealth;
-    public bool IsAlive() => _currentHealth > 0;
-
-    public void Die()
+    protected virtual void Start()
     {
-        if (_deathEffectPrefab != null) Instantiate(_deathEffectPrefab, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        SetHealth(_maxHealth);
     }
 
-    public void Heal(float amount)
-    {
-        _currentHealth += amount;
-        if (_currentHealth > _maxHealth) _currentHealth = _maxHealth;
-        if (_healEffectPrefab != null) Instantiate(_healEffectPrefab, transform.position, Quaternion.identity);
-    }
-
-    public void TakeDamage(float damage)
-    {
-        _currentHealth -= damage;
-        if (_currentHealth <= 0) { Die(); return; }
-        if (_damageEffectPrefab != null) Instantiate(_damageEffectPrefab, transform.position, Quaternion.identity);
-    }
-
-    public void ApplyDamageOverTime(int damage, float duration, float interval, GameObject source)
-    {
-        var effect = new DamageOverTimeEffect(damage, duration, interval, source);
-        _damageOverTimeEffects.Add(effect);
-    }
-
-    private void Update()
+    protected virtual void Update()
     {
         for (int i = _damageOverTimeEffects.Count - 1; i >= 0; i--)
         {
@@ -67,6 +42,44 @@ public class Health : MonoBehaviour, IDamageable
         }
     }
 
+    public float GetHealth() => _currentHealth;
+    public bool IsAlive() => _currentHealth > 0;
+
+    public virtual void Die()
+    {
+        if (_deathEffectPrefab != null) Instantiate(_deathEffectPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+
+    public void Heal(float amount)
+    {
+        SetHealth(_currentHealth + amount);
+        if (_healEffectPrefab != null) Instantiate(_healEffectPrefab, transform.position, Quaternion.identity);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (damage >= _currentHealth)
+        {
+            Die();
+        }
+        else if (damage > 0)
+        {
+            SetHealth(_currentHealth - damage);
+            if (_damageEffectPrefab != null) Instantiate(_damageEffectPrefab, transform.position, Quaternion.identity);
+        }
+    }
+
+    public void ApplyDamageOverTime(int damage, float duration, float interval, GameObject source)
+    {
+        var effect = new DamageOverTimeEffect(damage, duration, interval, source);
+        _damageOverTimeEffects.Add(effect);
+    }
+
+    protected virtual void SetHealth(float health)
+    {
+        _currentHealth = Mathf.Clamp(health, 0, _maxHealth);
+    }
 }
 
 public class DamageOverTimeEffect

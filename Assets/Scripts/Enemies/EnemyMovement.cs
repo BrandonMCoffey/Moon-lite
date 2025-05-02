@@ -29,7 +29,7 @@ public class EnemyMovement : EntityMovement
         _enemyBrain = GetComponent<EnemyBrain>();
         if (_enemyBrain == null) 
         {
-            Debug.LogError("EnemyMovement requires an EnemyBrain component.");
+            //Debug.LogError("EnemyMovement requires an EnemyBrain component.");
         }
     }
 
@@ -44,7 +44,7 @@ public class EnemyMovement : EntityMovement
         {
             
 
-            Debug.Log($"Obstacle ahead (Wall: {_wallAhead}, Pit: {_pitAhead}). Stopping and flipping.");
+            //Debug.Log($"Obstacle ahead (Wall: {_wallAhead}, Pit: {_pitAhead}). Stopping and flipping.");
             if (Random.Range(0f, 1f) < 0.5f) // Randomly decide to flip or not
             {
                 Flip();

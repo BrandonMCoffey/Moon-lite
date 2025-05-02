@@ -22,7 +22,7 @@ public class ConeDetectionStrategy : IDetectionStrategy
 
     public bool IsPlayerDetected(Transform player, Transform detector, CountdownTimer timer)
     {
-        if (timer.IsRunning) return false;
+        //if (timer.IsRunning) return false;
 
         Vector3 toPlayer = player.position - detector.position;
         float distance = toPlayer.magnitude;
@@ -43,7 +43,7 @@ public class ConeDetectionStrategy : IDetectionStrategy
 
                 if (Physics.Raycast(detector.position, rayDirection, out RaycastHit hit, detectionRadius, playerLayer))
                 {
-                    if (Physics.Raycast(detector.position, rayDirection, out _, detectionRadius, groundLayer))
+                    if (Physics.Raycast(detector.position, rayDirection, out _, hit.distance, groundLayer))
                     {
                         // there is a ground object in the way, ignore this ray
                         Debug.DrawRay(detector.position, rayDirection * detectionRadius, Color.yellow);
@@ -54,7 +54,7 @@ public class ConeDetectionStrategy : IDetectionStrategy
                         var playerRef = hit.collider.GetComponent<Player>();
                         if (playerRef != null)
                         {
-                            timer.Start();
+                            //timer.Start();
                             return true;
                         }
                     }  

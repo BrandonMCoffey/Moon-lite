@@ -1,10 +1,12 @@
 using UnityEngine;
 using SaiUtils.StateMachine;
+using Sirenix.OdinInspector;
 
 public class EnemyBrain : MonoBehaviour 
 {
     [Header("References")]
     [SerializeField] EnemyMovement enemyMovement;
+    [SerializeField, ReadOnly] string _currentState;
     public EnemyMovement EnemyMovement => enemyMovement;
     [SerializeField] PlayerDetector playerDetector;
     public PlayerDetector PlayerDetector => playerDetector;
@@ -63,6 +65,7 @@ public class EnemyBrain : MonoBehaviour
     void Update() 
     {
         stateMachine.Update();
+        _currentState = stateMachine.CurrentStateName;
     }
 
     void FixedUpdate() 

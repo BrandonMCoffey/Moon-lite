@@ -9,6 +9,7 @@ namespace SaiUtils.StateMachine
     {
         // a StateNode is a Wrapper Class that holds a state and all its transitions
         StateNode _currentStateNode;
+        public string CurrentStateName => _currentStateNode.ToString();
 
         // dictionary of all states in the state machine
         Dictionary<Type, StateNode> _stateNodes = new();

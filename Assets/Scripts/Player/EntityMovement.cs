@@ -57,7 +57,7 @@ public class EntityMovement : MonoBehaviour
         _groundDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
         {
-            if (Physics.Raycast(pos + Vector3.right * _groundCheckWidth * i, Vector3.down, out hitInfo, _groundOffset + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(pos + Vector3.right * (_groundCheckWidth * i), Vector3.down, out hitInfo, _groundOffset + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
             {
                 var dist = hitInfo.distance - _groundOffset;
                 if (dist < _groundDistance) _groundDistance = dist;
@@ -73,7 +73,7 @@ public class EntityMovement : MonoBehaviour
         _ceilingDistance = Mathf.Infinity;
         for (int i = -1; i <= 1; i++)
         {
-            if (Physics.Raycast(pos + Vector3.right * _ceilingCheckWidth * i, Vector3.up, out hitInfo, (_playerHeight - _groundOffset) + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(pos + Vector3.right * (_ceilingCheckWidth * i), Vector3.up, out hitInfo, (_playerHeight - _groundOffset) + _checkRaycastDistance, _groundLayer, QueryTriggerInteraction.Ignore))
             {
                 var dist = hitInfo.distance - (_playerHeight - _groundOffset);
                 if (dist < _ceilingDistance) _ceilingDistance = dist;

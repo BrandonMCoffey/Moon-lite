@@ -1,5 +1,6 @@
 using UnityEngine;
 using SaiUtils.ImprovedTimers;
+using Sirenix.OdinInspector;
 
 public class PlayerDetector : MonoBehaviour 
 {
@@ -11,6 +12,7 @@ public class PlayerDetector : MonoBehaviour
     public LayerMask PlayerLayer => playerLayerMask;
     [SerializeField] private LayerMask obstacleLayerMask;
     public LayerMask ObstacleLayer => obstacleLayerMask;
+    [SerializeField, ReadOnly] private bool _canSeePlayer = false;
 
     public Transform PlayerTransform { get; private set; }
     public Vector3 LastKnownPlayerPosition { get; private set; } = Vector3.zero;
@@ -28,7 +30,13 @@ public class PlayerDetector : MonoBehaviour
 
     public bool CanDetectPlayer() 
     {
-        return detectionTimer.IsRunning || detectionStrategy.IsPlayerDetected(PlayerTransform, transform, detectionTimer);
+        if (detectionTimer.IsRunning)
+        {
+            return _canSeePlayer;
+        }
+        _canSeePlayer = detectionStrategy.IsPlayerDetected(PlayerTransform, transform, detectionTimer);
+        detectionTimer.Start();
+        return _canSeePlayer;
     }
     public void SetDetectionStrategy(IDetectionStrategy strategy) => detectionStrategy = strategy;
 

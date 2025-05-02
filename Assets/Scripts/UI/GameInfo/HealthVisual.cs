@@ -12,7 +12,6 @@ public class HealthVisual : MonoBehaviour
 
     private void OnEnable()
     {
-        // TODO: Change this to actual player health
         Player.OnHealthChanged += UpdateSlider;
     }
 

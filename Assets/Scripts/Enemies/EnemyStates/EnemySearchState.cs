@@ -18,9 +18,18 @@ public class EnemySearchState : EnemyBaseState
         base.OnEnter();
         lastKnownPosition = enemyBrain.PlayerDetector.LastKnownPlayerPosition; 
         searchTimer.Start();
-        Debug.Log($"{Time.time}: Entering Search State. Last known position: {lastKnownPosition}");
+        //Debug.Log($"{Time.time}: Entering Search State. Last known position: {lastKnownPosition}");
 
         // Optional: Play a "searching" animation or sound
+
+        searchTimer.OnTimerEnd += SetPatrol;
+    }
+
+    private void SetPatrol()
+    {
+        //Debug.Log("Search timer ended, returning to Patrol.");
+        enemyStateMachine.ChangeState(enemyBrain.PatrolState);
+        return;
     }
 
     public override void Update()
@@ -42,13 +51,6 @@ public class EnemySearchState : EnemyBaseState
             return;
         }
 
-        searchTimer.OnTimerEnd += () => 
-        {
-            Debug.Log("Search timer ended, returning to Patrol.");
-            enemyStateMachine.ChangeState(enemyBrain.PatrolState);
-            return;
-        };
-
         // Move towards the last known position
         float distanceToTarget = Vector3.Distance(enemyBrain.transform.position, lastKnownPosition);
         if (distanceToTarget > 1.0f) 
@@ -67,7 +69,9 @@ public class EnemySearchState : EnemyBaseState
     {
         base.OnExit();
         searchTimer.Stop(); 
-        enemyBrain.EnemyMovement.StopMoving(); 
-        Debug.Log("Exiting Search State");
+        enemyBrain.EnemyMovement.StopMoving();
+        //Debug.Log("Exiting Search State");
+
+        searchTimer.OnTimerEnd -= SetPatrol;
     }
 }

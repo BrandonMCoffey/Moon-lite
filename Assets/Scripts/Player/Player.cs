@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Health
 {
     public static Player Instance => _instance;
     private static Player _instance;
 
-    // TODO: Move this to where health is calculated
     public static System.Action<float> OnHealthChanged = delegate { };
 
+    [Header("Player")]
     [SerializeField] private InventoryData _inventory;
     [SerializeField] private PlayerWeaponManager _weaponManager;
     [SerializeField] private PlayerMovementCustom _movement;
@@ -36,17 +36,29 @@ public class Player : MonoBehaviour
         if (_movement == null) _movement = GetComponent<PlayerMovementCustom>();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _world = WorldGenerator.Instance;
     }
 
-    private void Update()
+    protected override void Update()
     {
         if (PlayerInput.Throwable01) Throw(_glowstickPrefab);
         if (PlayerInput.Throwable02) Throw(_dirtBombPrefab);
         if (PlayerInput.Placeable01) Place(_tempPlatformPrefab);
         if (PlayerInput.Placeable02) Place(_autoMinerPrefab);
+    }
+
+    protected override void SetHealth(float health)
+    {
+        base.SetHealth(health);
+        OnHealthChanged?.Invoke(_currentHealth / _maxHealth);
+    }
+
+    public override void Die()
+    {
+        // Die?
     }
 
     public void AddItemToInventory(ItemData item, int count = 1) => _inventory.AddItemToInventory(item, count);

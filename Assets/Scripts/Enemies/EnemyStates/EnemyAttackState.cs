@@ -15,7 +15,7 @@ public class EnemyAttackState : EnemyBaseState
     public override void OnEnter()
     {
         base.OnEnter();
-        Debug.Log($"{Time.time}: Entering Attack State");
+        //Debug.Log($"{Time.time}: Entering Attack State");
 
         playerMovement = enemyBrain.PlayerDetector.PlayerTransform.GetComponent<PlayerMovementCustom>();
         if (playerMovement != null)
@@ -24,7 +24,7 @@ public class EnemyAttackState : EnemyBaseState
         }
         else
         {
-            Debug.LogWarning("PlayerMovementCustom component not found on PlayerTransform.");
+            //Debug.LogWarning("PlayerMovementCustom component not found on PlayerTransform.");
             enemyBrain.StateMachine.ChangeState(enemyBrain.PatrolState);
         }
 
