@@ -7,14 +7,15 @@ public class EnemyWeaponManager : MonoBehaviour
     [Header("Weapon References")]
     [SerializeField] Transform _weaponHolder;
     [SerializeField] EnemyBrain _enemyBrain;
+    [SerializeField] LayerMask _bulletLayer = 1;
 
     // [Header("Weapon Settings")]
     // [SerializeField] bool _canPickupWeapons = true;
     // [SerializeField, ShowIf("_canPickupWeapons")] float _pickupRadius = 1f;
     
     [Header("Weapon Inventory")]
-    [SerializeField] EnemyWeaponBase _currentWeapon;
-    [SerializeField] EnemyMineralData _currentAmmo;
+    [SerializeField] WeaponData _currentWeapon;
+    [SerializeField] MineralData _currentAmmo;
     [SerializeField] bool _infiniteAmmo = false;
 
     Coroutine _reloadCoroutine;
@@ -23,12 +24,12 @@ public class EnemyWeaponManager : MonoBehaviour
     [SerializeField, ReadOnly] float _lastFireTime = 0f;
 
     private void Start() {
-        _currentMagAmmo = _currentWeapon.Data.MaxMagSize; 
+        _currentMagAmmo = _currentWeapon.MaxMagSize; 
     }
 
     public void Attack(PlayerMovementCustom playerMovement) 
     {
-        if (_currentWeapon == null || _currentWeapon.Data == null) // Check WeaponData too
+        if (_currentWeapon == null || _currentWeapon == null) // Check WeaponData too
         {
             Debug.LogWarning("EnemyWeaponManager: Missing current weapon or its WeaponData.");
             return;
@@ -64,7 +65,7 @@ public class EnemyWeaponManager : MonoBehaviour
         Vector3 playerVel = playerMovement.Velocity;
         Vector3 weaponPos = _weaponHolder.position;
 
-        if (_currentWeapon.Data == null)
+        if (_currentWeapon == null)
         {
             Debug.LogError("WeaponData is null on the current weapon!");
             
@@ -77,7 +78,7 @@ public class EnemyWeaponManager : MonoBehaviour
             return;
         }
 
-        float bulletSpeed = _currentWeapon.Data.BulletSpeed * _currentAmmo.ShotSpeed;
+        float bulletSpeed = _currentWeapon.BulletSpeed * _currentAmmo.ShotSpeed;
 
         if (Mathf.Approximately(bulletSpeed, 0f))
         {
@@ -117,20 +118,13 @@ public class EnemyWeaponManager : MonoBehaviour
         }
     }
 
-
-    bool CanShoot()
-    {
-        if (_currentWeapon == null || !_currentWeapon.CanShoot()) return false;
-        return true;
-    }
-
     [Button("Test Shoot")]
     void Shoot()
     {
         var aimDirection = _weaponHolder.transform.right;
-        var _data = _currentWeapon.Data;
+        var _data = _currentWeapon;
 
-        if (Time.time < _lastFireTime + _currentWeapon.Data.FireDelay) return;
+        if (Time.time < _lastFireTime + _currentWeapon.FireDelay) return;
 
         if (_currentMagAmmo <= 0 && !_infiniteAmmo)
         {
@@ -141,10 +135,10 @@ public class EnemyWeaponManager : MonoBehaviour
         if (_isReloading) return;
 
 
-        if (!_infiniteAmmo && _currentWeapon.Data.AmmoPerShot > 0)
+        if (!_infiniteAmmo && _currentWeapon.AmmoPerShot > 0)
         {
-            _currentMagAmmo -= _currentWeapon.Data.AmmoPerShot;
-            SubtractAmmo(_currentWeapon.Data.AmmoPerShot);
+            _currentMagAmmo -= _currentWeapon.AmmoPerShot;
+            SubtractAmmo(_currentWeapon.AmmoPerShot);
         }
 
         float randomAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
@@ -178,19 +172,19 @@ public class EnemyWeaponManager : MonoBehaviour
                 float spreadAngle = UnityEngine.Random.Range(-_data.SprayAngle * 0.5f, _data.SprayAngle * 0.5f);
                 Vector3 spreadDirection = Quaternion.Euler(0, 0, spreadAngle) * preSpreadAim;
 
-                EnemyBulletBase bulletInstance = BulletPooling.SpawnEnemyBullet(spawnPos);
+                BulletBase bulletInstance = BulletPooling.SpawnBullet(spawnPos);
                 float angle = Mathf.Atan2(spreadDirection.y, spreadDirection.x) * Mathf.Rad2Deg;
 
-                bulletInstance.BulletSetup(spreadDirection, angle, _data, _currentAmmo);
+                bulletInstance.BulletSetup(spreadDirection, angle, _data, _bulletLayer, _currentAmmo);
             }
         }
         else 
         {
             // Default single bullet logic
-            EnemyBulletBase bulletInstance = BulletPooling.SpawnEnemyBullet(spawnPos);
+            BulletBase bulletInstance = BulletPooling.SpawnBullet(spawnPos);
             float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
-            bulletInstance.BulletSetup(aimDirection, angle, _data, _currentAmmo);
+            bulletInstance.BulletSetup(aimDirection, angle, _data, _bulletLayer, _currentAmmo);
         }
 
         _lastFireTime = Time.time;
@@ -198,7 +192,7 @@ public class EnemyWeaponManager : MonoBehaviour
 
     public void Reload()
     {
-        if (_currentWeapon == null || _currentWeapon.Data == null) return;
+        if (_currentWeapon == null || _currentWeapon == null) return;
         
         if (_reloadCoroutine != null) StopCoroutine(_reloadCoroutine);
         _reloadCoroutine = StartCoroutine(ReloadCoroutine());
@@ -206,15 +200,15 @@ public class EnemyWeaponManager : MonoBehaviour
 
     IEnumerator ReloadCoroutine()
     {
-        if (_currentWeapon == null || _currentWeapon.Data == null) yield break;
+        if (_currentWeapon == null || _currentWeapon == null) yield break;
         
 
         _isReloading = true;
-        yield return new WaitForSeconds(_currentWeapon.Data.ReloadTime);
+        yield return new WaitForSeconds(_currentWeapon.ReloadTime);
         
-        if (_currentMagAmmo < _currentWeapon.Data.MaxMagSize && !_infiniteAmmo)
+        if (_currentMagAmmo < _currentWeapon.MaxMagSize && !_infiniteAmmo)
         {
-            float ammoToReload = _currentWeapon.Data.MaxMagSize - _currentMagAmmo;
+            float ammoToReload = _currentWeapon.MaxMagSize - _currentMagAmmo;
             if (ammoToReload > 0)
             {
                 _currentMagAmmo += ammoToReload;

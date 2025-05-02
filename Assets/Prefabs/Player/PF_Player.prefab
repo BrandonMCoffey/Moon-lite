@@ -247,6 +247,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43b13730e6cef8645b06d8638c29e79e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletHitLayer:
+    serializedVersion: 2
+    m_Bits: 1048833
   _weaponHolder: {fileID: 3081370180031143894}
   _pickupRadius: 1
   _maxWeapons: 7

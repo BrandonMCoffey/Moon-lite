@@ -63,7 +63,7 @@ public class BulletBase : SimplePhysicsObject
         ResetPhysics();
     }
 
-    public virtual void BulletSetup(Vector3 shootDir, float angle, WeaponData weaponData, MineralData overrideData = null)
+    public virtual void BulletSetup(Vector3 shootDir, float angle, WeaponData weaponData, LayerMask hitLayer, MineralData overrideData = null)
     {
         if (overrideData != null) _data = overrideData;
         _shotSpeed = _data.ShotSpeed * weaponData.BulletSpeed;
@@ -76,6 +76,8 @@ public class BulletBase : SimplePhysicsObject
         _hitOnBounce = _data.HitOnBounce || weaponData.ForceHitOnBounce;
         _hasAOE = _data.HasAOE || weaponData.ForceAoe;
         _aoeRadius = _data.AoeRadius * weaponData.BulletAoeRadius;
+
+        _physicsLayerMask = BulletLayerMask;
 
         _pierceAmount = Mathf.CeilToInt(_damage * 7.5f);
 
@@ -90,19 +92,19 @@ public class BulletBase : SimplePhysicsObject
         SetVelocity(shootDir * _shotSpeed);
         //_velocity = shootDir * _shotSpeed;
 
-         switch(_data.TileType)
+        switch(_data.TileType)
         {
-            // if the weapon already has AOE, make the mult a bit smaller
-            case TileType.Explosive:
-                if(weaponData.ForceAoe)
-                {
-                    _aoeRadius = weaponData.BulletAoeRadius * _data.AoeRadius * 0.5f;
-                }
-                else
-                {
-                    _aoeRadius = weaponData.BulletAoeRadius * _data.AoeRadius;
-                }
-                break;
+        // if the weapon already has AOE, make the mult a bit smaller
+        case TileType.Explosive:
+            if(weaponData.ForceAoe)
+            {
+                _aoeRadius = weaponData.BulletAoeRadius * _data.AoeRadius * 0.5f;
+            }
+            else
+            {
+                _aoeRadius = weaponData.BulletAoeRadius * _data.AoeRadius;
+            }
+            break;
         }
 
         PreRaycastCheck();
@@ -165,6 +167,7 @@ public class BulletBase : SimplePhysicsObject
             }
         }
 
+        // Note: This uses bulletLayer (_physicsLayerMask) for what can be hit
         var damageable = hit.collider.GetComponent<IDamageable>();
         if (damageable != null)
         {
@@ -176,29 +179,21 @@ public class BulletBase : SimplePhysicsObject
 
         // TODO: Fix bullets impacting at the same time as each other (Same with raycasts)
 
-        switch(_data.TileType)
+        if (_data.TileType == TileType.Aethergem)
         {
-            case TileType.Aethergem:
-                _pierceAmount -= 1;
-                if (_pierceAmount <= 0)
-                {
-                    DestroySelf();
-                }
-                break;
-            // case TileType.Lead:
-            // chunk.World.DestroyTilesAlongRay(hit.point, _velocity.normalized, 50, 50);
-            // DestroySelf();
-            //     break;
-            default:
+            _pierceAmount -= 1;
+            if (_pierceAmount <= 0)
+            {
                 DestroySelf();
-                break;
+            }
         }
+        DestroySelf();
     }
 
     // Override this to customize chunk hit behavior
     public virtual void OnHitChunk(Chunk chunk, Vector3 hitPoint)
     {
-        if(_hasAOE)
+        if (_hasAOE)
         {
             chunk.World.DamageTileInCircle(hitPoint,_aoeRadius, _damage);
         }

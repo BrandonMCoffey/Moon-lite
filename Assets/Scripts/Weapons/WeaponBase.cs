@@ -161,16 +161,11 @@ public class WeaponBase : MonoBehaviour
         transform.localScale = localScale;
     }
 
-    // Overload: original Shoot signature for backwards compatibility
-    public virtual void Shoot(Vector3 aimDirection)
-    {
-        Shoot(aimDirection, null);
-    }
-
     // Now takes an optional override bullet prefab from the manager
-    public virtual void Shoot(Vector3 aimDirection, MineralData bulletData = null)
+    // Return knockback
+    public virtual Vector3 Shoot(Vector3 aimDirection, LayerMask bulletLayer, MineralData bulletData = null)
     {
-        if (Time.time < _lastFireTime + _data.FireDelay || !CanShoot()) return;
+        if (Time.time < _lastFireTime + _data.FireDelay || !CanShoot()) return Vector3.zero;
 
         StopReload();
 
@@ -186,8 +181,7 @@ public class WeaponBase : MonoBehaviour
         aimDirection = Quaternion.Euler(0, 0, randomAngle) * aimDirection;
 
         Vector3 spawnPosition = _shootTransform.position;
-
-        Player.Movement.AddKnockback(-aimDirection * _data.BulletKickback * bulletData.Kickback);
+        Vector3 knockback = -aimDirection * _data.BulletKickback * bulletData.Kickback;
 
         if (_data.HitScan)
         {
@@ -272,7 +266,7 @@ public class WeaponBase : MonoBehaviour
                 BulletBase bulletInstance = BulletPooling.SpawnBullet(spawnPosition);
                 float angle = Mathf.Atan2(spreadDirection.y, spreadDirection.x) * Mathf.Rad2Deg;
 
-                bulletInstance.BulletSetup(spreadDirection, angle, _data, bulletData);
+                bulletInstance.BulletSetup(spreadDirection, angle, _data, bulletLayer, bulletData);
             }
         }
         else
@@ -281,7 +275,7 @@ public class WeaponBase : MonoBehaviour
             BulletBase bulletInstance = BulletPooling.SpawnBullet(spawnPosition);
             float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
-            bulletInstance.BulletSetup(aimDirection, angle, _data, bulletData);
+            bulletInstance.BulletSetup(aimDirection, angle, _data, bulletLayer, bulletData);
         }
 
         if (_recoilCoroutine != null)
@@ -293,6 +287,8 @@ public class WeaponBase : MonoBehaviour
 
         _lastFireTime = Time.time;
         OnFired();
+
+        return knockback;
     }
 
     private void CreateLaserVisual(Vector3 start, Vector3 end, Color color)

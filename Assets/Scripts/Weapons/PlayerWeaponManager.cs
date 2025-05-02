@@ -6,6 +6,8 @@ using Sirenix.OdinInspector;
 
 public class PlayerWeaponManager : MonoBehaviour
 {
+    [SerializeField] private LayerMask _bulletHitLayer = 1;
+
     [Header("Weapon Settings")]
     [SerializeField] private Transform _weaponHolder;
     [SerializeField] private float _pickupRadius = 1f;
@@ -23,7 +25,6 @@ public class PlayerWeaponManager : MonoBehaviour
     public WeaponBase EquippedWeapon => _equippedWeaponIndex < _weapons.Count ? _weapons[_equippedWeaponIndex] : null;
     private Camera _mainCamera;
     private Coroutine _reloadCoroutine;
-    private bool _canDropWeapon = true;
 
     [SerializeField, ReadOnly] private int _equippedWeaponIndex = 0; // Index of the currently equipped weapon
     public int EquippedWeaponIndex => _equippedWeaponIndex;
@@ -250,7 +251,7 @@ public class PlayerWeaponManager : MonoBehaviour
             Vector3 aimDirection = (pos - transform.position).normalized;
 
             // tell the weapon to shoot select ammo type
-            EquippedWeapon.Shoot(aimDirection, EquippedAmmo);
+            EquippedWeapon.Shoot(aimDirection, _bulletHitLayer, EquippedAmmo);
             //UpdateAmmoUI();
         }
     }

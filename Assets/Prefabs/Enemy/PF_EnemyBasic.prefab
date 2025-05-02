@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyMovement: {fileID: 8041137564954186002}
+  _currentState: 
   playerDetector: {fileID: 8041137564954186000}
   enemyWeaponManager: {fileID: 8041137564954186221}
   attackRange: 15.79
@@ -190,9 +191,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHolder: {fileID: 8041137563297544112}
   _enemyBrain: {fileID: 8041137564954186003}
-  _currentWeapon: {fileID: -6148849880405768673, guid: 96c8d90dcdd5983419d40addec229547,
-    type: 3}
-  _currentAmmo: {fileID: 11400000, guid: 1210b5d46439fae4faa63dbb10baa8f8, type: 2}
+  _bulletLayer:
+    serializedVersion: 2
+    m_Bits: 1281
+  _currentWeapon: {fileID: 11400000, guid: a000fe1249984014b8f4a832532b2e6c, type: 2}
+  _currentAmmo: {fileID: 11400000, guid: 4e0fb6c9495b01744ba0486a14346392, type: 2}
   _infiniteAmmo: 1
   _currentMagAmmo: 0
   _isReloading: 0
@@ -219,6 +222,7 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  _canSeePlayer: 0
 --- !u!114 &8041137564954186002
 MonoBehaviour:
   m_ObjectHideFlags: 0
