@@ -1158,8 +1158,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
     type: 3}
+  _enemyBulletPrefab: {fileID: -114022091903405493, guid: e857b1298983ac14fb8096c65cd962ea,
+    type: 3}
   _startPoolSize: 100
-  _actualPoolSize: 0
+  _bulletPoolSize: 0
+  _enemyBulletPoolSize: 0
 --- !u!1 &833222726
 GameObject:
   m_ObjectHideFlags: 0

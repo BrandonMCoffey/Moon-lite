@@ -34,10 +34,7 @@ public class BulletBase : SimplePhysicsObject
         //_rb = GetComponent<Rigidbody>();
         _sr = GetComponent<SpriteRenderer>();
         //_tr = GetComponent<TrailRenderer>();
-        _sr.enabled = true; // Initially hide the bullet
-        //_tr.enabled = false; // Initially hide the trail
-
-        _startPosition = transform.position;
+        ResetBullet();
     }
 
     protected override void Update()
@@ -58,6 +55,14 @@ public class BulletBase : SimplePhysicsObject
         //     //_tr.enabled = true; // Show the trail after it has moved x units
         //     _isVisible = true;
         // }
+    }
+
+    public void ResetBullet()
+    {
+        _sr.enabled = true; // Initially hide the bullet
+        //_tr.enabled = false; // Initially hide the trail
+        _startPosition = transform.position;
+        ResetPhysics();
     }
 
     public virtual void BulletSetup(Vector3 shootDir, float angle, WeaponData weaponData, MineralData overrideData = null)
@@ -134,7 +139,7 @@ public class BulletBase : SimplePhysicsObject
 
             StopAllCoroutines();
             //Destroy(gameObject);
-            BulletPooling.AddItemToPool(this);
+            BulletPooling.AddBulletToPool(this);
         }
     }
 
