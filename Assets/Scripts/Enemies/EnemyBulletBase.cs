@@ -160,6 +160,15 @@ public class EnemyBulletBase : SimplePhysicsObject
         }
 
         // TODO: Enemy or other hit objects
+        var player = hit.collider.GetComponent<Player>();
+        if (player != null)
+        {
+            var health = hit.collider.GetComponent<IDamageable>();
+            if (health != null)
+            {
+                health.TakeDamage(_damage);
+            }
+        }
 
         // TODO: Bullet impact feedback
 
