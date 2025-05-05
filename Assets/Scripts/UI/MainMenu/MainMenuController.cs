@@ -18,18 +18,11 @@ public class MainMenuController : MonoBehaviour
     private void Start()
     {
         _current = _splashScreen;
-        SetGroupActive(_splashScreen, true);
-        SetGroupActive(_mainMenu, false);
-        SetGroupActive(_options, false);
-        SetGroupActive(_credits, false);
+        UIHelper.SetGroupActive(_splashScreen, true);
+        UIHelper.SetGroupActive(_mainMenu, false);
+        UIHelper.SetGroupActive(_options, false);
+        UIHelper.SetGroupActive(_credits, false);
         MouseControllerManager.UpdateSelected(_firstSelected);
-    }
-
-    private void SetGroupActive(CanvasGroup group, bool active)
-    {
-        group.alpha = active ? 1 : 0;
-        group.interactable = active;
-        group.blocksRaycasts = active;
     }
 
     public void SwitchToSplashScreen() => SwitchToMenu(_splashScreen);
