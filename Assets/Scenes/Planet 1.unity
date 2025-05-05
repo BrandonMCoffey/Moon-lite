@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1158,8 +1157,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
     type: 3}
-  _startPoolSize: 100
+  _startBulletPoolSize: 100
   _bulletPoolSize: 0
+  _laserVisualPrefab: {fileID: 6756014227854471739, guid: 6ddbb75342c94964696b5f773daec5bb,
+    type: 3}
+  _startLaserPoolSize: 5
+  _laserPoolSize: 0
 --- !u!1 &833222726
 GameObject:
   m_ObjectHideFlags: 0
@@ -3592,6 +3595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit

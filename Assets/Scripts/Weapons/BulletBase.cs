@@ -216,6 +216,7 @@ public class BulletSpawner
 {
     public static Vector3 ShootBullet(WeaponData weaponData, MineralData bulletData, LayerMask bulletLayer, Vector3 spawnPosition, Vector3 aimDirection)
     {
+        aimDirection = aimDirection.normalized;
         Vector3 knockback = -aimDirection * weaponData.BulletKickback * bulletData.Kickback;
 
         // Apply spray effect
