@@ -11,28 +11,36 @@ public class BulletPooling : MonoBehaviour
     [SerializeField] private LineRenderer _laserVisualPrefab;
     [SerializeField] private int _startLaserPoolSize = 5;
     [SerializeField, ReadOnly] private int _laserPoolSize;
+    [SerializeField] private ParticleSystem _hitParticles;
+    [SerializeField] private ParticleSystem _explosiveParticles;
 
     private static BulletPooling _instance;
     private List<BulletBase> _bulletPool;
     private List<LineRenderer> _laserPool;
 
+    private Transform _bulletParent;
+    private Transform _laserParent;
+
     private void Awake()
     {
         _instance = this;
-
+        _bulletParent = new GameObject("Bullets").transform;
+        _bulletParent.SetParent(transform, false);
         _bulletPool = new List<BulletBase>(_startBulletPoolSize);
         for (int i = 0; i < _startBulletPoolSize; i++)
         {
-            var bullet = Instantiate(_bulletPrefab, transform);
+            var bullet = Instantiate(_bulletPrefab, _bulletParent);
             bullet.gameObject.SetActive(false);
             _bulletPool.Add(bullet);
         }
         _bulletPoolSize = _startBulletPoolSize;
 
+        _laserParent = new GameObject("Lasers").transform;
+        _laserParent.SetParent(transform, false);
         _laserPool = new List<LineRenderer>();
         for (int i = 0; i < _startLaserPoolSize; i++)
         {
-            var laser = Instantiate(_laserVisualPrefab, transform);
+            var laser = Instantiate(_laserVisualPrefab, _laserParent);
             laser.gameObject.SetActive(false);
             _laserPool.Add(laser);
         }
@@ -121,5 +129,16 @@ public class BulletPooling : MonoBehaviour
 
         laser.gameObject.SetActive(false);
         _laserPool.Add(laser);
+    }
+
+    public static void BulletHitFeedback(Vector3 pos, Quaternion rot) => _instance.BulletHitFeedbacklocal(pos, rot);
+    private void BulletHitFeedbacklocal(Vector3 pos, Quaternion rot)
+    {
+        _hitParticles.Emit(1);
+    }
+
+    public static void BulletExplosiveFeedback(Vector3 pos)
+    {
+        _instance._explosiveParticles.Emit(1);
     }
 }

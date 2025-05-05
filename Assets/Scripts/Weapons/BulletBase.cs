@@ -176,15 +176,16 @@ public class BulletBase : SimplePhysicsObject
         }
 
         // TODO: Bullet impact feedback
+        BulletPooling.BulletHitFeedback(hit.point, transform.rotation);
 
         // TODO: Fix bullets impacting at the same time as each other (Same with raycasts)
 
         if (_data.TileType == TileType.Aethergem)
         {
-            _pierceAmount -= 1;
-            if (_pierceAmount <= 0)
+            if (_pierceAmount > 0)
             {
-                DestroySelf();
+                _pierceAmount -= 1;
+                return; // Dont destroy
             }
         }
         DestroySelf();
