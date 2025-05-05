@@ -107,9 +107,9 @@ public class BulletBase : SimplePhysicsObject
             break;
         }
 
-        PreRaycastCheck();
-
         StartCoroutine(DelayedDestroy(_lifetime));
+
+        PreRaycastCheck();
     }
 
     protected virtual IEnumerator DelayedDestroy(float delay)

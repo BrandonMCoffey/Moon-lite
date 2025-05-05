@@ -50,6 +50,7 @@ public class GameSettings : MonoBehaviour
         {
             _frameRateCapDropdown.ClearOptions();
             _frameRateCapDropdown.AddOptions(_frameRateCapOptions.Select(option => option.ToString()).ToList());
+            _frameRateCapDropdown.AddOptions(new List<string> { "Unlimited" });
         }
     }
 
@@ -88,6 +89,7 @@ public class GameSettings : MonoBehaviour
         {
             _frameRateCapDropdown.ClearOptions();
             _frameRateCapDropdown.AddOptions(_frameRateCapOptions.Select(option => option.ToString()).ToList());
+            _frameRateCapDropdown.AddOptions(new List<string> { "Unlimited" });
             _frameRateCapDropdown.value = frameRateCap;
         }
 
@@ -143,7 +145,7 @@ public class GameSettings : MonoBehaviour
 
     public void SetFrameRateCap(int frameRateCap)
     {
-        Application.targetFrameRate = _frameRateCapOptions[frameRateCap];
+        Application.targetFrameRate = frameRateCap == _frameRateCapOptions.Count ? -1 : _frameRateCapOptions[frameRateCap];
         _saveData.SetInt(FrameRateCap, frameRateCap);
         _saveTimer = 0.5f;
     }

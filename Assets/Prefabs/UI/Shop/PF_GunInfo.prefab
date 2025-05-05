@@ -219,7 +219,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Shotgun
+  m_text: Gun Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9ee4a4cdc0951c142a75b53d26ae5cec, type: 2}
   m_sharedMaterial: {fileID: -7531226095493309511, guid: 9ee4a4cdc0951c142a75b53d26ae5cec,
@@ -563,7 +563,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This is a gun?
+  m_text: Gun Description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9ee4a4cdc0951c142a75b53d26ae5cec, type: 2}
   m_sharedMaterial: {fileID: -7531226095493309511, guid: 9ee4a4cdc0951c142a75b53d26ae5cec,
