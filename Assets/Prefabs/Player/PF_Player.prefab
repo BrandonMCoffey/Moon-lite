@@ -93,9 +93,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3081370178779755054}
-  - component: {fileID: 3081370178779755055}
   - component: {fileID: 3081370178779755048}
   - component: {fileID: 3081370178779755053}
+  - component: {fileID: 3081370178779755055}
   - component: {fileID: 8204654888438617097}
   m_Layer: 10
   m_Name: PF_Player
@@ -125,6 +125,59 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3081370178779755048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3081370178779755049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951b1fb86201eb643be2f1375a814544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+  _currentHealth: 0
+  _deathEffectPrefab: {fileID: 0}
+  _damageEffectPrefab: {fileID: 0}
+  _healEffectPrefab: {fileID: 0}
+  _inventory: {fileID: 11400000, guid: b6a67fd92f617614a9e8dfbcad5ba9ae, type: 2}
+  _weaponManager: {fileID: 3081370178779755053}
+  _movement: {fileID: 3081370178779755055}
+  _magnetItemRange: 2.5
+  _magnetItemSpeed: 10
+  _pickupItemRange: 1
+  _glowstickPrefab: {fileID: 5679274224674146491, guid: 3c7d3f5a83616664385d207a193adac0,
+    type: 3}
+  _dirtBombPrefab: {fileID: 5241967137932940001, guid: 71fce464dfa75004c9c2668cb22073da,
+    type: 3}
+  _tempPlatformPrefab: {fileID: 5861117666760824210, guid: 69cec0e63dc3daf4b99147f2ec278f0b,
+    type: 3}
+  _autoMinerPrefab: {fileID: 7641721159863263889, guid: 717129deb8d54b74f841752df14fe62a,
+    type: 3}
+--- !u!114 &3081370178779755053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3081370178779755049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b13730e6cef8645b06d8638c29e79e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bulletHitLayer:
+    serializedVersion: 2
+    m_Bits: 1048833
+  _weaponHolder: {fileID: 3081370180031143894}
+  _pickupRadius: 1
+  _maxWeapons: 7
+  _weapons: []
+  _equippedWeaponIndex: 0
+  _playerInventory: {fileID: 11400000, guid: b6a67fd92f617614a9e8dfbcad5ba9ae, type: 2}
+  _equippedAmmoIndex: 0
 --- !u!114 &3081370178779755055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eeb15bda8a055547957ea3b6b5b6be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canMove: 1
   _gravityScale: 1
   _maxVelocity: 40
   _groundLayer:
@@ -204,59 +258,6 @@ MonoBehaviour:
   _jetpackActive: 0
   _jetpackFuel: 0
   _jetpackRefuelTimer: 0
---- !u!114 &3081370178779755048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3081370178779755049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 951b1fb86201eb643be2f1375a814544, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 100
-  _currentHealth: 0
-  _deathEffectPrefab: {fileID: 0}
-  _damageEffectPrefab: {fileID: 0}
-  _healEffectPrefab: {fileID: 0}
-  _inventory: {fileID: 11400000, guid: b6a67fd92f617614a9e8dfbcad5ba9ae, type: 2}
-  _weaponManager: {fileID: 3081370178779755053}
-  _movement: {fileID: 3081370178779755055}
-  _magnetItemRange: 2.5
-  _magnetItemSpeed: 10
-  _pickupItemRange: 1
-  _glowstickPrefab: {fileID: 5679274224674146491, guid: 3c7d3f5a83616664385d207a193adac0,
-    type: 3}
-  _dirtBombPrefab: {fileID: 5241967137932940001, guid: 71fce464dfa75004c9c2668cb22073da,
-    type: 3}
-  _tempPlatformPrefab: {fileID: 5861117666760824210, guid: 69cec0e63dc3daf4b99147f2ec278f0b,
-    type: 3}
-  _autoMinerPrefab: {fileID: 7641721159863263889, guid: 717129deb8d54b74f841752df14fe62a,
-    type: 3}
---- !u!114 &3081370178779755053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3081370178779755049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43b13730e6cef8645b06d8638c29e79e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bulletHitLayer:
-    serializedVersion: 2
-    m_Bits: 1048833
-  _weaponHolder: {fileID: 3081370180031143894}
-  _pickupRadius: 1
-  _maxWeapons: 7
-  _weapons: []
-  _equippedWeaponIndex: 0
-  _playerInventory: {fileID: 11400000, guid: b6a67fd92f617614a9e8dfbcad5ba9ae, type: 2}
-  _equippedAmmoIndex: 0
 --- !u!65 &8204654888438617097
 BoxCollider:
   m_ObjectHideFlags: 0

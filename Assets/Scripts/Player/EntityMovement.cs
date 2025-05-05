@@ -4,6 +4,7 @@ using Sirenix.OdinInspector;
 public class EntityMovement : MonoBehaviour
 {
     [Header("Collision Settings")]
+    [SerializeField] protected bool _canMove = true;
     [SerializeField] protected float _gravityScale = 1;
     [SerializeField] protected float _maxVelocity = 40;
     [SerializeField] protected LayerMask _groundLayer = 1;
@@ -31,6 +32,7 @@ public class EntityMovement : MonoBehaviour
     [SerializeField, ReadOnly] protected float _leftBottomDistance;
     [SerializeField, ReadOnly] protected bool _rightBottomCollided;
     [SerializeField, ReadOnly] protected float _rightBottomDistance;
+
     public bool LeftBottomCollided => _leftBottomCollided;
     public bool RightBottomCollided => _rightBottomCollided;
     public bool LeftWallCollided => _leftWallCollided;
@@ -44,9 +46,15 @@ public class EntityMovement : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (!_canMove) return;
         CheckCollisions();
         ApplyGravity();
         ApplyVelocity();
+    }
+
+    public virtual void SetCanMove(bool canMove)
+    {
+        _canMove = canMove;
     }
 
     protected void CheckCollisions(bool force = false)

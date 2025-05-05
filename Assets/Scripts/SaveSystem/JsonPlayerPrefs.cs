@@ -1,0 +1,166 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Sirenix.OdinInspector;
+using UnityEngine;
+using static JsonPlayerPrefs;
+
+[Serializable]
+public class JsonPlayerPrefs
+{
+    // EXAMPLE USAGE:
+    // JsonPlayerPrefs prefs = new JsonPlayerPrefs("Preferences.json");
+    // prefs.SetInt("testKey", 18);
+    // prefs.Save();
+    // int i = prefs.GetInt("testKey");
+
+    [Serializable]
+    internal class PlayerPref
+    {
+        public string key;
+        public string value;
+
+        public PlayerPref(string key, string value)
+        {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    [SerializeField] private List<PlayerPref> _playerPrefs = new List<PlayerPref>();
+    [SerializeField, ReadOnly] private string _savePath;
+
+    public JsonPlayerPrefs(string fileName)
+    {
+        _savePath = Application.persistentDataPath + "/" + fileName;
+        if (File.Exists(_savePath))
+        {
+            using (StreamReader reader = new StreamReader(_savePath))
+            {
+                string json = reader.ReadToEnd();
+                JsonPlayerPrefs data = JsonUtility.FromJson<JsonPlayerPrefs>(json);
+                this._playerPrefs = data._playerPrefs;
+            }
+        }
+    }
+
+    public bool HasKey(string key)
+    {
+        for (int i = 0; i < _playerPrefs.Count; i++)
+        {
+            if (_playerPrefs[i].key == key)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public float GetFloat(string key, float defaultValue = 0f)
+    {
+        if (TryGetPlayerPref(key, out PlayerPref playerPref))
+        {
+            if (float.TryParse(playerPref.value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out float value))
+            {
+                return value;
+            }
+        }
+        return defaultValue;
+    }
+
+    public int GetInt(string key, int defaultValue = 0)
+    {
+        if (TryGetPlayerPref(key, out PlayerPref playerPref))
+        {
+            if (int.TryParse(playerPref.value, out int value))
+            {
+                return value;
+            }
+        }
+        return defaultValue;
+    }
+
+    public string GetString(string key, string defaultValue = "")
+    {
+        if (TryGetPlayerPref(key, out PlayerPref playerPref))
+        {
+            return playerPref.value;
+        }
+        return defaultValue;
+    }
+
+    private bool TryGetPlayerPref(string key, out PlayerPref playerPref)
+    {
+        playerPref = null;
+        for (int i = 0; i < _playerPrefs.Count; i++)
+        {
+            if (_playerPrefs[i].key == key)
+            {
+                playerPref = _playerPrefs[i];
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void Save()
+    {
+        string directory = Path.GetDirectoryName(_savePath);
+        Directory.CreateDirectory(directory);
+        string json = JsonUtility.ToJson(this);
+        using (StreamWriter writer = new StreamWriter(_savePath))
+        {
+            writer.WriteLine(json);
+        }
+    }
+
+    public void SetFloat(string key, float value)
+    {
+        SetString(key, value.ToString());
+    }
+
+    public void SetInt(string key, int value)
+    {
+        SetString(key, value.ToString());
+    }
+
+    public void SetString(string key, string value)
+    {
+        PlayerPref playerPref;
+        if (TryGetPlayerPref(key, out playerPref))
+        {
+            playerPref.value = value;
+        }
+        else
+        {
+            _playerPrefs.Add(new PlayerPref(key, value));
+        }
+    }
+
+    public void DeleteKey(string key)
+    {
+        for (int i = _playerPrefs.Count - 1; i >= 0; i--)
+        {
+            if (_playerPrefs[i].key == key)
+            {
+                _playerPrefs.RemoveAt(i);
+            }
+        }
+    }
+
+    public void DeleteAll()
+    {
+        _playerPrefs.Clear();
+    }
+
+    public string[] GetAllKeysAndValues()
+    {
+        List<string> allKeys = new List<string>(_playerPrefs.Count);
+        foreach (PlayerPref p in _playerPrefs)
+        {
+            allKeys.Add(p.key);
+            allKeys.Add(p.value);
+        }
+        return allKeys.ToArray();
+    }
+}

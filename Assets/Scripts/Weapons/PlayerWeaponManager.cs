@@ -64,24 +64,6 @@ public class PlayerWeaponManager : MonoBehaviour
         OnEquipWeapon?.Invoke(EquippedWeapon != null ? EquippedWeapon.Data : null);
     }
 
-    private void OnEnable()
-    {
-        // PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
-        // if (playerHealth != null)
-        // {
-        //     playerHealth.PlayerDeathEvent.AddListener(DisableInput);
-        // }
-    }
-
-    private void OnDisable()
-    {
-        // PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
-        // if (playerHealth != null)
-        // {
-        //     playerHealth.PlayerDeathEvent.RemoveListener(DisableInput);
-        // }
-    }
-
     private void Update()
     {
         if (Time.timeScale == 0) return;
