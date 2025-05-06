@@ -77,18 +77,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: -1
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 3
@@ -134,18 +122,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -194,18 +170,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 3
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -254,18 +218,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 4
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -317,18 +269,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 3
@@ -377,18 +317,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 3
@@ -431,18 +359,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 4
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 4
       Data: 0
@@ -497,18 +413,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 3
@@ -554,18 +458,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -617,18 +509,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 3
@@ -674,18 +554,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 4
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -737,18 +605,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 3
@@ -794,18 +650,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 5
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -857,18 +701,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 3
@@ -917,18 +749,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 3
@@ -974,6 +794,9 @@ MonoBehaviour:
   _grassDecoChance: 0.5
   _caveCeilingDecoChance: 0.15
   _caveFloorDecoChance: 0.15
+  _enemySpawnerChance: 0.5
+  _enemyTypes:
+  - {fileID: 8041137564954186004, guid: 752cd4e8f870d9c40b277249d14769bb, type: 3}
   _terrainMaterial: {fileID: 2100000, guid: efb26339e8c987040bde7f0e634c4e1e, type: 2}
   _gridSize: 8
   _damageOffsetUV: {x: 1, y: 0}
@@ -981,3 +804,4 @@ MonoBehaviour:
     type: 3}
   _shopStructure: {fileID: 7892747212832004632, guid: 54a0e0c7eda369b468af64f361ab540c,
     type: 3}
+  _worldMusic: {fileID: 0}

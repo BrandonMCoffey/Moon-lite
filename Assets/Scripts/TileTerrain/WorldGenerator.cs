@@ -24,19 +24,10 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField, ReadOnly] private float _tileSizeMult = 0.5f;
     [SerializeField, ReadOnly] private int _chunkCount;
     [SerializeField] private GameObject _chunkPrefab;
+    [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private DroppedItemManager _itemManager;
     [SerializeField] private ParticleSystem _breakTileParticles;
     [SerializeField] private int _breakParticleCount = 10;
-
-    public WorldSettings Settings => _worldSettings;
-    public int ChunkSize => _chunkSize;
-    public float TileSizeMult => _tileSizeMult;
-    private float OffsetX => transform.position.x + (_centerX ? -_width * _tileSizeMult * 0.5f : 0f);
-    private float OffsetY => transform.position.y + (_downY ? -_height * _tileSizeMult : 0f);
-    public int WorldToTileX(float worldX) => Mathf.FloorToInt((worldX - OffsetX) * _tilesPerUnit);
-    public int WorldToTileY(float worldY) => Mathf.FloorToInt((worldY - OffsetY) * _tilesPerUnit);
-    public Vector3 TileToWorld(int x, int y, bool center = true) => new Vector3(x * _tileSizeMult + OffsetX + (center ? _tileSizeMult * 0.5f : 0),
-                                                   y * _tileSizeMult + OffsetY + (center ? _tileSizeMult * 0.5f : 0), transform.position.z - 0.5f);
 
     private TileType[,] _grid;
     private Dictionary<Vector2Int, Chunk> _chunks;
@@ -54,6 +45,16 @@ public class WorldGenerator : MonoBehaviour
     private Vector3 _damageRegion;
     private float _damageRegionSize;
 
+    public WorldSettings Settings => _worldSettings;
+    public int ChunkSize => _chunkSize;
+    public float TileSizeMult => _tileSizeMult;
+    private float OffsetX => transform.position.x + (_centerX ? -_width * _tileSizeMult * 0.5f : 0f);
+    private float OffsetY => transform.position.y + (_downY ? -_height * _tileSizeMult : 0f);
+    public int WorldToTileX(float worldX) => Mathf.FloorToInt((worldX - OffsetX) * _tilesPerUnit);
+    public int WorldToTileY(float worldY) => Mathf.FloorToInt((worldY - OffsetY) * _tilesPerUnit);
+    public Vector3 TileToWorld(int x, int y, bool center = true) => new Vector3(x * _tileSizeMult + OffsetX + (center ? _tileSizeMult * 0.5f : 0),
+                                                   y * _tileSizeMult + OffsetY + (center ? _tileSizeMult * 0.5f : 0), transform.position.z - 0.5f);
+
     private void OnValidate()
     {
         _tileSizeMult = 1f / _tilesPerUnit;
@@ -69,6 +70,10 @@ public class WorldGenerator : MonoBehaviour
         _decorationParent.SetParent(transform, false);
         _structureParent = new GameObject("Structures").transform;
         _structureParent.SetParent(transform, false);
+
+        if (_enemyManager == null) _enemyManager = FindObjectOfType<EnemyManager>();
+        _enemyManager.World = this;
+        if (_itemManager == null) _itemManager = FindObjectOfType<DroppedItemManager>();
     }
 
     private void Start()
@@ -84,7 +89,7 @@ public class WorldGenerator : MonoBehaviour
         {
             UpdateChunkAt(_modifiedChunks[0]);
             _modifiedChunks.RemoveAt(0);
-            /*
+            /* Update All
             foreach (var coords in _modifiedChunks)
             {
                 UpdateChunkAt(coords);
@@ -95,7 +100,7 @@ public class WorldGenerator : MonoBehaviour
     }
 
     [Button]
-    private void NewWorld()
+    private void GenerateNewWorld()
     {
         _worldSeed = -1;
         if (_chunks != null)
@@ -195,7 +200,7 @@ public class WorldGenerator : MonoBehaviour
         {
             for (int x = 0; x < _width; x++)
             {
-                if (_grid[x, y] == TileType.Underground)
+                if (IsUnderground(x, y))
                 {
                     float caveNoiseValue = 0;
 
@@ -240,7 +245,7 @@ public class WorldGenerator : MonoBehaviour
                     {
                         _grid[x, y] = TileType.Air;
                         // If current tile is air, and above tile is stone
-                        if (_grid[x, y + 1] == TileType.Underground)
+                        if (IsUnderground(x, y+1))
                         {
                             if (Random.value < Settings.CaveCeilingDecoChance)
                             {
@@ -252,7 +257,7 @@ public class WorldGenerator : MonoBehaviour
                         }
                     }
                     // If current tile is stone, and above tile is air
-                    else if (_grid[x, y] == TileType.Underground && _grid[x, y + 1] == TileType.Air)
+                    else if (_grid[x, y] == TileType.Underground && IsAir(x, y+1))
                     {
                         if (Random.value < Settings.CaveFloorDecoChance)
                         {
@@ -260,6 +265,11 @@ public class WorldGenerator : MonoBehaviour
                             deco.RandomizeCave(true);
                             deco.ConnectToTile(x, y);
                             _decorations.Add(deco);
+                        }
+                        // Spawn enemies only if enough space
+                        if (Random.value < Settings.EnemySpawnerChance && IsAir(x-1, y+1) && IsAir(x+1, y+1) && IsAir(x-1, y+2) && IsAir(x, y+2) && IsAir(x+1, y+2) && IsAir(x, y+3))
+                        {
+                            _enemyManager.AddSpawnPosition(TileToWorld(x, y + 2));
                         }
                     }
                 }
@@ -277,7 +287,7 @@ public class WorldGenerator : MonoBehaviour
         {
             for (int y = 0; y < _height; y++)
             {
-                if (_grid[x, y] == TileType.Underground)
+                if (IsUnderground(x, y))
                 {
                     for (int i = 0; i < mineralData.Count; i++)
                     {
@@ -332,7 +342,7 @@ public class WorldGenerator : MonoBehaviour
             int y = yCenter - yOff - 1;
             for (int x = xCenter + yOff * 2; x < xCenter + s.y - yOff * 2; x++)
             {
-                if (_grid[x, y] == TileType.Air) _grid[x, y] = TileType.Underground;
+                if (IsAir(x, y)) _grid[x, y] = TileType.Underground;
             }
         }
     }
@@ -378,6 +388,8 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
+    public bool IsAir(int x, int y) => GetTile(x, y) == TileType.Air;
+    public bool IsUnderground(int x, int y) => GetTile(x, y) == TileType.Underground;
     public TileType GetTile(int x, int y)
     {
         if (x < 0 || x >= _width || y < 0 || y >= _height)

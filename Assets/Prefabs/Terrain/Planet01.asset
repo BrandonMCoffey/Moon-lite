@@ -71,18 +71,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 1
@@ -120,18 +108,6 @@ MonoBehaviour:
       Entry: 3
       Data: 1
     - Name: UVCoords
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
     - Name: 
@@ -185,18 +161,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 2
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 4
       Data: 0
@@ -245,18 +209,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 2
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 4
       Data: 0
@@ -311,18 +263,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 1
@@ -368,18 +308,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -431,18 +359,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 1
@@ -488,18 +404,6 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -551,18 +455,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: UVOffsetSides
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: DamageUVCount
       Entry: 3
       Data: 1
@@ -596,13 +488,20 @@ MonoBehaviour:
   _minSurfaceDepth: 5
   _maxSurfaceDepth: 20
   _surfaceNoiseScale: 0.04
+  _regularCaves: 1
   _caveStartDepth: 30
-  _grassDecoChance: 0.2
-  _caveNoiseScale: 0.08
+  _caveNoiseScale: {x: 0.08, y: 0.08}
   _caveThreshold: 0.55
   _caveNoiseDetail: 0.15
+  _largeCaves: 1
+  _largeCavesStartDepth: 10
+  _largeCaveNoiseScale: {x: 0.02, y: 0.02}
+  _largeCaveThreshold: 0.7
+  _grassDecoChance: 0.2
   _caveCeilingDecoChance: 0.1
   _caveFloorDecoChance: 0.1
+  _enemySpawnerChance: 0.5
+  _enemyTypes: []
   _terrainMaterial: {fileID: 2100000, guid: 1ddfb5e080b07f5408cf5167262c875c, type: 2}
   _gridSize: 8
   _damageOffsetUV: {x: 4, y: 0}
@@ -610,3 +509,4 @@ MonoBehaviour:
     type: 3}
   _shopStructure: {fileID: 7892747212832004632, guid: 54a0e0c7eda369b468af64f361ab540c,
     type: 3}
+  _worldMusic: {fileID: 0}

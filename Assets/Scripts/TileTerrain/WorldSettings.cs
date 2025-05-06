@@ -45,6 +45,16 @@ public class WorldSettings : SerializedScriptableObject
     public float CaveCeilingDecoChance => _caveCeilingDecoChance;
     public float CaveFloorDecoChance => _caveFloorDecoChance;
 
+    [Header("Enemy Settings")]
+    [SerializeField, Range(0f, 1f)] private float _enemySpawnerChance = 0.4f;
+    [SerializeField, Range(0f, 1f)] private float _enemySpawnChance = 0.1f;
+    [SerializeField] private List<GameObject> _enemyTypes = new List<GameObject>();
+
+    public float EnemySpawnerChance => _enemySpawnerChance;
+    public float EnemySpawnChance => _enemySpawnChance;
+    // TODO: Take in a depth value and use it to interpret what enemies can spawn
+    public GameObject GetRandomEnemyPrefab() => _enemyTypes[Random.Range(0, _enemyTypes.Count)];
+
     [Header("References")]
     [SerializeField] private Material _terrainMaterial;
     [SerializeField] private int _gridSize = 8;
