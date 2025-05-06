@@ -1,6 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -8,9 +8,11 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject _firstSelected;
     [SerializeField] private CanvasGroup _splashScreen;
     [SerializeField] private CanvasGroup _mainMenu;
+    [SerializeField] private CanvasGroup _gameSelect;
     [SerializeField] private CanvasGroup _options;
     [SerializeField] private CanvasGroup _credits;
     [SerializeField] private CanvasGroup _fadeout;
+    [SerializeField] private List<LoadGameButton> _loadGameButtons = new List<LoadGameButton>();
 
     private CanvasGroup _current;
     private bool _transitioning;
@@ -20,13 +22,21 @@ public class MainMenuController : MonoBehaviour
         _current = _splashScreen;
         UIHelper.SetGroupActive(_splashScreen, true);
         UIHelper.SetGroupActive(_mainMenu, false);
+        UIHelper.SetGroupActive(_gameSelect, false);
         UIHelper.SetGroupActive(_options, false);
         UIHelper.SetGroupActive(_credits, false);
         MouseControllerManager.UpdateSelected(_firstSelected);
+
+        for (int i = 0; i < _loadGameButtons.Count; i++)
+        {
+            _loadGameButtons[i].LinkGameSave(GameManager.GetSaveFile(i + 1));
+        }
+        LoadGameButton.OnPlayGame += StartGame;
     }
 
     public void SwitchToSplashScreen() => SwitchToMenu(_splashScreen);
     public void SwitchToMainMenu() => SwitchToMenu(_mainMenu);
+    public void SwitchToGameSelect() => SwitchToMenu(_gameSelect);
     public void SwitchToOptions() => SwitchToMenu(_options);
     public void SwitchToCredits() => SwitchToMenu(_credits);
     private void SwitchToMenu(CanvasGroup menu)
@@ -48,8 +58,8 @@ public class MainMenuController : MonoBehaviour
 
     private IEnumerator StartGameRoutine()
     {
-        _mainMenu.interactable = false;
-        _mainMenu.blocksRaycasts = false;
+        _gameSelect.interactable = false;
+        _gameSelect.blocksRaycasts = false;
         MouseControllerManager.UpdateSelected(null);
         SoundManager.StopAllMusic();
         for (float t = 0; t < 1; t += Time.deltaTime)
@@ -57,12 +67,7 @@ public class MainMenuController : MonoBehaviour
             _fadeout.alpha = t;
             yield return null;
         }
-        LoadGame();
-    }
-
-    private void LoadGame()
-    {
-        SceneManager.LoadScene(1);
+        GameManager.LoadGameScene();
     }
 
     public void QuitToDesktop()

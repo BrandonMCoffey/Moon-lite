@@ -35,6 +35,7 @@ public class AnimatedButtonHoverSelect : MonoBehaviour, ISelectHandler, IDeselec
 	    
 	private void HoverSelect(bool active)
 	{
+		if (!_button.interactable) active = false;
 		if (active) _sfxOnSelectHover.Play();
 		if (_animateScale)
 		{

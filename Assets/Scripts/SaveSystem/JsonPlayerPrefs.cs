@@ -26,17 +26,17 @@ public class JsonPlayerPrefs
         }
     }
 
+    [SerializeField, ReadOnly] public string FileName { get; private set; }
     [SerializeField] private List<PlayerPref> _playerPrefs = new List<PlayerPref>();
-    [SerializeField, ReadOnly] private string _fileName;
 
-    private string DirectoryPath => Path.Combine(Application.persistentDataPath, _fileName);
+    private string FilePath => Path.Combine(Application.persistentDataPath, FileName + ".json");
 
     public JsonPlayerPrefs(string fileName)
     {
-        _fileName = fileName + ".json";
-        if (File.Exists(DirectoryPath))
+        FileName = fileName;
+        if (File.Exists(FilePath))
         {
-            using (StreamReader reader = new StreamReader(DirectoryPath))
+            using (StreamReader reader = new StreamReader(FilePath))
             {
                 string json = reader.ReadToEnd();
                 JsonPlayerPrefs data = JsonUtility.FromJson<JsonPlayerPrefs>(json);
@@ -57,7 +57,9 @@ public class JsonPlayerPrefs
         return false;
     }
 
-    public float GetFloat(string key, float defaultValue = 0f)
+    private const bool SaveDefaultOnGetValue = false;
+
+    public float GetFloat(string key, float defaultValue = 0f, bool saveDefault = SaveDefaultOnGetValue)
     {
         if (TryGetPlayerPref(key, out PlayerPref playerPref))
         {
@@ -66,10 +68,11 @@ public class JsonPlayerPrefs
                 return value;
             }
         }
+        if (saveDefault) SetFloat(key, defaultValue);
         return defaultValue;
     }
 
-    public int GetInt(string key, int defaultValue = 0)
+    public int GetInt(string key, int defaultValue = 0, bool saveDefault = SaveDefaultOnGetValue)
     {
         if (TryGetPlayerPref(key, out PlayerPref playerPref))
         {
@@ -78,10 +81,11 @@ public class JsonPlayerPrefs
                 return value;
             }
         }
+        if (saveDefault) SetInt(key, defaultValue);
         return defaultValue;
     }
 
-    public bool GetBool(string key, bool defaultValue = false)
+    public bool GetBool(string key, bool defaultValue = false, bool saveDefault = SaveDefaultOnGetValue)
     {
         if (TryGetPlayerPref(key, out PlayerPref playerPref))
         {
@@ -90,15 +94,17 @@ public class JsonPlayerPrefs
                 return value;
             }
         }
+        if (saveDefault) SetBool(key, defaultValue);
         return defaultValue;
     }
 
-    public string GetString(string key, string defaultValue = "")
+    public string GetString(string key, string defaultValue = "", bool saveDefault = SaveDefaultOnGetValue)
     {
         if (TryGetPlayerPref(key, out PlayerPref playerPref))
         {
             return playerPref.value;
         }
+        if (saveDefault) SetString(key, defaultValue);
         return defaultValue;
     }
 
@@ -133,9 +139,9 @@ public class JsonPlayerPrefs
 
     public void Save()
     {
-        Directory.CreateDirectory(Path.GetDirectoryName(DirectoryPath));
+        Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
         string json = JsonUtility.ToJson(this);
-        using (StreamWriter writer = new StreamWriter(DirectoryPath))
+        using (StreamWriter writer = new StreamWriter(FilePath))
         {
             writer.WriteLine(json);
         }
@@ -157,14 +163,14 @@ public class JsonPlayerPrefs
         _playerPrefs.Clear();
     }
 
-    public string[] GetAllKeysAndValues()
+    // Maybe do this a better way? Trying to emulate a dictionary essentially lol
+    public (string, string)[] GetKeyValuePairs()
     {
-        List<string> allKeys = new List<string>(_playerPrefs.Count);
+        List<(string, string)> keyValuePairs = new List<(string, string)>(_playerPrefs.Count);
         foreach (PlayerPref p in _playerPrefs)
         {
-            allKeys.Add(p.key);
-            allKeys.Add(p.value);
+            keyValuePairs.Add((p.key, p.value));
         }
-        return allKeys.ToArray();
+        return keyValuePairs.ToArray();
     }
 }
