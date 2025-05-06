@@ -15,4 +15,4 @@ MonoBehaviour:
   _itemName: Dirt
   _itemDescription: 
   _itemIcon: {fileID: 1091866807, guid: 8f248677bc5a95a4ba449bc35c1d16a5, type: 3}
-  _itemIconTint: {r: 1, g: 1, b: 1, a: 1}
+  _color: {r: 0.38823533, g: 0.23529413, b: 0.09411766, a: 1}

@@ -25,6 +25,8 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField, ReadOnly] private int _chunkCount;
     [SerializeField] private GameObject _chunkPrefab;
     [SerializeField] private DroppedItemManager _itemManager;
+    [SerializeField] private ParticleSystem _breakTileParticles;
+    [SerializeField] private int _breakParticleCount = 10;
 
     public WorldSettings Settings => _worldSettings;
     public int ChunkSize => _chunkSize;
@@ -547,6 +549,14 @@ public class WorldGenerator : MonoBehaviour
     private void DestroyTileAt(int x, int y, ItemData item)
     {
         _grid[x, y] = TileType.Air;
+
+        if (_breakTileParticles != null)
+        {
+            _breakTileParticles.transform.position = TileToWorld(x, y);
+            var main = _breakTileParticles.main;
+            main.startColor = item.Color;
+            _breakTileParticles.Emit(_breakParticleCount);
+        }
 
         var pos = TileToWorld(x, y) + (Vector3)(Random.insideUnitCircle * _tileSizeMult * 0.5f);
         _itemManager.SpawnDroppedItem(pos, item);

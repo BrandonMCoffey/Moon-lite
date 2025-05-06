@@ -15,13 +15,11 @@ MonoBehaviour:
   _itemName: Cryselium
   _itemDescription: Freezing
   _itemIcon: {fileID: 467798112, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
+  _color: {r: 0.6862745, g: 0.8745099, b: 0.87843144, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
     type: 3}
   _tileType: 12
   _bulletSprite: {fileID: 47835980, guid: 5453db182330ff0409f37f9e5f16b73e, type: 3}
-  _ammoBulletColor:
-    serializedVersion: 2
-    rgba: 4292927407
   _ammoSpriteBullet: {fileID: -881573553, guid: 8e4fc4feca315b543a46cace76a3b313,
     type: 3}
   _ammoSpriteShotgun: {fileID: 1098039945, guid: 8e4fc4feca315b543a46cace76a3b313,
@@ -29,6 +27,10 @@ MonoBehaviour:
   _ammoSpriteLaser: {fileID: -286210755, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _ammoSpriteEffect: {fileID: 1815693326, guid: 8e4fc4feca315b543a46cace76a3b313,
     type: 3}
+  _bulletHitSfx:
+    UseClip: 0
+    Clip: {fileID: 0}
+    Base: {fileID: 0}
   _bulletSpeedModifier: 1
   _damage: 1
   _knockback: 3
@@ -40,3 +42,4 @@ MonoBehaviour:
   _hitOnBounce: 1
   _hasAOE: 0
   _aoeRadius: 1
+  _cameraShake: 1

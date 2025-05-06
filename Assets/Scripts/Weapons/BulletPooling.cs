@@ -131,10 +131,16 @@ public class BulletPooling : MonoBehaviour
         _laserPool.Add(laser);
     }
 
-    public static void BulletHitFeedback(Vector3 pos, Quaternion rot) => _instance.BulletHitFeedbacklocal(pos, rot);
-    private void BulletHitFeedbacklocal(Vector3 pos, Quaternion rot)
+    public static void BulletHitFeedback(Color color, Vector3 pos, Vector3 forward) => _instance.BulletHitFeedbacklocal(color, pos, forward);
+    private void BulletHitFeedbacklocal(Color color, Vector3 pos, Vector3 forward)
     {
-        if (_hitParticles != null) _hitParticles.Emit(1);
+        if (_hitParticles != null)
+        {
+            var main = _hitParticles.main;
+            main.startColor = color;
+            _hitParticles.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(forward));
+            _hitParticles.Emit(10);
+        }
     }
 
     public static void BulletExplosiveFeedback(Vector3 pos) => _instance.BulletExplosiveFeedbackLocal(pos);
