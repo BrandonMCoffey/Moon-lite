@@ -1,15 +1,18 @@
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour
+public static class PlayerInput
 {
     // Mouse Inputs
     public static Vector3 MousePosition => Input.mousePosition;
     public static Vector3 MousePositionWorld(float z)
     {
-        var ray = Camera.main.ScreenPointToRay(MousePosition);
+        //var ray = Camera.main.ScreenPointToRay(MousePosition);
+        var ray = CameraManager.PlayerCamera.ScreenPointToRay(MousePosition);
         Plane xy = new Plane(Vector3.forward, new Vector3(0, 0, z));
         xy.Raycast(ray, out float distance);
-        return ray.GetPoint(distance);
+        var pos = ray.GetPoint(distance);
+        Debug.Log(pos);
+        return pos;
     }
     public static bool MouseLeftPressed => Input.GetMouseButtonDown(0);
     public static bool MouseLeftHeld => Input.GetMouseButton(0);

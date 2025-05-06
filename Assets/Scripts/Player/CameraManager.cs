@@ -3,28 +3,29 @@ using System.Collections.Generic;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
-public class CameraShakeManager : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
-    // TODO: Switch this out with Cinemachine?
-
-    [SerializeField] private Transform _cameraTransform;
+    public static Camera PlayerCamera;
 
     private static bool _shake;
     private static float _shakeTimeMax;
     private static float _shakeTimer;
     private static float _shakeMagnitude;
 
-    private Vector3 _originalPos;
+    private Transform _cameraTransform;
 
-    private void OnValidate()
-    {
-        if (_cameraTransform == null) _cameraTransform = transform;
-    }
+    // NOTE: This assume that the camera is NOT being moved by any other script, moving a parent is fine but not the camera directly.
+    private Vector3 _originalPos;
 
     private void Awake()
     {
-        _originalPos = transform.localPosition;
+        PlayerCamera = GetComponent<Camera>();
+        if (PlayerCamera == null) PlayerCamera = GetComponentInChildren<Camera>();
+        _cameraTransform = PlayerCamera.transform;
+        _originalPos = _cameraTransform.localPosition;
     }
+
+    // TODO: Switch camera shake with Cinemachine?
 
     private void Update()
     {
@@ -39,11 +40,11 @@ public class CameraShakeManager : MonoBehaviour
             if (delta < 0) delta = -delta;
             delta = 1 - (1 - delta) * (1 - delta);
 
-            transform.localPosition = _originalPos + Random.insideUnitSphere * (_shakeMagnitude * delta * 0.5f);
+            _cameraTransform.localPosition = _originalPos + Random.insideUnitSphere * (_shakeMagnitude * delta * 0.1f);
         }
         else if (_shake)
         {
-            transform.localPosition = _originalPos;
+            _cameraTransform.localPosition = _originalPos;
         }
     }
 

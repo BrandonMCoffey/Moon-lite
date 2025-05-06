@@ -218,6 +218,7 @@ public class BulletSpawner
 {
     public static Vector3 ShootBullet(WeaponData weaponData, MineralData bulletData, LayerMask bulletLayer, Vector3 spawnPosition, Vector3 aimDirection)
     {
+        aimDirection.z = 0; // Ensure z-axis is zero for 2D shooting
         aimDirection = aimDirection.normalized;
         Vector3 knockback = -aimDirection * weaponData.BulletKickback * bulletData.Kickback;
 

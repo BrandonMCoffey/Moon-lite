@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Sirenix.OdinInspector;
+using static UnityEditor.PlayerSettings;
 
 public class PlayerWeaponManager : MonoBehaviour
 {
@@ -218,20 +219,15 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         if (EquippedWeapon == null) return;
 
-        // TODO: Replace below with PlayerInput.MousePositionWorld?
-        //Vector3 mousePosition = _mainCamera.ScreenToWorldPoint(PlayerInput.MousePosition);
-        //mousePosition.z = 0f;
+        // Replace the old aiming code with a raycast (For perspective camera)
         Vector3 mousePosition = PlayerInput.MousePositionWorld(transform.position.z);
+        Vector3 aimDirection = (mousePosition - transform.position).normalized;
 
-        EquippedWeapon.Aim(mousePosition);
+        EquippedWeapon.Aim(aimDirection);
 
         if (CanShoot())
         {
             StopReloadCoroutines();
-
-            // Replace the old aiming code with a raycast (For perspective camera)
-            var pos = PlayerInput.MousePositionWorld(transform.position.z);
-            Vector3 aimDirection = (pos - transform.position).normalized;
 
             // tell the weapon to shoot select ammo type
             var knockback = EquippedWeapon.Shoot(aimDirection, _bulletHitLayer, EquippedAmmo);

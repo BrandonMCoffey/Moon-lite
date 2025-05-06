@@ -144,12 +144,8 @@ public class WeaponBase : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public virtual void Aim(Vector3 targetPosition)
+    public virtual void Aim(Vector3 aimDirection)
     {
-        // Replace the old aiming code with a raycast (For perspective camera)
-        var pos = PlayerInput.MousePositionWorld(transform.position.z);
-        Vector3 aimDirection = (pos - transform.position).normalized;
-
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
         // Rotate the weapon holder to aim at the target
@@ -181,7 +177,7 @@ public class WeaponBase : MonoBehaviour
         _data.PlayShootSfx();
 
         // TODO: Maybe duration is from weapon and magnitude is from bullet?
-        CameraShakeManager.Shake(0.05f, _data.CameraShake * bulletData.CameraShake);
+        CameraManager.Shake(0.05f, _data.CameraShake * bulletData.CameraShake);
 
         if (_recoilCoroutine != null)
         {
