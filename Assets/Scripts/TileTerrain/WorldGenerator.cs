@@ -45,6 +45,9 @@ public class WorldGenerator : MonoBehaviour
     private List<StructureData> _structures;
     private List<LevelDecoration> _decorations;
     private Transform _player;
+    private Transform _chunkParent;
+    private Transform _decorationParent;
+    private Transform _structureParent;
 
     private float _noiseOffsetX;
     private float _noiseOffsetY;
@@ -60,6 +63,12 @@ public class WorldGenerator : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        _chunkParent = new GameObject("Chunks").transform;
+        _chunkParent.SetParent(transform, false);
+        _decorationParent = new GameObject("Decorations").transform;
+        _decorationParent.SetParent(transform, false);
+        _structureParent = new GameObject("Structures").transform;
+        _structureParent.SetParent(transform, false);
     }
 
     private void Start()
@@ -163,7 +172,7 @@ public class WorldGenerator : MonoBehaviour
                     _grid[x, y] = TileType.Surface;
                     if (Random.value < Settings.GrassDecoChance)
                     {
-                        var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y + 1), transform.rotation, transform);
+                        var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y + 1), transform.rotation, _decorationParent);
                         deco.RandomizeGrass();
                         deco.ConnectToTile(x, y);
                         _decorations.Add(deco);
@@ -235,7 +244,7 @@ public class WorldGenerator : MonoBehaviour
                         {
                             if (Random.value < Settings.CaveCeilingDecoChance)
                             {
-                                var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y), transform.rotation, transform);
+                                var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y), transform.rotation, _decorationParent);
                                 deco.RandomizeCave(false);
                                 deco.ConnectToTile(x, y + 1);
                                 _decorations.Add(deco);
@@ -247,7 +256,7 @@ public class WorldGenerator : MonoBehaviour
                     {
                         if (Random.value < Settings.CaveFloorDecoChance)
                         {
-                            var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y + 1), transform.rotation, transform);
+                            var deco = Instantiate(Settings.DecorationPrefab, TileToWorld(x, y + 1), transform.rotation, _decorationParent);
                             deco.RandomizeCave(true);
                             deco.ConnectToTile(x, y);
                             _decorations.Add(deco);
@@ -301,7 +310,7 @@ public class WorldGenerator : MonoBehaviour
 
     private void GenerateStructureShop(int xCenter, int yCenter)
     {
-        var shop = Instantiate(Settings.ShopStructure, TileToWorld(xCenter, yCenter, false), Quaternion.identity, transform);
+        var shop = Instantiate(Settings.ShopStructure, TileToWorld(xCenter, yCenter, false), Quaternion.identity, _structureParent);
         _structures.Add(shop);
         var s = Settings.ShopStructure.Sizes * _tilesPerUnit;
         var xMin = Mathf.Clamp(xCenter - Mathf.FloorToInt(s.x), 0, _width-1);
@@ -340,7 +349,7 @@ public class WorldGenerator : MonoBehaviour
                 Vector2Int chunkCoord = new Vector2Int(x, y);
                 Vector3 chunkPosition = new Vector3(x * _chunkSize * _tileSizeMult + OffsetX, y * _chunkSize * _tileSizeMult + OffsetY, transform.position.z);
 
-                GameObject chunkGO = Instantiate(_chunkPrefab, chunkPosition, Quaternion.identity, transform);
+                GameObject chunkGO = Instantiate(_chunkPrefab, chunkPosition, Quaternion.identity, _chunkParent);
                 chunkGO.transform.localScale = new Vector3(_tileSizeMult, _tileSizeMult, 1);
                 chunkGO.layer = 8;
                 chunkGO.name = $"Chunk_{x}_{y}";
