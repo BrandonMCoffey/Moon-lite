@@ -10,9 +10,7 @@ public static class PlayerInput
         var ray = CameraManager.PlayerCamera.ScreenPointToRay(MousePosition);
         Plane xy = new Plane(Vector3.forward, new Vector3(0, 0, z));
         xy.Raycast(ray, out float distance);
-        var pos = ray.GetPoint(distance);
-        Debug.Log(pos);
-        return pos;
+        return ray.GetPoint(distance);
     }
     public static bool MouseLeftPressed => Input.GetMouseButtonDown(0);
     public static bool MouseLeftHeld => Input.GetMouseButton(0);
