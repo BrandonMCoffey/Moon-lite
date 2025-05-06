@@ -79,12 +79,13 @@ public class PlayerWeaponManager : MonoBehaviour
         //UpdateAmmoUI();
     }
 
-    public void DisableInput()
+    public void SetInputEnabled(bool enableInput)
     {
-        _isInputEnabled = false;
-        HideReloadBar();
-        _pickupText.gameObject.SetActive(false);
-        EquippedWeapon.gameObject.SetActive(false);
+        _isInputEnabled = enableInput;
+        if (!enableInput) HideReloadBar();
+        _pickupText.gameObject.SetActive(enableInput);
+        EquippedWeapon.gameObject.SetActive(enableInput);
+        StopAllCoroutines();
     }
 
     private void InitializeReferences()

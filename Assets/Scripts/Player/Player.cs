@@ -59,7 +59,7 @@ public class Player : Health
     public override void Die()
     {
         _movement.SetCanMove(false);
-        _weaponManager.DisableInput();
+        _weaponManager.SetInputEnabled(false);
     }
 
     public void AddItemToInventory(ItemData item, int count = 1) => _inventory.AddItemToInventory(item, count);

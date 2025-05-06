@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/ShipHub.unity
     guid: 52712dc04f967be4cbade5ae70960085
   - enabled: 1
-    path: Assets/Scenes/Planet 1.unity
+    path: Assets/Scenes/Planet.unity
     guid: 7aa86da2c4c77fc48b922d6448a8cf56
   m_configObjects: {}

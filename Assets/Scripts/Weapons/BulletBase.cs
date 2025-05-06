@@ -43,6 +43,8 @@ public class BulletBase : SimplePhysicsObject
         float angle = Mathf.Atan2(_velocity.y, _velocity.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
+        //transform.rotation = Quaternion.LookRotation(_velocity);
+
         // NOTE: Merged with SimplePhysicsObject to only raycast on fixed update and use interpolation
         //ApplyGravity();
         //RaycastCheck();
@@ -176,7 +178,9 @@ public class BulletBase : SimplePhysicsObject
         }
 
         // Bullet impact feedback
-        BulletPooling.BulletHitFeedback(_data.Color, hit.point, Vector3.Lerp(hit.normal, -transform.forward, 0.6f));
+        Vector3 hitParticleDir = Vector3.Lerp(hit.normal, -transform.right, 0.6f);
+        hitParticleDir.z = 0;
+        BulletPooling.BulletHitFeedback(_data.Color, hit.point, hitParticleDir.normalized);
         _data.PlayHitSfx();
 
         // TODO: Fix bullets impacting at the same time as each other (Same with raycasts)
