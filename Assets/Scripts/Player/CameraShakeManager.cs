@@ -39,7 +39,7 @@ public class CameraShakeManager : MonoBehaviour
             if (delta < 0) delta = -delta;
             delta = 1 - (1 - delta) * (1 - delta);
 
-            transform.localPosition = _originalPos + Random.insideUnitSphere * (_shakeMagnitude * delta);
+            transform.localPosition = _originalPos + Random.insideUnitSphere * (_shakeMagnitude * delta * 0.5f);
         }
         else if (_shake)
         {
