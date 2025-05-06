@@ -11,40 +11,42 @@ using Sirenix.OdinInspector;
 
 public class MouseControllerManager : MonoBehaviour
 {
-	private static MouseControllerManager instance;
+	private static MouseControllerManager _instance;
 	public static MouseControllerManager Instance
 	{
 		get
 		{
-			if (instance) return instance;
-			instance = FindObjectOfType<MouseControllerManager>();
-			if (!instance)
+			if (_instance) return _instance;
+			_instance = FindObjectOfType<MouseControllerManager>();
+			if (!_instance)
 			{
 #if ENABLE_INPUT_SYSTEM
 				var inputSystem = FindObjectOfType<InputSystemUIInputModule>();
 				instance = inputSystem.gameObject.AddComponent<MouseControllerManager>();
 #elif ENABLE_LEGACY_INPUT_MANAGER
 				var inputSystem = FindObjectOfType<StandaloneInputModule>();
-				instance = inputSystem.gameObject.AddComponent<MouseControllerManager>();
+				_instance = inputSystem.gameObject.AddComponent<MouseControllerManager>();
 #endif
 			}
-			instance.FindReferences();
-			return instance;
+			_instance.FindReferences();
+			return _instance;
 		}
-	}
+    }
+
+    public static bool InGame;
+    public static int ActionsThisFrame = 0;
 
     [SerializeField] private bool _inGame;
 	[SerializeField] private bool _showMouseInGame;
-	    
-	public static bool InGame;
-	private static bool _usingMouse;
-
-	[SerializeField] private bool _assumeMouseFirst = true;
+    [SerializeField] private bool _assumeMouseFirst = true;
 	[SerializeField] private float _ignoreMouseTime = 0.1f;
 	[SerializeField, ReadOnly] private GameObject _currentlySelected;
+    [SerializeField, ReadOnly] private bool _usingMouse;
+    [SerializeField, ReadOnly] private bool _wasController;
+    [SerializeField, ReadOnly] private bool _ignoreMouseMovement;
 
-	public static int ActionsThisFrame = 0;
-		
+    private EventSystem _eventSystem;
+
 #if ENABLE_INPUT_SYSTEM
 	// New Input System
 	private InputSystemUIInputModule _inputSystem;
@@ -76,8 +78,8 @@ public class MouseControllerManager : MonoBehaviour
 		else Mouse.current.WarpCursorPosition(corner - Vector2.one * 25);
 	}
 #elif ENABLE_LEGACY_INPUT_MANAGER
-	// Old Input System
-	private StandaloneInputModule _inputSystem;
+    // Old Input System
+    private StandaloneInputModule _inputSystem;
 		
 	private void FindReferences()
 	{
@@ -96,7 +98,7 @@ public class MouseControllerManager : MonoBehaviour
 		if (_usingMouse)
 		{
 			// Check for Keyboard or Controller Movement
-			if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+			if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
 			{
 				OnKeyboardControllerMovement();
 			}
@@ -118,7 +120,7 @@ public class MouseControllerManager : MonoBehaviour
 		else
 		{
 			// Check for Mouse Movement
-			if (Vector3.Distance(mousePos, _prevMousePos) > 1f)
+			if (Vector3.Distance(mousePos, _prevMousePos) > 1f || Input.GetMouseButton(0))
 			{
 				_prevMousePos = mousePos;
 				OnMouseMovement();
@@ -131,16 +133,11 @@ public class MouseControllerManager : MonoBehaviour
 		// No Support for Warping Mouse Position in the Old Input System
 	}
 #endif
-	private EventSystem _eventSystem;
-	
-	private static bool _wasController;
-		
-	private bool _ignoreMouseMovement;
 	
 	private void Awake()
 	{
 		InGame = _inGame;
-		instance = this;
+		_instance = this;
 		FindReferences();
 	}
 	    
@@ -234,7 +231,7 @@ public class MouseControllerManager : MonoBehaviour
 	{
 		if (Instance == null) return;
 		if (obj) Instance._currentlySelected = obj;
-		if (!_usingMouse) Instance.SetSelected(obj);
+		if (!Instance._usingMouse) Instance.SetSelected(obj);
 	}
 	
 	private void SetSelected(GameObject obj)
