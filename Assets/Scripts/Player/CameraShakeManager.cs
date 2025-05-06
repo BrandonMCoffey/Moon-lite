@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CameraShakeManager : MonoBehaviour
 {
+    // TODO: Switch this out with Cinemachine?
+
     [SerializeField] private Transform _cameraTransform;
 
     private static bool _shake;
