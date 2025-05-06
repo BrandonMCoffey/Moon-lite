@@ -176,7 +176,7 @@ public class BulletBase : SimplePhysicsObject
         }
 
         // Bullet impact feedback
-        BulletPooling.BulletHitFeedback(_data.Color, hit.point, Vector3.Lerp(hit.normal, -transform.forward, 0.5f));
+        BulletPooling.BulletHitFeedback(_data.Color, hit.point, Vector3.Lerp(hit.normal, -transform.forward, 0.6f));
         _data.PlayHitSfx();
 
         // TODO: Fix bullets impacting at the same time as each other (Same with raycasts)
