@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Data_Coil
   m_EditorClassIdentifier: 
   _weaponName: Coil
-  _weaponDescription: Low damage, rapid fire
+  _weaponDescription: "<b>Fires a precise energy beam for surgical layoffs at extreme
+    range.\r</b>\nRemember, precision layoffs are ethical layoffs."
   _weaponSprite: {fileID: 21300000, guid: 773a66fa86e7a824f8547bca576a02bd, type: 3}
+  _shootSfx:
+    UseClip: 0
+    Clip: {fileID: 0}
+    Base: {fileID: 0}
   _weaponPrefab: {fileID: 7707075139789495896, guid: a5248962954101e429bcc2ef3429b2f6,
     type: 3}
   _maxMagSize: 8
@@ -36,6 +41,7 @@ MonoBehaviour:
   _forceHitOnBounce: 0
   _forceAoe: 1
   _aoeRadius: 3
+  _cameraShake: 1
   _multipleBullets: 0
   _bulletAmount: 1
   _hitScan: 1

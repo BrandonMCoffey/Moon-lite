@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e981d16f31e3a004f9e8b94072c57225, type: 3}
   m_Name: A1_Lead
   m_EditorClassIdentifier: 
-  _itemName: Lead
-  _itemDescription: Standard
+  _itemName: Gravislag
+  _itemDescription: "<b>Cheap, heavy slugs perfect for budget-friendly suppression
+    of union movements.\r</b>\nOur bread-and-butter ammunition; because true freedom
+    means hitting your quarterly quotas-violently."
   _itemIcon: {fileID: 1682490860, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _color: {r: 0.69411767, g: 0.69411767, b: 0.69411767, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,

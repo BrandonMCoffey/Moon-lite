@@ -4,7 +4,7 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     [SerializeField] private string _itemName;
-    [SerializeField, TextArea] private string _itemDescription;
+    [SerializeField, TextArea(5, 10)] private string _itemDescription;
     [SerializeField] private Sprite _itemIcon;
     [SerializeField] private Color _color = Color.white;
 

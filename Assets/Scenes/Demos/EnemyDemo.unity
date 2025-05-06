@@ -1422,7 +1422,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1029067112
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1465,6 +1465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44503969cb8f034785455becd8689dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canMove: 1
   _gravityScale: 1
   _maxVelocity: 40
   _groundLayer:
@@ -1522,6 +1523,7 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  _canSeePlayer: 0
 --- !u!114 &1029067116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1536,6 +1538,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHolder: {fileID: 940839979}
   _enemyBrain: {fileID: 1029067117}
+  _bulletLayer:
+    serializedVersion: 2
+    m_Bits: 1
   _currentWeapon: {fileID: -6148849880405768673, guid: 96c8d90dcdd5983419d40addec229547,
     type: 3}
   _currentAmmo: {fileID: 11400000, guid: 1210b5d46439fae4faa63dbb10baa8f8, type: 2}
@@ -1556,6 +1561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyMovement: {fileID: 1029067114}
+  _currentState: 
   playerDetector: {fileID: 1029067115}
   enemyWeaponManager: {fileID: 1029067116}
   attackRange: 15.79
@@ -1603,7 +1609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1057589837
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1646,6 +1652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44503969cb8f034785455becd8689dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canMove: 1
   _gravityScale: 1
   _maxVelocity: 40
   _groundLayer:
@@ -1703,6 +1710,7 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  _canSeePlayer: 0
 --- !u!114 &1057589841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1717,6 +1725,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHolder: {fileID: 1890142612}
   _enemyBrain: {fileID: 1057589842}
+  _bulletLayer:
+    serializedVersion: 2
+    m_Bits: 1
   _currentWeapon: {fileID: -6148849880405768673, guid: 96c8d90dcdd5983419d40addec229547,
     type: 3}
   _currentAmmo: {fileID: 11400000, guid: 1210b5d46439fae4faa63dbb10baa8f8, type: 2}
@@ -1737,6 +1748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyMovement: {fileID: 1057589839}
+  _currentState: 
   playerDetector: {fileID: 1057589840}
   enemyWeaponManager: {fileID: 1057589841}
   attackRange: 15.79
@@ -1965,7 +1977,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1623900144
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2008,6 +2020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44503969cb8f034785455becd8689dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canMove: 1
   _gravityScale: 1
   _maxVelocity: 40
   _groundLayer:
@@ -2065,6 +2078,7 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  _canSeePlayer: 0
 --- !u!114 &1623900148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2079,6 +2093,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHolder: {fileID: 2132049354}
   _enemyBrain: {fileID: 1623900149}
+  _bulletLayer:
+    serializedVersion: 2
+    m_Bits: 1
   _currentWeapon: {fileID: -6148849880405768673, guid: 96c8d90dcdd5983419d40addec229547,
     type: 3}
   _currentAmmo: {fileID: 11400000, guid: 1210b5d46439fae4faa63dbb10baa8f8, type: 2}
@@ -2099,6 +2116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyMovement: {fileID: 1623900146}
+  _currentState: 
   playerDetector: {fileID: 1623900147}
   enemyWeaponManager: {fileID: 1623900148}
   attackRange: 15.79
@@ -2146,7 +2164,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1709966707
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2189,6 +2207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44503969cb8f034785455becd8689dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canMove: 1
   _gravityScale: 1
   _maxVelocity: 40
   _groundLayer:
@@ -2246,6 +2265,7 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  _canSeePlayer: 0
 --- !u!114 &1709966711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2260,6 +2280,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHolder: {fileID: 373598314}
   _enemyBrain: {fileID: 1709966712}
+  _bulletLayer:
+    serializedVersion: 2
+    m_Bits: 1
   _currentWeapon: {fileID: -6148849880405768673, guid: 96c8d90dcdd5983419d40addec229547,
     type: 3}
   _currentAmmo: {fileID: 11400000, guid: 1210b5d46439fae4faa63dbb10baa8f8, type: 2}
@@ -2280,6 +2303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyMovement: {fileID: 1709966709}
+  _currentState: 
   playerDetector: {fileID: 1709966710}
   enemyWeaponManager: {fileID: 1709966711}
   attackRange: 15.79
@@ -2557,7 +2581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &2075959201
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2600,6 +2624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44503969cb8f034785455becd8689dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canMove: 1
   _gravityScale: 1
   _maxVelocity: 40
   _groundLayer:
@@ -2657,6 +2682,7 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  _canSeePlayer: 0
 --- !u!114 &2075959205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2671,6 +2697,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHolder: {fileID: 1953375450}
   _enemyBrain: {fileID: 2075959206}
+  _bulletLayer:
+    serializedVersion: 2
+    m_Bits: 1
   _currentWeapon: {fileID: -6148849880405768673, guid: 96c8d90dcdd5983419d40addec229547,
     type: 3}
   _currentAmmo: {fileID: 11400000, guid: 1210b5d46439fae4faa63dbb10baa8f8, type: 2}
@@ -2691,6 +2720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyMovement: {fileID: 2075959203}
+  _currentState: 
   playerDetector: {fileID: 2075959204}
   enemyWeaponManager: {fileID: 2075959205}
   attackRange: 15.79
@@ -2759,6 +2789,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041137564954186004, guid: 752cd4e8f870d9c40b277249d14769bb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8041137564954186007, guid: 752cd4e8f870d9c40b277249d14769bb,
         type: 3}

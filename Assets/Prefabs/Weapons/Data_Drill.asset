@@ -13,8 +13,14 @@ MonoBehaviour:
   m_Name: Data_Drill
   m_EditorClassIdentifier: 
   _weaponName: Drill
-  _weaponDescription: Low damage, rapid fire
+  _weaponDescription: "<b>Bores directly into enemies and blocks, perfect for aggressive
+    market penetration.\r</b>\nWhen subtlety fails, brute-force drilling always succeeds-just
+    ask our lobbying department."
   _weaponSprite: {fileID: 21300000, guid: c67023e1ebdd78941b76f8906cb51872, type: 3}
+  _shootSfx:
+    UseClip: 0
+    Clip: {fileID: 0}
+    Base: {fileID: 0}
   _weaponPrefab: {fileID: 7707075139789495896, guid: 24c2f73c968e5224fae1f952d5d645f2,
     type: 3}
   _maxMagSize: 20
@@ -36,6 +42,7 @@ MonoBehaviour:
   _forceHitOnBounce: 0
   _forceAoe: 1
   _aoeRadius: 2.25
+  _cameraShake: 1
   _multipleBullets: 0
   _bulletAmount: 1
   _hitScan: 0

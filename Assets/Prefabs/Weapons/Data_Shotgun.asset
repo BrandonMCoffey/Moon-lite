@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Data_Shotgun
   m_EditorClassIdentifier: 
   _weaponName: Shotgun
-  _weaponDescription: High spread, high damage
+  _weaponDescription: "<b>Wide blast with powerful knockback, rapidly escorting opposition
+    off premises.\r</b>\nSometimes, severance packages need a physical push."
   _weaponSprite: {fileID: 21300000, guid: c77aacf561ced124eb22f9591a5996d4, type: 3}
+  _shootSfx:
+    UseClip: 0
+    Clip: {fileID: 0}
+    Base: {fileID: 0}
   _weaponPrefab: {fileID: 6565290217461238152, guid: 768e7830a3e1bab419b8dad1098126dc,
     type: 3}
   _maxMagSize: 6
@@ -36,7 +41,11 @@ MonoBehaviour:
   _forceHitOnBounce: 0
   _forceAoe: 0
   _aoeRadius: 1
+  _cameraShake: 1
   _multipleBullets: 1
   _bulletAmount: 12
   _hitScan: 0
   _rayRange: 1
+  _rayColor:
+    serializedVersion: 2
+    rgba: 4278190335

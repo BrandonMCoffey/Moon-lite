@@ -13,8 +13,14 @@ MonoBehaviour:
   m_Name: Data_SMG
   m_EditorClassIdentifier: 
   _weaponName: SMG
-  _weaponDescription: Low damage, rapid fire
+  _weaponDescription: "<b>Low damage but extreme rate of fire andideal for suppressing
+    wages and uprisings alike.\r</b>\nAt Super America Inc., quantity always beats
+    quality."
   _weaponSprite: {fileID: 21300000, guid: 8dc79b004e3f1f84cac6f3b82644e015, type: 3}
+  _shootSfx:
+    UseClip: 0
+    Clip: {fileID: 0}
+    Base: {fileID: 0}
   _weaponPrefab: {fileID: 7707075139789495896, guid: c958379195c000c408934530b050b3d9,
     type: 3}
   _maxMagSize: 25
@@ -36,7 +42,11 @@ MonoBehaviour:
   _forceHitOnBounce: 0
   _forceAoe: 0
   _aoeRadius: 1
+  _cameraShake: 1
   _multipleBullets: 0
   _bulletAmount: 1
   _hitScan: 0
   _rayRange: 1
+  _rayColor:
+    serializedVersion: 2
+    rgba: 4278190335

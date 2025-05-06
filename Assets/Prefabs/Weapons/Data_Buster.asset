@@ -13,8 +13,15 @@ MonoBehaviour:
   m_Name: Data_Buster
   m_EditorClassIdentifier: 
   _weaponName: Buster
-  _weaponDescription: Low damage, rapid fire
+  _weaponDescription: '<b>Devastating close-range damage, efficiently redistributing
+    enemy internals.</b>
+
+    Fewer survivors mean fewer HR complaints. It''s math!'
   _weaponSprite: {fileID: 21300000, guid: 220e445b8cc5ce64f83667bac2e7dada, type: 3}
+  _shootSfx:
+    UseClip: 0
+    Clip: {fileID: 0}
+    Base: {fileID: 0}
   _weaponPrefab: {fileID: 7707075139789495896, guid: 444bc4d92105d5c4d895a4e72cf78c35,
     type: 3}
   _maxMagSize: 16
@@ -36,7 +43,11 @@ MonoBehaviour:
   _forceHitOnBounce: 0
   _forceAoe: 0
   _aoeRadius: 1
+  _cameraShake: 1
   _multipleBullets: 1
   _bulletAmount: 4
   _hitScan: 0
   _rayRange: 1
+  _rayColor:
+    serializedVersion: 2
+    rgba: 4278190335

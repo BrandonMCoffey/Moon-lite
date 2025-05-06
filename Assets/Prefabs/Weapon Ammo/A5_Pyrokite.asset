@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: A5_Pyrokite
   m_EditorClassIdentifier: 
   _itemName: Pyrokite
-  _itemDescription: Incendiary
+  _itemDescription: "<b>Explodes into flames, efficiently eliminating competitors
+    and inconvenient evidence.\r</b>\nRemember: It's not war crimes if the board
+    approves it."
   _itemIcon: {fileID: -1743079923, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _color: {r: 0.53333336, g: 0.18823531, b: 0.30980393, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,

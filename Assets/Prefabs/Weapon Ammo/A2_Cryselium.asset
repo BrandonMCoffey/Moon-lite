@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: A2_Cryselium
   m_EditorClassIdentifier: 
   _itemName: Cryselium
-  _itemDescription: Freezing
+  _itemDescription: "<b>Instantly freezes targets in place, stopping both dissent
+    and productivity losses.\r</b>\nEnsure compliance-chill out those annoying protesters
+    (and pesky labor disputes)."
   _itemIcon: {fileID: 467798112, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _color: {r: 0.6862745, g: 0.8745099, b: 0.87843144, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: A4_Phaseum
   m_EditorClassIdentifier: 
   _itemName: Phaseum
-  _itemDescription: Blinding
+  _itemDescription: "<b>Creates blinding flashes, perfect for covering up corporate
+    'accidents.'\r</b>\nTransparency is overrated-blind loyalty isn't."
   _itemIcon: {fileID: -1532034555, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _color: {r: 0.6, g: 0.25490198, b: 0.9294118, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,

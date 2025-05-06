@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: A8_Explosive
   m_EditorClassIdentifier: 
   _itemName: Explosive
-  _itemDescription: Explosive
+  _itemDescription: "<b>Detonates violently on impact, rapidly downsizing enemy personnel
+    and facilities.\r</b> \nBecause at Super America Inc., every explosion is an
+    exciting new growth opportunity\u2014usually ours, rarely theirs."
   _itemIcon: {fileID: -551960179, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _color: {r: 0.9686275, g: 0.41176474, b: 0.21568629, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
