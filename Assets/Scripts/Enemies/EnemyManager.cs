@@ -52,18 +52,8 @@ public class EnemyManager : MonoBehaviour
             }
         }
         if (_enemies.Count >= _maxEnemies) return;
-        // If not enough enemies, or random chance
-        SpawnEnemies(Mathf.Max(Random.Range(_maxEnemies / 2, _maxEnemies) - _enemies.Count, 1));
-    }
 
-    public void AddSpawnPosition(Vector3 spawnPosition)
-    {
-        foreach (var spawn in _spawnPositions)
-        {
-            if (Vector3.Distance(spawn, spawnPosition) < _minDistBetweenSpawner) return;
-        }
-        _spawnPositions.Add(spawnPosition);
-        _spawnPositionCount++;
+        SpawnEnemies(Mathf.Max(Random.Range(_maxEnemies / 2, _maxEnemies) - _enemies.Count, 1));
     }
 
     private void SpawnEnemies(int maxToSpawn)
@@ -91,6 +81,16 @@ public class EnemyManager : MonoBehaviour
         var obj = World.Settings.GetRandomEnemyPrefab();
         var enemy = Instantiate(obj, pos, Quaternion.identity, transform);
         _enemies.Add(enemy.transform);
+    }
+
+    public void AddSpawnPosition(Vector3 spawnPosition)
+    {
+        foreach (var spawn in _spawnPositions)
+        {
+            if (Vector3.Distance(spawn, spawnPosition) < _minDistBetweenSpawner) return;
+        }
+        _spawnPositions.Add(spawnPosition);
+        _spawnPositionCount++;
     }
 
     private void OnDrawGizmosSelected()

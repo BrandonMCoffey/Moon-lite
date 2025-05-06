@@ -55,8 +55,8 @@ public class PlayerWeaponManager : MonoBehaviour
         {
             var weapon = Instantiate(_playerInventory.StartWeapons[i].WeaponPrefab, transform, false);
             _weapons.Add(weapon);
-            _weapons[i].gameObject.SetActive(_equippedWeaponIndex == i);
             _weapons[i].Pickup(_weaponHolder);
+            _weapons[i].gameObject.SetActive(_equippedWeaponIndex == i);
         }
     }
 

@@ -102,7 +102,7 @@ MonoBehaviour:
   _maxVelocity: 50
   _physicsLayerMask:
     serializedVersion: 2
-    m_Bits: 1048833
+    m_Bits: 257
   _radius: 0.2
   _bounceVelocityMultiplierX: 0.8
   _bounceVelocityMultiplierY: 0.4
@@ -116,5 +116,7 @@ MonoBehaviour:
   _knockback: 3
   _size: 0.1
   _lifetime: 3
+  _bounces: 0
+  _hitOnBounce: 1
   _hasAOE: 0
   _aoeRadius: 1

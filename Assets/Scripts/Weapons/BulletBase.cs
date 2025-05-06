@@ -17,8 +17,6 @@ public class BulletBase : SimplePhysicsObject
     [SerializeField, ReadOnly] private bool _hasAOE = false;
     [SerializeField, ReadOnly] private float _aoeRadius = 1f;
 
-    public LayerMask BulletLayerMask => _physicsLayerMask;
-
     protected SpriteRenderer _sr;
     //protected TrailRenderer _tr;
     protected Vector3 _startPosition;
@@ -79,7 +77,7 @@ public class BulletBase : SimplePhysicsObject
         _hasAOE = _data.HasAOE || weaponData.ForceAoe;
         _aoeRadius = _data.AoeRadius * weaponData.BulletAoeRadius;
 
-        _physicsLayerMask = BulletLayerMask;
+        _physicsLayerMask = hitLayer;
 
         _pierceAmount = Mathf.CeilToInt(_damage * 7.5f);
 
@@ -249,7 +247,7 @@ public class BulletSpawner
 
                 while (remainingBounces >= 0)
                 {
-                    if (Physics.Raycast(currentStart, currentDirection, out RaycastHit hit, adjustedRange, bulletData.BulletPrefab.BulletLayerMask, QueryTriggerInteraction.Ignore))
+                    if (Physics.Raycast(currentStart, currentDirection, out RaycastHit hit, adjustedRange, bulletLayer, QueryTriggerInteraction.Ignore))
                     {
                         var chunk = hit.collider.GetComponent<Chunk>();
                         if (chunk != null)

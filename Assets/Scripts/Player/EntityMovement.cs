@@ -39,7 +39,7 @@ public class EntityMovement : MonoBehaviour
     public bool RightWallCollided => _rightWallCollided;
     public Vector3 Velocity => _velocity;
 
-    private void Start()
+    protected virtual void Start()
     {
         CheckCollisions(true);
     }

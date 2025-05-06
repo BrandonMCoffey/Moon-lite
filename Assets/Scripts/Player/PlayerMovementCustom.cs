@@ -51,6 +51,7 @@ public class PlayerMovementCustom : EntityMovement
 
     protected override void Update()
     {
+        if (!_canMove) return;
         CheckCollisions();
         UpdateTimers(Time.deltaTime);
         CheckPlayerInput();

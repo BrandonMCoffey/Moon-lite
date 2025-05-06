@@ -362,7 +362,7 @@ PrefabInstance:
     - target: {fileID: 3755369458795594773, guid: 98dffbdd2f8c77c47a4ff29a78979031,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3755369458795594773, guid: 98dffbdd2f8c77c47a4ff29a78979031,
         type: 3}
@@ -845,7 +845,10 @@ MonoBehaviour:
   _minSpawnRange: 10
   _maxSpawnRange: 30
   _despawnRange: 50
+  _minDistBetweenSpawner: 2.5
+  _updateTime: 0.5
   _playerOffset: {x: 0, y: -5, z: 0}
+  _spawnPositionCount: 0
 --- !u!1 &440488900
 GameObject:
   m_ObjectHideFlags: 0
