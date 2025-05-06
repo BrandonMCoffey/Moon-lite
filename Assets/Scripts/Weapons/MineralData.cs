@@ -12,6 +12,30 @@ public class MineralData : ItemData
     [SerializeField] private Sprite _ammoSpriteShotgun;
     [SerializeField] private Sprite _ammoSpriteLaser;
     [SerializeField] private Sprite _ammoSpriteEffect;
+    [SerializeField] private SfxReference _bulletHitSfx;
+
+    public BulletBase BulletPrefab => _bulletPrefab;
+    public TileType TileType => _tileType;
+    public Sprite BulletSprite => _bulletSprite;
+    public Sprite AmmoSpriteEffect => _ammoSpriteEffect;
+
+    public Sprite GetAmmoSprite(WeaponAmmoArtType type)
+    {
+        return type switch
+        {
+            WeaponAmmoArtType.Laser => _ammoSpriteLaser,
+            WeaponAmmoArtType.Shotgun => _ammoSpriteShotgun,
+            _ => _ammoSpriteBullet,
+        };
+    }
+
+    public void PlayHitSfx()
+    {
+        // Use PlayAtPosition() instead?
+        _bulletHitSfx.Play();
+    }
+
+    [Header("Bullet Properties")]
     [Tooltip("Modifies the speed of the bullet from the gun by multiplying")]
     [SerializeField, Range(0.01f, 5f)] private float _bulletSpeedModifier = 1f;
     [SerializeField] private float _damage = 1f;
@@ -25,9 +49,6 @@ public class MineralData : ItemData
     [SerializeField] private bool _hasAOE = false;
     [SerializeField, ShowIf(nameof(_hasAOE))] private float _aoeRadius = 1f;
 
-    public BulletBase BulletPrefab => _bulletPrefab;
-    public Sprite BulletSprite => _bulletSprite;
-    public Sprite AmmoSpriteEffect => _ammoSpriteEffect;
     public float ShotSpeed => _bulletSpeedModifier;
     public float Damage => _damage;
     public float Knockback => _knockback;
@@ -39,18 +60,6 @@ public class MineralData : ItemData
     public bool HitOnBounce => _hitOnBounce; 
     public bool HasAOE => _hasAOE;
     public float AoeRadius => _aoeRadius;
-
-    public TileType TileType => _tileType;
-
-    public Sprite GetAmmoSprite(WeaponAmmoArtType type)
-    {
-        return type switch
-        {
-            WeaponAmmoArtType.Laser => _ammoSpriteLaser,
-            WeaponAmmoArtType.Shotgun => _ammoSpriteShotgun,
-            _ => _ammoSpriteBullet,
-        };
-    }
 }
 
 public enum WeaponAmmoArtType

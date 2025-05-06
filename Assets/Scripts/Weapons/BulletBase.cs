@@ -175,8 +175,9 @@ public class BulletBase : SimplePhysicsObject
             DestroySelf();
         }
 
-        // TODO: Bullet impact feedback
+        // Bullet impact feedback
         BulletPooling.BulletHitFeedback(hit.point, transform.rotation);
+        _data.PlayHitSfx();
 
         // TODO: Fix bullets impacting at the same time as each other (Same with raycasts)
 

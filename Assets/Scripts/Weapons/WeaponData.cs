@@ -8,6 +8,7 @@ public class WeaponData : ScriptableObject
     [SerializeField] private string _weaponName;
     [SerializeField, TextArea] private string _weaponDescription;
     [SerializeField] private Sprite _weaponSprite;
+    [SerializeField] private SfxReference _shootSfx;
     [SerializeField] private WeaponBase _weaponPrefab;
 
     public string Name => _weaponName;
@@ -15,6 +16,10 @@ public class WeaponData : ScriptableObject
     public Sprite Sprite => _weaponSprite;
     public WeaponBase WeaponPrefab => _weaponPrefab;
 
+    public void PlayShootSfx()
+    {
+        _shootSfx.Play();
+    }
 
     [Header("Reload and Ammo Properties")]
     [SerializeField] private int _maxMagSize = 10; // Ammo capacity of the magazine.

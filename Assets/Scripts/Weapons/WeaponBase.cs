@@ -178,6 +178,7 @@ public class WeaponBase : MonoBehaviour
         Vector3 spawnPosition = _shootTransform.position;
         Vector3 knockback = BulletSpawner.ShootBullet(_data, bulletData, bulletLayer, spawnPosition, aimDirection);
 
+        _data.PlayShootSfx();
         if (_recoilCoroutine != null)
         {
             StopCoroutine(_recoilCoroutine);

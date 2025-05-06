@@ -25,7 +25,7 @@ public class SfxReferenceDrawer : PropertyDrawer
 
         // Calculate rect for configuration button
         Rect buttonRect = new Rect(position);
-        buttonRect.yMin += _popupStyle.margin.top;
+        buttonRect.yMin += _popupStyle.margin.top + 1;
         buttonRect.width = _popupStyle.fixedWidth + _popupStyle.margin.right;
         position.xMin = buttonRect.xMax;
 
@@ -37,7 +37,7 @@ public class SfxReferenceDrawer : PropertyDrawer
 
         useConstant.boolValue = result == 0;
 
-        position.yMax -= 2;
+        //position.yMax -= 2;
         EditorGUI.PropertyField(position,
             useConstant.boolValue ? clip : data,
             GUIContent.none);

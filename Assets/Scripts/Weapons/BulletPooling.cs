@@ -134,11 +134,12 @@ public class BulletPooling : MonoBehaviour
     public static void BulletHitFeedback(Vector3 pos, Quaternion rot) => _instance.BulletHitFeedbacklocal(pos, rot);
     private void BulletHitFeedbacklocal(Vector3 pos, Quaternion rot)
     {
-        _hitParticles.Emit(1);
+        if (_hitParticles != null) _hitParticles.Emit(1);
     }
 
-    public static void BulletExplosiveFeedback(Vector3 pos)
+    public static void BulletExplosiveFeedback(Vector3 pos) => _instance.BulletExplosiveFeedbackLocal(pos);
+    public void BulletExplosiveFeedbackLocal(Vector3 pos)
     {
-        _instance._explosiveParticles.Emit(1);
+        if (_explosiveParticles != null) _explosiveParticles.Emit(1);
     }
 }

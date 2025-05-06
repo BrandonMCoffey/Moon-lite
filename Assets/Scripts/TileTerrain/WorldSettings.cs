@@ -51,12 +51,17 @@ public class WorldSettings : SerializedScriptableObject
     [SerializeField] private Vector2Int _damageOffsetUV = new Vector2Int(1, 0);
     [SerializeField] private LevelDecoration _decorationPrefab;
     [SerializeField] private StructureData _shopStructure;
+    [SerializeField] private MusicTrack _worldMusic;
 
     public Material TerrainMaterial => _terrainMaterial;
     public int GridSize => _gridSize;
     public Vector2Int DamageOffsetUV => _damageOffsetUV;
     public LevelDecoration DecorationPrefab => _decorationPrefab;
     public StructureData ShopStructure => _shopStructure;
+    public void PlayMusic()
+    {
+        if (_worldMusic != null) _worldMusic.Play();
+    }
 
     [Header("Tile Types")]
     [DictionaryDrawerSettings(KeyLabel = "Tile Type", ValueLabel = "Tile Data")]

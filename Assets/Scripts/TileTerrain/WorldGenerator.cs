@@ -64,6 +64,7 @@ public class WorldGenerator : MonoBehaviour
     {
         _player = Player.Instance.transform;
         InitializeWorld();
+        _worldSettings.PlayMusic();
     }
 
     private void LateUpdate()
