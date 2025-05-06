@@ -19,6 +19,10 @@ public class ShipMenuManager : MonoBehaviour
         _shopMenu.CloseMenu();
         _researchMenu.CloseMenu();
         _manageGunsMenu.CloseMenu();
+        _pauseMenu.gameObject.SetActive(true);
+        _shopMenu.gameObject.SetActive(true);
+        _researchMenu.gameObject.SetActive(true);
+        _manageGunsMenu.gameObject.SetActive(true);
     }
 
     private void Update()
