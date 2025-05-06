@@ -25,6 +25,11 @@ public class MainMenuController : MonoBehaviour
         UIHelper.SetGroupActive(_gameSelect, false);
         UIHelper.SetGroupActive(_options, false);
         UIHelper.SetGroupActive(_credits, false);
+        _splashScreen.gameObject.SetActive(true);
+        _mainMenu.gameObject.SetActive(true);
+        _gameSelect.gameObject.SetActive(true);
+        _options.gameObject.SetActive(true);
+        _credits.gameObject.SetActive(true);
         MouseControllerManager.UpdateSelected(_firstSelected);
 
         for (int i = 0; i < _loadGameButtons.Count; i++)
