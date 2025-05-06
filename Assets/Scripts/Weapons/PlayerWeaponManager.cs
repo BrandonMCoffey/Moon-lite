@@ -8,6 +8,7 @@ using static UnityEditor.PlayerSettings;
 public class PlayerWeaponManager : MonoBehaviour
 {
     [SerializeField] private LayerMask _bulletHitLayer = 1;
+    [SerializeField] private LayerMask _gunPickupLayer = 1;
 
     [Header("Weapon Settings")]
     [SerializeField] private Transform _weaponHolder;
@@ -18,10 +19,10 @@ public class PlayerWeaponManager : MonoBehaviour
     public WeaponBase StarterWeapon => _weapons.Count > 0 ? _weapons[0] : null;
 
     [Header("UI References")]
-    private TextMeshPro _pickupText;
+    [SerializeField] private TextMeshPro _pickupText;
     //private PlayerUI _playerUI;
-    private SpriteRenderer _reloadBar;
-    private SpriteRenderer _reloadBarBG;
+    [SerializeField] private SpriteRenderer _reloadBar;
+    [SerializeField] private SpriteRenderer _reloadBarBG;
 
     public WeaponBase EquippedWeapon => _equippedWeaponIndex < _weapons.Count ? _weapons[_equippedWeaponIndex] : null;
     private Camera _mainCamera;
@@ -46,7 +47,7 @@ public class PlayerWeaponManager : MonoBehaviour
     private void Awake()
     {
         InitializeReferences();
-        InitializeUI();
+        HideReloadBar();
         UpdatePickupText();
 
         _equippedWeaponIndex = 0;
@@ -91,21 +92,6 @@ public class PlayerWeaponManager : MonoBehaviour
     private void InitializeReferences()
     {
         _mainCamera = Camera.main;
-
-        Transform pickupTextTransform = transform.Find("PickupText");
-        if (pickupTextTransform != null)
-        {
-            _pickupText = pickupTextTransform.GetComponent<TextMeshPro>();
-        }
-    }
-
-    private void InitializeUI()
-    {
-        // TODO: Serialize
-        _reloadBar = transform.Find("ReloadBar")?.GetComponent<SpriteRenderer>();
-        _reloadBarBG = transform.Find("ReloadBarBG")?.GetComponent<SpriteRenderer>();
-
-        HideReloadBar();
     }
 
     private void UpdatePickupText()
@@ -204,8 +190,7 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private bool IsOverPickup()
     {
-        // TODO: Add layer to only check for Weapon objects (This is expensive atm)
-        Collider[] colliders = Physics.OverlapSphere(transform.position, _pickupRadius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _pickupRadius, _gunPickupLayer);
         foreach (Collider col in colliders)
         {
             if (col.GetComponent<WeaponBase>() != null)

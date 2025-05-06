@@ -371,12 +371,11 @@ public class PlayerMovementCustom : EntityMovement
 
     private void CheckFacingDir()
     {
-        var mousePosition = PlayerInput.MousePosition;
-        mousePosition.z = Camera.main.nearClipPlane;
-        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        // TODO: Only face mouse when holding a gun?
+        Vector3 mousePosition = PlayerInput.MousePositionWorld(transform.position.z);
+        Vector3 aimDirection = (mousePosition - transform.position).normalized;
 
-        Vector3 directionToMouse = worldMousePosition - transform.position;
-        bool facingLeft = directionToMouse.x < 0;
+        bool facingLeft = aimDirection.x < 0;
 
         if (_facingLeft != facingLeft)
         {

@@ -42,8 +42,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2122804177599547942}
   - component: {fileID: 6565290217461238152}
-  - component: {fileID: 2467125778329937797}
   - component: {fileID: -4745953365413457565}
+  - component: {fileID: 2467125778329937797}
   m_Layer: 11
   m_Name: PF_Shotgun
   m_TagString: Untagged
@@ -84,19 +84,6 @@ MonoBehaviour:
   _weaponName: Shotgun
   _shootTransform: {fileID: 2122804178461797388}
   _gunSprite: {fileID: 2122804177998014980}
---- !u!65 &2467125778329937797
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2122804177599547945}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 0.75, z: 0.1}
-  m_Center: {x: 0.6, y: -0.2, z: 0}
 --- !u!54 &-4745953365413457565
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -113,6 +100,19 @@ Rigidbody:
   m_Interpolate: 2
   m_Constraints: 56
   m_CollisionDetection: 0
+--- !u!65 &2467125778329937797
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122804177599547945}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 0.75, z: 0.1}
+  m_Center: {x: 0.6, y: -0.2, z: 0}
 --- !u!1 &2122804177998014981
 GameObject:
   m_ObjectHideFlags: 0
