@@ -44,4 +44,9 @@ public class ItemVisual : ShowPopupOnHover
         _itemCount = _inventory.GetInventoryCount(_itemData);
         _countText.text = _itemCount.ToString();
     }
+
+    public override string GetHoverText()
+    {
+        return _itemData.Name + "\n" + _itemData.Description;
+    }
 }

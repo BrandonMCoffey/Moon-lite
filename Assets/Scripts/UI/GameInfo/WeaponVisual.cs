@@ -46,7 +46,6 @@ public class WeaponVisual : ShowPopupOnHover
     // TODO: Use button UI instead
     public override void ClickOnVisual()
     {
-        // TODO: Fix this
-        Player.Instance.GetComponent<PlayerWeaponManager>().SwitchToWeapon(_weaponData);
+        Player.WeaponManager.SwitchToWeapon(_weaponData);
     }
 }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Stone
   m_EditorClassIdentifier: 
   _itemName: Stone
-  _itemDescription: 
+  _itemDescription: Stone from the ground.
   _itemIcon: {fileID: 1328361122, guid: 8f248677bc5a95a4ba449bc35c1d16a5, type: 3}
   _color: {r: 0.22352943, g: 0.21960786, b: 0.22352943, a: 1}
