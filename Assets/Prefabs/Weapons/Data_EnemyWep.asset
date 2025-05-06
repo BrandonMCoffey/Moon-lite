@@ -15,6 +15,10 @@ MonoBehaviour:
   _weaponName: EnemyWep
   _weaponDescription: EnemyWeapon
   _weaponSprite: {fileID: 0}
+  _shootSfx:
+    UseClip: 0
+    Clip: {fileID: 0}
+    Base: {fileID: 0}
   _weaponPrefab: {fileID: 0}
   _maxMagSize: 8
   _reloadTime: 1
@@ -31,9 +35,15 @@ MonoBehaviour:
   _bulletKickback: 0.25
   _bulletLifetime: 3
   _bulletGravityScale: 1
+  _bulletBounces: 0
+  _forceHitOnBounce: 0
   _forceAoe: 0
   _aoeRadius: 0
+  _cameraShake: 0
   _multipleBullets: 0
   _bulletAmount: 3
   _hitScan: 0
   _rayRange: 15
+  _rayColor:
+    serializedVersion: 2
+    rgba: 4278190335

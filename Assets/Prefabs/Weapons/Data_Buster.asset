@@ -43,7 +43,7 @@ MonoBehaviour:
   _forceHitOnBounce: 0
   _forceAoe: 0
   _aoeRadius: 1
-  _cameraShake: 1
+  _cameraShake: 0.6
   _multipleBullets: 1
   _bulletAmount: 4
   _hitScan: 0

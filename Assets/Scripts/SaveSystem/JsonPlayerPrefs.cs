@@ -27,14 +27,16 @@ public class JsonPlayerPrefs
     }
 
     [SerializeField] private List<PlayerPref> _playerPrefs = new List<PlayerPref>();
-    [SerializeField, ReadOnly] private string _savePath;
+    [SerializeField, ReadOnly] private string _fileName;
+
+    private string DirectoryPath => Path.Combine(Application.persistentDataPath, _fileName);
 
     public JsonPlayerPrefs(string fileName)
     {
-        _savePath = Application.persistentDataPath + "/" + fileName + ".json";
-        if (File.Exists(_savePath))
+        _fileName = fileName + ".json";
+        if (File.Exists(DirectoryPath))
         {
-            using (StreamReader reader = new StreamReader(_savePath))
+            using (StreamReader reader = new StreamReader(DirectoryPath))
             {
                 string json = reader.ReadToEnd();
                 JsonPlayerPrefs data = JsonUtility.FromJson<JsonPlayerPrefs>(json);
@@ -131,10 +133,9 @@ public class JsonPlayerPrefs
 
     public void Save()
     {
-        string directory = Path.GetDirectoryName(_savePath);
-        Directory.CreateDirectory(directory);
+        Directory.CreateDirectory(Path.GetDirectoryName(DirectoryPath));
         string json = JsonUtility.ToJson(this);
-        using (StreamWriter writer = new StreamWriter(_savePath))
+        using (StreamWriter writer = new StreamWriter(DirectoryPath))
         {
             writer.WriteLine(json);
         }
