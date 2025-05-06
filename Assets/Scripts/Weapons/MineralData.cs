@@ -48,6 +48,7 @@ public class MineralData : ItemData
     [SerializeField] private bool _hitOnBounce = true;
     [SerializeField] private bool _hasAOE = false;
     [SerializeField, ShowIf(nameof(_hasAOE))] private float _aoeRadius = 1f;
+    [SerializeField] private float _cameraShake = 1f;
 
     public float ShotSpeed => _bulletSpeedModifier;
     public float Damage => _damage;
@@ -60,6 +61,7 @@ public class MineralData : ItemData
     public bool HitOnBounce => _hitOnBounce; 
     public bool HasAOE => _hasAOE;
     public float AoeRadius => _aoeRadius;
+    public float CameraShake => _cameraShake;
 }
 
 public enum WeaponAmmoArtType

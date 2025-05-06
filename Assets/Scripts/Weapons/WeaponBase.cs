@@ -179,6 +179,10 @@ public class WeaponBase : MonoBehaviour
         Vector3 knockback = BulletSpawner.ShootBullet(_data, bulletData, bulletLayer, spawnPosition, aimDirection);
 
         _data.PlayShootSfx();
+
+        // TODO: Maybe duration is from weapon and magnitude is from bullet?
+        CameraShakeManager.Shake(0.05f, _data.CameraShake * bulletData.CameraShake);
+
         if (_recoilCoroutine != null)
         {
             StopCoroutine(_recoilCoroutine);

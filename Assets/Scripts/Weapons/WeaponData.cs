@@ -58,6 +58,7 @@ public class WeaponData : ScriptableObject
     [SerializeField] private bool _forceHitOnBounce = false;
     [SerializeField] private bool _forceAoe = false;
     [SerializeField] [ShowIf ("_forceAoe")] private float _aoeRadius = 1f;
+    [SerializeField] private float _cameraShake = 1f;
 
     public WeaponAmmoArtType ArtType => _artType;
     public float BulletSize => _bulletSize;
@@ -70,6 +71,7 @@ public class WeaponData : ScriptableObject
     public bool ForceHitOnBounce => _forceHitOnBounce;
     public bool ForceAoe => _forceAoe;
     public float BulletAoeRadius => _aoeRadius;
+    public float CameraShake => _cameraShake;
 
     [Header("Alternate Weapon Types")]
     [Tooltip("If true, make sure to change the spray angle.")]
