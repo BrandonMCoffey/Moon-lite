@@ -219,8 +219,9 @@ public class PlayerWeaponManager : MonoBehaviour
         if (EquippedWeapon == null) return;
 
         // TODO: Replace below with PlayerInput.MousePositionWorld?
-        Vector3 mousePosition = _mainCamera.ScreenToWorldPoint(PlayerInput.MousePosition);
-        mousePosition.z = 0f;
+        //Vector3 mousePosition = _mainCamera.ScreenToWorldPoint(PlayerInput.MousePosition);
+        //mousePosition.z = 0f;
+        Vector3 mousePosition = PlayerInput.MousePositionWorld(transform.position.z);
 
         EquippedWeapon.Aim(mousePosition);
 
