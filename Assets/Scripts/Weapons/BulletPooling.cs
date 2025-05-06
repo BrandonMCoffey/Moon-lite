@@ -12,7 +12,6 @@ public class BulletPooling : MonoBehaviour
     [SerializeField] private int _startLaserPoolSize = 5;
     [SerializeField, ReadOnly] private int _laserPoolSize;
     [SerializeField] private ParticleSystem _hitParticles;
-    [SerializeField] private ParticleSystem _explosiveParticles;
 
     private static BulletPooling _instance;
     private List<BulletBase> _bulletPool;
@@ -141,11 +140,5 @@ public class BulletPooling : MonoBehaviour
             _hitParticles.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(forward));
             _hitParticles.Emit(10);
         }
-    }
-
-    public static void BulletExplosiveFeedback(Vector3 pos) => _instance.BulletExplosiveFeedbackLocal(pos);
-    public void BulletExplosiveFeedbackLocal(Vector3 pos)
-    {
-        if (_explosiveParticles != null) _explosiveParticles.Emit(1);
     }
 }
