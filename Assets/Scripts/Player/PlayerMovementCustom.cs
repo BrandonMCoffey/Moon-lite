@@ -6,7 +6,6 @@ public class PlayerMovementCustom : EntityMovement
 {
     [Header("Player Settings")]
     [SerializeField] private CustomMovementData _data;
-    [SerializeField] private Transform _art;
     [SerializeField] private bool _debug;
     [SerializeField] private float _jetpackMaxFuel = 1;
 
@@ -24,6 +23,8 @@ public class PlayerMovementCustom : EntityMovement
     [SerializeField, ReadOnly] private float _moveHorz;
     [SerializeField, ReadOnly] private float _moveVert;
     [SerializeField, ReadOnly] private bool _facingLeft;
+
+    public bool FacingLeft => _facingLeft;
 
     [Header("Debug - Jump")]
     [SerializeField, ReadOnly] private bool _jumpInput;
@@ -60,7 +61,6 @@ public class PlayerMovementCustom : EntityMovement
         CheckJetpack();
         CheckGravity();
         Run(Time.deltaTime);
-        CheckFacingDir();
 
         ApplyGravity();
         if (_ceilingCollided && _velocity.y > 0)
@@ -69,6 +69,7 @@ public class PlayerMovementCustom : EntityMovement
             _isJumping = false;
         }
         ApplyVelocity();
+        if (_velocity.x != 0) _facingLeft = _velocity.x < 0;
     }
 
     private void UpdateTimers(float deltaTime)
@@ -368,23 +369,6 @@ public class PlayerMovementCustom : EntityMovement
         float movement = speedDif * accelRate;
 
         _velocity += Vector3.right * movement * deltaTime;
-    }
-
-    private void CheckFacingDir()
-    {
-        // TODO: Only face mouse when holding a gun?
-        Vector3 mousePosition = PlayerInput.MousePositionWorld(transform.position.z);
-        Vector3 aimDirection = (mousePosition - transform.position).normalized;
-
-        bool facingLeft = aimDirection.x < 0;
-
-        if (_facingLeft != facingLeft)
-        {
-            _facingLeft = facingLeft;
-            Vector3 scale = _art.localScale;
-            scale.x = Mathf.Abs(scale.x) * (_facingLeft ? -1 : 1);
-            _art.localScale = scale;
-        }
     }
 
     private void Log(string message)

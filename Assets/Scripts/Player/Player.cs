@@ -11,6 +11,7 @@ public class Player : Health
     [SerializeField] private InventoryData _inventory;
     [SerializeField] private PlayerWeaponManager _weaponManager;
     [SerializeField] private PlayerMovementCustom _movement;
+    [SerializeField] private Transform _art;
     [SerializeField] private float _magnetItemRange = 2.5f;
     [SerializeField] private float _magnetItemSpeed = 5f;
     [SerializeField] private float _pickupItemRange = 1f;
@@ -20,6 +21,8 @@ public class Player : Health
     [SerializeField] private SimplePhysicsObject _dirtBombPrefab;
     [SerializeField] private PlaceableBase _tempPlatformPrefab;
     [SerializeField] private PlaceableBase _autoMinerPrefab;
+
+    private bool _facingLeft;
 
     public static PlayerWeaponManager WeaponManager => Instance._weaponManager;
     public static PlayerMovementCustom Movement => Instance._movement;
@@ -50,6 +53,7 @@ public class Player : Health
         if (PlayerInput.Throwable02) Throw(_dirtBombPrefab);
         if (PlayerInput.Placeable01) Place(_tempPlatformPrefab);
         if (PlayerInput.Placeable02) Place(_autoMinerPrefab);
+        CheckFacingDir();
     }
 
     protected override void SetHealth(float health)
@@ -81,5 +85,19 @@ public class Player : Health
         var pos = _world.TileToWorld(_world.WorldToTileX(transform.position.x), _world.WorldToTileY(transform.position.y));
         var placeable = Instantiate(prefab, pos, Quaternion.identity);
         placeable.Place(_world);
+    }
+
+    private void CheckFacingDir()
+    {
+        // If holding weapon, face where player is aiming, otherwise where player is moving
+        bool facingLeft = WeaponManager.HoldingWeapon ? WeaponManager.FacingLeft : Movement.FacingLeft;
+
+        if (_facingLeft != facingLeft)
+        {
+            _facingLeft = facingLeft;
+            Vector3 scale = _art.localScale;
+            scale.x = Mathf.Abs(scale.x) * (_facingLeft ? -1 : 1);
+            _art.localScale = scale;
+        }
     }
 }

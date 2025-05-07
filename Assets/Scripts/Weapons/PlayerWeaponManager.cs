@@ -40,6 +40,9 @@ public class PlayerWeaponManager : MonoBehaviour
     public MineralData EquippedAmmo => _equippedAmmoIndex < Ammos.Count ? Ammos[_equippedAmmoIndex] : null;
     public float CurrentAmmoInventory => EquippedAmmo != null ? _playerInventory.GetInventoryCount(EquippedAmmo) : 0;
 
+    public bool HoldingWeapon => _isInputEnabled && EquippedWeapon != null;
+    public bool FacingLeft { get; private set; }
+
     public static event System.Action<WeaponData> OnEquipWeapon = delegate { };
     public static event System.Action<MineralData> OnEquipAmmo = delegate { };
 
@@ -209,6 +212,7 @@ public class PlayerWeaponManager : MonoBehaviour
         Vector3 aimDirection = (mousePosition - transform.position).normalized;
 
         EquippedWeapon.Aim(aimDirection);
+        FacingLeft = aimDirection.x < 0f;
 
         if (CanShoot())
         {

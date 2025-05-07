@@ -145,6 +145,7 @@ MonoBehaviour:
   _inventory: {fileID: 11400000, guid: b6a67fd92f617614a9e8dfbcad5ba9ae, type: 2}
   _weaponManager: {fileID: 3081370178779755053}
   _movement: {fileID: 3081370178779755055}
+  _art: {fileID: 3081370179813677160}
   _magnetItemRange: 2.5
   _magnetItemSpeed: 10
   _pickupItemRange: 1
@@ -225,7 +226,6 @@ MonoBehaviour:
   _rightBottomCollided: 0
   _rightBottomDistance: 0
   _data: {fileID: 11400000, guid: 0b20425b14700094990e3092b9b7f32f, type: 2}
-  _art: {fileID: 3081370179813677160}
   _debug: 0
   _jetpackMaxFuel: 1
   _jumpSfx:
@@ -15031,7 +15031,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3081370179813677161
@@ -29845,6 +29845,6 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
