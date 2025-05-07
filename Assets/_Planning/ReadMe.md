@@ -6,6 +6,7 @@
 - [TASK] UI Sounds
 - [TASK] Parallax UI
 - [TASK] Main Menu Background
+- [TASK] Move Buttons to Middle
 
 ## 2. The Ship
 - [TASK] NPC Art
