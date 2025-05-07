@@ -121,7 +121,6 @@ public class EnemyBrain : MonoBehaviour
     void Update() 
     {
         if (!MouseControllerManager.InGame) return;
-
         stateMachine.Update();
     }
 
