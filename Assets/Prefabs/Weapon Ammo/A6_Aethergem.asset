@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: A6_Aethergem
   m_EditorClassIdentifier: 
   _itemName: Aethergem
-  _itemDescription: "<b>Passes straight through obstacles to deliver sudden and unexpected
-    layoffs.\r</b>\nIgnore laws, walls, and boundaries-just like our justice system."
+  _itemDescription: breaks walls and hits enemies
   _itemIcon: {fileID: 519469926, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _color: {r: 0.21568629, g: 0.9686275, b: 0.50980395, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,

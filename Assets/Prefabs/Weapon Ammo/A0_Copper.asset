@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: A0_Copper
   m_EditorClassIdentifier: 
   _itemName: Copper
-  _itemDescription: Weak
+  _itemDescription: Fast Bullet Less Damage
   _itemIcon: {fileID: -154867337, guid: 8e4fc4feca315b543a46cace76a3b313, type: 3}
   _color: {r: 0.96470594, g: 0.69803923, b: 0.41960788, a: 1}
   _bulletPrefab: {fileID: 1748833617410321593, guid: 77bac6e80b534e141bf382b75a0e6c7c,
