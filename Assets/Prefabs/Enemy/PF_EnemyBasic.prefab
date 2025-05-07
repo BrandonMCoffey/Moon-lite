@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1552213923388247986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 609056920119166799}
+  - component: {fileID: 2050097039873222015}
+  m_Layer: 20
+  m_Name: EventListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &609056920119166799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552213923388247986}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8041137564954186007}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2050097039873222015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552213923388247986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85f6084dea04f6c4eacfdc0b51bbb91e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: a9a7769ecc0240e4fa3a117af42949f7, type: 2}
+  unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8041137564954186003}
+        m_TargetAssemblyTypeName: EnemyBrain, Assembly-CSharp
+        m_MethodName: ReactToCallForReinforcements
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8041137563296749724
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +211,7 @@ Transform:
   m_Children:
   - {fileID: 8041137563296749727}
   - {fileID: 8041137563297544112}
+  - {fileID: 609056920119166799}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -166,17 +227,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d46c9dfd6cccc40a05905ec1b8178e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMovement: {fileID: 8041137564954186002}
+  _enemyMovement: {fileID: 8041137564954186002}
   _currentState: 
-  playerDetector: {fileID: 8041137564954186000}
-  enemyWeaponManager: {fileID: 8041137564954186221}
-  attackRange: 15.79
-  aggression: 0.5
-  preferredEngagementRange: 8
-  strafeChance: 0.6
-  repositionTimeMin: 3
-  repositionTimeMax: 6
-  searchTime: 5
+  _playerDetector: {fileID: 8041137564954186000}
+  _enemyWeaponManager: {fileID: 8041137564954186221}
+  _health: {fileID: 0}
+  _canAttack: 1
+  _attackRange: 10
+  _preferredEngagementRange: 8
+  _strafeChance: 0.6
+  _repositionTimeMin: 3
+  _repositionTimeMax: 6
+  _canSearch: 1
+  _searchTime: 5
+  _canRetreat: 1
+  _retreatDistanceRange: {x: 5, y: 10}
+  _callForReinforcementsChance: 0.5
+  _canBlastTo: 1
+  _blastToPosition: {x: 0, y: 0, z: 0}
+  _timeBlastingRange: {x: 1, y: 3}
+  _canCallForReinforcement: 1
+  _canHearCallForReinforcement: 1
+  _ignoreCallForReinforcement: 0
+  _callForReinforcementAcceptRange: {x: 5, y: 50}
+  _callForReinforcementEvent: {fileID: 11400000, guid: a9a7769ecc0240e4fa3a117af42949f7,
+    type: 2}
 --- !u!114 &8041137564954186221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,6 +310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44503969cb8f034785455becd8689dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canMove: 1
   _gravityScale: 1
   _maxVelocity: 40
   _groundLayer:

@@ -1560,17 +1560,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d46c9dfd6cccc40a05905ec1b8178e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMovement: {fileID: 1029067114}
+  _enemyMovement: {fileID: 0}
   _currentState: 
-  playerDetector: {fileID: 1029067115}
-  enemyWeaponManager: {fileID: 1029067116}
-  attackRange: 15.79
-  aggression: 0.5
-  preferredEngagementRange: 8
-  strafeChance: 0.6
-  repositionTimeMin: 3
-  repositionTimeMax: 6
-  searchTime: 5
+  _playerDetector: {fileID: 0}
+  _enemyWeaponManager: {fileID: 0}
+  _health: {fileID: 0}
+  _canAttack: 1
+  _attackRange: 10
+  _preferredEngagementRange: 8
+  _strafeChance: 0.6
+  _repositionTimeMin: 3
+  _repositionTimeMax: 6
+  _canSearch: 1
+  _searchTime: 5
+  _canRetreat: 1
+  _retreatDistanceRange: {x: 5, y: 10}
+  _callForReinforcementsChance: 0.5
+  _canBlastTo: 1
+  _blastToPosition: {x: 0, y: 0, z: 0}
+  _timeBlastingRange: {x: 1, y: 3}
+  _canCallForReinforcement: 1
+  _canHearCallForReinforcement: 1
+  _ignoreCallForReinforcement: 0
+  _callForReinforcementAcceptRange: {x: 5, y: 50}
+  _callForReinforcementEvent: {fileID: 0}
 --- !u!4 &1029067118
 Transform:
   m_ObjectHideFlags: 0
@@ -1747,17 +1760,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d46c9dfd6cccc40a05905ec1b8178e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMovement: {fileID: 1057589839}
+  _enemyMovement: {fileID: 0}
   _currentState: 
-  playerDetector: {fileID: 1057589840}
-  enemyWeaponManager: {fileID: 1057589841}
-  attackRange: 15.79
-  aggression: 0.5
-  preferredEngagementRange: 8
-  strafeChance: 0.6
-  repositionTimeMin: 3
-  repositionTimeMax: 6
-  searchTime: 5
+  _playerDetector: {fileID: 0}
+  _enemyWeaponManager: {fileID: 0}
+  _health: {fileID: 0}
+  _canAttack: 1
+  _attackRange: 10
+  _preferredEngagementRange: 8
+  _strafeChance: 0.6
+  _repositionTimeMin: 3
+  _repositionTimeMax: 6
+  _canSearch: 1
+  _searchTime: 5
+  _canRetreat: 1
+  _retreatDistanceRange: {x: 5, y: 10}
+  _callForReinforcementsChance: 0.5
+  _canBlastTo: 1
+  _blastToPosition: {x: 0, y: 0, z: 0}
+  _timeBlastingRange: {x: 1, y: 3}
+  _canCallForReinforcement: 1
+  _canHearCallForReinforcement: 1
+  _ignoreCallForReinforcement: 0
+  _callForReinforcementAcceptRange: {x: 5, y: 50}
+  _callForReinforcementEvent: {fileID: 0}
 --- !u!4 &1057589843
 Transform:
   m_ObjectHideFlags: 0
@@ -2115,17 +2141,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d46c9dfd6cccc40a05905ec1b8178e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMovement: {fileID: 1623900146}
+  _enemyMovement: {fileID: 0}
   _currentState: 
-  playerDetector: {fileID: 1623900147}
-  enemyWeaponManager: {fileID: 1623900148}
-  attackRange: 15.79
-  aggression: 0.5
-  preferredEngagementRange: 8
-  strafeChance: 0.6
-  repositionTimeMin: 3
-  repositionTimeMax: 6
-  searchTime: 5
+  _playerDetector: {fileID: 0}
+  _enemyWeaponManager: {fileID: 0}
+  _health: {fileID: 0}
+  _canAttack: 1
+  _attackRange: 10
+  _preferredEngagementRange: 8
+  _strafeChance: 0.6
+  _repositionTimeMin: 3
+  _repositionTimeMax: 6
+  _canSearch: 1
+  _searchTime: 5
+  _canRetreat: 1
+  _retreatDistanceRange: {x: 5, y: 10}
+  _callForReinforcementsChance: 0.5
+  _canBlastTo: 1
+  _blastToPosition: {x: 0, y: 0, z: 0}
+  _timeBlastingRange: {x: 1, y: 3}
+  _canCallForReinforcement: 1
+  _canHearCallForReinforcement: 1
+  _ignoreCallForReinforcement: 0
+  _callForReinforcementAcceptRange: {x: 5, y: 50}
+  _callForReinforcementEvent: {fileID: 0}
 --- !u!4 &1623900150
 Transform:
   m_ObjectHideFlags: 0
@@ -2302,17 +2341,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d46c9dfd6cccc40a05905ec1b8178e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMovement: {fileID: 1709966709}
+  _enemyMovement: {fileID: 0}
   _currentState: 
-  playerDetector: {fileID: 1709966710}
-  enemyWeaponManager: {fileID: 1709966711}
-  attackRange: 15.79
-  aggression: 0.5
-  preferredEngagementRange: 8
-  strafeChance: 0.6
-  repositionTimeMin: 3
-  repositionTimeMax: 6
-  searchTime: 5
+  _playerDetector: {fileID: 0}
+  _enemyWeaponManager: {fileID: 0}
+  _health: {fileID: 0}
+  _canAttack: 1
+  _attackRange: 10
+  _preferredEngagementRange: 8
+  _strafeChance: 0.6
+  _repositionTimeMin: 3
+  _repositionTimeMax: 6
+  _canSearch: 1
+  _searchTime: 5
+  _canRetreat: 1
+  _retreatDistanceRange: {x: 5, y: 10}
+  _callForReinforcementsChance: 0.5
+  _canBlastTo: 1
+  _blastToPosition: {x: 0, y: 0, z: 0}
+  _timeBlastingRange: {x: 1, y: 3}
+  _canCallForReinforcement: 1
+  _canHearCallForReinforcement: 1
+  _ignoreCallForReinforcement: 0
+  _callForReinforcementAcceptRange: {x: 5, y: 50}
+  _callForReinforcementEvent: {fileID: 0}
 --- !u!4 &1709966713
 Transform:
   m_ObjectHideFlags: 0
@@ -2719,17 +2771,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d46c9dfd6cccc40a05905ec1b8178e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMovement: {fileID: 2075959203}
+  _enemyMovement: {fileID: 0}
   _currentState: 
-  playerDetector: {fileID: 2075959204}
-  enemyWeaponManager: {fileID: 2075959205}
-  attackRange: 15.79
-  aggression: 0.5
-  preferredEngagementRange: 8
-  strafeChance: 0.6
-  repositionTimeMin: 3
-  repositionTimeMax: 6
-  searchTime: 5
+  _playerDetector: {fileID: 0}
+  _enemyWeaponManager: {fileID: 0}
+  _health: {fileID: 0}
+  _canAttack: 1
+  _attackRange: 10
+  _preferredEngagementRange: 8
+  _strafeChance: 0.6
+  _repositionTimeMin: 3
+  _repositionTimeMax: 6
+  _canSearch: 1
+  _searchTime: 5
+  _canRetreat: 1
+  _retreatDistanceRange: {x: 5, y: 10}
+  _callForReinforcementsChance: 0.5
+  _canBlastTo: 1
+  _blastToPosition: {x: 0, y: 0, z: 0}
+  _timeBlastingRange: {x: 1, y: 3}
+  _canCallForReinforcement: 1
+  _canHearCallForReinforcement: 1
+  _ignoreCallForReinforcement: 0
+  _callForReinforcementAcceptRange: {x: 5, y: 50}
+  _callForReinforcementEvent: {fileID: 0}
 --- !u!4 &2075959207
 Transform:
   m_ObjectHideFlags: 0
@@ -2789,11 +2854,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 8041137564954186004, guid: 752cd4e8f870d9c40b277249d14769bb,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8041137564954186007, guid: 752cd4e8f870d9c40b277249d14769bb,
         type: 3}

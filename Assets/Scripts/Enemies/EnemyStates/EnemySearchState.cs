@@ -16,6 +16,11 @@ public class EnemySearchState : EnemyBaseState
     public override void OnEnter()
     {
         base.OnEnter();
+        if (!enemyBrain.CanSearch) enemyBrain.StateMachine.ChangeState(enemyBrain.PatrolState);
+
+        enemyBrain.SetCurrentStateText("SearchState");
+        enemyBrain.SetIgnoreCallForReinforcement(false);
+
         lastKnownPosition = enemyBrain.PlayerDetector.LastKnownPlayerPosition; 
         searchTimer.Start();
         //Debug.Log($"{Time.time}: Entering Search State. Last known position: {lastKnownPosition}");

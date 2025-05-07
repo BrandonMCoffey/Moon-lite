@@ -119,6 +119,14 @@ public class EnemyWeaponManager : MonoBehaviour
         }
     }
 
+    public void ShootTowards(Vector3 targetPos)
+    {
+        if (_currentWeapon == null || _currentAmmo == null) return;
+        _weaponHolder.LookAt(targetPos);
+        _weaponHolder.Rotate(0, 0, Random.Range(-5f, 5f));
+        Shoot();
+    }
+
     [Button("Test Shoot")]
     void Shoot()
     {

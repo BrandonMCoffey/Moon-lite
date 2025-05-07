@@ -12,6 +12,8 @@ public class EnemyChaseState : EnemyBaseState
     {
         base.OnEnter();
         //Debug.Log($"{Time.time}: Entering Chase State");
+        enemyBrain.SetCurrentStateText("ChaseState");
+        enemyBrain.SetIgnoreCallForReinforcement(false);
     }
 
     public override void Update()
