@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Sirenix.OdinInspector;
+using UnityEngine.Events;
 
 public class ShipMenu : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class ShipMenu : MonoBehaviour
     [SerializeField] private bool _closeReturnsToFirstGroup = false;
     [SerializeField] private List<CanvasGroup> _groups;
     [SerializeField, ReadOnly] private int _currentGroup;
+    [SerializeField] private UnityEvent _onOpenMenuEvent;
 
     public bool CurrentlyOpen => _canvas.enabled;
 
@@ -38,6 +40,7 @@ public class ShipMenu : MonoBehaviour
         SoundManager.MusicModifier.SetMuffled(true);
         Time.timeScale = 0;
         OpenGroup(0);
+        _onOpenMenuEvent?.Invoke();
     }
 
     public void OpenGroup(int index)
