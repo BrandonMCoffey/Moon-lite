@@ -20,6 +20,14 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
     - {fileID: 11400000, guid: c52405b6a86b58d4fbb1a5044f7a2457, type: 2}
     - {fileID: 11400000, guid: 00d45476f6806ff4cb20893147291c76, type: 2}
+    - {fileID: 11400000, guid: fd4587940d1a54c47a14ba76678a0620, type: 2}
+    - {fileID: 11400000, guid: c1b511ad41029a7409a491e619cbb7fe, type: 2}
+    - {fileID: 11400000, guid: 737238d39c85bce44b83b7b26f85465f, type: 2}
+    - {fileID: 11400000, guid: 43e01edfaf5d16d4abca112a9a3b7e2d, type: 2}
+    - {fileID: 11400000, guid: d8f2c2c7f06634f4ea5c33eff0ef43a5, type: 2}
+    - {fileID: 11400000, guid: 1613e5cf9c17fa0498f81f33e265d679, type: 2}
+    - {fileID: 11400000, guid: 08420528d54e7b3408fae684b26fd1bd, type: 2}
+    - {fileID: 11400000, guid: 04538cfae3b3f5b4caefe6ffaf402d35, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -106,7 +114,151 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
+      Data: 12
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 2
+    - Name: $v
+      Entry: 4
+      Data: 1000
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 3
+    - Name: $v
+      Entry: 4
+      Data: 1000
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
       Data: 0
+    - Name: $v
+      Entry: 4
+      Data: 887
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 1
+    - Name: $v
+      Entry: 4
+      Data: 1000
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 4
+    - Name: $v
+      Entry: 4
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 5
+    - Name: $v
+      Entry: 4
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 6
+    - Name: $v
+      Entry: 4
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 7
+    - Name: $v
+      Entry: 4
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 8
+    - Name: $v
+      Entry: 4
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 9
+    - Name: $v
+      Entry: 4
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 10
+    - Name: $v
+      Entry: 4
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 11
+    - Name: $v
+      Entry: 4
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -119,5 +271,14 @@ MonoBehaviour:
   _startingAmmo:
   - {fileID: 11400000, guid: 4e0fb6c9495b01744ba0486a14346392, type: 2}
   - {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
-  _equippedWeapons: []
-  _equippedAmmos: []
+  _equippedWeapons:
+  - {fileID: 11400000, guid: e32d4033b799a7e418d00c0b8b388172, type: 2}
+  - {fileID: 11400000, guid: 5f1e938987e1058468ea2c6eea242e32, type: 2}
+  - {fileID: 11400000, guid: 946906a3464e57b449de254a7a5282aa, type: 2}
+  - {fileID: 11400000, guid: 3cd1ff006c20a3d448ae06ffb0759ec7, type: 2}
+  - {fileID: 11400000, guid: 8f00d6383fd3a3840ade7dcf5449adbb, type: 2}
+  - {fileID: 11400000, guid: 22f251ea0215170479ea314b2337f32a, type: 2}
+  - {fileID: 11400000, guid: 0f9e59fc885f6a24fa9865216402337d, type: 2}
+  _equippedAmmos:
+  - {fileID: 11400000, guid: 4e0fb6c9495b01744ba0486a14346392, type: 2}
+  - {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
