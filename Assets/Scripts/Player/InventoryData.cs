@@ -1,6 +1,5 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Moonlite/Inventory Data")]
@@ -95,12 +94,12 @@ public class InventoryData : SerializedScriptableObject
     [Button]
     private void CheatGetAll()
     {
-        string[] guids = AssetDatabase.FindAssets($"t:{nameof(ItemData)}", new[] { "Assets" });
+        string[] guids = UnityEditor.AssetDatabase.FindAssets($"t:{nameof(ItemData)}", new[] { "Assets" });
 
         foreach (string guid in guids)
         {
-            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            ItemData scriptableObject = AssetDatabase.LoadAssetAtPath<ItemData>(assetPath);
+            string assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+            ItemData scriptableObject = UnityEditor.AssetDatabase.LoadAssetAtPath<ItemData>(assetPath);
             if (scriptableObject != null)
             {
                 AddItemToInventory(scriptableObject, 500);
