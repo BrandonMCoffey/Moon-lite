@@ -151,6 +151,7 @@ public class BulletBase : SimplePhysicsObject
 
     protected override void OnHit(RaycastHit hit)
     {
+        // TODO: Fix bullets impacting at the same time as each other (Same with raycasts)
         var chunk = hit.collider.GetComponent<Chunk>();
         if (chunk != null)
         {
@@ -167,10 +168,21 @@ public class BulletBase : SimplePhysicsObject
             }
         }
 
+        if (_data.TileType == TileType.Cryselium)
+        {
+            var enemy = hit.collider.GetComponent<EnemyBrain>();
+            if (enemy != null)
+            {
+                // TODO: Freeze enemy
+            }
+        }
+
         // Note: This uses bulletLayer (_physicsLayerMask) for what can be hit
         var damageable = hit.collider.GetComponent<IDamageable>();
         if (damageable != null)
         {
+            // TODO: Damage over time
+
             damageable.TakeDamage(_damage);
             DestroySelf();
         }
@@ -180,8 +192,6 @@ public class BulletBase : SimplePhysicsObject
         hitParticleDir.z = 0;
         BulletPooling.BulletHitFeedback(_data.Color, hit.point, hitParticleDir.normalized);
         _data.PlayHitSfx();
-
-        // TODO: Fix bullets impacting at the same time as each other (Same with raycasts)
 
         if (_data.TileType == TileType.Aethergem)
         {
