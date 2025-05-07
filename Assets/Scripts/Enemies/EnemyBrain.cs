@@ -2,7 +2,6 @@ using UnityEngine;
 using SaiUtils.StateMachine;
 using SaiUtils.GameEvents;
 using Sirenix.OdinInspector;
-using SaiUtils.Extensions;
 
 public class EnemyBrain : MonoBehaviour 
 {

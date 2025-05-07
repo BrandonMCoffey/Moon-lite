@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using SaiUtils.StateMachine;
 
 public class EnemyPatrolState : EnemyBaseState

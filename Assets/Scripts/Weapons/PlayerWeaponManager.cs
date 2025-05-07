@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Sirenix.OdinInspector;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerWeaponManager : MonoBehaviour
 {
