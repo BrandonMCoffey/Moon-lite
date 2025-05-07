@@ -50,7 +50,7 @@ public class JsonPlayerPrefs
     {
         foreach (PlayerPref p in _playerPrefs)
         {
-            if (p.key == key)
+            if (p.key.Equals(key, StringComparison.InvariantCulture))
             {
                 return true;
             }
@@ -99,6 +99,22 @@ public class JsonPlayerPrefs
         return defaultValue;
     }
 
+    public string[] GetStringArray(string key, string[] defaultValue = null, bool saveDefault = SaveDefaultOnGetValue)
+    {
+        string value = GetString(key, "", false);
+        if (value != "")
+        {
+            string[] values = value.Split(',');
+            for (int i = 0; i < values.Length; i++)
+            {
+                values[i] = values[i].Trim();
+            }
+            return values;
+        }
+        if (saveDefault && defaultValue != null) SetStringArray(key, defaultValue);
+        return defaultValue;
+    }
+
     public string GetString(string key, string defaultValue = "", bool saveDefault = SaveDefaultOnGetValue)
     {
         if (TryGetPlayerPref(key, out PlayerPref playerPref))
@@ -126,6 +142,15 @@ public class JsonPlayerPrefs
     public void SetBool(string key, bool value) => SetString(key, value.ToString());
     public void SetFloat(string key, float value) => SetString(key, value.ToString());
     public void SetInt(string key, int value) => SetString(key, value.ToString());
+    public void SetStringArray(string key, string[] values)
+    {
+        string value = "";
+        for (int i = 0; i < values.Length; i++)
+        {
+            value += values[i] + (i < values.Length - 1 ? "," : "");
+        }
+        SetString(key, value);
+    }
     public void SetString(string key, string value)
     {
         if (TryGetPlayerPref(key, out PlayerPref playerPref))
@@ -153,6 +178,17 @@ public class JsonPlayerPrefs
         for (int i = _playerPrefs.Count - 1; i >= 0; i--)
         {
             if (_playerPrefs[i].key == key)
+            {
+                _playerPrefs.RemoveAt(i);
+            }
+        }
+    }
+
+    public void DeleteKeysStartingWith(string prefix)
+    {
+        for (int i = _playerPrefs.Count - 1; i >= 0; i--)
+        {
+            if (_playerPrefs[i].key.StartsWith(prefix))
             {
                 _playerPrefs.RemoveAt(i);
             }

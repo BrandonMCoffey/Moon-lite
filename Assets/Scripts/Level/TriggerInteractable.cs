@@ -25,6 +25,12 @@ public class TriggerInteractable : MonoBehaviour
 
     private void Update()
     {
+        if (_player == null)
+        {
+            // Lazy load if errored
+            _player = Player.Instance.transform;
+            return;
+        }
         float dist = Vector3.Distance(transform.position, _player.position);
         if (!_insideTrigger && dist <= _triggerRadius)
         {

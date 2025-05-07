@@ -6,8 +6,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Moonlite/Game Data References")]
 public class GameDataReferences : ScriptableObject
 {
-    public List<ItemData> _allItems;
-    public List<WeaponData> _allWeapons;
+    [SerializeField] private List<ItemData> _allItems = new List<ItemData>();
+    [SerializeField] private List<WeaponData> _allWeapons = new List<WeaponData>();
+
+    public List<ItemData> AllItems => _allItems;
 
     public string GetItemName(ItemData item) => item.Name;
     public ItemData GetItemByName(string name)
@@ -35,6 +37,35 @@ public class GameDataReferences : ScriptableObject
         }
         Debug.LogError($"Weapon with name {name} not found.");
         return null;
+    }
+
+    public List<WeaponData> GetWeaponsByName(List<string> names)
+    {
+        var weapons = new List<WeaponData>();
+        if (names == null) return weapons;
+        foreach (var name in names)
+        {
+            var weapon = GetWeaponByName(name);
+            if (weapon != null)
+            {
+                weapons.Add(weapon);
+            }
+        }
+        return weapons;
+    }
+    public List<MineralData> GetAmmoByNames(List<string> names)
+    {
+        var ammo = new List<MineralData>();
+        if (names == null) return ammo;
+        foreach (var name in names)
+        {
+            var mineral = GetItemByName(name) as MineralData;
+            if (mineral != null)
+            {
+                ammo.Add(mineral);
+            }
+        }
+        return ammo;
     }
 
     [Button]

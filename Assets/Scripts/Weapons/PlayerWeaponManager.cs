@@ -37,8 +37,8 @@ public class PlayerWeaponManager : MonoBehaviour
     public int EquippedAmmoIndex => _equippedAmmoIndex;
 
     public List<MineralData> Ammos => _playerInventory.EquippedAmmos;
-    public MineralData EquippedAmmo => Ammos[_equippedAmmoIndex];
-    public float CurrentAmmoInventory => _playerInventory.GetInventoryCount(EquippedAmmo);
+    public MineralData EquippedAmmo => _equippedAmmoIndex < Ammos.Count ? Ammos[_equippedAmmoIndex] : null;
+    public float CurrentAmmoInventory => EquippedAmmo != null ? _playerInventory.GetInventoryCount(EquippedAmmo) : 0;
 
     public static event System.Action<WeaponData> OnEquipWeapon = delegate { };
     public static event System.Action<MineralData> OnEquipAmmo = delegate { };
@@ -48,19 +48,19 @@ public class PlayerWeaponManager : MonoBehaviour
         InitializeReferences();
         HideReloadBar();
         UpdatePickupText();
-
-        _equippedWeaponIndex = 0;
-        for (int i = 0; i < _playerInventory.StartWeapons.Count; i++)
-        {
-            var weapon = Instantiate(_playerInventory.StartWeapons[i].WeaponPrefab, transform, false);
-            _weapons.Add(weapon);
-            _weapons[i].Pickup(_weaponHolder);
-            _weapons[i].gameObject.SetActive(_equippedWeaponIndex == i);
-        }
     }
 
     private void Start()
     {
+        _equippedWeaponIndex = 0;
+        for (int i = 0; i < _playerInventory.EquippedWeapons.Count; i++)
+        {
+            var weapon = Instantiate(_playerInventory.EquippedWeapons[i].WeaponPrefab, transform, false);
+            _weapons.Add(weapon);
+            _weapons[i].Pickup(_weaponHolder);
+            _weapons[i].gameObject.SetActive(_equippedWeaponIndex == i);
+        }
+
         OnEquipAmmo?.Invoke(EquippedAmmo);
         OnEquipWeapon?.Invoke(EquippedWeapon != null ? EquippedWeapon.Data : null);
     }
@@ -84,7 +84,7 @@ public class PlayerWeaponManager : MonoBehaviour
         _isInputEnabled = enableInput;
         if (!enableInput) HideReloadBar();
         _pickupText.gameObject.SetActive(enableInput);
-        EquippedWeapon.gameObject.SetActive(enableInput);
+        if (EquippedWeapon != null) EquippedWeapon.gameObject.SetActive(enableInput);
         StopAllCoroutines();
     }
 

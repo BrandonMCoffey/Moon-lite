@@ -27,7 +27,7 @@ public class WeaponVisual : ShowPopupOnHover
 
     public void EquipAmmo(MineralData equipped)
     {
-        if (equipped.AmmoSpriteEffect != null)
+        if (equipped != null && equipped.AmmoSpriteEffect != null)
         {
             _effectImage.sprite = equipped.AmmoSpriteEffect;
             _effectImage.gameObject.SetActive(true);

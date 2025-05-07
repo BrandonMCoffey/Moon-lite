@@ -34,6 +34,8 @@ public class Player : Health
         _instance = this;
         if (_weaponManager == null) _weaponManager = GetComponent<PlayerWeaponManager>();
         if (_movement == null) _movement = GetComponent<PlayerMovementCustom>();
+
+        _inventory.LoadPlayerInventory();
     }
 
     protected override void Start()

@@ -8,15 +8,60 @@ public class InventoryData : SerializedScriptableObject
 {
     public event System.Action OnInventoryUpdated = delegate { };
 
-    // TODO: This stores the weapons and ammo that the player starts with
-    [SerializeField] private List<WeaponData> _startWeapons = new List<WeaponData>();
-    [SerializeField] private List<MineralData> _equippedAmmos = new List<MineralData>();
+    [Header("Starting data")]
+    [DictionaryDrawerSettings(KeyLabel = "Item Data", ValueLabel = "Count")]
+    [SerializeField] private Dictionary<ItemData, float> _startingInventory = new Dictionary<ItemData, float>();
+    [SerializeField] private List<WeaponData> _startingWeapons = new List<WeaponData>();
+    [SerializeField] private List<MineralData> _startingAmmo = new List<MineralData>();
 
-    public List<WeaponData> StartWeapons => _startWeapons;
-    public List<MineralData> EquippedAmmos => _equippedAmmos;
-
+    [Header("Current Inventory")]
     [DictionaryDrawerSettings(KeyLabel = "Item Data", ValueLabel = "Count")]
     [SerializeField] private Dictionary<ItemData, float> _inventory = new Dictionary<ItemData, float>();
+    [SerializeField] private List<WeaponData> _equippedWeapons = new List<WeaponData>();
+    [SerializeField] private List<MineralData> _equippedAmmos = new List<MineralData>();
+
+    public Dictionary<ItemData, float> Inventory => _inventory;
+    public List<WeaponData> EquippedWeapons => _equippedWeapons;
+    public List<MineralData> EquippedAmmos => _equippedAmmos;
+
+    [Button]
+    public void LoadPlayerInventory()
+    {
+        if (GameManager.Instance == null || GameManager.UseStartingInventory)
+        {
+            LoadStartingInventory();
+            return;
+        }
+        _inventory.Clear();
+        _equippedWeapons = new List<WeaponData>();
+        _equippedAmmos = new List<MineralData>();
+
+        GameManager.GetHeldItems().ForEach(itemslot => { _inventory.Add(itemslot.item, itemslot.count); });
+        GameManager.GetEquippedWeapons().ForEach(weapon => { _equippedWeapons.Add(weapon); });
+        GameManager.GetEquippedAmmo().ForEach(ammo => { _equippedAmmos.Add(ammo); });
+        Debug.Log("Loaded saved player inventory");
+
+        OnInventoryUpdated?.Invoke();
+    }
+
+    private void LoadStartingInventory()
+    {
+        _inventory = new Dictionary<ItemData, float>();
+        _equippedWeapons = new List<WeaponData>();
+        _equippedAmmos = new List<MineralData>();
+        foreach (var item in _startingInventory)
+        {
+            AddItemToInventory(item.Key, (int)item.Value);
+        }
+        _startingWeapons.ForEach(weapon => { _equippedWeapons.Add(weapon); });
+        _startingAmmo.ForEach(ammo => { _equippedAmmos.Add(ammo); });
+        Debug.Log("Loaded starting inventory");
+
+        OnInventoryUpdated?.Invoke();
+    }
+
+    [Button]
+    public void SavePlayerInventory() => GameManager.SaveInventoryData(this);
 
     public float GetInventoryCount(ItemData item)
     {
@@ -63,4 +108,15 @@ public class InventoryData : SerializedScriptableObject
         }
     }
 #endif
+}
+
+public struct InventorySlot
+{
+    public ItemData item;
+    public float count;
+    public InventorySlot(ItemData item, float count)
+    {
+        this.item = item;
+        this.count = count;
+    }
 }
