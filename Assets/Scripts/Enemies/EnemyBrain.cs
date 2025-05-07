@@ -78,6 +78,12 @@ public class EnemyBrain : MonoBehaviour
 
     void Awake() 
     {
+        if (_health == null) 
+        {
+            _health = GetComponent<Health>();
+        }
+
+
         stateMachine = new StateMachine();
         PatrolState = new EnemyPatrolState(this, stateMachine);
         ChaseState = new EnemyChaseState(this, stateMachine);
