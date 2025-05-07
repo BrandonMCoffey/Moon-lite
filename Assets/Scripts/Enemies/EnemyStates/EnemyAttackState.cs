@@ -16,6 +16,9 @@ public class EnemyAttackState : EnemyBaseState
     {
         base.OnEnter();
         //Debug.Log($"{Time.time}: Entering Attack State");
+        if (!enemyBrain.CanAttack) enemyBrain.StateMachine.ChangeState(enemyBrain.PatrolState);
+        
+        enemyBrain.SetCurrentStateText("AttackState");
 
         playerMovement = enemyBrain.PlayerDetector.PlayerTransform.GetComponent<PlayerMovementCustom>();
         if (playerMovement != null)

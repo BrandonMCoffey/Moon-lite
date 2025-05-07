@@ -12,6 +12,8 @@ public class EnemyPatrolState : EnemyBaseState
     {
         base.OnEnter();
         //Debug.Log($"{Time.time}: Entering Patrol State");
+        enemyBrain.SetCurrentStateText("PatrolState");
+        enemyBrain.SetIgnoreCallForReinforcement(false);
     }
 
     public override void Update()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -6,11 +7,13 @@ public class Health : MonoBehaviour, IDamageable
 {
     [SerializeField] protected float _maxHealth = 100f;
     [SerializeField] protected float _currentHealth;
+    public float HealthPercentage => _currentHealth / _maxHealth;
     [SerializeField] private GameObject _deathEffectPrefab; 
     [SerializeField] private GameObject _damageEffectPrefab;
     [SerializeField] private GameObject _healEffectPrefab;
 
     [SerializeField] List<DamageOverTimeEffect> _damageOverTimeEffects = new();
+    public Action OnHealthModified;
 
 
     protected virtual void Start()
@@ -78,6 +81,7 @@ public class Health : MonoBehaviour, IDamageable
 
     protected virtual void SetHealth(float health)
     {
+        OnHealthModified?.Invoke();
         _currentHealth = Mathf.Clamp(health, 0, _maxHealth);
     }
 }
