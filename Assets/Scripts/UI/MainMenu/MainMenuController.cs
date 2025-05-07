@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainMenuController : MonoBehaviour
 {
     [SerializeField] private float _blendMenuTime = 0.25f;
+    [SerializeField] private bool _showSplashScreen = false;
     [SerializeField] private GameObject _firstSelected;
     [SerializeField] private CanvasGroup _splashScreen;
     [SerializeField] private CanvasGroup _mainMenu;
@@ -20,8 +21,8 @@ public class MainMenuController : MonoBehaviour
     private void Start()
     {
         _current = _splashScreen;
-        UIHelper.SetGroupActive(_splashScreen, true);
-        UIHelper.SetGroupActive(_mainMenu, false);
+        UIHelper.SetGroupActive(_splashScreen, _showSplashScreen);
+        UIHelper.SetGroupActive(_mainMenu, !_showSplashScreen);
         UIHelper.SetGroupActive(_gameSelect, false);
         UIHelper.SetGroupActive(_options, false);
         UIHelper.SetGroupActive(_credits, false);
