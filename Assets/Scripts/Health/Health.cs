@@ -57,6 +57,7 @@ public class Health : MonoBehaviour, IDamageable
     {
         SetHealth(_currentHealth + amount);
         if (_healEffectPrefab != null) Instantiate(_healEffectPrefab, transform.position, Quaternion.identity);
+        OnHealthModified?.Invoke();
     }
 
     public void TakeDamage(float damage)
@@ -70,6 +71,7 @@ public class Health : MonoBehaviour, IDamageable
             SetHealth(_currentHealth - damage);
             if (_damageEffectPrefab != null) Instantiate(_damageEffectPrefab, transform.position, Quaternion.identity);
         }
+        OnHealthModified?.Invoke();
     }
 
     public void ApplyDamageOverTime(int damage, float duration, float interval, GameObject source)
@@ -80,7 +82,6 @@ public class Health : MonoBehaviour, IDamageable
 
     protected virtual void SetHealth(float health)
     {
-        OnHealthModified?.Invoke();
         _currentHealth = Mathf.Clamp(health, 0, _maxHealth);
     }
 }

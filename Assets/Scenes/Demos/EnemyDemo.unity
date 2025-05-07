@@ -2850,6 +2850,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8041137564954186003, guid: 752cd4e8f870d9c40b277249d14769bb,
+        type: 3}
+      propertyPath: _canSearch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041137564954186003, guid: 752cd4e8f870d9c40b277249d14769bb,
+        type: 3}
+      propertyPath: _canBlastTo
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041137564954186003, guid: 752cd4e8f870d9c40b277249d14769bb,
+        type: 3}
+      propertyPath: _canRetreat
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041137564954186003, guid: 752cd4e8f870d9c40b277249d14769bb,
+        type: 3}
+      propertyPath: _canCallForReinforcement
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041137564954186003, guid: 752cd4e8f870d9c40b277249d14769bb,
+        type: 3}
+      propertyPath: _canHearCallForReinforcement
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8041137564954186004, guid: 752cd4e8f870d9c40b277249d14769bb,
         type: 3}
       propertyPath: m_Name
