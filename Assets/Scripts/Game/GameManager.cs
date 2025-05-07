@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public static JsonPlayerPrefs ActiveSaveGame { get; private set; }
 
+    [SerializeField] private GameDataReferences _gameDataReferences;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)

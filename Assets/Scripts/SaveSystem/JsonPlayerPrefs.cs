@@ -30,6 +30,7 @@ public class JsonPlayerPrefs
     [SerializeField] private List<PlayerPref> _playerPrefs = new List<PlayerPref>();
 
     private string FilePath => Path.Combine(Application.persistentDataPath, FileName + ".json");
+    private string BinaryFilePath => Path.Combine(Application.persistentDataPath, FileName + ".bin");
 
     public JsonPlayerPrefs(string fileName)
     {
