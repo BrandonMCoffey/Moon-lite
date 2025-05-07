@@ -15,7 +15,9 @@ public class EnemyBrain : MonoBehaviour
     public EnemyWeaponManager EnemyWeaponManager => _enemyWeaponManager;
     [SerializeField] Health _health;
     public Health Health => _health;
-
+    [Header("General Settings")]
+    [SerializeField] bool _isFrozen = false;
+    public bool IsFrozen => _isFrozen;
 
     [Header("Attack State")]
     [SerializeField] bool _canAttack = true;
@@ -41,9 +43,9 @@ public class EnemyBrain : MonoBehaviour
     [Header("Retreat State")]
     [SerializeField] bool _canRetreat = true;
     public bool CanRetreat => _canRetreat;
-    [SerializeField, ShowIf("_canRetreat")] Vector2 _retreatDistanceRange = new Vector2(5f, 10f); 
+    [SerializeField, ShowIf(nameof(_canRetreat))] Vector2 _retreatDistanceRange = new Vector2(5f, 10f); 
     public float RetreatDistance => Random.Range(_retreatDistanceRange.x, _retreatDistanceRange.y); 
-    [SerializeField, ShowIf("_canRetreat")] float _callForReinforcementsChance = 0.5f; 
+    [SerializeField, ShowIf(nameof(_canRetreat))] float _callForReinforcementsChance = 0.5f; 
     public float CallForReinforcementsChance => _callForReinforcementsChance;
 
     [Header("Blast-To State")]
@@ -112,7 +114,7 @@ public class EnemyBrain : MonoBehaviour
 
     private void OnHealthChanged() 
     {
-        if (Health.HealthPercentage <= 0.3)
+        if (Health.HealthPercentage <= 0.3 && _canRetreat) 
         {
             stateMachine.ChangeState(PickRetreatPosState);
         }
@@ -156,6 +158,18 @@ public class EnemyBrain : MonoBehaviour
     public void SetIgnoreCallForReinforcement(bool ignore) 
     {
         _ignoreCallForReinforcement = ignore;
+    }
+
+    public void SetFreezeForDuration(float duration) 
+    {
+        if (_isFrozen) return;
+
+        _isFrozen = true;
+        Invoke(nameof(Unfreeze), duration);
+    }
+    public void Unfreeze() 
+    {
+        _isFrozen = false;
     }
 
     public void ReactToCallForReinforcements(Vector2 position)
