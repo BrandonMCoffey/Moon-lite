@@ -73,7 +73,7 @@ public class MainMenuController : MonoBehaviour
             _fadeout.alpha = t;
             yield return null;
         }
-        GameManager.LoadGameScene();
+        GameManager.LoadShipScene();
     }
 
     public void QuitToDesktop()

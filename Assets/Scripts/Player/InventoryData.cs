@@ -94,8 +94,9 @@ public class InventoryData : SerializedScriptableObject
     [Button]
     private void CheatGetAll()
     {
-        string[] guids = UnityEditor.AssetDatabase.FindAssets($"t:{nameof(ItemData)}", new[] { "Assets" });
+        string[] guids = UnityEditor.AssetDatabase.FindAssets($"t:{nameof(ItemData)}");
 
+        _inventory.Clear();
         foreach (string guid in guids)
         {
             string assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
@@ -103,6 +104,27 @@ public class InventoryData : SerializedScriptableObject
             if (scriptableObject != null)
             {
                 AddItemToInventory(scriptableObject, 500);
+            }
+        }
+
+        _equippedWeapons.Clear();
+        _equippedAmmos.Clear();
+        guids = UnityEditor.AssetDatabase.FindAssets($"t:{nameof(GameDataReferences)}");
+        foreach (string guid in guids)
+        {
+            string assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+            GameDataReferences scriptableObject = UnityEditor.AssetDatabase.LoadAssetAtPath<GameDataReferences>(assetPath);
+            if (scriptableObject != null)
+            {
+                foreach (var weapon in scriptableObject.AllWeapons)
+                {
+                    _equippedWeapons.Add(weapon);
+                }
+                foreach (var item in scriptableObject.AllItems)
+                {
+                    MineralData mineralData = item as MineralData;
+                    if (mineralData != null) _equippedAmmos.Add(mineralData);
+                }
             }
         }
     }

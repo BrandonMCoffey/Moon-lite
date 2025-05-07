@@ -34,14 +34,22 @@ public class GameManager : MonoBehaviour
         Instance._activeSaveGame = new JsonPlayerPrefs(fileName);
     }
 
-    public static void LoadGameScene()
+    public static void LoadShipScene()
     {
-        // TODO: Load scene from ActiveSaveGame
-        // If save not started, load an intro cutscene instead of ship hub?)
-        SceneManager.LoadScene(1);
-        ActiveSaveGame.SetBool(GameSaveData.SaveStarted, true);
         ActiveSaveGame.SetString(GameSaveData.LastPlayed, GameSaveData.FormatLastPlayed());
+        if (!ActiveSaveGame.GetBool(GameSaveData.SaveStarted))
+        {
+            SceneManager.LoadScene("IntroCutscene");
+            ActiveSaveGame.SetBool(GameSaveData.SaveStarted, true);
+            return;
+        }
+        SceneManager.LoadScene("ShipHub");
         Instance.SaveActive();
+    }
+
+    public static void LoadPlanetScene()
+    {
+        SceneManager.LoadScene("Planet");
     }
 
     public static bool UseStartingInventory => ActiveSaveGame == null || !ActiveSaveGame.HasKey(GameSaveData.EquippedWeapons) || !ActiveSaveGame.HasKey(GameSaveData.EquippedAmmo);

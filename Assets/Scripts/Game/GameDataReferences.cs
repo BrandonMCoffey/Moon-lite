@@ -10,6 +10,7 @@ public class GameDataReferences : ScriptableObject
     [SerializeField] private List<WeaponData> _allWeapons = new List<WeaponData>();
 
     public List<ItemData> AllItems => _allItems;
+    public List<WeaponData> AllWeapons => _allWeapons;
 
     public ItemData GetItemByName(string name)
     {
