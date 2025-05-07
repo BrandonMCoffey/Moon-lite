@@ -20,7 +20,7 @@ public class MainMenuController : MonoBehaviour
 
     private void Start()
     {
-        _current = _splashScreen;
+        _current = _showSplashScreen ? _splashScreen : _mainMenu;
         UIHelper.SetGroupActive(_splashScreen, _showSplashScreen);
         UIHelper.SetGroupActive(_mainMenu, !_showSplashScreen);
         UIHelper.SetGroupActive(_gameSelect, false);

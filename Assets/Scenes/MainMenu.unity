@@ -430,7 +430,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blendMenuTime: 0.25
-  _firstSelected: {fileID: 951109143}
+  _showSplashScreen: 0
+  _firstSelected: {fileID: 1385221521}
   _splashScreen: {fileID: 1496427235}
   _mainMenu: {fileID: 1254834366}
   _gameSelect: {fileID: 68672730}
