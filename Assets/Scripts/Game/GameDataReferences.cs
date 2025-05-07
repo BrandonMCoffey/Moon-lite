@@ -11,7 +11,6 @@ public class GameDataReferences : ScriptableObject
 
     public List<ItemData> AllItems => _allItems;
 
-    public string GetItemName(ItemData item) => item.Name;
     public ItemData GetItemByName(string name)
     {
         foreach (var item in _allItems)
@@ -25,7 +24,6 @@ public class GameDataReferences : ScriptableObject
         return null;
     }
 
-    public string GetWeaponName(WeaponData weapon) => weapon.Name;
     public WeaponData GetWeaponByName(string name)
     {
         foreach (var weapon in _allWeapons)
@@ -53,6 +51,7 @@ public class GameDataReferences : ScriptableObject
         }
         return weapons;
     }
+
     public List<MineralData> GetAmmoByNames(List<string> names)
     {
         var ammo = new List<MineralData>();

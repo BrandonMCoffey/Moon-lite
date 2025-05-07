@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public static void LoadGameScene()
     {
         // TODO: Load scene from ActiveSaveGame
+        // If save not started, load an intro cutscene instead of ship hub?)
         SceneManager.LoadScene(1);
         ActiveSaveGame.SetBool(GameSaveData.SaveStarted, true);
         ActiveSaveGame.SetString(GameSaveData.LastPlayed, GameSaveData.FormatLastPlayed());
