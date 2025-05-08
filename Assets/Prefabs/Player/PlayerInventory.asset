@@ -266,10 +266,9 @@ MonoBehaviour:
       Entry: 8
       Data: 
   _startingWeapons:
+  - {fileID: 11400000, guid: 8f00d6383fd3a3840ade7dcf5449adbb, type: 2}
   - {fileID: 11400000, guid: e32d4033b799a7e418d00c0b8b388172, type: 2}
-  - {fileID: 11400000, guid: 5f1e938987e1058468ea2c6eea242e32, type: 2}
   _startingAmmo:
-  - {fileID: 11400000, guid: 4e0fb6c9495b01744ba0486a14346392, type: 2}
   - {fileID: 11400000, guid: 936b6a8e51036594b8d79491b19959f3, type: 2}
   _equippedWeapons:
   - {fileID: 11400000, guid: e32d4033b799a7e418d00c0b8b388172, type: 2}

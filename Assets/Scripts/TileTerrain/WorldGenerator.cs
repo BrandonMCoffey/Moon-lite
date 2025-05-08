@@ -115,7 +115,7 @@ public class WorldGenerator : MonoBehaviour
             _structures.Clear();
             for (int i = _decorations.Count - 1; i >= 0; i--)
             {
-                Destroy(_decorations[i].gameObject);
+                if (_decorations[i] != null) Destroy(_decorations[i].gameObject);
             }
             _decorations.Clear();
         }

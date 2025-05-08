@@ -18,6 +18,11 @@ public class LevelDecoration : MonoBehaviour
         if (_renderer == null) _renderer = GetComponent<MeshRenderer>();
     }
 
+    private void OnDestroy()
+    {
+        WorldGenerator.OnTileDestroyed -= ConnectedTileDestroyed;
+    }
+
     public void ConnectToTile(int x, int y)
     {
         _connectedTileX = x;

@@ -210,7 +210,7 @@ MonoBehaviour:
   _ceilingCheckWidth: 0.25
   _wallCheckWidth: 0.5
   _wallChecVerticalOffset: 0.15
-  _checkRaycastDistance: 5
+  _checkRaycastDistance: 20
   _velocity: {x: 0, y: 0, z: 0}
   _additionalVelocity: {x: 0, y: 0, z: 0}
   _groundCollided: 0

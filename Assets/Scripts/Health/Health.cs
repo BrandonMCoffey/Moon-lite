@@ -14,7 +14,6 @@ public class Health : MonoBehaviour, IDamageable
     [SerializeField] List<DamageOverTimeEffect> _damageOverTimeEffects = new();
     public Action OnHealthModified;
 
-
     protected virtual void Start()
     {
         SetHealth(_maxHealth);
@@ -47,17 +46,10 @@ public class Health : MonoBehaviour, IDamageable
     public float GetHealth() => _currentHealth;
     public bool IsAlive() => _currentHealth > 0;
 
-    public virtual void Die()
-    {
-        if (_deathEffectPrefab != null) Instantiate(_deathEffectPrefab, transform.position, Quaternion.identity);
-        Destroy(gameObject);
-    }
-
     public void Heal(float amount)
     {
         SetHealth(_currentHealth + amount);
         if (_healEffectPrefab != null) Instantiate(_healEffectPrefab, transform.position, Quaternion.identity);
-        OnHealthModified?.Invoke();
     }
 
     public void TakeDamage(float damage)
@@ -71,7 +63,13 @@ public class Health : MonoBehaviour, IDamageable
             SetHealth(_currentHealth - damage);
             if (_damageEffectPrefab != null) Instantiate(_damageEffectPrefab, transform.position, Quaternion.identity);
         }
-        OnHealthModified?.Invoke();
+    }
+
+    public virtual void Die()
+    {
+        SetHealth(0);
+        if (_deathEffectPrefab != null) Instantiate(_deathEffectPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     public void ApplyDamageOverTime(int damage, float duration, float interval, GameObject source)
@@ -83,6 +81,7 @@ public class Health : MonoBehaviour, IDamageable
     protected virtual void SetHealth(float health)
     {
         _currentHealth = Mathf.Clamp(health, 0, _maxHealth);
+        OnHealthModified?.Invoke();
     }
 }
 

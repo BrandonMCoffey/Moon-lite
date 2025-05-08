@@ -152,6 +152,11 @@ public class EntityMovement : MonoBehaviour
         _velocity.y = Mathf.Clamp(_velocity.y, -_maxVelocity, _maxVelocity);
         if (_groundCollided && _velocity.y < 0) _velocity.y = 0;
         Vector3 offset = (_velocity + _additionalVelocity) * Time.deltaTime;
+        if (offset.magnitude > _checkRaycastDistance - 2)
+        {
+            Debug.LogWarning("Moving too fast: " + offset);
+            offset = offset.normalized * (_checkRaycastDistance - 2);
+        }
 
         if (_additionalVelocity.y < -_velocity.y * 0.5f)
         {
