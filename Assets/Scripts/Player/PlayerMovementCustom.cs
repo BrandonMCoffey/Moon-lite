@@ -48,6 +48,8 @@ public class PlayerMovementCustom : EntityMovement
     [SerializeField, ReadOnly] private float _jetpackFuel;
     [SerializeField, ReadOnly] private float _jetpackRefuelTimer;
 
+    public float JetpackFuel => _jetpackFuel;
+
     private Coroutine _dashRoutine;
 
     protected override void Update()

@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class Player : Health
@@ -56,6 +57,7 @@ public class Player : Health
         CheckFacingDir();
     }
 
+    [Button]
     protected override void SetHealth(float health)
     {
         base.SetHealth(health);
