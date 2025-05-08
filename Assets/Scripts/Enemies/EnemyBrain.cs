@@ -112,9 +112,9 @@ public class EnemyBrain : MonoBehaviour
     private void OnEnable() => Health.OnHealthModified += OnHealthChanged;
     private void OnDisable() => Health.OnHealthModified -= OnHealthChanged;
 
-    private void OnHealthChanged() 
+    private void OnHealthChanged(float healthPercent) 
     {
-        if (Health.HealthPercentage <= 0.3 && _canRetreat) 
+        if (healthPercent <= 0.3 && _canRetreat) 
         {
             stateMachine.ChangeState(PickRetreatPosState);
         }

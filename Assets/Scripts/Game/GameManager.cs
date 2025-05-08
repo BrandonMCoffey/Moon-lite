@@ -6,17 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // This class might be a static class and not a MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance => _instance;
 
-    private static string SaveFilePrefix = "SaveGame";
-    public static string GetSaveFile(int index) => SaveFilePrefix + index;
-
-    private static JsonPlayerPrefs ActiveSaveGame => Instance._activeSaveGame;
-    [SerializeField] private JsonPlayerPrefs _activeSaveGame;
-
     [SerializeField] private GameDataReferences _gameDataReferences;
+    [SerializeField] private CurrentScene _currentScene = CurrentScene.MainMenu;
+    [SerializeField] private JsonPlayerPrefs _activeSaveGame;
+    private static JsonPlayerPrefs ActiveSaveGame => Instance._activeSaveGame;
 
     private void Awake()
     {
@@ -37,14 +33,17 @@ public class GameManager : MonoBehaviour
     public static void LoadShipScene()
     {
         GameSaveData.UpdateLastPlayed(ActiveSaveGame);
+
         if (!GameSaveData.GetSaveStarted(ActiveSaveGame))
         {
             SceneManager.LoadScene("IntroCutscene");
             GameSaveData.SetSaveStarted(ActiveSaveGame, true);
-            return;
         }
-        SceneManager.LoadScene("ShipHub");
-        Instance.SaveActive();
+        else
+        {
+            SceneManager.LoadScene("ShipHub");
+        }
+        ActiveSaveGame.Save();
     }
 
     public static void LoadPlanetScene()
@@ -52,7 +51,23 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Planet");
     }
 
-    public static bool UseStartingInventory => ActiveSaveGame == null || !ActiveSaveGame.HasKey(GameSaveData.EquippedWeapons) || !ActiveSaveGame.HasKey(GameSaveData.EquippedAmmo);
+    public static void OnPlayerDeath()
+    {
+        if (Instance._currentScene == CurrentScene.Planet)
+        {
+            SceneManager.LoadScene("ShipHub");
+            GameSaveData.IncrementPlanetsExplored(ActiveSaveGame);
+            GameSaveData.UpdateLastPlayed(ActiveSaveGame);
+            ActiveSaveGame.Save();
+        }
+        else
+        {
+            Debug.LogWarning("Died outside of planet scene?!");
+            SceneManager.LoadScene("ShipHub");
+        }
+    }
+
+    public static bool UseStartingInventory => ActiveSaveGame == null || !GameSaveData.HasInventoryData(ActiveSaveGame);
     public static List<InventorySlot> GetHeldItems()
     {
         var heldItems = new List<InventorySlot>();
@@ -74,7 +89,7 @@ public class GameManager : MonoBehaviour
         }
         ActiveSaveGame.SetStringArray(GameSaveData.EquippedWeapons, inventory.EquippedWeapons.ConvertAll(weapon => weapon.Name).ToArray());
         ActiveSaveGame.SetStringArray(GameSaveData.EquippedAmmo, inventory.EquippedAmmos.ConvertAll(ammo => ammo.Name).ToArray());
-        Instance.SaveActive();
+        ActiveSaveGame.Save();
     }
 
     [Button]
@@ -82,4 +97,12 @@ public class GameManager : MonoBehaviour
     {
         _activeSaveGame.Save();
     }
+}
+
+public enum CurrentScene
+{
+    MainMenu,
+    IntroCutscene,
+    ShipHub,
+    Planet,
 }

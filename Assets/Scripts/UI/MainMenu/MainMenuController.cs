@@ -35,7 +35,7 @@ public class MainMenuController : MonoBehaviour
 
         for (int i = 0; i < _loadGameButtons.Count; i++)
         {
-            _loadGameButtons[i].LinkGameSave(GameManager.GetSaveFile(i + 1));
+            _loadGameButtons[i].LinkGameSave(GameSaveData.GetSaveFile(i + 1));
         }
         LoadGameButton.OnPlayGame += StartGame;
     }

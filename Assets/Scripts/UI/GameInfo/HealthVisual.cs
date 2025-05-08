@@ -13,22 +13,17 @@ public class HealthVisual : MonoBehaviour
         if (_slider == null) _slider = GetComponent<Slider>();
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        Player.OnHealthChanged += UpdateSlider;
+        Player.Instance.OnHealthModified += UpdateSlider;
     }
 
-    private void OnDisable()
-    {
-        Player.OnHealthChanged -= UpdateSlider;
-    }
-
-    private void UpdateSlider(float value)
+    private void UpdateSlider(float percent)
     {
         if (_snapIncrements)
         {
-            value = Mathf.Round(value * _incrementCount) / _incrementCount;
+            percent = Mathf.Round(percent * _incrementCount) / _incrementCount;
         }
-        _slider.value = value;
+        _slider.value = percent;
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -5,8 +6,6 @@ public class Player : Health
 {
     public static Player Instance => _instance;
     private static Player _instance;
-
-    public static System.Action<float> OnHealthChanged = delegate { };
 
     [Header("Player")]
     [SerializeField] private InventoryData _inventory;
@@ -57,17 +56,16 @@ public class Player : Health
         CheckFacingDir();
     }
 
-    [Button]
-    protected override void SetHealth(float health)
+    public override void Die() => StartCoroutine(DieRoutine());
+    private IEnumerator DieRoutine()
     {
-        base.SetHealth(health);
-        OnHealthChanged?.Invoke(_currentHealth / _maxHealth);
-    }
-
-    public override void Die()
-    {
+        _isDead = true;
         _movement.SetCanMove(false);
         _weaponManager.SetInputEnabled(false);
+        if (_deathEffectPrefab != null) Instantiate(_deathEffectPrefab, transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(2f);
+        GameManager.OnPlayerDeath();
+        StopAllCoroutines();
     }
 
     public void AddItemToInventory(ItemData item, int count = 1) => _inventory.AddItemToInventory(item, count);
