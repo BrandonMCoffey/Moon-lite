@@ -36,11 +36,11 @@ public class GameManager : MonoBehaviour
 
     public static void LoadShipScene()
     {
-        ActiveSaveGame.SetString(GameSaveData.LastPlayed, GameSaveData.FormatLastPlayed());
-        if (!ActiveSaveGame.GetBool(GameSaveData.SaveStarted))
+        GameSaveData.UpdateLastPlayed(ActiveSaveGame);
+        if (!GameSaveData.GetSaveStarted(ActiveSaveGame))
         {
             SceneManager.LoadScene("IntroCutscene");
-            ActiveSaveGame.SetBool(GameSaveData.SaveStarted, true);
+            GameSaveData.SetSaveStarted(ActiveSaveGame, true);
             return;
         }
         SceneManager.LoadScene("ShipHub");
