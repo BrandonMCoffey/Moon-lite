@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
     public static void OnPlayerDeath()
     {
-        if (Instance._currentScene == CurrentScene.Planet)
+        if (Instance == null || Instance._currentScene == CurrentScene.Planet)
         {
             SceneManager.LoadScene("ShipHub");
             GameSaveData.IncrementPlanetsExplored(ActiveSaveGame);

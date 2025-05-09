@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3980881933199398010}
   - component: {fileID: 4902858693870188281}
   m_Layer: 9
-  m_Name: PF_Decoration
+  m_Name: PF_Decoration 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,28 +51,20 @@ MonoBehaviour:
   _flipCaveCeilingSprites: 0
   _randomFlipX: 0
   _grassMaterials:
-  - {fileID: 2100000, guid: 2d4e3e22dc26bb0419ddcd5ad3c7eee6, type: 2}
-  - {fileID: 2100000, guid: 57c35ae5b9c489949b209894ec8ff345, type: 2}
-  - {fileID: 2100000, guid: 5312cfa8fe40c4947943d61423415f1a, type: 2}
-  - {fileID: 2100000, guid: 29f194418d69f774bb32c056e1884d9b, type: 2}
+  - {fileID: 2100000, guid: 8ee82fb4f1dc3ab49ac8c898b8348915, type: 2}
+  - {fileID: 2100000, guid: 356013b20164eca4982b0d58b728efbc, type: 2}
+  - {fileID: 2100000, guid: d5981b65c698e0b4ab752b9d895b6641, type: 2}
+  - {fileID: 2100000, guid: 44769d950c7f3cc4ab648dc326c4e3de, type: 2}
   _caveFloorSprites:
-  - {fileID: 2100000, guid: 816743623caa532448c9976c36c32e81, type: 2}
-  - {fileID: 2100000, guid: 5e2098cb1e5d49c4fa43c6ee4eaae233, type: 2}
-  - {fileID: 2100000, guid: 61711d64ebe75fa4aa012e49c0192ab2, type: 2}
-  - {fileID: 2100000, guid: a1e19f7aaded4f749a9388b79ec41f96, type: 2}
-  - {fileID: 2100000, guid: 5d05cf5072d2c5342b7088bcdee4f280, type: 2}
-  - {fileID: 2100000, guid: 4ede0ec2f24d3e747a8e049c79e945aa, type: 2}
-  - {fileID: 2100000, guid: 08a1ae0539804da4583c7a808c2ca41a, type: 2}
-  - {fileID: 2100000, guid: ac6b9f918f8ccde419fdb1e9a1a1d58e, type: 2}
+  - {fileID: 2100000, guid: b384acf50961b0c4ea45531679201994, type: 2}
+  - {fileID: 2100000, guid: 454de00b63c5587408f465148f329064, type: 2}
+  - {fileID: 2100000, guid: 18fc92aaccec8dd408ab8297df0d26a0, type: 2}
+  - {fileID: 2100000, guid: 270edb3399bce9a42bab3aacfc0a1949, type: 2}
   _caveCeilingSprites:
-  - {fileID: 2100000, guid: 816743623caa532448c9976c36c32e81, type: 2}
-  - {fileID: 2100000, guid: 5e2098cb1e5d49c4fa43c6ee4eaae233, type: 2}
-  - {fileID: 2100000, guid: 61711d64ebe75fa4aa012e49c0192ab2, type: 2}
-  - {fileID: 2100000, guid: a1e19f7aaded4f749a9388b79ec41f96, type: 2}
-  - {fileID: 2100000, guid: 5d05cf5072d2c5342b7088bcdee4f280, type: 2}
-  - {fileID: 2100000, guid: 4ede0ec2f24d3e747a8e049c79e945aa, type: 2}
-  - {fileID: 2100000, guid: 08a1ae0539804da4583c7a808c2ca41a, type: 2}
-  - {fileID: 2100000, guid: ac6b9f918f8ccde419fdb1e9a1a1d58e, type: 2}
+  - {fileID: 2100000, guid: b384acf50961b0c4ea45531679201994, type: 2}
+  - {fileID: 2100000, guid: 454de00b63c5587408f465148f329064, type: 2}
+  - {fileID: 2100000, guid: 18fc92aaccec8dd408ab8297df0d26a0, type: 2}
+  - {fileID: 2100000, guid: 270edb3399bce9a42bab3aacfc0a1949, type: 2}
   _connectedTileX: 0
   _connectedTileY: 0
 --- !u!33 &3980881933199398010

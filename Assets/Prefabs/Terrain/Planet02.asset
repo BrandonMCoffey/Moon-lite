@@ -795,8 +795,13 @@ MonoBehaviour:
   _caveCeilingDecoChance: 0.15
   _caveFloorDecoChance: 0.15
   _enemySpawnerChance: 0.5
+  _enemySpawnChance: 0.1
   _enemyTypes:
   - {fileID: 8041137564954186004, guid: 752cd4e8f870d9c40b277249d14769bb, type: 3}
+  - {fileID: 8041137564954186004, guid: 15dfab7d61d536f49b091bde9e1f8113, type: 3}
+  - {fileID: 8041137564954186004, guid: cc39534c21158104c961bb97d3ec101d, type: 3}
+  - {fileID: 8041137564954186004, guid: ddd1a41f318ac6e41984687c7a625913, type: 3}
+  - {fileID: 8041137564954186004, guid: 27eed6f2d9a88d04f95f45420600c4a7, type: 3}
   _terrainMaterial: {fileID: 2100000, guid: efb26339e8c987040bde7f0e634c4e1e, type: 2}
   _gridSize: 8
   _damageOffsetUV: {x: 1, y: 0}

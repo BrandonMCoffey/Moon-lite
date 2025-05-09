@@ -86,7 +86,7 @@ Transform:
   m_GameObject: {fileID: 8041137563296749724}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.47, y: 0.7, z: 0.5222222}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8041137564954186007}
@@ -133,7 +133,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 962c76ac8769f054d8b4b5fc88ed4938, type: 3}
+  m_Sprite: {fileID: 61487166, guid: 56766b8c7da14104693e80329d729060, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -234,9 +234,10 @@ MonoBehaviour:
   _health: {fileID: 8041137564954186220}
   _isFrozen: 0
   _canJump: 1
-  _canStrafe: 1
+  _canStrafe: 0
   _canMove: 1
-  _canDodge: 1
+  _canDodge: 0
+  _dodgeRange: 15
   _canAttack: 1
   _attackRange: 10
   _preferredEngagementRange: 8
@@ -321,9 +322,9 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 257
-  _playerHeight: 1.4
-  _playerWidth: 1
-  _groundOffset: 0.7
+  _playerHeight: 0.9
+  _playerWidth: 0.9
+  _groundOffset: 0.45
   _groundCheckWidth: 0.4
   _ceilingCheckWidth: 0.25
   _wallCheckWidth: 0.5
