@@ -39,19 +39,21 @@ public class EnemyMovement : EntityMovement
     [Button("Patrol")]
     public bool Patrol()
     {
+        if (!_enemyBrain.CanMove) return false;
         CheckObstacleAhead();
         if (_wallAhead || _pitAhead)
         {
             
 
-            //Debug.Log($"Obstacle ahead (Wall: {_wallAhead}, Pit: {_pitAhead}). Stopping and flipping.");
-            if (Random.Range(0f, 1f) < 0.5f) // Randomly decide to flip or not
+            var rand = Random.Range(0f, 1f);
+            if (rand < 0.07f && _enemyBrain.CanJump) // 50% chance to jump
             {
-                Flip();
+                Jump();
             }
-            else 
+            else
             {
-                Jump(); // Jump over the obstacle
+                StopMoving();
+                Flip();
             }
         }
 
@@ -62,6 +64,8 @@ public class EnemyMovement : EntityMovement
     [Button("Chase Target")]
     public bool ChaseTarget(Transform _target)
     {
+        if (!_enemyBrain.CanMove) return false;
+
         if (_target == null) 
         {
             if (_enableDebug && Player.Instance != null) _target = Player.Instance.transform;
@@ -74,7 +78,7 @@ public class EnemyMovement : EntityMovement
             Flip();
         }
 
-        if (_wallAhead && !_pitAhead && _groundCollided) // If wall but no pit, maybe jump?
+        if (_wallAhead && !_pitAhead && _groundCollided && _enemyBrain.CanJump) // If wall but no pit, maybe jump?
         {
             _velocity.x = _moveSpeed * (_facingRight ? 1 : -1); 
             Jump(); 
@@ -94,11 +98,13 @@ public class EnemyMovement : EntityMovement
     [Button("Strafe")]
     public void Strafe(float _direction)
     {
+        if (!_enemyBrain.CanStrafe) return;
         _velocity.x = _moveSpeed * _strafeSpeedMultiplier * _direction;
     }
 
     public bool MoveTowards(Vector3 _targetPos)
     {
+        if (!_enemyBrain.CanMove) return false;
         if (_targetPos == null) 
         {
             if (_enableDebug && Player.Instance != null) _targetPos = Player.Instance.transform.position;
@@ -132,6 +138,7 @@ public class EnemyMovement : EntityMovement
     [Button("Retreat")]
     public bool Retreat(Vector3 _lastSeenPlayerPos)
     {
+        if (!_enemyBrain.CanMove) return false;
         if (_lastSeenPlayerPos == null) 
         {
             if (_enableDebug)
@@ -189,6 +196,7 @@ public class EnemyMovement : EntityMovement
 
     public void SetHorizontalVelocity(float velocity)
     {
+        if (!_enemyBrain.CanMove) return;
         _velocity.x = velocity;
     }
 

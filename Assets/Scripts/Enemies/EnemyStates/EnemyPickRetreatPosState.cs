@@ -28,9 +28,17 @@ public class EnemyPickRetreatPosState : EnemyBaseState
             // pick a random position in the retreat direction
             var retreatPosition = enemyBrain.transform.position + retreatDirection * enemyBrain.RetreatDistance;
             
-            // set the retreatPosition and change the state to urgently move towards it
-            enemyBrain.SetBlastToPosition(retreatPosition);
-            enemyStateMachine.ChangeState(enemyBrain.BlastToMoveState);
+            if (enemyBrain.CanBlastTo) 
+            {
+                // set the retreatPosition and change the state to urgently move towards it
+                enemyBrain.SetBlastToPosition(retreatPosition);
+                enemyStateMachine.ChangeState(enemyBrain.BlastToMoveState); 
+            }
+            else 
+            {
+                enemyBrain.EnemyMovement.MoveTowards(retreatPosition);
+                enemyBrain.StateMachine.ChangeState(enemyBrain.PatrolState);
+            }  
         }
     }
 

@@ -232,6 +232,11 @@ MonoBehaviour:
   _playerDetector: {fileID: 8041137564954186000}
   _enemyWeaponManager: {fileID: 8041137564954186221}
   _health: {fileID: 8041137564954186220}
+  _isFrozen: 0
+  _canJump: 1
+  _canStrafe: 1
+  _canMove: 1
+  _canDodge: 1
   _canAttack: 1
   _attackRange: 10
   _preferredEngagementRange: 8
@@ -243,7 +248,7 @@ MonoBehaviour:
   _canRetreat: 1
   _retreatDistanceRange: {x: 5, y: 10}
   _callForReinforcementsChance: 0.5
-  _canBlastTo: 1
+  _canBlastTo: 0
   _blastToPosition: {x: 0, y: 0, z: 0}
   _timeBlastingRange: {x: 1, y: 3}
   _canCallForReinforcement: 1
@@ -358,6 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df767cd9dfde5e447ac7a1428fefcb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isDead: 0
   _maxHealth: 10
   _currentHealth: 0
   _deathEffectPrefab: {fileID: 0}

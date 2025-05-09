@@ -32,7 +32,7 @@ public class EnemyAttackState : EnemyBaseState
         }
 
         ResetRepositionTimer();
-        isStrafing = Random.value < enemyBrain.StrafeChance; 
+        isStrafing = Random.value < enemyBrain.StrafeChance && enemyBrain.CanStrafe; 
         strafeDirection = (Random.value < 0.5f) ? 1f : -1f; 
     }
 
@@ -50,7 +50,14 @@ public class EnemyAttackState : EnemyBaseState
 
         if (distanceToPlayer > enemyBrain.AttackRange)
         {
-            enemyStateMachine.ChangeState(enemyBrain.ChaseState);
+            if (enemyBrain.CanMove)
+            {
+                enemyStateMachine.ChangeState(enemyBrain.ChaseState);
+            }
+            else
+            {
+                enemyStateMachine.ChangeState(enemyBrain.PatrolState);
+            }
             return;
         }
         
@@ -74,7 +81,7 @@ public class EnemyAttackState : EnemyBaseState
                 strafeDirection *= -1f; 
             }
         }
-        else // Not strafing, maybe maintain preferred distance
+        else 
         {
             AdjustDistance(distanceToPlayer);
         }
@@ -82,21 +89,18 @@ public class EnemyAttackState : EnemyBaseState
 
     void DecideNextMovementAction(float currentDistance)
     {
-        // Simple logic: Randomly decide to strafe or reposition/adjust distance
         if (Random.value < enemyBrain.StrafeChance) 
         {
             isStrafing = true;
-            // Change strafe direction sometimes for variety
             if (Random.value < 0.3f) // 30% chance to switch direction
             {
-                 strafeDirection *= -1f;
+                strafeDirection *= -1f;
             }
         }
         else
         {
             isStrafing = false;
-            // Could add more complex reposition logic here, e.g., find cover (needs external system)
-            // For now, just stop strafing and rely on AdjustDistance or stand still
+            
             enemyBrain.EnemyMovement.StopMoving(); 
         }
     }

@@ -141,4 +141,6 @@ public class BulletPooling : MonoBehaviour
             _hitParticles.Emit(10);
         }
     }
+
+    public static List<BulletBase> GetBulletPool() => _instance._bulletPool;
 }

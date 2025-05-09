@@ -2,6 +2,7 @@ using UnityEngine;
 using SaiUtils.StateMachine;
 using SaiUtils.GameEvents;
 using Sirenix.OdinInspector;
+using SaiUtils.ImprovedTimers;
 
 public class EnemyBrain : MonoBehaviour 
 {
@@ -18,6 +19,15 @@ public class EnemyBrain : MonoBehaviour
     [Header("General Settings")]
     [SerializeField] bool _isFrozen = false;
     public bool IsFrozen => _isFrozen;
+    [SerializeField] bool _canJump = true;
+    public bool CanJump => _canJump;
+    [SerializeField] bool _canStrafe = true;
+    public bool CanStrafe => _canStrafe;
+    [SerializeField] bool _canMove = true;
+    public bool CanMove => _canMove;
+    [SerializeField] bool _canDodge = true;
+    public bool CanDodge => _canDodge;
+    [SerializeField, ShowIf(nameof(_canDodge))] float _dodgeRange = 15f;
 
     [Header("Attack State")]
     [SerializeField] bool _canAttack = true;
@@ -78,6 +88,8 @@ public class EnemyBrain : MonoBehaviour
     public EnemyBlastToMoveState BlastToMoveState { get; private set; }
     public EnemyBlastToState BlastToState { get; private set; }
 
+    CountdownTimer dodgeTimer;
+
     void Awake() 
     {
         if (_health == null) 
@@ -109,8 +121,51 @@ public class EnemyBrain : MonoBehaviour
         stateMachine.SetState(PatrolState);
     }
 
-    private void OnEnable() => Health.OnHealthModified += OnHealthChanged;
-    private void OnDisable() => Health.OnHealthModified -= OnHealthChanged;
+    private void OnEnable() 
+    {
+        Health.OnHealthModified += OnHealthChanged;
+    }
+    private void OnDisable() 
+    {
+        Health.OnHealthModified -= OnHealthChanged;
+        dodgeTimer.OnTimerEnd -= Dodge;
+    }
+
+    private void Start() 
+    {
+        dodgeTimer = new CountdownTimer(Random.Range(0.5f, 1.5f));
+        dodgeTimer.OnTimerEnd += Dodge;
+    }
+
+    void Dodge()
+    {
+        // check to see if a bullet is within the dodge range
+        if (_isFrozen) return;
+        if (dodgeTimer.IsRunning) return;
+        if (!_canDodge) return;
+        if (!_canJump) return;
+
+        var bullets = BulletPooling.GetBulletPool();
+        foreach (var bullet in bullets) 
+        {
+            if (bullet == null) continue;
+            if (!bullet.gameObject.activeSelf) continue;
+
+            // check if the bullet is in the same direction as the enemy
+            var directionToBullet = (bullet.transform.position - transform.position).normalized;
+            if (Vector3.Dot(directionToBullet, transform.forward) < 0) continue;
+
+            var distance = Vector3.Distance(bullet.transform.position, transform.position);
+            if (distance < _dodgeRange) 
+            {
+                dodgeTimer.Reset(Random.Range(0.5f, 1.5f));
+                dodgeTimer.Start();
+                _enemyMovement.Jump();
+                break;
+            }
+        }
+
+    }
 
     private void OnHealthChanged(float healthPercent) 
     {

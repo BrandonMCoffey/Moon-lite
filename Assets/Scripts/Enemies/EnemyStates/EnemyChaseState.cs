@@ -8,6 +8,8 @@ public class EnemyChaseState : EnemyBaseState
 
     public override void OnEnter()
     {
+        
+
         base.OnEnter();
         //Debug.Log($"{Time.time}: Entering Chase State");
         enemyBrain.SetCurrentStateText("ChaseState");
