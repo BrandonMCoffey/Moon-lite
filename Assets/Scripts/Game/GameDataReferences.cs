@@ -1,6 +1,5 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Moonlite/Game Data References")]
@@ -68,17 +67,18 @@ public class GameDataReferences : ScriptableObject
         return ammo;
     }
 
+#if UNITY_EDITOR
     [Button]
     private void ValidateData()
     {
-        var items = AssetDatabase.FindAssets("t:ItemData");
-        var weapons = AssetDatabase.FindAssets("t:WeaponData");
+        var items = UnityEditor.AssetDatabase.FindAssets("t:ItemData");
+        var weapons = UnityEditor.AssetDatabase.FindAssets("t:WeaponData");
         _allItems = new List<ItemData>(items.Length);
         _allWeapons = new List<WeaponData>(weapons.Length);
         foreach (var item in items)
         {
-            var path = AssetDatabase.GUIDToAssetPath(item);
-            var data = AssetDatabase.LoadAssetAtPath<ItemData>(path);
+            var path = UnityEditor.AssetDatabase.GUIDToAssetPath(item);
+            var data = UnityEditor.AssetDatabase.LoadAssetAtPath<ItemData>(path);
             if (data != null)
             {
                 _allItems.Add(data);
@@ -86,8 +86,8 @@ public class GameDataReferences : ScriptableObject
         }
         foreach (var weapon in weapons)
         {
-            var path = AssetDatabase.GUIDToAssetPath(weapon);
-            var data = AssetDatabase.LoadAssetAtPath<WeaponData>(path);
+            var path = UnityEditor.AssetDatabase.GUIDToAssetPath(weapon);
+            var data = UnityEditor.AssetDatabase.LoadAssetAtPath<WeaponData>(path);
             if (data != null)
             {
                 _allWeapons.Add(data);
@@ -115,4 +115,5 @@ public class GameDataReferences : ScriptableObject
             }
         }
     }
+#endif
 }
